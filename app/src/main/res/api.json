@@ -1,0 +1,964 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Smackmap API",
+    "description": "Smackmap API",
+    "version": "v0.0.1"
+  },
+  "servers": [
+    {
+      "url": "http://192.168.0.58:8090",
+      "description": "Generated server url"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/smacker/generateLink": {
+      "put": {
+        "tags": [
+          "smacker-controller"
+        ],
+        "operationId": "generateSmackerLink",
+        "parameters": [
+          {
+            "name": "$completion",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ContinuationObject"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateSmackerLinkRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SmackerLinkDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/partnership/respondPartnership": {
+      "put": {
+        "tags": [
+          "partnership-controller"
+        ],
+        "operationId": "respondPartnership",
+        "parameters": [
+          {
+            "name": "$completion",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ContinuationObject"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RespondPartnershipRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SmackerPartnershipsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/partnership/requestPartnership": {
+      "put": {
+        "tags": [
+          "partnership-controller"
+        ],
+        "operationId": "requestPartnership",
+        "parameters": [
+          {
+            "name": "$completion",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ContinuationObject"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestPartnershipRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnershipResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/smack": {
+      "post": {
+        "tags": [
+          "smack-controller"
+        ],
+        "operationId": "create",
+        "parameters": [
+          {
+            "name": "$completion",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ContinuationObject"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSmackRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SmackDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/smack/location": {
+      "post": {
+        "tags": [
+          "smack-location-controller"
+        ],
+        "operationId": "create_1",
+        "parameters": [
+          {
+            "name": "$completion",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ContinuationObject"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSmackLocationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SmackLocationDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/smack/location/search": {
+      "post": {
+        "tags": [
+          "smack-location-controller"
+        ],
+        "operationId": "search",
+        "parameters": [
+          {
+            "name": "$completion",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ContinuationObject"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SmackLocationSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlowSmackLocationDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/smack/location/review": {
+      "post": {
+        "tags": [
+          "smack-location-controller"
+        ],
+        "operationId": "reviewLocation",
+        "parameters": [
+          {
+            "name": "$completion",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ContinuationObject"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SmackLocationReviewRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SmackLocationDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/authentication/register": {
+      "post": {
+        "tags": [
+          "authentication-controller"
+        ],
+        "operationId": "register",
+        "parameters": [
+          {
+            "name": "$completion",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ContinuationObject"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSmackerRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SmackerDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/authentication/login": {
+      "post": {
+        "tags": [
+          "authentication-controller"
+        ],
+        "operationId": "login",
+        "parameters": [
+          {
+            "name": "$completion",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ContinuationObject"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginSmackerRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SmackerRelationsDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/smacker": {
+      "get": {
+        "tags": [
+          "smacker-controller"
+        ],
+        "operationId": "test",
+        "parameters": [
+          {
+            "name": "$completion",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ContinuationObject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/smacker/{smackerId}": {
+      "get": {
+        "tags": [
+          "smacker-controller"
+        ],
+        "operationId": "getSmacker",
+        "parameters": [
+          {
+            "name": "smackerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "$completion",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ContinuationObject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SmackerRelationsDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/smacker/byLink/": {
+      "get": {
+        "tags": [
+          "smacker-controller"
+        ],
+        "operationId": "getSmackerByLink",
+        "parameters": [
+          {
+            "name": "smackerLink",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "$completion",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ContinuationObject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SmackerViewDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/smack/{smackerId}": {
+      "get": {
+        "tags": [
+          "smack-controller"
+        ],
+        "operationId": "list",
+        "parameters": [
+          {
+            "name": "smackerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "$completion",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ContinuationObject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SmackListDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/partnership": {
+      "get": {
+        "tags": [
+          "partnership-controller"
+        ],
+        "operationId": "getSmackerPartnerships",
+        "parameters": [
+          {
+            "name": "smackerId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "$completion",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ContinuationObject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SmackerPartnershipsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "GenerateSmackerLinkRequest": {
+        "type": "object",
+        "properties": {
+          "smackerId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "ContinuationObject": {
+        "type": "object",
+        "properties": {
+          "context": {
+            "$ref": "#/components/schemas/CoroutineContext"
+          }
+        }
+      },
+      "CoroutineContext": {
+        "type": "object"
+      },
+      "SmackerLinkDto": {
+        "type": "object",
+        "properties": {
+          "smackerId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "shareableLink": {
+            "type": "string"
+          }
+        }
+      },
+      "RespondPartnershipRequest": {
+        "type": "object",
+        "properties": {
+          "initiatorId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "respondentId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "response": {
+            "type": "string",
+            "enum": [
+              "ACCEPT",
+              "DENY"
+            ]
+          }
+        }
+      },
+      "PartnershipResponse": {
+        "type": "object",
+        "properties": {
+          "initiatorId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "respondentId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "partnershipStatus": {
+            "type": "string",
+            "enum": [
+              "PARTNERSHIP_REQUESTED",
+              "IN_PARTNERSHIP"
+            ]
+          },
+          "initiateDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "respondDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "SmackerPartnershipsResponse": {
+        "type": "object",
+        "properties": {
+          "smackerId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "partnerships": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PartnershipResponse"
+            }
+          }
+        }
+      },
+      "RequestPartnershipRequest": {
+        "type": "object",
+        "properties": {
+          "initiatorId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "respondentId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "CreateSmackRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "smackLocationId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "smackerId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "smackerPartnerId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "SmackDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "smackLocationId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "smackerId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "smackerPartnerId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "CreateSmackLocationRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "SmackLocationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "averageRating": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "SmackLocationSearchRequest": {
+        "type": "object",
+        "properties": {
+          "latFrom": {
+            "type": "number",
+            "format": "double"
+          },
+          "longFrom": {
+            "type": "number",
+            "format": "double"
+          },
+          "latTo": {
+            "type": "number",
+            "format": "double"
+          },
+          "longTo": {
+            "type": "number",
+            "format": "double"
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "FlowSmackLocationDto": {
+        "type": "object"
+      },
+      "SmackLocationReviewRequest": {
+        "type": "object",
+        "properties": {
+          "smackId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "reviewerId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "smackLocationId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "reviewText": {
+            "type": "string"
+          },
+          "reviewStars": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "CreateSmackerRequest": {
+        "type": "object",
+        "properties": {
+          "userName": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "SmackerDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "shareableLink": {
+            "type": "string"
+          }
+        }
+      },
+      "LoginSmackerRequest": {
+        "type": "object",
+        "properties": {
+          "userName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "SmackerRelationsDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "relations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SmackerViewDto"
+            }
+          },
+          "userName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "shareableLink": {
+            "type": "string"
+          }
+        }
+      },
+      "SmackerViewDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "relation": {
+            "type": "string",
+            "enum": [
+              "PARTNER",
+              "FOLLOWING",
+              "BLOCKED",
+              "NOTHING"
+            ]
+          }
+        }
+      },
+      "SmackListDto": {
+        "type": "object",
+        "properties": {
+          "smacks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SmackDto"
+            }
+          },
+          "smackLocations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SmackLocationDto"
+            }
+          },
+          "smackLocationReviews": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SmackLocationReviewDto"
+            }
+          }
+        }
+      },
+      "SmackLocationReviewDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "smackId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "reviewerId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "smackLocationId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "reviewText": {
+            "type": "string"
+          },
+          "reviewStars": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "name": "bearerAuth",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

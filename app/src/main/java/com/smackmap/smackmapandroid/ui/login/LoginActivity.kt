@@ -1,6 +1,8 @@
 package com.smackmap.smackmapandroid.ui.login
 
 import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -15,6 +17,7 @@ import android.widget.Toast
 import com.smackmap.smackmapandroid.databinding.ActivityLoginBinding
 
 import com.smackmap.smackmapandroid.R
+import com.smackmap.smackmapandroid.ui.register.RegisterActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -27,7 +30,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val username = binding.username
+        val email = binding.email
         val password = binding.password
         val login = binding.login
         val register = binding.register
@@ -43,7 +46,7 @@ class LoginActivity : AppCompatActivity() {
             login.isEnabled = loginState.isDataValid
 
             if (loginState.usernameError != null) {
-                username.error = getString(loginState.usernameError)
+                email.error = getString(loginState.usernameError)
             }
             if (loginState.passwordError != null) {
                 password.error = getString(loginState.passwordError)
@@ -66,17 +69,17 @@ class LoginActivity : AppCompatActivity() {
             finish()
         })
 
-        username.afterTextChanged {
+        email.afterTextChanged {
             loginViewModel.loginDataChanged(
-                    username.text.toString(),
-                    password.text.toString()
+                email.text.toString(),
+                password.text.toString()
             )
         }
 
         password.apply {
             afterTextChanged {
                 loginViewModel.loginDataChanged(
-                        username.text.toString(),
+                        email.text.toString(),
                         password.text.toString()
                 )
             }
@@ -85,7 +88,7 @@ class LoginActivity : AppCompatActivity() {
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE ->
                         loginViewModel.login(
-                                username.text.toString(),
+                                email.text.toString(),
                                 password.text.toString()
                         )
                 }
@@ -94,7 +97,12 @@ class LoginActivity : AppCompatActivity() {
 
             login.setOnClickListener {
                 loading.visibility = View.VISIBLE
-                loginViewModel.login(username.text.toString(), password.text.toString())
+                loginViewModel.login(email.text.toString(), password.text.toString())
+            }
+
+            register.setOnClickListener{
+
+                startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
             }
         }
     }
