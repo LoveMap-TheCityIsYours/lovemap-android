@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
-import com.smackmap.smackmapandroid.api.authentication.AuthenticationService
+import com.smackmap.smackmapandroid.api.authentication.AuthenticationApi
 import com.smackmap.smackmapandroid.api.authentication.CreateSmackerRequest
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -24,7 +24,7 @@ class SmackmapBackendApi {
                 .build()
 
             val authenticationService = retrofit
-                .create(AuthenticationService::class.java)
+                .create(AuthenticationApi::class.java)
             val call = authenticationService.register(
                 CreateSmackerRequest("banan1", "banan1", "banan1@banan.ba")
             )

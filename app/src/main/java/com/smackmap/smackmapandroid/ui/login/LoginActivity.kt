@@ -50,8 +50,7 @@ class LoginActivity : AppCompatActivity() {
         val register = binding.register
         val loading = binding.loading
 
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
-            .get(LoginViewModel::class.java)
+        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())[LoginViewModel::class.java]
 
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
@@ -111,7 +110,13 @@ class LoginActivity : AppCompatActivity() {
 
             login.setOnClickListener {
                 loading.visibility = View.VISIBLE
-                loginViewModel.login(email.text.toString(), password.text.toString())
+                val success = loginViewModel.login(email.text.toString(), password.text.toString())
+                if (success) {
+                    Handler(Looper.getMainLooper()).post {
+                        val toast = Toast.makeText(context, "Successful login", Toast.LENGTH_LONG)
+                        toast.show()
+                    }
+                }
             }
 
             register.setOnClickListener {

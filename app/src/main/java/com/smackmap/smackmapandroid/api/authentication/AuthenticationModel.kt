@@ -6,9 +6,7 @@ data class CreateSmackerRequest(
     val email: String
 )
 
-data class SmackerResponse(
-    val id: Long,
-    val userName: String,
+data class LoginSmackerRequest(
     val email: String,
-    val shareableLink: String? = null
+    val password: String
 )
