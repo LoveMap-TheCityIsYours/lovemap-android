@@ -1,31 +1,45 @@
 package com.smackmap.smackmapandroid.ui.login
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
-import com.smackmap.smackmapandroid.databinding.ActivityLoginBinding
-
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.smackmap.smackmapandroid.MainActivity
 import com.smackmap.smackmapandroid.R
+import com.smackmap.smackmapandroid.data.UserDataStore
+import com.smackmap.smackmapandroid.databinding.ActivityLoginBinding
 import com.smackmap.smackmapandroid.ui.register.RegisterActivity
+import kotlinx.coroutines.runBlocking
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
+    private val userDataStore: UserDataStore = UserDataStore(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val loggedIn = runBlocking {
+            userDataStore.isLoggedIn()
+        }
+        if (loggedIn) {
+            startActivity(Intent(this, MainActivity::class.java))
+        } else {
+            setTheme(R.style.Theme_Smackmapandroid)
+            setContentView(R.layout.activity_login)
+        }
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -37,7 +51,7 @@ class LoginActivity : AppCompatActivity() {
         val loading = binding.loading
 
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
-                .get(LoginViewModel::class.java)
+            .get(LoginViewModel::class.java)
 
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
@@ -79,8 +93,8 @@ class LoginActivity : AppCompatActivity() {
         password.apply {
             afterTextChanged {
                 loginViewModel.loginDataChanged(
-                        email.text.toString(),
-                        password.text.toString()
+                    email.text.toString(),
+                    password.text.toString()
                 )
             }
 
@@ -88,8 +102,8 @@ class LoginActivity : AppCompatActivity() {
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE ->
                         loginViewModel.login(
-                                email.text.toString(),
-                                password.text.toString()
+                            email.text.toString(),
+                            password.text.toString()
                         )
                 }
                 false
@@ -100,8 +114,7 @@ class LoginActivity : AppCompatActivity() {
                 loginViewModel.login(email.text.toString(), password.text.toString())
             }
 
-            register.setOnClickListener{
-
+            register.setOnClickListener {
                 startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
             }
         }
@@ -112,9 +125,9 @@ class LoginActivity : AppCompatActivity() {
         val displayName = model.displayName
         // TODO : initiate successful logged in experience
         Toast.makeText(
-                applicationContext,
-                "$welcome $displayName",
-                Toast.LENGTH_LONG
+            applicationContext,
+            "$welcome $displayName",
+            Toast.LENGTH_LONG
         ).show()
     }
 

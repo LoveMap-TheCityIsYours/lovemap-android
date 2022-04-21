@@ -14,4 +14,3 @@ dependencyResolutionManagement {
 }
 rootProject.name = "smackmap-android"
 include ':app'
-include ':api'

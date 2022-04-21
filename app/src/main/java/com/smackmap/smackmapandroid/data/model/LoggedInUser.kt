@@ -1,9 +1,9 @@
 package com.smackmap.smackmapandroid.data.model
 
-/**
- * Data class that captures user information for logged in users retrieved from LoginRepository
- */
 data class LoggedInUser(
-        val userId: String,
-        val displayName: String
+    var id: Long = 0,
+    var userName: String,
+    var email: String,
+    var jwt: String,
+    var link: String? = null,
 )

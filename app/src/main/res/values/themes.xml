@@ -15,6 +15,19 @@
         <item name="android:windowBackground">@color/background_color</item>
         <item name="android:colorBackground">@color/background_color</item>
         <item name="android:logo">@drawable/transparent_logo_purple</item>
+    </style>
 
+    <style name="Theme.Smackmapandroid.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Smackmapandroid.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Smackmapandroid.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="splashScreenTheme" parent="@android:style/Theme.DeviceDefault.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/splash_screen</item>
+        <item name="android:windowBackground">@drawable/background_splash</item>
     </style>
 </resources>
