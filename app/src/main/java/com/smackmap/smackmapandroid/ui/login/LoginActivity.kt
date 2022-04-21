@@ -8,25 +8,30 @@ import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.smackmap.smackmapandroid.MainActivity
 import com.smackmap.smackmapandroid.R
+import com.smackmap.smackmapandroid.config.AppContext
 import com.smackmap.smackmapandroid.data.UserDataStore
+import com.smackmap.smackmapandroid.data.model.LoggedInUser
 import com.smackmap.smackmapandroid.databinding.ActivityLoginBinding
+import com.smackmap.smackmapandroid.ui.main.MainActivity
 import com.smackmap.smackmapandroid.ui.register.RegisterActivity
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
-    private val userDataStore: UserDataStore = UserDataStore(this)
+    private val userDataStore: UserDataStore = AppContext.INSTANCE.userDataStore
+    private val authenticationService = AppContext.INSTANCE.authenticationService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +43,6 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
         } else {
             setTheme(R.style.Theme_Smackmapandroid)
-            setContentView(R.layout.activity_login)
         }
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -50,7 +54,8 @@ class LoginActivity : AppCompatActivity() {
         val register = binding.register
         val loading = binding.loading
 
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())[LoginViewModel::class.java]
+        loginViewModel =
+            ViewModelProvider(this, LoginViewModelFactory())[LoginViewModel::class.java]
 
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
@@ -97,30 +102,30 @@ class LoginActivity : AppCompatActivity() {
                 )
             }
 
-            setOnEditorActionListener { _, actionId, _ ->
-                when (actionId) {
-                    EditorInfo.IME_ACTION_DONE ->
-                        loginViewModel.login(
-                            email.text.toString(),
-                            password.text.toString()
-                        )
-                }
-                false
-            }
-
             login.setOnClickListener {
                 loading.visibility = View.VISIBLE
-                val success = loginViewModel.login(email.text.toString(), password.text.toString())
-                if (success) {
-                    Handler(Looper.getMainLooper()).post {
-                        val toast = Toast.makeText(context, "Successful login", Toast.LENGTH_LONG)
-                        toast.show()
-                    }
-                }
+                login(email.text.toString(), password.text.toString())
             }
 
             register.setOnClickListener {
                 startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
+            }
+        }
+    }
+
+    fun login(email: String, password: String) {
+        MainScope().launch {
+            val loggedInUser = authenticationService.login(email, password)
+            if (loggedInUser != null) {
+                Handler(Looper.getMainLooper()).post {
+                    val toast = Toast.makeText(
+                        applicationContext,
+                        getString(R.string.welcome_back) + "${loggedInUser.userName}!",
+                        Toast.LENGTH_LONG
+                    )
+                    toast.show()
+                }
+                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             }
         }
     }

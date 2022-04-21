@@ -1,4 +1,4 @@
-package com.smackmap.smackmapandroid
+package com.smackmap.smackmapandroid.ui.main
 
 import android.os.Bundle
 import com.google.android.material.floatingactionbutton.FloatingActionButton

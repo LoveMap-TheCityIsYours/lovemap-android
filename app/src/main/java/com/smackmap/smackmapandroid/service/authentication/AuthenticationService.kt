@@ -9,8 +9,8 @@ import com.smackmap.smackmapandroid.api.authentication.CreateSmackerRequest
 import com.smackmap.smackmapandroid.api.authentication.LoginSmackerRequest
 import com.smackmap.smackmapandroid.data.UserDataStore
 import com.smackmap.smackmapandroid.data.model.LoggedInUser
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class AuthenticationService(
     private val authenticationApi: AuthenticationApi,
@@ -19,18 +19,17 @@ class AuthenticationService(
 ) {
     private val mainLooper = Looper.getMainLooper()
 
-    fun login(email: String, password: String): Boolean {
-        var success = false
-        GlobalScope.async {
+    suspend fun login(email: String, password: String): LoggedInUser? {
+        var loggedInUser: LoggedInUser? = null
+        return withContext(Dispatchers.IO) {
             val call = authenticationApi.login(
                 LoginSmackerRequest(email, password)
             )
 
             val response = call.execute()
-            success = response.isSuccessful
-            if (success) {
+            if (response.isSuccessful) {
                 response.body()
-                userDataStore.save(
+                loggedInUser = userDataStore.save(
                     LoggedInUser.of(
                         response.body()!!,
                         response.headers()["authorization"]!!
@@ -38,26 +37,28 @@ class AuthenticationService(
                 )
             } else {
                 Handler(mainLooper).post {
-                    val toast = Toast.makeText(context, response.message(), Toast.LENGTH_LONG)
+                    val toast = Toast.makeText(
+                        context,
+                        response.errorBody()?.string(),
+                        Toast.LENGTH_LONG
+                    )
                     toast.show()
                 }
             }
+            loggedInUser
         }
-        return success
     }
 
-    fun register(userName: String, email: String, password: String): Boolean {
-        var success = false
-        GlobalScope.async {
+    suspend fun register(userName: String, email: String, password: String): LoggedInUser? {
+        var loggedInUser: LoggedInUser? = null
+        return withContext(Dispatchers.IO) {
             val call = authenticationApi.register(
                 CreateSmackerRequest(userName, password, email)
             )
 
             val response = call.execute()
-            success = response.isSuccessful
-            if (success) {
-                response.body()
-                userDataStore.save(
+            if (response.isSuccessful) {
+                loggedInUser = userDataStore.save(
                     LoggedInUser.of(
                         response.body()!!,
                         response.headers()["authorization"]!!
@@ -65,11 +66,15 @@ class AuthenticationService(
                 )
             } else {
                 Handler(mainLooper).post {
-                    val toast = Toast.makeText(context, response.message(), Toast.LENGTH_LONG)
+                    val toast = Toast.makeText(
+                        context,
+                        response.errorBody()?.string(),
+                        Toast.LENGTH_LONG
+                    )
                     toast.show()
                 }
             }
+            loggedInUser
         }
-        return success
     }
 }

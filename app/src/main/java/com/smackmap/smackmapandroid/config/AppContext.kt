@@ -27,10 +27,10 @@ class AppContext : Application() {
             userDataStore,
             applicationContext
         )
-        instance = this
+        INSTANCE = this
     }
 
     companion object {
-        var instance = AppContext()
+        var INSTANCE = AppContext()
     }
 }

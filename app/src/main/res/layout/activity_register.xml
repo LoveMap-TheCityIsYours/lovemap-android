@@ -19,7 +19,7 @@
         android:src="@drawable/transparent_logo_purple" />
 
     <EditText
-        android:id="@+id/email"
+        android:id="@+id/reg_email"
         android:layout_height="65dp"
         android:layout_width = "match_parent"
         android:layout_marginTop="15dp"
@@ -32,7 +32,7 @@
         android:autofillHints="yes" />
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/reg_username"
         android:layout_height="65dp"
         android:layout_width = "match_parent"
         android:layout_marginTop="15dp"
@@ -41,11 +41,11 @@
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.781"
-        app:layout_constraintTop_toBottomOf="@+id/email"
+        app:layout_constraintTop_toBottomOf="@+id/reg_email"
         android:autofillHints="yes" />
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/reg_password"
         android:layout_height="65dp"
         android:layout_width = "match_parent"
         android:layout_marginTop="20dp"
@@ -56,11 +56,11 @@
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username"
+        app:layout_constraintTop_toBottomOf="@+id/reg_username"
         android:autofillHints="yes" />
 
     <EditText
-        android:id="@+id/password_again"
+        android:id="@+id/reg_password_again"
         android:layout_height="65dp"
         android:layout_width = "match_parent"
         android:layout_marginTop="15dp"
@@ -71,11 +71,11 @@
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password"
+        app:layout_constraintTop_toBottomOf="@+id/reg_password"
         android:autofillHints="yes" />
 
     <Button
-        android:id="@+id/register"
+        android:id="@+id/reg_register"
         android:backgroundTint="@color/design_default_color_primary"
         android:layout_width="165dp"
         android:layout_height="60dp"
@@ -87,11 +87,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_again"
+        app:layout_constraintTop_toBottomOf="@+id/reg_password_again"
         app:layout_constraintVertical_bias="0.2" />
 
     <ProgressBar
-        android:id="@+id/loading"
+        android:id="@+id/reg_loading"
         android:layout_width="2dp"
         android:layout_height="0dp"
         android:layout_gravity="center"
@@ -101,7 +101,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/register"
+        app:layout_constraintTop_toBottomOf="@+id/reg_register"
         app:layout_constraintVertical_bias="0.3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

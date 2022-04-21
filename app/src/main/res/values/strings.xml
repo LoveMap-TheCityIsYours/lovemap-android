@@ -1,5 +1,8 @@
 <resources>
-    <string name="app_name">smackmap-android</string>
+    <string name="app_name">Smackmap</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_username">Username</string>
@@ -8,14 +11,16 @@
     <string name="register">Not a Smacker yet?\nRegister</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_register">Register</string>
-    <string name="welcome">"Welcome!"</string>
+    <string name="welcome">"Welcome "</string>
     <string name="invalid_email">Invalid email address.</string>
     <string name="invalid_username">Username must be at least 3 characters long.</string>
     <string name="invalid_password">Password must be longer than 5 characters.</string>
+    <string name="invalid_password_again">Password Again must match password.</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="title_activity_register">RegisterActivity</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="welcome_back">Welcome back </string>
+
+    <!-- Main activity strings -->
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
 </resources>

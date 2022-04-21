@@ -18,11 +18,12 @@ class UserDataStore(private val context: Context) {
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "UserDataStore")
     private val gson = GsonBuilder().create()
 
-    suspend fun save(user: LoggedInUser) {
+    suspend fun save(user: LoggedInUser): LoggedInUser {
         val userKey = stringPreferencesKey("user")
         context.dataStore.edit { dataStore ->
             dataStore[userKey] = gson.toJson(user)
         }
+        return user
     }
 
     suspend fun isLoggedIn(): Boolean {
