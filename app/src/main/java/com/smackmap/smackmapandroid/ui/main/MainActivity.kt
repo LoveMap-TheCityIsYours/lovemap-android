@@ -27,18 +27,13 @@ class MainActivity : AppCompatActivity() {
             getDrawable(R.drawable.ic_baseline_person_24),
         )
 
-        val sectionsPagerAdapter = SectionsPagerAdapter(this)
         val viewPager: ViewPager2 = binding.viewPager
-        viewPager.adapter = sectionsPagerAdapter
         val tabLayout: TabLayout = binding.tabLayout
+        viewPager.adapter = ViewPagerAdapter(this)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.icon = icons[position]
         }.attach()
         val fab: FloatingActionButton = binding.fab
-
-//        for (i: Int in 0..3) {
-//            tabLayout.getTabAt(i)?.icon = icons[i]
-//        }
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
