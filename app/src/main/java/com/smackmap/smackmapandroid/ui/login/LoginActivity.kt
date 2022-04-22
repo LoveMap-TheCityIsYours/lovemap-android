@@ -8,6 +8,7 @@ import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.WindowManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.StringRes
@@ -17,14 +18,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.smackmap.smackmapandroid.R
 import com.smackmap.smackmapandroid.config.AppContext
 import com.smackmap.smackmapandroid.data.UserDataStore
-import com.smackmap.smackmapandroid.data.model.LoggedInUser
 import com.smackmap.smackmapandroid.databinding.ActivityLoginBinding
 import com.smackmap.smackmapandroid.ui.main.MainActivity
 import com.smackmap.smackmapandroid.ui.register.RegisterActivity
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -35,7 +35,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         val loggedIn = runBlocking {
             userDataStore.isLoggedIn()
         }

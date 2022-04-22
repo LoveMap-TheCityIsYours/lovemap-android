@@ -23,6 +23,8 @@ class ViewPagerAdapter(fragmentActivity: FragmentActivity) :
             return SmackFragment()
         } else if (position == 1) {
             return SmackspotFragment()
+        } else if (position == 3) {
+            return SettingsFragment()
         }
         return PlaceholderFragment.newInstance(position + 1)
     }

@@ -1,5 +1,6 @@
 package com.smackmap.smackmapandroid.ui.main
 
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -81,5 +82,12 @@ class MainActivity : AppCompatActivity() {
             getDrawable(R.drawable.ic_baseline_person_24),
         )
         return icons
+    }
+
+    override fun onBackPressed() {
+        val a = Intent(Intent.ACTION_MAIN)
+        a.addCategory(Intent.CATEGORY_HOME)
+        a.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(a)
     }
 }
