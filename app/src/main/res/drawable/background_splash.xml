@@ -3,11 +3,7 @@
     <item>
         <color android:color="@color/splash_screen" />
     </item>
-    <item>
-
-        <!--       android:gravity="center|clip_vertical|fill_horizontal"     -->
-        <bitmap
-            android:gravity="center"
-            android:src="@drawable/splash_screen_small" />
-    </item>
+    <item
+        android:drawable="@drawable/ic_customcolor_logo_transparent_background"
+        android:gravity="center" />
 </layer-list>
