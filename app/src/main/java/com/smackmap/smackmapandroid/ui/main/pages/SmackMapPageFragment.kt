@@ -1,10 +1,19 @@
 package com.smackmap.smackmapandroid.ui.main.pages
 
+import android.annotation.SuppressLint
+import android.graphics.Rect
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
 import com.smackmap.smackmapandroid.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -17,7 +26,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [SmackMapPageFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class SmackMapPageFragment : Fragment() {
+class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -33,9 +42,12 @@ class SmackMapPageFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_smack_map_page, container, false)
+        val view = inflater.inflate(R.layout.fragment_smack_map_page, container, false)
+        val map = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        map.getMapAsync(this)
+        return view
     }
 
     companion object {
@@ -57,4 +69,30 @@ class SmackMapPageFragment : Fragment() {
                 }
             }
     }
+
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onMapReady(googleMap: GoogleMap) {
+        Handler(Looper.getMainLooper()).post {
+            val toast = Toast.makeText(
+                context,
+                "Google Maps Ready",
+                Toast.LENGTH_SHORT
+            )
+            toast.show()
+        }
+
+        val thisView = requireView()
+        val viewPager2 = thisView.parent.parent.parent as ViewPager2
+        googleMap.setOnMapClickListener {
+            viewPager2.isUserInputEnabled = false
+        }
+        googleMap.setOnCameraMoveListener {
+            viewPager2.isUserInputEnabled = false
+        }
+        thisView.setOnTouchListener { _, motionEvent ->
+            viewPager2.isUserInputEnabled = true
+            true
+        }
+    }
+
 }

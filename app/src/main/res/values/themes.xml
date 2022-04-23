@@ -42,7 +42,7 @@
 
     <style name="Theme.Smackmapandroid.PopupOverlay" parent="Theme.Smackmapandroid" />
 
-    <style name="splashScreenTheme" parent="@android:style/Theme.DeviceDefault.Light.NoActionBar">
+    <style name="splashScreenTheme" parent="Theme.Smackmapandroid">
         <item name="android:statusBarColor">@color/splash_screen</item>
         <item name="android:windowBackground">@drawable/background_splash</item>
     </style>

@@ -38,8 +38,6 @@ class MainActivity : AppCompatActivity() {
         addSmackSpotFab = binding.addSmackSpotFab
 
         fab.setOnClickListener { view ->
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show()
             if (!isFabOpen) {
                 showFabMenu()
             } else {
@@ -50,8 +48,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun showFabMenu() {
         isFabOpen = true
-        addSmackFab.animate().rotationBy(360f).translationY(-resources.getDimension(R.dimen.standard_55))
-        addSmackSpotFab.animate().rotationBy(360f).translationY(-resources.getDimension(R.dimen.standard_105))
+        addSmackFab.animate().rotationBy(360f)
+            .translationY(-resources.getDimension(R.dimen.standard_55))
+        addSmackSpotFab.animate().rotationBy(360f)
+            .translationY(-resources.getDimension(R.dimen.standard_105))
         fab.animate().rotationBy(180f)
         fab.setImageDrawable(getDrawable(R.drawable.ic_baseline_remove_24))
         fab.animate().rotationBy(180f)

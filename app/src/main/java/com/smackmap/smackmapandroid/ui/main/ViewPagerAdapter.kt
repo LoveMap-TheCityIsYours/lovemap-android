@@ -14,8 +14,7 @@ import java.lang.IllegalArgumentException
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
  * one of the sections/tabs/pages.
  */
-class ViewPagerAdapter(fragmentActivity: FragmentActivity) :
-    FragmentStateAdapter(fragmentActivity) {
+class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
 
     override fun getItemCount(): Int {
         return 4
