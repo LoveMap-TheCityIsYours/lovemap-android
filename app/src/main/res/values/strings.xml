@@ -50,6 +50,11 @@
     <string name="your_smacks">Your Smacks</string>
     <string name="discover">Discover</string>
     <string name="smack_map">Smack Map</string>
+    <string name="profileUserName">ProfileUserPlaceholder</string>
+    <string name="profileUserLevelText">Public Smack God</string>
+    <string name="profileShareableLink">Get shareable link</string>
+    <string name="linkShareOff">Link Sharing Off</string>
+    <string name="privateProfile">Private Profile</string>
 
 
 </resources>

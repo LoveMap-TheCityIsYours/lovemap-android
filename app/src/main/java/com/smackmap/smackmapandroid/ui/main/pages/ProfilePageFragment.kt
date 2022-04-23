@@ -6,10 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.smackmap.smackmapandroid.R
 import com.smackmap.smackmapandroid.config.AppContext
 import com.smackmap.smackmapandroid.ui.login.LoginActivity
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 // TODO: Rename parameter arguments, choose names that match
@@ -32,6 +35,10 @@ class ProfilePageFragment : Fragment() {
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
+        }
+        MainScope().launch {
+            val smacker = AppContext.INSTANCE.smackerService.getById()
+            Toast.makeText(context, smacker.toString(), Toast.LENGTH_LONG).show()
         }
     }
 

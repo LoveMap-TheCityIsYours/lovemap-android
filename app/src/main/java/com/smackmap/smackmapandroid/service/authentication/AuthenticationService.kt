@@ -28,7 +28,6 @@ class AuthenticationService(
 
             val response = call.execute()
             if (response.isSuccessful) {
-                response.body()
                 loggedInUser = userDataStore.save(
                     LoggedInUser.of(
                         response.body()!!,
@@ -40,7 +39,7 @@ class AuthenticationService(
                     val toast = Toast.makeText(
                         context,
                         response.errorBody()?.string(),
-                        Toast.LENGTH_LONG
+                        Toast.LENGTH_SHORT
                     )
                     toast.show()
                 }
@@ -69,7 +68,7 @@ class AuthenticationService(
                     val toast = Toast.makeText(
                         context,
                         response.errorBody()?.string(),
-                        Toast.LENGTH_LONG
+                        Toast.LENGTH_SHORT
                     )
                     toast.show()
                 }

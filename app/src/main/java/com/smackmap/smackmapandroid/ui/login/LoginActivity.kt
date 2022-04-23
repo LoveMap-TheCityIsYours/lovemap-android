@@ -117,11 +117,12 @@ class LoginActivity : AppCompatActivity() {
         MainScope().launch {
             val loggedInUser = authenticationService.login(email, password)
             if (loggedInUser != null) {
+                AppContext.INSTANCE.onLogin()
                 Handler(Looper.getMainLooper()).post {
                     val toast = Toast.makeText(
                         applicationContext,
                         getString(R.string.welcome_back) + "${loggedInUser.userName}!",
-                        Toast.LENGTH_LONG
+                        Toast.LENGTH_SHORT
                     )
                     toast.show()
                 }

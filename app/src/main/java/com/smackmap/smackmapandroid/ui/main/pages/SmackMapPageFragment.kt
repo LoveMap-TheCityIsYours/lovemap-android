@@ -1,14 +1,10 @@
 package com.smackmap.smackmapandroid.ui.main.pages
 
 import android.annotation.SuppressLint
-import android.graphics.Rect
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.maps.GoogleMap
@@ -72,15 +68,6 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onMapReady(googleMap: GoogleMap) {
-        Handler(Looper.getMainLooper()).post {
-            val toast = Toast.makeText(
-                context,
-                "Google Maps Ready",
-                Toast.LENGTH_SHORT
-            )
-            toast.show()
-        }
-
         val thisView = requireView()
         val viewPager2 = thisView.parent.parent.parent as ViewPager2
         googleMap.setOnMapClickListener {
