@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.smackmap.smackmapandroid.ui.main.pages.SmacksPageFragment">
+
+    <TextView
+        android:id="@+id/smacksTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/text_margin"
+        style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+        android:text="@string/your_smacks"/>
+
+    <fragment
+        android:id="@+id/fragmentSmacksSmackList"
+        android:name="com.smackmap.smackmapandroid.ui.main.smacklist.SmackListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+</LinearLayout>

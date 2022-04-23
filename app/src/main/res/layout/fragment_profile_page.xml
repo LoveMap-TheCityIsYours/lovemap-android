@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.smackmap.smackmapandroid.ui.main.pages.ProfilePageFragment">
+
+
+    <TextView
+        android:id="@+id/profileTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/text_margin"
+        style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+        android:text="@string/your_profile"/>
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        tools:context="com.smackmap.smackmapandroid.ui.main.ProfileFragment">
+
+        <Button
+            android:id="@+id/settings"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="@string/settings"
+            android:drawableLeft="@drawable/ic_baseline_settings_24"
+            android:layout_margin="@dimen/text_margin"
+            />
+
+        <Button
+            android:id="@+id/logout"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_baseline_exit_to_app_24"
+            android:text="@string/logout"
+            android:layout_margin="@dimen/text_margin"
+            />
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

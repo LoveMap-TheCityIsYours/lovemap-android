@@ -9,12 +9,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.smackmap.smackmapandroid.R
-import com.smackmap.smackmapandroid.placeholder.PlaceholderContent
+import com.smackmap.smackmapandroid.ui.data.SmackSpotContent
 
 /**
  * A fragment representing a list of Items.
  */
-class SmackspotFragment : Fragment() {
+class SmackSpotListFragment : Fragment() {
 
     private var columnCount = 1
 
@@ -39,7 +39,7 @@ class SmackspotFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = SmackspotRecyclerViewAdapter(PlaceholderContent.ITEMS)
+                adapter = SmackSpotRecyclerViewAdapter(SmackSpotContent.ITEMS)
             }
         }
         return view
@@ -53,7 +53,7 @@ class SmackspotFragment : Fragment() {
         // TODO: Customize parameter initialization
         @JvmStatic
         fun newInstance(columnCount: Int) =
-            SmackspotFragment().apply {
+            SmackSpotListFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }

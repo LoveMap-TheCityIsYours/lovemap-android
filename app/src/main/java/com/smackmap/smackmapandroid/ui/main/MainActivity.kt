@@ -17,10 +17,8 @@ class MainActivity : AppCompatActivity() {
     private var isFabOpen = false
     private lateinit var binding: ActivityMainBinding
     private lateinit var fab: FloatingActionButton
-    private lateinit var fab1: FloatingActionButton
-    private lateinit var fab2: FloatingActionButton
-    private lateinit var fab3: FloatingActionButton
-    private lateinit var fab4: FloatingActionButton
+    private lateinit var addSmackFab: FloatingActionButton
+    private lateinit var addSmackSpotFab: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,10 +34,8 @@ class MainActivity : AppCompatActivity() {
             tab.icon = icons[position]
         }.attach()
         fab = binding.fab
-        fab1 = binding.fab1
-        fab2 = binding.fab2
-        fab3 = binding.fab3
-        fab4 = binding.fab4
+        addSmackFab = binding.addSmackFab
+        addSmackSpotFab = binding.addSmackSpotFab
 
         fab.setOnClickListener { view ->
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -54,10 +50,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun showFabMenu() {
         isFabOpen = true
-        fab1.animate().rotationBy(360f).translationY(-resources.getDimension(R.dimen.standard_55))
-        fab2.animate().rotationBy(360f).translationY(-resources.getDimension(R.dimen.standard_105))
-        fab3.animate().rotationBy(360f).translationY(-resources.getDimension(R.dimen.standard_155))
-        fab4.animate().rotationBy(360f).translationY(-resources.getDimension(R.dimen.standard_205))
+        addSmackFab.animate().rotationBy(360f).translationY(-resources.getDimension(R.dimen.standard_55))
+        addSmackSpotFab.animate().rotationBy(360f).translationY(-resources.getDimension(R.dimen.standard_105))
         fab.animate().rotationBy(180f)
         fab.setImageDrawable(getDrawable(R.drawable.ic_baseline_remove_24))
         fab.animate().rotationBy(180f)
@@ -65,10 +59,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun closeFabMenu() {
         isFabOpen = false
-        fab1.animate().rotationBy(360f).translationY(0f)
-        fab2.animate().rotationBy(360f).translationY(0f)
-        fab3.animate().rotationBy(360f).translationY(0f)
-        fab4.animate().rotationBy(360f).translationY(0f)
+        addSmackFab.animate().rotationBy(360f).translationY(0f)
+        addSmackSpotFab.animate().rotationBy(360f).translationY(0f)
         fab.animate().rotationBy(180f)
         fab.setImageDrawable(getDrawable(R.drawable.ic_baseline_add_24))
         fab.animate().rotationBy(180f)

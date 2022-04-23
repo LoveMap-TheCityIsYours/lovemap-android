@@ -5,14 +5,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.smackmap.smackmapandroid.databinding.FragmentSmackspotItemBinding
-import com.smackmap.smackmapandroid.placeholder.PlaceholderContent.PlaceholderItem
+import com.smackmap.smackmapandroid.ui.data.SmackContent.SmackItem
 
 /**
- * [RecyclerView.Adapter] that can display a [PlaceholderItem].
+ * [RecyclerView.Adapter] that can display a [SmackItem].
  * TODO: Replace the implementation with code for your data type.
  */
 class SmackRecyclerViewAdapter(
-    private val values: List<PlaceholderItem>
+    private val values: List<SmackItem>
 ) : RecyclerView.Adapter<SmackRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

@@ -4,8 +4,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.smackmap.smackmapandroid.ui.main.smacklist.SmackFragment
-import com.smackmap.smackmapandroid.ui.main.smackspotlist.SmackspotFragment
+import com.smackmap.smackmapandroid.ui.main.pages.DiscoverPageFragment
+import com.smackmap.smackmapandroid.ui.main.pages.ProfilePageFragment
+import com.smackmap.smackmapandroid.ui.main.pages.SmackMapPageFragment
+import com.smackmap.smackmapandroid.ui.main.pages.SmacksPageFragment
+import java.lang.IllegalArgumentException
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -20,12 +23,14 @@ class ViewPagerAdapter(fragmentActivity: FragmentActivity) :
 
     override fun createFragment(position: Int): Fragment {
         if (position == 0) {
-            return SmackFragment()
+            return SmacksPageFragment()
         } else if (position == 1) {
-            return SmackspotFragment()
+            return DiscoverPageFragment()
+        } else if (position == 2) {
+            return SmackMapPageFragment()
         } else if (position == 3) {
-            return SettingsFragment()
+            return ProfilePageFragment()
         }
-        return PlaceholderFragment.newInstance(position + 1)
+        throw IllegalArgumentException("Position $position is impossible.")
     }
 }

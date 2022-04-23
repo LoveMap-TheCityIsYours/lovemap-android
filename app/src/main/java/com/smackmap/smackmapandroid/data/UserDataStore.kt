@@ -40,6 +40,13 @@ class UserDataStore(private val context: Context) {
         }.first()
     }
 
+    suspend fun delete() {
+        val userKey = stringPreferencesKey("user")
+        context.dataStore.edit {
+            it.clear()
+        }
+    }
+
 //    suspend fun get2(): LoggedInUser {
 //        var loggedInUser: LoggedInUser
 //        GlobalScope.async {
