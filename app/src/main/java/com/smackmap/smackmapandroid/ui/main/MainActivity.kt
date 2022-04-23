@@ -1,9 +1,12 @@
 package com.smackmap.smackmapandroid.ui.main
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
@@ -20,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var addSmackFab: FloatingActionButton
     private lateinit var addSmackSpotFab: FloatingActionButton
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -37,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         addSmackFab = binding.addSmackFab
         addSmackSpotFab = binding.addSmackSpotFab
 
-        fab.setOnClickListener { view ->
+        fab.setOnClickListener {
             if (!isFabOpen) {
                 showFabMenu()
             } else {
@@ -53,7 +57,12 @@ class MainActivity : AppCompatActivity() {
         addSmackSpotFab.animate().rotationBy(360f)
             .translationY(-resources.getDimension(R.dimen.standard_105))
         fab.animate().rotationBy(180f)
-        fab.setImageDrawable(getDrawable(R.drawable.ic_baseline_remove_24))
+        fab.setImageDrawable(
+            AppCompatResources.getDrawable(
+                applicationContext,
+                R.drawable.ic_baseline_remove_24
+            )
+        )
         fab.animate().rotationBy(180f)
     }
 
@@ -62,16 +71,27 @@ class MainActivity : AppCompatActivity() {
         addSmackFab.animate().rotationBy(360f).translationY(0f)
         addSmackSpotFab.animate().rotationBy(360f).translationY(0f)
         fab.animate().rotationBy(180f)
-        fab.setImageDrawable(getDrawable(R.drawable.ic_baseline_add_24))
+        fab.setImageDrawable(
+            AppCompatResources.getDrawable(
+                applicationContext,
+                R.drawable.ic_baseline_add_24
+            )
+        )
         fab.animate().rotationBy(180f)
     }
 
     private fun initIcons(): Array<Drawable?> {
         val icons = arrayOf(
-            getDrawable(R.drawable.ic_baseline_favorite_border_24),
-            getDrawable(R.drawable.ic_baseline_search_24),
-            getDrawable(R.drawable.ic_baseline_location_on_24),
-            getDrawable(R.drawable.ic_baseline_person_24),
+            AppCompatResources.getDrawable(
+                applicationContext,
+                R.drawable.ic_baseline_favorite_border_24
+            ),
+            AppCompatResources.getDrawable(applicationContext, R.drawable.ic_baseline_search_24),
+            AppCompatResources.getDrawable(
+                applicationContext,
+                R.drawable.ic_baseline_location_on_24
+            ),
+            AppCompatResources.getDrawable(applicationContext, R.drawable.ic_baseline_person_24),
         )
         return icons
     }

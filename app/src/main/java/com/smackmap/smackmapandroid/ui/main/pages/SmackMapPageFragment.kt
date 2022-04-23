@@ -10,6 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.material.tabs.TabLayout
 import com.smackmap.smackmapandroid.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -70,16 +71,32 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         val thisView = requireView()
         val viewPager2 = thisView.parent.parent.parent as ViewPager2
+        val linearLayout = viewPager2.parent as ViewGroup
+        val tabLayout = linearLayout.findViewById<TabLayout>(R.id.tab_layout)
         googleMap.setOnMapClickListener {
             viewPager2.isUserInputEnabled = false
         }
         googleMap.setOnCameraMoveListener {
-            viewPager2.isUserInputEnabled = false
+            if (tabLayout.selectedTabPosition == 2) {
+                viewPager2.isUserInputEnabled = false
+            }
         }
-        thisView.setOnTouchListener { _, motionEvent ->
+        thisView.setOnTouchListener { _, _ ->
             viewPager2.isUserInputEnabled = true
             true
         }
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                viewPager2.isUserInputEnabled = true
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+
+        })
     }
 
 }
