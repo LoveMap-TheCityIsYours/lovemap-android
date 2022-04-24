@@ -54,7 +54,15 @@
     <string name="profileUserLevelText">Public Smack God</string>
     <string name="profileShareableLink">Get shareable link</string>
     <string name="linkShareOff">Link Sharing Off</string>
+    <string name="linkShareOn">Link Sharing On</string>
     <string name="privateProfile">Private Profile</string>
+    <string name="profileInPartnershipWith">In partnership with:</string>
+    <string name="profilePartnersEmpty">No partner yet</string>
+    <string name="profileRank">Current rank:</string>
+    <string name="userOccupied">Username is occupied</string>
+    <string name="emailOccupied">A user with this email already registered</string>
+    <string name="invalidCredentials">Invalid credentials</string>
+    <string name="noServer">Cannot connect to server</string>
 
 
 </resources>

@@ -70,7 +70,9 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
     @SuppressLint("ClickableViewAccessibility")
     override fun onMapReady(googleMap: GoogleMap) {
         val thisView = requireView()
+        // TODO: this can be null if not the map page is loaded first
         val viewPager2 = thisView.parent.parent.parent as ViewPager2
+//        val viewPager2 = getViewPager2(thisView)
         val linearLayout = viewPager2.parent as ViewGroup
         val tabLayout = linearLayout.findViewById<TabLayout>(R.id.tab_layout)
         googleMap.setOnMapClickListener {
@@ -97,6 +99,17 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
             }
 
         })
+    }
+
+    private fun getViewPager2(thisView: View): ViewPager2 {
+        var view = thisView.parent
+        while (view !is ViewPager2 && view != null) {
+            if (view.parent == null) {
+                return (view as ViewGroup).findViewById(R.id.view_pager)
+            }
+            view = view.parent
+        }
+        return view as ViewPager2
     }
 
 }

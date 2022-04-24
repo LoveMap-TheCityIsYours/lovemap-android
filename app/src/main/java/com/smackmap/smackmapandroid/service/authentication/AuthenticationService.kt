@@ -3,18 +3,23 @@ package com.smackmap.smackmapandroid.service.authentication
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import android.widget.Toast
+import com.smackmap.smackmapandroid.R
+import com.smackmap.smackmapandroid.api.ErrorCode.*
 import com.smackmap.smackmapandroid.api.authentication.AuthenticationApi
 import com.smackmap.smackmapandroid.api.authentication.CreateSmackerRequest
 import com.smackmap.smackmapandroid.api.authentication.LoginSmackerRequest
+import com.smackmap.smackmapandroid.api.getErrorMessages
 import com.smackmap.smackmapandroid.data.UserDataStore
 import com.smackmap.smackmapandroid.data.model.LoggedInUser
+import com.smackmap.smackmapandroid.service.Toaster
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import retrofit2.Response
 
 class AuthenticationService(
     private val authenticationApi: AuthenticationApi,
     private val userDataStore: UserDataStore,
+    private val toaster: Toaster,
     private val context: Context
 ) {
     private val mainLooper = Looper.getMainLooper()
@@ -25,8 +30,12 @@ class AuthenticationService(
             val call = authenticationApi.login(
                 LoginSmackerRequest(email, password)
             )
-
-            val response = call.execute()
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
+                toaster.showNoServerToast()
+                return@withContext null
+            }
             if (response.isSuccessful) {
                 loggedInUser = userDataStore.save(
                     LoggedInUser.of(
@@ -35,14 +44,7 @@ class AuthenticationService(
                     )
                 )
             } else {
-                Handler(mainLooper).post {
-                    val toast = Toast.makeText(
-                        context,
-                        response.errorBody()?.string(),
-                        Toast.LENGTH_SHORT
-                    )
-                    toast.show()
-                }
+                showErrorToast(response)
             }
             loggedInUser
         }
@@ -54,8 +56,12 @@ class AuthenticationService(
             val call = authenticationApi.register(
                 CreateSmackerRequest(userName, password, email)
             )
-
-            val response = call.execute()
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
+                toaster.showNoServerToast()
+                return@withContext null
+            }
             if (response.isSuccessful) {
                 loggedInUser = userDataStore.save(
                     LoggedInUser.of(
@@ -64,16 +70,34 @@ class AuthenticationService(
                     )
                 )
             } else {
-                Handler(mainLooper).post {
-                    val toast = Toast.makeText(
-                        context,
-                        response.errorBody()?.string(),
-                        Toast.LENGTH_SHORT
-                    )
-                    toast.show()
-                }
+                showErrorToast(response)
             }
             loggedInUser
+        }
+    }
+
+    private fun showErrorToast(response: Response<out Any>) {
+        val error = response.getErrorMessages().first()
+        val errorCode = error.errorCode
+        Handler(mainLooper).post {
+            val message: String = when (errorCode) {
+                UserOccupied -> {
+                    context.getString(R.string.userOccupied)
+                }
+                EmailOccupied -> {
+                    context.getString(R.string.emailOccupied)
+                }
+                InvalidCredentialsEmail -> {
+                    context.getString(R.string.invalidCredentials)
+                }
+                InvalidCredentialsUser -> {
+                    context.getString(R.string.invalidCredentials)
+                }
+                else -> {
+                    error.message
+                }
+            }
+            toaster.showToast(message)
         }
     }
 }

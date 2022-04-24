@@ -4,6 +4,7 @@ import android.app.Application
 import com.smackmap.smackmapandroid.api.authentication.AuthenticationApi
 import com.smackmap.smackmapandroid.api.smacker.SmackerApi
 import com.smackmap.smackmapandroid.data.UserDataStore
+import com.smackmap.smackmapandroid.service.Toaster
 import com.smackmap.smackmapandroid.service.authentication.AuthenticationService
 import com.smackmap.smackmapandroid.service.smacker.SmackerService
 import kotlinx.coroutines.MainScope
@@ -14,6 +15,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class AppContext : Application() {
+    lateinit var toaster: Toaster
     lateinit var authenticationService: AuthenticationService
     lateinit var smackerService: SmackerService
     lateinit var userDataStore: UserDataStore
@@ -23,6 +25,7 @@ class AppContext : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        toaster = Toaster(applicationContext.mainLooper, applicationContext)
         userDataStore = UserDataStore(applicationContext)
         gsonConverterFactory = GsonConverterFactory.create()
         runBlocking {
@@ -30,12 +33,13 @@ class AppContext : Application() {
             authenticationService = AuthenticationService(
                 retrofit.create(AuthenticationApi::class.java),
                 userDataStore,
+                toaster,
                 applicationContext
             )
             smackerService = SmackerService(
                 retrofit.create(SmackerApi::class.java),
                 userDataStore,
-                applicationContext
+                toaster
             )
         }
 

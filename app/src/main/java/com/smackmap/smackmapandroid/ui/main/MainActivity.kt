@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.viewpager2.widget.ViewPager2
@@ -18,23 +17,24 @@ import com.smackmap.smackmapandroid.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private var isFabOpen = false
+    private lateinit var viewPager2: ViewPager2
     private lateinit var binding: ActivityMainBinding
     private lateinit var fab: FloatingActionButton
     private lateinit var addSmackFab: FloatingActionButton
     private lateinit var addSmackSpotFab: FloatingActionButton
+    private lateinit var tabLayout: TabLayout
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val icons = initIcons()
 
-        val viewPager: ViewPager2 = binding.viewPager
-        val tabLayout: TabLayout = binding.tabLayout
-        viewPager.adapter = ViewPagerAdapter(this)
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+        viewPager2 = binding.viewPager
+        tabLayout = binding.tabLayout
+        viewPager2.adapter = ViewPagerAdapter(this)
+        TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
             tab.icon = icons[position]
         }.attach()
         fab = binding.fab
@@ -48,14 +48,19 @@ class MainActivity : AppCompatActivity() {
                 closeFabMenu()
             }
         }
+
+        viewPager2.post {
+            // TODO: this is a workaround to load the map page first
+            viewPager2.setCurrentItem(2, true)
+        }
     }
 
     private fun showFabMenu() {
         isFabOpen = true
         addSmackFab.animate().rotationBy(360f)
-            .translationY(-resources.getDimension(R.dimen.standard_55))
+            .translationY(-resources.getDimension(R.dimen.standard_75))
         addSmackSpotFab.animate().rotationBy(360f)
-            .translationY(-resources.getDimension(R.dimen.standard_105))
+            .translationY(-resources.getDimension(R.dimen.standard_150))
         fab.animate().rotationBy(180f)
         fab.setImageDrawable(
             AppCompatResources.getDrawable(

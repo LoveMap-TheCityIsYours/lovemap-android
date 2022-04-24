@@ -6,8 +6,9 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
     <dimen name="text_margin">16dp</dimen>
-    <dimen name="standard_55">75dp</dimen>
-    <dimen name="standard_105">150dp</dimen>
-    <dimen name="standard_155">225dp</dimen>
-    <dimen name="standard_205">300dp</dimen>
+    <dimen name="standard_8">8dp</dimen>
+    <dimen name="standard_75">75dp</dimen>
+    <dimen name="standard_150">150dp</dimen>
+    <dimen name="standard_225">225dp</dimen>
+    <dimen name="standard_300">300dp</dimen>
 </resources>
