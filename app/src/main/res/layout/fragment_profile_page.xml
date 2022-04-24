@@ -1,213 +1,216 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
     tools:context="com.smackmap.smackmapandroid.ui.main.pages.ProfilePageFragment">
 
-
-    <TextView
-        android:id="@+id/profileTitle"
-        style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/text_margin"
-        android:text="@string/your_profile" />
-
-    <TextView
-        style="?android:attr/weekSeparatorLineColor"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:background="@color/design_default_color_primary_variant"
-        android:gravity="center_horizontal" />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        tools:context="com.smackmap.smackmapandroid.ui.main.ProfileFragment">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/profileUserName"
-            style="@style/TextAppearance.AppCompat.Headline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/text_margin"
-            android:layout_marginTop="32dp"
-            android:gravity="start"
-            android:text="@string/profileUserName" />
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginEnd="@dimen/text_margin"
-            android:orientation="vertical"
-            tools:context="com.smackmap.smackmapandroid.ui.main.ProfileFragment">
-
-            <ImageView
-                android:id="@+id/profilePublicImage"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/text_margin"
-                android:src="@drawable/ic_baseline_public_off_24" />
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/profilePublicToggle"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_baseline_toggle_off_24" />
-
-            <TextView
-                android:id="@+id/profilePublicToggleText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/privateProfile" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <TextView
-        style="?android:attr/weekSeparatorLineColor"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="10dp"
-        android:background="@color/design_default_color_primary_variant"
-        android:gravity="center_horizontal" />
-
-    <TextView
-        android:id="@+id/profileRank"
-        style="@style/TextAppearance.AppCompat.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/text_margin"
-        android:layout_marginTop="@dimen/text_margin"
-        android:text="@string/profileRank" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        tools:context="com.smackmap.smackmapandroid.ui.main.ProfileFragment">
-
-        <ImageView
-            android:id="@+id/profileUserLevelImage"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginStart="@dimen/text_margin"
-            android:layout_marginEnd="@dimen/text_margin"
-            android:layout_marginBottom="@dimen/text_margin"
-            android:src="@drawable/ic_crown" />
-
-        <TextView
-            android:id="@+id/profileUserLevelText"
-            style="@style/TextAppearance.AppCompat.Body2"
+            android:id="@+id/profileTitle"
+            style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="@dimen/text_margin"
-            android:layout_marginTop="@dimen/standard_8"
-            android:layout_marginEnd="@dimen/text_margin"
-            android:layout_marginBottom="@dimen/text_margin"
-            android:text="@string/profileUserLevelText" />
-
-    </LinearLayout>
-
-    <TextView
-        style="?android:attr/weekSeparatorLineColor"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:background="@color/design_default_color_primary_variant"
-        android:gravity="center_horizontal" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        tools:context="com.smackmap.smackmapandroid.ui.main.ProfileFragment">
-
-        <ImageView
-            android:id="@+id/profilePartnershipImage"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
             android:layout_margin="@dimen/text_margin"
-            android:src="@drawable/ic_baseline_link_24" />
+            android:text="@string/your_profile" />
+
+        <TextView
+            style="?android:attr/weekSeparatorLineColor"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@color/design_default_color_primary_variant"
+            android:gravity="center_horizontal" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             tools:context="com.smackmap.smackmapandroid.ui.main.ProfileFragment">
 
             <TextView
-                android:id="@+id/profilePartnershipWithText"
-                style="@style/TextAppearance.AppCompat.Small"
+                android:id="@+id/profileUserName"
+                style="@style/TextAppearance.AppCompat.Headline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="@dimen/text_margin"
-                android:text="@string/profileInPartnershipWith" />
+                android:layout_marginStart="@dimen/text_margin"
+                android:layout_marginTop="32dp"
+                android:gravity="start"
+                android:text="@string/profileUserName" />
 
-            <TextView
-                android:id="@+id/profilePartners"
-                style="@style/TextAppearance.AppCompat.Body1"
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/text_margin"
-                android:text="@string/profilePartnersEmpty" />
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/text_margin"
+                android:orientation="vertical"
+                tools:context="com.smackmap.smackmapandroid.ui.main.ProfileFragment">
 
+                <ImageView
+                    android:id="@+id/profilePublicImage"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/text_margin"
+                    android:src="@drawable/ic_baseline_public_off_24" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/profilePublicToggle"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_toggle_off_24" />
+
+                <TextView
+                    android:id="@+id/profilePublicToggleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/privateProfile" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+        <TextView
+            style="?android:attr/weekSeparatorLineColor"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:background="@color/design_default_color_primary_variant"
+            android:gravity="center_horizontal" />
 
-    <TextView
-        style="?android:attr/weekSeparatorLineColor"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:background="@color/design_default_color_primary_variant"
-        android:gravity="center_horizontal" />
+        <TextView
+            android:id="@+id/profileRank"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/text_margin"
+            android:layout_marginTop="@dimen/text_margin"
+            android:text="@string/profileRank" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:context="com.smackmap.smackmapandroid.ui.main.ProfileFragment">
+
+            <ImageView
+                android:id="@+id/profileUserLevelImage"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="@dimen/text_margin"
+                android:layout_marginEnd="@dimen/text_margin"
+                android:layout_marginBottom="@dimen/text_margin"
+                android:src="@drawable/ic_crown" />
+
+            <TextView
+                android:id="@+id/profileUserLevelText"
+                style="@style/TextAppearance.AppCompat.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/text_margin"
+                android:layout_marginTop="@dimen/standard_8"
+                android:layout_marginEnd="@dimen/text_margin"
+                android:layout_marginBottom="@dimen/text_margin"
+                android:text="@string/profileUserLevelText" />
+
+        </LinearLayout>
+
+        <TextView
+            style="?android:attr/weekSeparatorLineColor"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@color/design_default_color_primary_variant"
+            android:gravity="center_horizontal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:context="com.smackmap.smackmapandroid.ui.main.ProfileFragment">
+
+            <ImageView
+                android:id="@+id/profilePartnershipImage"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_margin="@dimen/text_margin"
+                android:src="@drawable/ic_baseline_link_24" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:context="com.smackmap.smackmapandroid.ui.main.ProfileFragment">
+
+                <TextView
+                    android:id="@+id/profilePartnershipWithText"
+                    style="@style/TextAppearance.AppCompat.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="@dimen/text_margin"
+                    android:text="@string/profileInPartnershipWith" />
+
+                <TextView
+                    android:id="@+id/profilePartners"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/text_margin"
+                    android:text="@string/profilePartnersEmpty" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            style="?android:attr/weekSeparatorLineColor"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@color/design_default_color_primary_variant"
+            android:gravity="center_horizontal" />
 
         <TextView
             android:id="@+id/profileShareableLink"
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="@dimen/text_margin"
             android:clickable="true"
-            android:inputType="textMultiLine"
             android:drawableLeft="@drawable/ic_baseline_share_24"
             android:focusable="true"
-            android:layout_gravity="center"
+            android:inputType="textMultiLine"
             android:text="@string/profileShareableLink" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_gravity="center"
-            android:orientation="vertical"
             android:layout_marginBottom="@dimen/text_margin"
+            android:gravity="center"
+            android:orientation="vertical"
             tools:context="com.smackmap.smackmapandroid.ui.main.ProfileFragment">
 
             <androidx.appcompat.widget.SwitchCompat
@@ -225,38 +228,39 @@
 
         </LinearLayout>
 
-    <TextView
-        style="?android:attr/weekSeparatorLineColor"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:background="@color/design_default_color_primary_variant"
-        android:gravity="center_horizontal" />
+        <TextView
+            style="?android:attr/weekSeparatorLineColor"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@color/design_default_color_primary_variant"
+            android:gravity="center_horizontal" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal"
-        tools:context="com.smackmap.smackmapandroid.ui.main.ProfileFragment">
-
-        <Button
-            android:id="@+id/settings"
-            android:layout_width="150dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:drawableLeft="@drawable/ic_baseline_settings_24"
-            android:text="@string/settings" />
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            tools:context="com.smackmap.smackmapandroid.ui.main.ProfileFragment">
 
-        <Button
-            android:id="@+id/logout"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:drawableLeft="@drawable/ic_baseline_exit_to_app_24"
-            android:text="@string/logout" />
+            <Button
+                android:id="@+id/settings"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/text_margin"
+                android:drawableLeft="@drawable/ic_baseline_settings_24"
+                android:text="@string/settings" />
+
+            <Button
+                android:id="@+id/logout"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/text_margin"
+                android:drawableLeft="@drawable/ic_baseline_exit_to_app_24"
+                android:text="@string/logout" />
+        </LinearLayout>
+
     </LinearLayout>
 
-
-</LinearLayout>
+</ScrollView>
