@@ -94,7 +94,7 @@ class AuthenticationService(
                     context.getString(R.string.invalidCredentials)
                 }
                 else -> {
-                    error.message
+                    context.getString(R.string.invalidCredentials)
                 }
             }
             toaster.showToast(message)

@@ -9,7 +9,7 @@ private val gson = Gson()
 
 fun Response<out Any>.getErrorMessages(): List<ErrorMessage> {
     val errorMessages: MutableList<ErrorMessage> = ArrayList()
-    errorBody()?.toString()?.let {
+    errorBody()?.string()?.let {
         try {
             val errorMessage = gson.fromJson(it, ErrorMessage::class.java)
             errorMessages.add(errorMessage)
