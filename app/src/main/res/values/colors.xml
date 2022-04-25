@@ -7,7 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="background_color">#C8F2FF</color>
+    <color name="background_color">#ECE6FF</color>
     <color name="background_color_dark">#8A2BFF</color>
     <color name="splash_screen">#E3D9F0</color>
 
@@ -16,5 +16,5 @@
     # because register button is fucling with us
     <color name="myColorPrimary">#780F78</color>
     <color name="myColorOnPrimary">#FFFFFF</color>
-    <color name="myAppBar">#2C83D1</color>
+    <color name="myAppBar">#9791BF</color>
 </resources>

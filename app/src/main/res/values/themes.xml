@@ -2,11 +2,11 @@
     <!-- Base application theme. -->
     <style name="Theme.Smackmapandroid" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#1B4EC7</item>
+        <item name="colorPrimary">#706FBF</item>
         <item name="colorPrimaryVariant">#0E97C2</item>
         <item name="colorOnPrimary">#FFFFFF</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">#2C83D1</item>
+        <item name="colorSecondary">#9791BF</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
