@@ -35,10 +35,9 @@ class ProfilePageFragment : Fragment() {
         linkToggle = view.findViewById(R.id.profileShareableLinkToggle)
         linkToggleText = view.findViewById(R.id.profileShareableLinkToggleText)
 
-        runBlocking {
+        MainScope().launch {
             val user = AppContext.INSTANCE.userDataStore.get()
             userNameView.text = user.userName
-
         }
 
         MainScope().launch {
@@ -74,7 +73,9 @@ class ProfilePageFragment : Fragment() {
             runBlocking {
                 AppContext.INSTANCE.userDataStore.delete()
             }
-            startActivity(Intent(context, LoginActivity::class.java))
+            val intent = Intent(context, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
         }
         return view
     }

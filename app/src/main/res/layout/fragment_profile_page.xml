@@ -199,7 +199,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/text_margin"
             android:clickable="true"
-            android:drawableLeft="@drawable/ic_baseline_share_24"
+            android:drawableRight="@drawable/ic_baseline_share_24"
             android:focusable="true"
             android:inputType="textMultiLine"
             android:text="@string/profileShareableLink" />

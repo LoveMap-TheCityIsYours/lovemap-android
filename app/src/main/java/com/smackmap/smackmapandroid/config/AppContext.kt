@@ -57,13 +57,20 @@ class AppContext : Application() {
 
     private suspend fun createHttpClient(): OkHttpClient {
         val client = if (userDataStore.isLoggedIn()) {
-            val loggedInUser = userDataStore.get()
             OkHttpClient.Builder()
                 .addInterceptor { chain ->
-                    val request = chain.request()
-                        .newBuilder()
-                        .addHeader(AUTHORIZATION_HEADER, "Bearer ${loggedInUser.jwt}")
-                        .build()
+                    val request = runBlocking {
+                        val requestBuilder = chain.request()
+                            .newBuilder()
+                        if (userDataStore.isLoggedIn()) {
+                            val jwt = runBlocking { userDataStore.get().jwt }
+                            requestBuilder
+                                .addHeader(AUTHORIZATION_HEADER, "Bearer $jwt")
+                                .build()
+                        } else {
+                            requestBuilder.build()
+                        }
+                    }
                     chain.proceed(request)
                 }
                 .build()

@@ -45,6 +45,8 @@ class UserDataStore(private val context: Context) {
         context.dataStore.edit {
             it.clear()
         }
+        val isLoggedIn = isLoggedIn()
+        println(isLoggedIn)
     }
 
 //    suspend fun get2(): LoggedInUser {

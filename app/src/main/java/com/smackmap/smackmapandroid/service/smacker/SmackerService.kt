@@ -5,6 +5,7 @@ import com.smackmap.smackmapandroid.api.smacker.SmackerApi
 import com.smackmap.smackmapandroid.api.smacker.SmackerDto
 import com.smackmap.smackmapandroid.api.smacker.SmackerRelationsDto
 import com.smackmap.smackmapandroid.api.smacker.SmackerViewDto
+import com.smackmap.smackmapandroid.config.AUTHORIZATION_HEADER
 import com.smackmap.smackmapandroid.data.UserDataStore
 import com.smackmap.smackmapandroid.service.Toaster
 import kotlinx.coroutines.Dispatchers
