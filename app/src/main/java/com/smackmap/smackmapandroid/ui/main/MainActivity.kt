@@ -91,12 +91,16 @@ class MainActivity : AppCompatActivity() {
                 applicationContext,
                 R.drawable.ic_baseline_favorite_border_24
             ),
-            AppCompatResources.getDrawable(applicationContext, R.drawable.ic_baseline_search_24),
+            AppCompatResources.getDrawable(
+                applicationContext,
+                R.drawable.ic_baseline_search_24),
             AppCompatResources.getDrawable(
                 applicationContext,
                 R.drawable.ic_baseline_location_on_24
             ),
-            AppCompatResources.getDrawable(applicationContext, R.drawable.ic_baseline_person_24),
+            AppCompatResources.getDrawable(
+                applicationContext,
+                R.drawable.ic_baseline_person_24),
         )
         return icons
     }

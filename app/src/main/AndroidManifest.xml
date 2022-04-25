@@ -33,6 +33,7 @@
             android:name=".ui.register.RegisterActivity"
             android:exported="false"
             android:label="@string/title_activity_register"
+            android:theme="@style/Theme.Smackmapandroid.NoActionBar"
             android:windowSoftInputMode="adjustResize|adjustPan" />
         <activity
             android:name=".ui.main.MainActivity"
