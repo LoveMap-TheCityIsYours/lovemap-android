@@ -18,23 +18,8 @@ import com.smackmap.smackmapandroid.R
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [SmackMapPageFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var mapFragment: SupportMapFragment
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,29 +27,13 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
     ): View {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_smack_map_page, container, false)
-        val map = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-        map.getMapAsync(this)
+        mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SmackMapPageFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SmackMapPageFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onResume() {
+        super.onResume()
+        mapFragment.getMapAsync(this)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -101,6 +70,7 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
         })
     }
 
+
     private fun getViewPager2(thisView: View): ViewPager2 {
         var view = thisView.parent
         while (view !is ViewPager2 && view != null) {
@@ -111,5 +81,4 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
         }
         return view as ViewPager2
     }
-
 }

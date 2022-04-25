@@ -49,8 +49,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // Starter page is map for performance reasons
         viewPager2.post {
-            // TODO: this is a workaround to load the map page first
             viewPager2.setCurrentItem(2, true)
         }
     }
