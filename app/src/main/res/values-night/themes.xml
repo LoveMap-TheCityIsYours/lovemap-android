@@ -2,30 +2,12 @@
     <!-- Base application theme. -->
     <style name="Theme.Smackmapandroid" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimary">@color/myColorPrimary</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">#FFFFFF</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
-        <item name="android:windowBackground">@color/background_color_dark</item>
-        <item name="android:colorBackground">@color/background_color_dark</item>
-        <item name="android:logo">@drawable/transparent_logo_purple</item>
-        <item name="backgroundColor">@color/background_color_dark</item>
-    </style>
-
-    <!-- This doesnt matter at all -->
-    <style name="Theme.Smackmapandroid.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">#FFFFFF</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondary">#E5C0FA</item>
+<!--        <item name="colorSecondary">#9FD1FA</item>-->
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
