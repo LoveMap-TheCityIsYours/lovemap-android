@@ -27,4 +27,6 @@
     <color name="myColorSecondaryVariant">#F792FF</color>
     <color name="myColorOnSecondary">@color/black</color>
 
+    <color name="myColorOnBackground">#000000</color>
+
 </resources>

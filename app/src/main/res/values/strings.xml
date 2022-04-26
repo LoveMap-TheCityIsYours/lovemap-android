@@ -63,6 +63,11 @@
     <string name="emailOccupied">A user with this email already registered</string>
     <string name="invalidCredentials">Invalid credentials</string>
     <string name="noServer">Cannot connect to server</string>
+    <string name="points_to_next_level">Points to next level</string>
+    <string name="points">Points</string>
+    <string name="reports">Reports:</string>
+    <string name="smack_spots_added">Smack Spots added:</string>
+    <string name="number_of_smacks">Number of Smacks:</string>
 
 
 </resources>

@@ -27,4 +27,7 @@
     <color name="myColorSecondary">#E5C0FA</color>
     <color name="myColorSecondaryVariant">@color/teal_200</color>
     <color name="myColorOnSecondary">@color/black</color>
+
+    <color name="myColorOnBackground">#FFFFFF</color>
+
 </resources>
