@@ -2,19 +2,19 @@
     <!-- Base application theme. -->
     <style name="Theme.Smackmapandroid" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#706FBF</item>
-        <item name="colorPrimaryVariant">#0E97C2</item>
-        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimary">@color/myColorPrimary</item>
+        <item name="colorPrimaryVariant">@color/myColorPrimaryVariant</item>
+        <item name="colorOnPrimary">@color/myColorOnPrimary</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">#9791BF</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/myColorSecondary</item>
+        <item name="colorSecondaryVariant">@color/myColorSecondaryVariant</item>
+        <item name="colorOnSecondary">@color/myColorOnSecondary</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="android:windowBackground">@color/background_color</item>
         <item name="android:colorBackground">@color/background_color</item>
-        <item name="android:logo">@drawable/transparent_logo_purple</item>
+        <item name="android:logo">@drawable/transparent_logo</item>
     </style>
 
     <style name="Theme.Smackmapandroid.NoActionBar">
