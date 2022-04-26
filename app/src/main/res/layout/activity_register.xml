@@ -18,7 +18,7 @@
             android:id="@+id/logo"
             android:layout_width="fill_parent"
             android:layout_height="250dp"
-            android:src="@drawable/transparent_logo_purple"
+            android:src="@drawable/transparent_logo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

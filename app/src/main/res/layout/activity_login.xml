@@ -22,7 +22,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="fill_parent"
             android:layout_height="250dp"
-            android:src="@drawable/transparent_logo_purple" />
+            android:src="@drawable/transparent_logo" />
 
         <EditText
             android:id="@+id/email"
@@ -54,7 +54,8 @@
 
         <Button
             android:id="@+id/login"
-            android:backgroundTint="@color/design_default_color_primary"
+            android:textColor="@color/myColorOnPrimary"
+            android:backgroundTint="@color/myColorPrimary"
             android:layout_width="165dp"
             android:layout_height="60dp"
             android:layout_gravity="start"
@@ -70,7 +71,8 @@
 
         <Button
             android:id="@+id/register"
-            android:backgroundTint="@color/design_default_color_primary"
+            android:textColor="@color/myColorOnPrimary"
+            android:backgroundTint="@color/myColorPrimary"
             android:layout_width="165dp"
             android:layout_height="88dp"
             android:layout_gravity="start"
