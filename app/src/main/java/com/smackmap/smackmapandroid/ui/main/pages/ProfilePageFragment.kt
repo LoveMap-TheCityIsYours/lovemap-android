@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import com.smackmap.smackmapandroid.R
+import com.smackmap.smackmapandroid.api.relation.RelationStatusDto
+import com.smackmap.smackmapandroid.api.smacker.SmackerViewDto
 import com.smackmap.smackmapandroid.config.AppContext
 import com.smackmap.smackmapandroid.ui.login.LoginActivity
 import kotlinx.coroutines.MainScope
@@ -31,6 +33,7 @@ class ProfilePageFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_profile_page, container, false)
         val userNameView = view.findViewById<TextView>(R.id.profileUserName)
+        val partnersView = view.findViewById<TextView>(R.id.profilePartners)
         link = view.findViewById(R.id.profileShareableLink)
         linkToggle = view.findViewById(R.id.profileShareableLinkToggle)
         linkToggleText = view.findViewById(R.id.profileShareableLinkToggleText)
@@ -38,11 +41,14 @@ class ProfilePageFragment : Fragment() {
         MainScope().launch {
             val user = AppContext.INSTANCE.userDataStore.get()
             userNameView.text = user.userName
-        }
-
-        MainScope().launch {
             val smacker = smackerService.getById()
             smacker?.let {
+                if (smacker.relations.any { partnerFilter(it) }) {
+                    partnersView.text = smacker.relations
+                        .filter { partnerFilter(it) }
+                        .joinToString { it.userName }
+                }
+                partnersView.text
                 if (smacker.shareableLink != null) {
                     linkToggle.isChecked = true
                     turnOnSharing(smacker.shareableLink)
@@ -79,6 +85,9 @@ class ProfilePageFragment : Fragment() {
         }
         return view
     }
+
+    private fun partnerFilter(it: SmackerViewDto) =
+        it.relation == RelationStatusDto.PARTNER
 
     private fun turnOnSharing(shareableLink: String) {
         link.text = shareableLink

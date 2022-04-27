@@ -292,7 +292,6 @@
                     android:maxWidth="280dp"
                     android:maxLines="2"
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/text_margin"
                     android:text="@string/profilePartnersEmpty" />
             </LinearLayout>
 
