@@ -16,7 +16,7 @@ class Toaster(
             Toast.makeText(
                 context,
                 message,
-                Toast.LENGTH_SHORT
+                Toast.LENGTH_LONG
             ).show()
         }
     }

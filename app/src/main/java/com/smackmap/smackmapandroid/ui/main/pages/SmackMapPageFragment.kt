@@ -10,8 +10,16 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.tabs.TabLayout
 import com.smackmap.smackmapandroid.R
+import com.smackmap.smackmapandroid.api.smackspot.SmackSpotSearchRequest
+import com.smackmap.smackmapandroid.config.AppContext
+import com.smackmap.smackmapandroid.service.smack.location.SmackSpotService
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -19,7 +27,9 @@ private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
+    private val smackSpotService: SmackSpotService = AppContext.INSTANCE.smackSpotService
     private lateinit var mapFragment: SupportMapFragment
+    private var cameraMoved = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +61,23 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
             if (tabLayout.selectedTabPosition == 2) {
                 viewPager2.isUserInputEnabled = false
             }
+            cameraMoved = true
+        }
+        googleMap.setOnCameraIdleListener {
+            if (cameraMoved) {
+
+                val visibleRegion = googleMap.projection.visibleRegion
+                MainScope().launch {
+                    val smackSpots = smackSpotService.search(
+                        visibleRegion.latLngBounds
+                    )
+                    val markers = smackSpots.map {
+                        MarkerOptions().position(LatLng(it.latitude, it.longitude))
+                            .title(it.name)
+                    }
+                    markers.forEach { googleMap.addMarker(it) }
+                }
+            }
         }
         thisView.setOnTouchListener { _, _ ->
             viewPager2.isUserInputEnabled = true
@@ -69,7 +96,6 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
 
         })
     }
-
 
     private fun getViewPager2(thisView: View): ViewPager2 {
         var view = thisView.parent
