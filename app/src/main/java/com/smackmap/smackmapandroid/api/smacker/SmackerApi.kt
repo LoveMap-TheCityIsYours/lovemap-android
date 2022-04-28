@@ -16,4 +16,7 @@ interface SmackerApi {
 
     @GET("/smacker/byLink")
     fun getByLink(@Query("smackerLink") smackerLink: String): Call<SmackerViewDto>
+
+    @GET("/smacker/ranks")
+    fun getRanks(): Call<SmackerRanks>
 }

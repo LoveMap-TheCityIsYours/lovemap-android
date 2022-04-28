@@ -1,12 +1,11 @@
 package com.smackmap.smackmapandroid.service.smacker
 
 import android.os.Looper
-import com.smackmap.smackmapandroid.api.smacker.SmackerApi
-import com.smackmap.smackmapandroid.api.smacker.SmackerDto
-import com.smackmap.smackmapandroid.api.smacker.SmackerRelationsDto
-import com.smackmap.smackmapandroid.api.smacker.SmackerViewDto
+import com.smackmap.smackmapandroid.api.authentication.CreateSmackerRequest
+import com.smackmap.smackmapandroid.api.smacker.*
 import com.smackmap.smackmapandroid.config.AUTHORIZATION_HEADER
 import com.smackmap.smackmapandroid.data.UserDataStore
+import com.smackmap.smackmapandroid.data.model.LoggedInUser
 import com.smackmap.smackmapandroid.service.Toaster
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -78,6 +77,24 @@ class SmackerService(
     suspend fun getByLink(smackerLink: String): SmackerViewDto? {
         return withContext(Dispatchers.IO) {
             val call = smackerApi.getByLink(smackerLink)
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
+                toaster.showNoServerToast()
+                return@withContext null
+            }
+            if (response.isSuccessful) {
+                response.body()
+            } else {
+                toaster.showNoServerToast()
+                null
+            }
+        }
+    }
+
+    suspend fun getRanks(): SmackerRanks? {
+        return withContext(Dispatchers.IO) {
+            val call = smackerApi.getRanks()
             val response = try {
                 call.execute()
             } catch (e: Exception) {

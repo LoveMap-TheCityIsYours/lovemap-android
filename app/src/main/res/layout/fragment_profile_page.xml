@@ -178,7 +178,6 @@
                 android:orientation="vertical"
                 tools:context="com.smackmap.smackmapandroid.ui.main.ProfileFragment">
             <TextView
-                android:id="@+id/profileRank"
                 style="@style/TextAppearance.AppCompat.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

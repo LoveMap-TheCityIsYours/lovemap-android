@@ -23,6 +23,12 @@ class ProfilePageFragment : Fragment() {
     private lateinit var link: TextView
     private lateinit var linkToggle: SwitchCompat
     private lateinit var linkToggleText: TextView
+    private lateinit var numberOfSmacks: TextView
+    private lateinit var smackSpotsAdded: TextView
+    private lateinit var reports: TextView
+    private lateinit var points: TextView
+    private lateinit var pointsToNextLevel: TextView
+    private lateinit var currentRank: TextView
 
     private val smackerService = AppContext.INSTANCE.smackerService
 
@@ -37,18 +43,43 @@ class ProfilePageFragment : Fragment() {
         link = view.findViewById(R.id.profileShareableLink)
         linkToggle = view.findViewById(R.id.profileShareableLinkToggle)
         linkToggleText = view.findViewById(R.id.profileShareableLinkToggleText)
+        numberOfSmacks = view.findViewById(R.id.profileNumberOfSmacks)
+        smackSpotsAdded = view.findViewById(R.id.profileNumberOfSmackSpots)
+        reports = view.findViewById(R.id.profileNumberOfReports)
+        points = view.findViewById(R.id.profilePoints)
+        pointsToNextLevel = view.findViewById(R.id.profilePointsToNextLevel)
+        currentRank = view.findViewById(R.id.profileUserLevelText)
 
         MainScope().launch {
             val user = AppContext.INSTANCE.userDataStore.get()
             userNameView.text = user.userName
             val smacker = smackerService.getById()
             smacker?.let {
+                val ranks = smackerService.getRanks()
+                ranks?.let {
+                    val rankList = ranks.rankList
+                    for ((index, rank) in rankList.withIndex()) {
+                        if (rank.pointsNeeded > smacker.points) {
+                            currentRank.text = rankList[index - 1].nameEN
+                            pointsToNextLevel.text = rankList[index].pointsNeeded.toString()
+                            break
+                        }
+                    }
+                    rankList.forEachIndexed { index, rank ->
+
+                    }
+                }
+
+                numberOfSmacks.text = smacker.numberOfSmacks.toString()
+                smackSpotsAdded.text = smacker.smackSpotsAdded.toString()
+                reports.text = smacker.numberOfReports.toString()
+                points.text = smacker.points.toString()
+
                 if (smacker.relations.any { partnerFilter(it) }) {
                     partnersView.text = smacker.relations
                         .filter { partnerFilter(it) }
                         .joinToString { it.userName }
                 }
-                partnersView.text
                 if (smacker.shareableLink != null) {
                     linkToggle.isChecked = true
                     turnOnSharing(smacker.shareableLink)
