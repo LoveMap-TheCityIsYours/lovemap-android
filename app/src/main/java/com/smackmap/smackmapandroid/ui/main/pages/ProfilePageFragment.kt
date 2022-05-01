@@ -11,6 +11,7 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import com.smackmap.smackmapandroid.R
 import com.smackmap.smackmapandroid.api.relation.RelationStatusDto
+import com.smackmap.smackmapandroid.api.smacker.SmackerRelationsDto
 import com.smackmap.smackmapandroid.api.smacker.SmackerViewDto
 import com.smackmap.smackmapandroid.config.AppContext
 import com.smackmap.smackmapandroid.ui.login.LoginActivity
@@ -20,6 +21,8 @@ import kotlinx.coroutines.runBlocking
 
 class ProfilePageFragment : Fragment() {
 
+    private lateinit var userNameView: TextView
+    private lateinit var partnersView: TextView
     private lateinit var link: TextView
     private lateinit var linkToggle: SwitchCompat
     private lateinit var linkToggleText: TextView
@@ -36,10 +39,20 @@ class ProfilePageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        val view = initViews(inflater, container)
+        fillViewWithData()
+        setLogoutListener(view)
+        return view
+    }
+
+    private fun initViews(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): View {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_profile_page, container, false)
-        val userNameView = view.findViewById<TextView>(R.id.profileUserName)
-        val partnersView = view.findViewById<TextView>(R.id.profilePartners)
+        userNameView = view.findViewById(R.id.profileUserName)
+        partnersView = view.findViewById(R.id.profilePartners)
         link = view.findViewById(R.id.profileShareableLink)
         linkToggle = view.findViewById(R.id.profileShareableLinkToggle)
         linkToggleText = view.findViewById(R.id.profileShareableLinkToggleText)
@@ -49,47 +62,64 @@ class ProfilePageFragment : Fragment() {
         points = view.findViewById(R.id.profilePoints)
         pointsToNextLevel = view.findViewById(R.id.profilePointsToNextLevel)
         currentRank = view.findViewById(R.id.profileUserLevelText)
+        return view
+    }
 
+    private fun fillViewWithData() {
         MainScope().launch {
             val user = AppContext.INSTANCE.userDataStore.get()
             userNameView.text = user.userName
             val smacker = smackerService.getById()
             smacker?.let {
-                val ranks = smackerService.getRanks()
-                ranks?.let {
-                    val rankList = ranks.rankList
-                    for ((index, rank) in rankList.withIndex()) {
-                        if (rank.pointsNeeded > smacker.points) {
-                            currentRank.text = rankList[index - 1].nameEN
-                            pointsToNextLevel.text = rankList[index].pointsNeeded.toString()
-                            break
-                        }
-                    }
-                    rankList.forEachIndexed { index, rank ->
-
-                    }
-                }
-
-                numberOfSmacks.text = smacker.numberOfSmacks.toString()
-                smackSpotsAdded.text = smacker.smackSpotsAdded.toString()
-                reports.text = smacker.numberOfReports.toString()
-                points.text = smacker.points.toString()
-
-                if (smacker.relations.any { partnerFilter(it) }) {
-                    partnersView.text = smacker.relations
-                        .filter { partnerFilter(it) }
-                        .joinToString { it.userName }
-                }
-                if (smacker.shareableLink != null) {
-                    linkToggle.isChecked = true
-                    turnOnSharing(smacker.shareableLink)
-                } else {
-                    linkToggle.isChecked = false
-                    turnOffSharing()
-                }
+                setRanks(smacker)
+                setTexts(smacker)
+                setPartnerships(smacker)
+                setLinkSharing(smacker)
             }
         }
+    }
 
+    private suspend fun setRanks(smacker: SmackerRelationsDto) {
+        val ranks = smackerService.getRanks()
+        ranks?.let {
+            val rankList = ranks.rankList
+            var levelIndex = 1
+            for ((index, rank) in rankList.withIndex()) {
+                levelIndex = if (rank.pointsNeeded > smacker.points) {
+                    levelIndex = index
+                    break
+                } else {
+                    1
+                }
+            }
+            currentRank.text = rankList[levelIndex - 1].nameEN
+            pointsToNextLevel.text = rankList[levelIndex].pointsNeeded.toString()
+        }
+    }
+
+    private fun setTexts(smacker: SmackerRelationsDto) {
+        numberOfSmacks.text = smacker.numberOfSmacks.toString()
+        smackSpotsAdded.text = smacker.smackSpotsAdded.toString()
+        reports.text = smacker.numberOfReports.toString()
+        points.text = smacker.points.toString()
+    }
+
+    private fun setPartnerships(smacker: SmackerRelationsDto) {
+        if (smacker.relations.any { partnerFilter(it) }) {
+            partnersView.text = smacker.relations
+                .filter { partnerFilter(it) }
+                .joinToString { it.userName }
+        }
+    }
+
+    private fun setLinkSharing(smacker: SmackerRelationsDto) {
+        if (smacker.shareableLink != null) {
+            linkToggle.isChecked = true
+            turnOnSharing(smacker.shareableLink)
+        } else {
+            linkToggle.isChecked = false
+            turnOffSharing()
+        }
         linkToggle.setOnClickListener {
             MainScope().launch {
                 if (linkToggle.isChecked) {
@@ -104,7 +134,12 @@ class ProfilePageFragment : Fragment() {
                 }
             }
         }
+    }
 
+    private fun partnerFilter(it: SmackerViewDto) =
+        it.relation == RelationStatusDto.PARTNER
+
+    private fun setLogoutListener(view: View) {
         val logout = view.findViewById<Button>(R.id.logout)
         logout.setOnClickListener {
             runBlocking {
@@ -114,11 +149,7 @@ class ProfilePageFragment : Fragment() {
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)
         }
-        return view
     }
-
-    private fun partnerFilter(it: SmackerViewDto) =
-        it.relation == RelationStatusDto.PARTNER
 
     private fun turnOnSharing(shareableLink: String) {
         link.text = shareableLink

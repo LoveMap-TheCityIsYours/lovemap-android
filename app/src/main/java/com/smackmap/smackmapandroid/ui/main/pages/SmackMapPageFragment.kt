@@ -1,35 +1,60 @@
 package com.smackmap.smackmapandroid.ui.main.pages
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.tabs.TabLayout
 import com.smackmap.smackmapandroid.R
-import com.smackmap.smackmapandroid.api.smackspot.SmackSpotSearchRequest
 import com.smackmap.smackmapandroid.config.AppContext
 import com.smackmap.smackmapandroid.service.smack.location.SmackSpotService
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
     private val smackSpotService: SmackSpotService = AppContext.INSTANCE.smackSpotService
     private lateinit var mapFragment: SupportMapFragment
     private var cameraMoved = false
+    private var locationEnabled = false
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val locationPermissionRequest = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            when {
+                permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+                    if (this::mapFragment.isInitialized) {
+                        mapFragment.getMapAsync {
+                            it.isMyLocationEnabled = true
+                            it.uiSettings.isMyLocationButtonEnabled = true
+                        }
+                    }
+                    locationEnabled = true
+                    // Precise location access granted.
+                }
+                else -> {
+                    // No location access granted.
+                }
+            }
+        }
+
+        locationPermissionRequest.launch(
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +63,7 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_smack_map_page, container, false)
         mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+
         return view
     }
 
@@ -49,11 +75,17 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
     @SuppressLint("ClickableViewAccessibility")
     override fun onMapReady(googleMap: GoogleMap) {
         val thisView = requireView()
-        // TODO: this can be null if not the map page is loaded first
-        val viewPager2 = thisView.parent.parent.parent as ViewPager2
-//        val viewPager2 = getViewPager2(thisView)
+//        val viewPager2 = thisView.parent.parent.parent as ViewPager2
+        val viewPager2 = getViewPager2(thisView)
         val linearLayout = viewPager2.parent as ViewGroup
         val tabLayout = linearLayout.findViewById<TabLayout>(R.id.tab_layout)
+
+        if (locationEnabled) {
+            googleMap.isMyLocationEnabled = true
+            googleMap.uiSettings.isMyLocationButtonEnabled = true
+        }
+
+
         googleMap.setOnMapClickListener {
             viewPager2.isUserInputEnabled = false
         }
@@ -96,6 +128,17 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
 
         })
     }
+
+//    private fun enableMyLocation(googleMap: GoogleMap) {
+//        if (ActivityCompat.checkSelfPermission(
+//                requireActivity().baseContext,
+//                Manifest.permission.ACCESS_FINE_LOCATION
+//            ) != PackageManager.PERMISSION_GRANTED
+//        ) {
+//            googleMap.isMyLocationEnabled = true
+//            googleMap.uiSettings.isMyLocationButtonEnabled = true
+//        }
+//    }
 
     private fun getViewPager2(thisView: View): ViewPager2 {
         var view = thisView.parent

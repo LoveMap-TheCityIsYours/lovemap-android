@@ -3,9 +3,11 @@
     package="com.smackmap.smackmapandroid">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
-        android:name="com.smackmap.smackmapandroid.config.AppContext"
+        android:name=".config.AppContext"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -26,6 +28,7 @@
             android:windowSoftInputMode="adjustResize|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -38,6 +41,7 @@
         <activity
             android:name=".ui.main.MainActivity"
             android:exported="true"
+            android:foregroundServiceType="location"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.Smackmapandroid.NoActionBar" />
     </application>

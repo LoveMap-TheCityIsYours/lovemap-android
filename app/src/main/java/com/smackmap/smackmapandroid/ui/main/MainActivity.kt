@@ -29,17 +29,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         val icons = initIcons()
 
         viewPager2 = binding.viewPager
         tabLayout = binding.tabLayout
         viewPager2.adapter = ViewPagerAdapter(this)
-        TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
-            tab.icon = icons[position]
-        }.attach()
         fab = binding.fab
         addSmackFab = binding.addSmackFab
         addSmackSpotFab = binding.addSmackSpotFab
+
+        TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
+            tab.icon = icons[position]
+        }.attach()
 
         fab.setOnClickListener {
             if (!isFabOpen) {
