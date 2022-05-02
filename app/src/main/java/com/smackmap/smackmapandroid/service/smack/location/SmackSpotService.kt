@@ -21,6 +21,12 @@ class SmackSpotService(
 ) {
     private val fullyQueriedAreas = ArrayList<LatLngBounds>()
 
+    suspend fun findLocally(id: Long): SmackSpot? {
+        return withContext(Dispatchers.IO) {
+            smackSpotDao.loadSingle(id)
+        }
+    }
+
     suspend fun create(request: CreateSmackSpotRequest): SmackSpot? {
         return withContext(Dispatchers.IO) {
             val call = smackSpotApi.create(request)

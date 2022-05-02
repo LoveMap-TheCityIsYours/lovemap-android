@@ -13,4 +13,5 @@
     <dimen name="standard_300">300dp</dimen>
     <dimen name="standard_16">16dp</dimen>
     <dimen name="standard_4">4dp</dimen>
+    <dimen name="standard_100">100dp</dimen>
 </resources>

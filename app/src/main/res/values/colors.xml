@@ -28,5 +28,6 @@
     <color name="myColorOnSecondary">@color/black</color>
 
     <color name="myColorOnBackground">#000000</color>
+    <color name="gray">#757575</color>
 
 </resources>

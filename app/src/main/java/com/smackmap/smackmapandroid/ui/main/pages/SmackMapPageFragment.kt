@@ -9,6 +9,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RatingBar
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -20,10 +22,10 @@ import com.google.android.gms.maps.model.*
 import com.google.android.material.tabs.TabLayout
 import com.smackmap.smackmapandroid.R
 import com.smackmap.smackmapandroid.api.smackspot.SmackSpotAvailabilityApiStatus
+import com.smackmap.smackmapandroid.api.smackspot.SmackSpotAvailabilityApiStatus.ALL_DAY
 import com.smackmap.smackmapandroid.config.AppContext
 import com.smackmap.smackmapandroid.service.smack.location.SmackSpotService
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 @SuppressLint("MissingPermission")
 class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
@@ -92,7 +94,7 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
                     val dayBitmap = getIconBitmap(R.drawable.ic_marker_sun)
                     val nightBitmap = getIconBitmap(R.drawable.ic_marker_moon)
                     val markers = smackSpots.map {
-                        val icon = if (it.availability == SmackSpotAvailabilityApiStatus.ALL_DAY) {
+                        val icon = if (it.availability == ALL_DAY) {
                             dayBitmap
                         } else {
                             nightBitmap
@@ -101,30 +103,64 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
                             .icon(icon)
                             .position(LatLng(it.latitude, it.longitude))
                             .snippet(
-                                """
-                                Rating: ${it.averageRating}
-                                Availability: ${it.availability}
-                                Risk: ${it.averageDanger}
-                                Description: ${it.description}
-                            """.trimIndent()
+                                it.id.toString()
                             )
                             .title(it.name)
                     }
-//                    googleMap.setInfoWindowAdapter(object: GoogleMap.InfoWindowAdapter {
-//                        override fun getInfoContents(p0: Marker): View? {
-//                            val view = requireActivity().layoutInflater.inflate(
-//                                R.layout.marker_info_window_layout,
-//                                null
-//                            )
-//                            view.findViewById(R.id.)
-//                        }
-//
-//
-//                        override fun getInfoWindow(p0: Marker): View? {
-//                            // Only overriding content
-//                            return null
-//                        }
-//                    })
+                    googleMap.setInfoWindowAdapter(object : GoogleMap.InfoWindowAdapter {
+                        override fun getInfoContents(marker: Marker): View? {
+                            val view = requireActivity().layoutInflater.inflate(
+                                R.layout.marker_info_window_layout,
+                                null
+                            )
+                            runBlocking {
+                                val smackSpot =
+                                    smackSpotService.findLocally(marker.snippet?.toLong() ?: -1)
+                                if (smackSpot != null) {
+                                    val title: TextView = view.findViewById(R.id.marker_title)
+                                    title.text = smackSpot.name
+                                    val ratingBar: RatingBar = view.findViewById(R.id.marker_rating)
+                                    smackSpot.averageRating?.let {
+                                        ratingBar.rating = it.toFloat()
+                                    } ?: run {
+                                        ratingBar.rating = 0f
+                                    }
+                                    val description: TextView = view.findViewById(R.id.marker_description)
+                                    description.text = smackSpot.description
+                                    val availability: TextView = view.findViewById(R.id.marker_availability)
+                                    availability.text = if (smackSpot.availability == ALL_DAY) {
+                                        getString(R.string.available_all_day)
+                                    } else {
+                                        getString(R.string.available_night_only)
+                                    }
+                                    val risk: TextView = view.findViewById(R.id.marker_risk)
+                                    smackSpot.averageDanger?.let {
+                                        // TODO: convert to funny text
+                                        risk.text = it.toFloat().toString()
+                                    } ?: run {
+                                        risk.text = getString(R.string.risk_unknown)
+                                    }
+                                    val customAvText: TextView = view.findViewById(R.id.marker_custom_availability_text)
+                                    val customAv: TextView = view.findViewById(R.id.marker_custom_availability)
+                                    if (smackSpot.customAvailability != null) {
+                                        customAv.text = smackSpot.customAvailability
+                                    } else {
+                                        customAvText.visibility = View.GONE
+                                        customAv.visibility = View.GONE
+                                    }
+
+                                    customAvText.text = getString(R.string.custom_availability_text)
+                                }
+                            }
+                            return view
+                        }
+
+
+                        override fun getInfoWindow(p0: Marker): View? {
+                            // Only overriding content
+                            return null
+                        }
+                    })
                     markers.forEach { googleMap.addMarker(it) }
                 }
             }

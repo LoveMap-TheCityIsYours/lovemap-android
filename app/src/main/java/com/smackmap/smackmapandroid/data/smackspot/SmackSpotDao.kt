@@ -5,6 +5,9 @@ import androidx.room.*
 @Dao
 interface SmackSpotDao {
 
+    @Query("SELECT * FROM smack_spot WHERE id = :id")
+    fun loadSingle(id: Long): SmackSpot?
+
     @Query("SELECT * FROM smack_spot")
     fun getAll(): List<SmackSpot>
 

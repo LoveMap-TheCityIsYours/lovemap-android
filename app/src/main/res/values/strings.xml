@@ -73,6 +73,10 @@
     <string name="marker_risk">Risk:</string>
     <string name="marker_description">Description:</string>
     <string name="marker_custom_availability">Custom availability:</string>
+    <string name="available_all_day">All day</string>
+    <string name="available_night_only">Night only</string>
+    <string name="custom_availability_text">Custom availability</string>
+    <string name="risk_unknown">Unknown</string>
 
 
 </resources>
