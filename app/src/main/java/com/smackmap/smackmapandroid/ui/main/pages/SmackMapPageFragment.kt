@@ -2,20 +2,24 @@ package com.smackmap.smackmapandroid.ui.main.pages
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.google.android.material.tabs.TabLayout
 import com.smackmap.smackmapandroid.R
+import com.smackmap.smackmapandroid.api.smackspot.SmackSpotAvailabilityApiStatus
 import com.smackmap.smackmapandroid.config.AppContext
 import com.smackmap.smackmapandroid.service.smack.location.SmackSpotService
 import kotlinx.coroutines.MainScope
@@ -85,14 +89,66 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
                     val smackSpots = smackSpotService.search(
                         visibleRegion.latLngBounds
                     )
+                    val dayBitmap = getIconBitmap(R.drawable.ic_marker_sun)
+                    val nightBitmap = getIconBitmap(R.drawable.ic_marker_moon)
                     val markers = smackSpots.map {
-                        MarkerOptions().position(LatLng(it.latitude, it.longitude))
+                        val icon = if (it.availability == SmackSpotAvailabilityApiStatus.ALL_DAY) {
+                            dayBitmap
+                        } else {
+                            nightBitmap
+                        }
+                        MarkerOptions()
+                            .icon(icon)
+                            .position(LatLng(it.latitude, it.longitude))
+                            .snippet(
+                                """
+                                Rating: ${it.averageRating}
+                                Availability: ${it.availability}
+                                Risk: ${it.averageDanger}
+                                Description: ${it.description}
+                            """.trimIndent()
+                            )
                             .title(it.name)
                     }
+//                    googleMap.setInfoWindowAdapter(object: GoogleMap.InfoWindowAdapter {
+//                        override fun getInfoContents(p0: Marker): View? {
+//                            val view = requireActivity().layoutInflater.inflate(
+//                                R.layout.marker_info_window_layout,
+//                                null
+//                            )
+//                            view.findViewById(R.id.)
+//                        }
+//
+//
+//                        override fun getInfoWindow(p0: Marker): View? {
+//                            // Only overriding content
+//                            return null
+//                        }
+//                    })
                     markers.forEach { googleMap.addMarker(it) }
                 }
             }
         }
+    }
+
+    private fun getIconBitmap(drawableId: Int): BitmapDescriptor {
+        val drawable: Drawable = ContextCompat.getDrawable(requireContext(), drawableId)!!
+        val width = drawable.intrinsicWidth / 10
+        val height = drawable.intrinsicHeight / 10
+        drawable.setBounds(
+            0,
+            0,
+            width,
+            height
+        )
+        val bitmap = Bitmap.createBitmap(
+            width,
+            height,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        drawable.draw(canvas)
+        return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 
     @SuppressLint("ClickableViewAccessibility")

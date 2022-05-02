@@ -68,6 +68,11 @@
     <string name="reports">Reports:</string>
     <string name="smack_spots_added">Smack Spots added:</string>
     <string name="number_of_smacks">Number of Smacks:</string>
+    <string name="marker_rating">Rating:</string>
+    <string name="marker_availability">Availability:</string>
+    <string name="marker_risk">Risk:</string>
+    <string name="marker_description">Description:</string>
+    <string name="marker_custom_availability">Custom availability:</string>
 
 
 </resources>
