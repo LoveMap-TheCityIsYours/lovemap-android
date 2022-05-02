@@ -117,7 +117,6 @@ class LoginActivity : AppCompatActivity() {
         MainScope().launch {
             val loggedInUser = authenticationService.login(email, password)
             if (loggedInUser != null) {
-                AppContext.INSTANCE.onLogin()
                 Handler(Looper.getMainLooper()).post {
                     val toast = Toast.makeText(
                         applicationContext,

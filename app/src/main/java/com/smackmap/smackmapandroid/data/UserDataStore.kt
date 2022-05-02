@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.smackmap.smackmapandroid.config.AppContext
 import com.smackmap.smackmapandroid.data.model.LoggedInUser
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -18,11 +19,12 @@ class UserDataStore(private val context: Context) {
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "UserDataStore")
     private val gson = GsonBuilder().create()
 
-    suspend fun save(user: LoggedInUser): LoggedInUser {
+    suspend fun login(user: LoggedInUser): LoggedInUser {
         val userKey = stringPreferencesKey("user")
         context.dataStore.edit { dataStore ->
             dataStore[userKey] = gson.toJson(user)
         }
+        AppContext.INSTANCE.onLogin()
         return user
     }
 

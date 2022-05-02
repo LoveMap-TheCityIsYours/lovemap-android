@@ -130,7 +130,6 @@ class RegisterActivity : AppCompatActivity() {
                     password = password.text.toString()
                 )
                 if (loggedInUser != null) {
-                    AppContext.INSTANCE.onLogin()
                     Handler(Looper.getMainLooper()).post {
                         val toast = Toast.makeText(
                             applicationContext,

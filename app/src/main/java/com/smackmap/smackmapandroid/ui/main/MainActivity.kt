@@ -23,21 +23,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var addSmackFab: FloatingActionButton
     private lateinit var addSmackSpotFab: FloatingActionButton
     private lateinit var tabLayout: TabLayout
+    private lateinit var icons: Array<Drawable>
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        val icons = initIcons()
-
-        viewPager2 = binding.viewPager
-        tabLayout = binding.tabLayout
-        viewPager2.adapter = ViewPagerAdapter(this)
-        fab = binding.fab
-        addSmackFab = binding.addSmackFab
-        addSmackSpotFab = binding.addSmackSpotFab
+        initViews()
 
         TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
             tab.icon = icons[position]
@@ -55,6 +46,18 @@ class MainActivity : AppCompatActivity() {
         viewPager2.post {
             viewPager2.setCurrentItem(2, true)
         }
+    }
+
+    private fun initViews() {
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        icons = initIcons()
+        viewPager2 = binding.viewPager
+        tabLayout = binding.tabLayout
+        viewPager2.adapter = ViewPagerAdapter(this)
+        fab = binding.fab
+        addSmackFab = binding.addSmackFab
+        addSmackSpotFab = binding.addSmackSpotFab
     }
 
     private fun showFabMenu() {
@@ -87,24 +90,23 @@ class MainActivity : AppCompatActivity() {
         fab.animate().rotationBy(180f)
     }
 
-    private fun initIcons(): Array<Drawable?> {
-        val icons = arrayOf(
+    private fun initIcons(): Array<Drawable> {
+        return arrayOf(
             AppCompatResources.getDrawable(
                 applicationContext,
                 R.drawable.ic_baseline_favorite_border_24
-            ),
+            )!!,
             AppCompatResources.getDrawable(
                 applicationContext,
-                R.drawable.ic_baseline_search_24),
+                R.drawable.ic_baseline_search_24)!!,
             AppCompatResources.getDrawable(
                 applicationContext,
                 R.drawable.ic_baseline_location_on_24
-            ),
+            )!!,
             AppCompatResources.getDrawable(
                 applicationContext,
-                R.drawable.ic_baseline_person_24),
+                R.drawable.ic_baseline_person_24)!!,
         )
-        return icons
     }
 
     override fun onBackPressed() {

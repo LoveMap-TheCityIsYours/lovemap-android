@@ -30,7 +30,8 @@ class SmackerService(
             if (response.isSuccessful) {
                 response.body()
             } else {
-                toaster.showNoServerToast()
+                toaster.showToast(response.errorBody()?.string() ?: response.message())
+//                toaster.showNoServerToast()
                 null
             }
         }

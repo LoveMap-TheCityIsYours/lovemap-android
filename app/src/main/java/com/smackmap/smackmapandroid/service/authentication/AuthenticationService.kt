@@ -37,7 +37,7 @@ class AuthenticationService(
                 return@withContext null
             }
             if (response.isSuccessful) {
-                loggedInUser = userDataStore.save(
+                loggedInUser = userDataStore.login(
                     LoggedInUser.of(
                         response.body()!!,
                         response.headers()["authorization"]!!
@@ -63,7 +63,7 @@ class AuthenticationService(
                 return@withContext null
             }
             if (response.isSuccessful) {
-                loggedInUser = userDataStore.save(
+                loggedInUser = userDataStore.login(
                     LoggedInUser.of(
                         response.body()!!,
                         response.headers()["authorization"]!!
