@@ -11,15 +11,13 @@ import com.smackmap.smackmapandroid.api.smackspot.SmackSpotAvailabilityApiStatus
 import com.smackmap.smackmapandroid.api.smackspot.SmackSpotRisks
 import com.smackmap.smackmapandroid.data.smackspot.SmackSpot
 import com.smackmap.smackmapandroid.service.smackspot.SmackSpotService
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 class SmackspotInfoWindowAdapter(
     private val smackSpotService: SmackSpotService,
-    private val activity: Activity
+    private val activity: Activity,
+    private var smackSpotRisks: SmackSpotRisks?
 ) : GoogleMap.InfoWindowAdapter {
-    private var smackSpotRisks: SmackSpotRisks? = null
 
     suspend fun initSmackSpotRisks() {
         smackSpotRisks = smackSpotService.getRisks()
@@ -98,12 +96,13 @@ class SmackspotInfoWindowAdapter(
                     riskList[2]
                 }
             }
+
             risk.text = smackSpotRisk.nameEN
         } else if (smackSpot.averageDanger != null) {
-            withContext(Dispatchers.IO) { initSmackSpotRisks() }
+            initSmackSpotRisks()
             risk.text = smackSpot.averageDanger.toString()
         } else {
-            withContext(Dispatchers.IO) { initSmackSpotRisks() }
+            initSmackSpotRisks()
             risk.text = activity.getString(R.string.risk_unknown)
         }
     }

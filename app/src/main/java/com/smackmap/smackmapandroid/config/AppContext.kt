@@ -9,10 +9,8 @@ import com.smackmap.smackmapandroid.data.AppDatabase
 import com.smackmap.smackmapandroid.data.MetadataStore
 import com.smackmap.smackmapandroid.service.Toaster
 import com.smackmap.smackmapandroid.service.authentication.AuthenticationService
-import com.smackmap.smackmapandroid.service.smackspot.SmackSpotService
 import com.smackmap.smackmapandroid.service.smacker.SmackerService
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
+import com.smackmap.smackmapandroid.service.smackspot.SmackSpotService
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -41,21 +39,9 @@ class AppContext : Application() {
             "database"
         ).build()
         runBlocking {
-            initRetrofit()
+            initClients()
             authenticationService = AuthenticationService(
                 retrofit.create(AuthenticationApi::class.java),
-                metadataStore,
-                toaster,
-                applicationContext
-            )
-            smackerService = SmackerService(
-                retrofit.create(SmackerApi::class.java),
-                metadataStore,
-                toaster
-            )
-            smackSpotService = SmackSpotService(
-                retrofit.create(SmackSpotApi::class.java),
-                database.smackSpotDao(),
                 metadataStore,
                 toaster,
                 applicationContext
@@ -65,13 +51,26 @@ class AppContext : Application() {
         INSTANCE = this
     }
 
-    private suspend fun initRetrofit() {
+    private suspend fun initClients() {
         val client = createHttpClient()
         retrofit = Retrofit.Builder()
             .client(client)
             .baseUrl(API_ENDPOINT)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
+        smackerService = SmackerService(
+            retrofit.create(SmackerApi::class.java),
+            metadataStore,
+            toaster
+        )
+        smackSpotService = SmackSpotService(
+            retrofit.create(SmackSpotApi::class.java),
+            database.smackSpotDao(),
+            metadataStore,
+            toaster,
+            applicationContext
+        )
     }
 
     private suspend fun createHttpClient(): OkHttpClient {
@@ -103,9 +102,7 @@ class AppContext : Application() {
         var INSTANCE = AppContext()
     }
 
-    fun onLogin() {
-        MainScope().launch {
-            initRetrofit()
-        }
+    suspend fun onLogin() {
+        initClients()
     }
 }

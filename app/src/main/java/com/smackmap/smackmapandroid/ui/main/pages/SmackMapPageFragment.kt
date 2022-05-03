@@ -51,10 +51,6 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
         mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         dayBitmap = getIconBitmap(R.drawable.ic_marker_sun)
         nightBitmap = getIconBitmap(R.drawable.ic_marker_moon)
-        smackspotInfoWindowAdapter = SmackspotInfoWindowAdapter(smackSpotService, requireActivity())
-        MainScope().launch {
-            smackspotInfoWindowAdapter.initSmackSpotRisks()
-        }
         return view
     }
 
@@ -69,7 +65,14 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
         val viewPager2 = getViewPager2(thisView)
         val linearLayout = viewPager2.parent as ViewGroup
         val tabLayout = linearLayout.findViewById<TabLayout>(R.id.tab_layout)
-
+        MainScope().launch {
+            smackspotInfoWindowAdapter = SmackspotInfoWindowAdapter(
+                smackSpotService,
+                requireActivity(),
+                smackSpotService.getRisks()
+            )
+            googleMap.setInfoWindowAdapter(smackspotInfoWindowAdapter)
+        }
         setMyLocation(googleMap)
         putMarkersOnMap(googleMap)
         configureUserInputForViews(googleMap, viewPager2, tabLayout, thisView)
@@ -98,7 +101,6 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
             if (cameraMoved) {
                 val visibleRegion = googleMap.projection.visibleRegion
                 MainScope().launch {
-                    googleMap.setInfoWindowAdapter(smackspotInfoWindowAdapter)
                     smackSpotService
                         .search(visibleRegion.latLngBounds)
                         .map { smackSpotToMarkerOptions(it) }
@@ -117,9 +119,7 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
         return MarkerOptions()
             .icon(icon)
             .position(LatLng(smackSpot.latitude, smackSpot.longitude))
-            .snippet(
-                smackSpot.id.toString()
-            )
+            .snippet(smackSpot.id.toString())
             .title(smackSpot.name)
     }
 

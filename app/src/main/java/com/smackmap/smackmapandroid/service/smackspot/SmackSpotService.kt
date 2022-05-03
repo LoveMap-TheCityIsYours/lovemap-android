@@ -126,6 +126,7 @@ class SmackSpotService(
                         val ranks = response.body()!!
                         metadataStore.saveRisks(ranks)
                     } else {
+                        response
                         toaster.showNoServerToast()
                         localRisks
                     }
