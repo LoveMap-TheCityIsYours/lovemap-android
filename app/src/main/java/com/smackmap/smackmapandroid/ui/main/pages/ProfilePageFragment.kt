@@ -67,7 +67,7 @@ class ProfilePageFragment : Fragment() {
 
     private fun fillViewWithData() {
         MainScope().launch {
-            val user = AppContext.INSTANCE.userDataStore.get()
+            val user = AppContext.INSTANCE.metadataStore.getUser()
             userNameView.text = user.userName
             val smacker = smackerService.getById()
             smacker?.let {
@@ -143,7 +143,7 @@ class ProfilePageFragment : Fragment() {
         val logout = view.findViewById<Button>(R.id.logout)
         logout.setOnClickListener {
             runBlocking {
-                AppContext.INSTANCE.userDataStore.delete()
+                AppContext.INSTANCE.metadataStore.deleteAll()
             }
             val intent = Intent(context, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP

@@ -1,16 +1,15 @@
 package com.smackmap.smackmapandroid.config
 
 import android.app.Application
-import androidx.room.Database
 import androidx.room.Room
 import com.smackmap.smackmapandroid.api.authentication.AuthenticationApi
 import com.smackmap.smackmapandroid.api.smacker.SmackerApi
 import com.smackmap.smackmapandroid.api.smackspot.SmackSpotApi
 import com.smackmap.smackmapandroid.data.AppDatabase
-import com.smackmap.smackmapandroid.data.UserDataStore
+import com.smackmap.smackmapandroid.data.MetadataStore
 import com.smackmap.smackmapandroid.service.Toaster
 import com.smackmap.smackmapandroid.service.authentication.AuthenticationService
-import com.smackmap.smackmapandroid.service.smack.location.SmackSpotService
+import com.smackmap.smackmapandroid.service.smackspot.SmackSpotService
 import com.smackmap.smackmapandroid.service.smacker.SmackerService
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -25,7 +24,7 @@ class AppContext : Application() {
     lateinit var smackerService: SmackerService
     lateinit var smackSpotService: SmackSpotService
 
-    lateinit var userDataStore: UserDataStore
+    lateinit var metadataStore: MetadataStore
     lateinit var database: AppDatabase
 
     private lateinit var gsonConverterFactory: GsonConverterFactory
@@ -34,7 +33,7 @@ class AppContext : Application() {
     override fun onCreate() {
         super.onCreate()
         toaster = Toaster(applicationContext.mainLooper, applicationContext)
-        userDataStore = UserDataStore(applicationContext)
+        metadataStore = MetadataStore(applicationContext)
         gsonConverterFactory = GsonConverterFactory.create()
         database = Room.databaseBuilder(
             applicationContext,
@@ -45,18 +44,19 @@ class AppContext : Application() {
             initRetrofit()
             authenticationService = AuthenticationService(
                 retrofit.create(AuthenticationApi::class.java),
-                userDataStore,
+                metadataStore,
                 toaster,
                 applicationContext
             )
             smackerService = SmackerService(
                 retrofit.create(SmackerApi::class.java),
-                userDataStore,
+                metadataStore,
                 toaster
             )
             smackSpotService = SmackSpotService(
                 retrofit.create(SmackSpotApi::class.java),
                 database.smackSpotDao(),
+                metadataStore,
                 toaster,
                 applicationContext
             )
@@ -75,14 +75,14 @@ class AppContext : Application() {
     }
 
     private suspend fun createHttpClient(): OkHttpClient {
-        val client = if (userDataStore.isLoggedIn()) {
+        val client = if (metadataStore.isLoggedIn()) {
             OkHttpClient.Builder()
                 .addInterceptor { chain ->
                     val request = runBlocking {
                         val requestBuilder = chain.request()
                             .newBuilder()
-                        if (userDataStore.isLoggedIn()) {
-                            val jwt = runBlocking { userDataStore.get().jwt }
+                        if (metadataStore.isLoggedIn()) {
+                            val jwt = runBlocking { metadataStore.getUser().jwt }
                             requestBuilder
                                 .addHeader(AUTHORIZATION_HEADER, "Bearer $jwt")
                                 .build()

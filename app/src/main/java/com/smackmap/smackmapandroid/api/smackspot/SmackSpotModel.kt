@@ -22,3 +22,11 @@ data class SmackSpotSearchRequest(
     val longTo: Double,
     val limit: Int
 )
+
+data class SmackSpotRisks(val levels: Int, val riskList: List<Risk>) {
+    data class Risk(
+        val level: Int,
+        val nameEN: String,
+        val nameHU: String
+    )
+}

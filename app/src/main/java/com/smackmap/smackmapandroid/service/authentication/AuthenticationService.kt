@@ -9,7 +9,7 @@ import com.smackmap.smackmapandroid.api.authentication.AuthenticationApi
 import com.smackmap.smackmapandroid.api.authentication.CreateSmackerRequest
 import com.smackmap.smackmapandroid.api.authentication.LoginSmackerRequest
 import com.smackmap.smackmapandroid.api.getErrorMessages
-import com.smackmap.smackmapandroid.data.UserDataStore
+import com.smackmap.smackmapandroid.data.MetadataStore
 import com.smackmap.smackmapandroid.data.model.LoggedInUser
 import com.smackmap.smackmapandroid.service.Toaster
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +18,7 @@ import retrofit2.Response
 
 class AuthenticationService(
     private val authenticationApi: AuthenticationApi,
-    private val userDataStore: UserDataStore,
+    private val metadataStore: MetadataStore,
     private val toaster: Toaster,
     private val context: Context
 ) {
@@ -37,7 +37,7 @@ class AuthenticationService(
                 return@withContext null
             }
             if (response.isSuccessful) {
-                loggedInUser = userDataStore.login(
+                loggedInUser = metadataStore.login(
                     LoggedInUser.of(
                         response.body()!!,
                         response.headers()["authorization"]!!
@@ -63,7 +63,7 @@ class AuthenticationService(
                 return@withContext null
             }
             if (response.isSuccessful) {
-                loggedInUser = userDataStore.login(
+                loggedInUser = metadataStore.login(
                     LoggedInUser.of(
                         response.body()!!,
                         response.headers()["authorization"]!!

@@ -17,7 +17,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.smackmap.smackmapandroid.R
 import com.smackmap.smackmapandroid.config.AppContext
-import com.smackmap.smackmapandroid.data.UserDataStore
+import com.smackmap.smackmapandroid.data.MetadataStore
 import com.smackmap.smackmapandroid.databinding.ActivityLoginBinding
 import com.smackmap.smackmapandroid.ui.main.MainActivity
 import com.smackmap.smackmapandroid.ui.register.RegisterActivity
@@ -30,14 +30,14 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
-    private val userDataStore: UserDataStore = AppContext.INSTANCE.userDataStore
+    private val metadataStore: MetadataStore = AppContext.INSTANCE.metadataStore
     private val authenticationService = AppContext.INSTANCE.authenticationService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         val loggedIn = runBlocking {
-            userDataStore.isLoggedIn()
+            metadataStore.isLoggedIn()
         }
         if (loggedIn) {
             startActivity(Intent(this, MainActivity::class.java))
