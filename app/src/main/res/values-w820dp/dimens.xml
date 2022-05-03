@@ -16,4 +16,6 @@
     <dimen name="standard_16">16dp</dimen>
     <dimen name="standard_4">4dp</dimen>
     <dimen name="standard_100">100dp</dimen>
+    <dimen name="standard_110">110dp</dimen>
+    <dimen name="standard_185">185dp</dimen>
 </resources>

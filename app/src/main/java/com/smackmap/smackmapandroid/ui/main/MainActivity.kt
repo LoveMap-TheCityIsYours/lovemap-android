@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.viewpager2.widget.ViewPager2
@@ -16,12 +17,15 @@ import com.smackmap.smackmapandroid.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private var isFabOpen = false
+    private var areFabsOpen = false
+    private var areAddSmackSpotFabsOpen = false
     private lateinit var viewPager2: ViewPager2
     private lateinit var binding: ActivityMainBinding
     private lateinit var fab: FloatingActionButton
     private lateinit var addSmackFab: FloatingActionButton
     private lateinit var addSmackSpotFab: FloatingActionButton
+    private lateinit var okFab: FloatingActionButton
+    private lateinit var cancelFab: FloatingActionButton
     private lateinit var tabLayout: TabLayout
     private lateinit var icons: Array<Drawable>
 
@@ -35,17 +39,59 @@ class MainActivity : AppCompatActivity() {
         }.attach()
 
         fab.setOnClickListener {
-            if (!isFabOpen) {
+            if (!areFabsOpen) {
                 showFabMenu()
             } else {
                 closeFabMenu()
             }
         }
 
+        addSmackSpotFab.setOnClickListener {
+            if (!areAddSmackSpotFabsOpen) {
+                openAddSmackSpotFabs()
+            } else {
+                closeAddSmackSpotFabs()
+            }
+        }
+
+        okFab.setOnClickListener {
+
+        }
+
+        cancelFab.setOnClickListener {
+            closeAddSmackSpotFabs()
+        }
+
         // Starter page is map for performance reasons
         viewPager2.post {
             viewPager2.setCurrentItem(2, true)
         }
+    }
+
+    private fun openAddSmackSpotFabs() {
+        viewPager2.post {
+            viewPager2.setCurrentItem(2, true)
+        }
+        okFab.visibility = View.VISIBLE
+        cancelFab.visibility = View.VISIBLE
+
+        okFab.animate().rotationBy(720f)
+            .translationX(-resources.getDimension(R.dimen.standard_110))
+        cancelFab.animate().rotationBy(720f)
+            .translationX(-resources.getDimension(R.dimen.standard_185))
+
+        areAddSmackSpotFabsOpen = true
+    }
+
+    private fun closeAddSmackSpotFabs() {
+        okFab.animate().rotationBy(720f).translationX(0f).withEndAction {
+            okFab.visibility = View.GONE
+        }
+        cancelFab.animate().rotationBy(720f).translationX(0f).withEndAction {
+            cancelFab.visibility = View.GONE
+        }
+
+        areAddSmackSpotFabsOpen = false
     }
 
     private fun initViews() {
@@ -58,10 +104,12 @@ class MainActivity : AppCompatActivity() {
         fab = binding.fab
         addSmackFab = binding.addSmackFab
         addSmackSpotFab = binding.addSmackSpotFab
+        okFab = binding.okFab
+        cancelFab = binding.cancelFab
     }
 
     private fun showFabMenu() {
-        isFabOpen = true
+        areFabsOpen = true
         addSmackFab.animate().rotationBy(360f)
             .translationY(-resources.getDimension(R.dimen.standard_75))
         addSmackSpotFab.animate().rotationBy(360f)
@@ -77,7 +125,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun closeFabMenu() {
-        isFabOpen = false
+        areFabsOpen = false
         addSmackFab.animate().rotationBy(360f).translationY(0f)
         addSmackSpotFab.animate().rotationBy(360f).translationY(0f)
         fab.animate().rotationBy(180f)
@@ -110,9 +158,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        val a = Intent(Intent.ACTION_MAIN)
-        a.addCategory(Intent.CATEGORY_HOME)
-        a.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        startActivity(a)
+        val exit = Intent(Intent.ACTION_MAIN)
+        exit.addCategory(Intent.CATEGORY_HOME)
+        exit.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(exit)
     }
 }
