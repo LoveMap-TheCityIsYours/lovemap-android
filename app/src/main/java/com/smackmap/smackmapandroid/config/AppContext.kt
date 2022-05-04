@@ -25,6 +25,9 @@ class AppContext : Application() {
     lateinit var metadataStore: MetadataStore
     lateinit var database: AppDatabase
 
+    var areFabsOpen = false
+    var areAddSmackSpotFabsOpen = false
+
     private lateinit var gsonConverterFactory: GsonConverterFactory
     private lateinit var retrofit: Retrofit
 

@@ -77,6 +77,7 @@
     <string name="available_night_only">Night only</string>
     <string name="custom_availability_text">Custom availability</string>
     <string name="risk_unknown">Unknown</string>
+    <string name="add_smackspot_here">Add SmackSpot here</string>
 
 
 </resources>

@@ -5,6 +5,8 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.viewpager2.widget.ViewPager2
@@ -12,13 +14,18 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.smackmap.smackmapandroid.R
+import com.smackmap.smackmapandroid.config.AppContext
 import com.smackmap.smackmapandroid.databinding.ActivityMainBinding
+import com.smackmap.smackmapandroid.ui.utils.ZoomOutPageTransformer
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
+private const val MAP_PAGE = 2
 
 class MainActivity : AppCompatActivity() {
 
-    private var areFabsOpen = false
-    private var areAddSmackSpotFabsOpen = false
+    private val appContext = AppContext.INSTANCE
     private lateinit var viewPager2: ViewPager2
     private lateinit var binding: ActivityMainBinding
     private lateinit var fab: FloatingActionButton
@@ -39,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         }.attach()
 
         fab.setOnClickListener {
-            if (!areFabsOpen) {
+            if (!appContext.areFabsOpen) {
                 showFabMenu()
             } else {
                 closeFabMenu()
@@ -47,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         addSmackSpotFab.setOnClickListener {
-            if (!areAddSmackSpotFabsOpen) {
+            if (!appContext.areAddSmackSpotFabsOpen) {
                 openAddSmackSpotFabs()
             } else {
                 closeAddSmackSpotFabs()
@@ -64,13 +71,13 @@ class MainActivity : AppCompatActivity() {
 
         // Starter page is map for performance reasons
         viewPager2.post {
-            viewPager2.setCurrentItem(2, true)
+            viewPager2.setCurrentItem(MAP_PAGE, true)
         }
     }
 
     private fun openAddSmackSpotFabs() {
         viewPager2.post {
-            viewPager2.setCurrentItem(2, true)
+            viewPager2.setCurrentItem(MAP_PAGE, true)
         }
         okFab.visibility = View.VISIBLE
         cancelFab.visibility = View.VISIBLE
@@ -80,7 +87,14 @@ class MainActivity : AppCompatActivity() {
         cancelFab.animate().rotationBy(720f)
             .translationX(-resources.getDimension(R.dimen.standard_185))
 
-        areAddSmackSpotFabsOpen = true
+        val crosshair: ImageView? = findViewById(R.id.centerCrosshair)
+        if (crosshair != null) {
+            crosshair.visibility = View.VISIBLE
+            val addSmackspotText: TextView = findViewById(R.id.mapAddSmackspotText)
+            addSmackspotText.visibility = View.VISIBLE
+        }
+
+        appContext.areAddSmackSpotFabsOpen = true
     }
 
     private fun closeAddSmackSpotFabs() {
@@ -91,7 +105,14 @@ class MainActivity : AppCompatActivity() {
             cancelFab.visibility = View.GONE
         }
 
-        areAddSmackSpotFabsOpen = false
+        val crosshair: ImageView? = findViewById(R.id.centerCrosshair)
+        if (crosshair != null) {
+            crosshair.visibility = View.GONE
+            val addSmackspotText: TextView = findViewById(R.id.mapAddSmackspotText)
+            addSmackspotText.visibility = View.GONE
+        }
+
+        appContext.areAddSmackSpotFabsOpen = false
     }
 
     private fun initViews() {
@@ -99,8 +120,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         icons = initIcons()
         viewPager2 = binding.viewPager
-        tabLayout = binding.tabLayout
         viewPager2.adapter = ViewPagerAdapter(this)
+//        viewPager2.setPageTransformer(ZoomOutPageTransformer())
+        tabLayout = binding.tabLayout
         fab = binding.fab
         addSmackFab = binding.addSmackFab
         addSmackSpotFab = binding.addSmackSpotFab
@@ -109,7 +131,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showFabMenu() {
-        areFabsOpen = true
+        appContext.areFabsOpen = true
         addSmackFab.animate().rotationBy(360f)
             .translationY(-resources.getDimension(R.dimen.standard_75))
         addSmackSpotFab.animate().rotationBy(360f)
@@ -125,7 +147,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun closeFabMenu() {
-        areFabsOpen = false
+        appContext.areFabsOpen = false
         addSmackFab.animate().rotationBy(360f).translationY(0f)
         addSmackSpotFab.animate().rotationBy(360f).translationY(0f)
         fab.animate().rotationBy(180f)
@@ -146,14 +168,16 @@ class MainActivity : AppCompatActivity() {
             )!!,
             AppCompatResources.getDrawable(
                 applicationContext,
-                R.drawable.ic_baseline_search_24)!!,
+                R.drawable.ic_baseline_search_24
+            )!!,
             AppCompatResources.getDrawable(
                 applicationContext,
                 R.drawable.ic_baseline_location_on_24
             )!!,
             AppCompatResources.getDrawable(
                 applicationContext,
-                R.drawable.ic_baseline_person_24)!!,
+                R.drawable.ic_baseline_person_24
+            )!!,
         )
     }
 

@@ -9,6 +9,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -29,7 +31,8 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("MissingPermission")
 class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
-    private val smackSpotService: SmackSpotService = AppContext.INSTANCE.smackSpotService
+    private val appContext = AppContext.INSTANCE
+    private val smackSpotService: SmackSpotService = appContext.smackSpotService
     private var cameraMoved = false
     private var locationEnabled = false
 
@@ -57,6 +60,16 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
     override fun onResume() {
         super.onResume()
         mapFragment.getMapAsync(this)
+        val viewPager2 = getViewPager2(requireView())
+        val crosshair: ImageView = viewPager2.findViewById(R.id.centerCrosshair)
+        val addSmackspotText: TextView = viewPager2.findViewById(R.id.mapAddSmackspotText)
+        if (appContext.areAddSmackSpotFabsOpen) {
+            crosshair.visibility = View.VISIBLE
+            addSmackspotText.visibility = View.VISIBLE
+        } else {
+            crosshair.visibility = View.GONE
+            addSmackspotText.visibility = View.GONE
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
