@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Smackmapandroid"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".ui.main.smackspotlist.AddSmackSpotActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

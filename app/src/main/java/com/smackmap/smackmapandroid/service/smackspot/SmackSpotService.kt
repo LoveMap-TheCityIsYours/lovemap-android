@@ -31,6 +31,11 @@ class SmackSpotService(
         }
     }
 
+    suspend fun refresh(id: Long): SmackSpot? {
+        TODO("implement backend api and this code" +
+                "will be needed for the use case when you add a spot + also review it because you smacked there")
+    }
+
     suspend fun create(request: CreateSmackSpotRequest): SmackSpot? {
         return withContext(Dispatchers.IO) {
             val call = smackSpotApi.create(request)

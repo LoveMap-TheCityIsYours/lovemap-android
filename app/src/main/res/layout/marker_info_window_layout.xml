@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="200dp"
+    android:background="@color/background_color"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center"
+    android:padding="@dimen/standard_8"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/marker_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
+        android:textColor="@color/myColorOnBackground"
         android:textSize="16sp"
         android:layout_marginBottom="@dimen/standard_8"
         android:text="Title"/>
@@ -22,7 +24,7 @@
         android:textColor="@color/gray" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
@@ -52,7 +54,7 @@
 
         <TextView
             android:id="@+id/marker_risk"
-            android:textColor="@color/black"
+            android:textColor="@color/myColorOnBackground"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standard_16" />
@@ -72,7 +74,7 @@
 
         <TextView
             android:text="Night only"
-            android:textColor="@color/black"
+            android:textColor="@color/myColorOnBackground"
             android:layout_marginStart="@dimen/standard_16"
             android:id="@+id/marker_availability"
             android:layout_width="wrap_content"
@@ -87,13 +89,14 @@
         android:text="@string/marker_description" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
-            android:maxWidth="@dimen/standard_100"
-            android:textColor="@color/black"
+            android:maxWidth="@dimen/standard_225"
+            android:maxLines="5"
+            android:textColor="@color/myColorOnBackground"
             android:id="@+id/marker_description"
             android:layout_marginStart="@dimen/standard_16"
             android:layout_width="wrap_content"
@@ -114,7 +117,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:textColor="@color/black"
+            android:textColor="@color/myColorOnBackground"
             android:maxWidth="@dimen/standard_75"
             android:layout_marginStart="@dimen/standard_16"
             android:id="@+id/marker_custom_availability"

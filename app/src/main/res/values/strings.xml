@@ -78,6 +78,14 @@
     <string name="custom_availability_text">Custom availability</string>
     <string name="risk_unknown">Unknown</string>
     <string name="add_smackspot_here">Add SmackSpot here</string>
+    <string name="add_spot_name">Name</string>
+    <string name="add_new_smack_spot">Add new Smack Spot</string>
+    <string name="add_spot_description">Description</string>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
+    <string name="invalid_spot_name">Name must be at least 3 chars long</string>
+    <string name="invalid_spot_description">Description must be at least 3 chars long</string>
+    <string name="smack_spot_added">Smack Spot added</string>
 
 
 </resources>

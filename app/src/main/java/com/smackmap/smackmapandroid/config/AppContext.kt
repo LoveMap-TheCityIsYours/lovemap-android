@@ -2,6 +2,7 @@ package com.smackmap.smackmapandroid.config
 
 import android.app.Application
 import androidx.room.Room
+import com.google.android.gms.maps.model.LatLng
 import com.smackmap.smackmapandroid.api.authentication.AuthenticationApi
 import com.smackmap.smackmapandroid.api.smacker.SmackerApi
 import com.smackmap.smackmapandroid.api.smackspot.SmackSpotApi
@@ -17,6 +18,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class AppContext : Application() {
+    lateinit var mapCameraTarget: LatLng
     lateinit var toaster: Toaster
     lateinit var authenticationService: AuthenticationService
     lateinit var smackerService: SmackerService
@@ -27,6 +29,7 @@ class AppContext : Application() {
 
     var areFabsOpen = false
     var areAddSmackSpotFabsOpen = false
+    var shouldCloseFabs = false
 
     private lateinit var gsonConverterFactory: GsonConverterFactory
     private lateinit var retrofit: Retrofit

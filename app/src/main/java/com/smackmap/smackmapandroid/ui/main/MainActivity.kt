@@ -16,10 +16,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.smackmap.smackmapandroid.R
 import com.smackmap.smackmapandroid.config.AppContext
 import com.smackmap.smackmapandroid.databinding.ActivityMainBinding
-import com.smackmap.smackmapandroid.ui.utils.ZoomOutPageTransformer
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.smackmap.smackmapandroid.ui.main.smackspotlist.AddSmackSpotActivity
 
 private const val MAP_PAGE = 2
 
@@ -62,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         okFab.setOnClickListener {
-
+            startActivity(Intent(this, AddSmackSpotActivity::class.java))
         }
 
         cancelFab.setOnClickListener {
@@ -72,6 +69,22 @@ class MainActivity : AppCompatActivity() {
         // Starter page is map for performance reasons
         viewPager2.post {
             viewPager2.setCurrentItem(MAP_PAGE, true)
+        }
+
+        viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                if (position != MAP_PAGE) {
+                    closeAddSmackSpotFabs()
+                }
+            }
+        })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (appContext.shouldCloseFabs) {
+            appContext.shouldCloseFabs = false
+            closeFabMenu()
         }
     }
 
@@ -158,6 +171,7 @@ class MainActivity : AppCompatActivity() {
             )
         )
         fab.animate().rotationBy(180f)
+        closeAddSmackSpotFabs()
     }
 
     private fun initIcons(): Array<Drawable> {

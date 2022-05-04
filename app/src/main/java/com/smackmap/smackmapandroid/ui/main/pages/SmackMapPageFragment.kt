@@ -25,7 +25,7 @@ import com.smackmap.smackmapandroid.api.smackspot.SmackSpotAvailabilityApiStatus
 import com.smackmap.smackmapandroid.config.AppContext
 import com.smackmap.smackmapandroid.data.smackspot.SmackSpot
 import com.smackmap.smackmapandroid.service.smackspot.SmackSpotService
-import com.smackmap.smackmapandroid.ui.utils.SmackspotInfoWindowAdapter
+import com.smackmap.smackmapandroid.ui.utils.SmackSpotInfoWindowAdapter
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
@@ -36,7 +36,7 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
     private var cameraMoved = false
     private var locationEnabled = false
 
-    private lateinit var smackspotInfoWindowAdapter: SmackspotInfoWindowAdapter
+    private lateinit var smackSpotInfoWindowAdapter: SmackSpotInfoWindowAdapter
     private lateinit var mapFragment: SupportMapFragment
     private lateinit var dayBitmap: BitmapDescriptor
     private lateinit var nightBitmap: BitmapDescriptor
@@ -79,12 +79,13 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
         val linearLayout = viewPager2.parent as ViewGroup
         val tabLayout = linearLayout.findViewById<TabLayout>(R.id.tab_layout)
         MainScope().launch {
-            smackspotInfoWindowAdapter = SmackspotInfoWindowAdapter(
+            smackSpotInfoWindowAdapter = SmackSpotInfoWindowAdapter(
                 smackSpotService,
                 requireActivity(),
                 smackSpotService.getRisks()
             )
-            googleMap.setInfoWindowAdapter(smackspotInfoWindowAdapter)
+            googleMap.setInfoWindowAdapter(smackSpotInfoWindowAdapter)
+            fetchSmackSpots(googleMap)
         }
         setMyLocation(googleMap)
         putMarkersOnMap(googleMap)
@@ -112,15 +113,22 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
     private fun putMarkersOnMap(googleMap: GoogleMap) {
         googleMap.setOnCameraIdleListener {
             if (cameraMoved) {
-                val visibleRegion = googleMap.projection.visibleRegion
                 MainScope().launch {
-                    smackSpotService
-                        .search(visibleRegion.latLngBounds)
-                        .map { smackSpotToMarkerOptions(it) }
-                        .forEach { googleMap.addMarker(it) }
+                    fetchSmackSpots(googleMap)
                 }
             }
         }
+    }
+
+    private suspend fun fetchSmackSpots(
+        googleMap: GoogleMap
+    ) {
+        val visibleRegion = googleMap.projection.visibleRegion
+        appContext.mapCameraTarget = googleMap.cameraPosition.target
+        smackSpotService
+            .search(visibleRegion.latLngBounds)
+            .map { smackSpotToMarkerOptions(it) }
+            .forEach { googleMap.addMarker(it) }
     }
 
     private fun smackSpotToMarkerOptions(smackSpot: SmackSpot): MarkerOptions {

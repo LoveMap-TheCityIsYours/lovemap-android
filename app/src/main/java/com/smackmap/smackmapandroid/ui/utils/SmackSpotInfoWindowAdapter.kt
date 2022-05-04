@@ -13,7 +13,7 @@ import com.smackmap.smackmapandroid.data.smackspot.SmackSpot
 import com.smackmap.smackmapandroid.service.smackspot.SmackSpotService
 import kotlinx.coroutines.*
 
-class SmackspotInfoWindowAdapter(
+class SmackSpotInfoWindowAdapter(
     private val smackSpotService: SmackSpotService,
     private val activity: Activity,
     private var smackSpotRisks: SmackSpotRisks?
@@ -23,7 +23,7 @@ class SmackspotInfoWindowAdapter(
         smackSpotRisks = smackSpotService.getRisks()
     }
 
-    override fun getInfoContents(marker: Marker): View? {
+    override fun getInfoWindow(marker: Marker): View? {
         val view = activity.layoutInflater.inflate(
             R.layout.marker_info_window_layout,
             null
@@ -122,7 +122,7 @@ class SmackspotInfoWindowAdapter(
         customAvText.text = activity.getString(R.string.custom_availability_text)
     }
 
-    override fun getInfoWindow(p0: Marker): View? {
+    override fun getInfoContents(p0: Marker): View? {
         // Only overriding content
         return null
     }
