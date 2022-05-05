@@ -1,6 +1,5 @@
 package com.smackmap.smackmapandroid.service.smacker
 
-import android.os.Looper
 import com.smackmap.smackmapandroid.api.smacker.*
 import com.smackmap.smackmapandroid.data.MetadataStore
 import com.smackmap.smackmapandroid.service.Toaster
@@ -13,24 +12,28 @@ class SmackerService(
     private val toaster: Toaster,
 ) {
     private var ranksQueried = false
-    private val mainLooper = Looper.getMainLooper()
 
     suspend fun getById(): SmackerRelationsDto? {
         return withContext(Dispatchers.IO) {
+            val localSmacker: SmackerRelationsDto? = if (metadataStore.isSmackerStored()) {
+                metadataStore.getSmacker()
+            } else {
+                null
+            }
             val loggedInUser = metadataStore.getUser()
             val call = smackerApi.getById(loggedInUser.id)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
                 toaster.showNoServerToast()
-                return@withContext null
+                return@withContext localSmacker
             }
             if (response.isSuccessful) {
-                response.body()
+                val result: SmackerRelationsDto = response.body()!!
+                metadataStore.saveSmacker(result)
             } else {
-                toaster.showToast(response.errorBody()?.string() ?: response.message())
-//                toaster.showNoServerToast()
-                null
+                toaster.showNoServerToast()
+                localSmacker
             }
         }
     }
