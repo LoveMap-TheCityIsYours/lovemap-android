@@ -111,6 +111,13 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun putMarkersOnMap(googleMap: GoogleMap) {
+        googleMap.setOnMarkerClickListener { marker ->
+            appContext.mapMarkerClickedListener.onMarkerOpened()
+            false
+        }
+        googleMap.setOnMapClickListener {
+            appContext.mapMarkerClickedListener.onMarkerClosed()
+        }
         googleMap.setOnCameraIdleListener {
             if (cameraMoved) {
                 MainScope().launch {

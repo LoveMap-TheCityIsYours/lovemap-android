@@ -20,16 +20,22 @@ import com.smackmap.smackmapandroid.ui.main.smackspotlist.AddSmackSpotActivity
 
 private const val MAP_PAGE = 2
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MapMarkerClickedListener {
 
     private val appContext = AppContext.INSTANCE
     private lateinit var viewPager2: ViewPager2
     private lateinit var binding: ActivityMainBinding
-    private lateinit var fab: FloatingActionButton
-    private lateinit var addSmackFab: FloatingActionButton
+
+    private lateinit var changeMapModeFab: FloatingActionButton
+
     private lateinit var addSmackSpotFab: FloatingActionButton
     private lateinit var okFab: FloatingActionButton
     private lateinit var cancelFab: FloatingActionButton
+
+    private lateinit var addSmackFab: FloatingActionButton
+    private lateinit var addToWishlistFab: FloatingActionButton
+    private lateinit var reportSmackSpotFab: FloatingActionButton
+
     private lateinit var tabLayout: TabLayout
     private lateinit var icons: Array<Drawable>
 
@@ -41,14 +47,6 @@ class MainActivity : AppCompatActivity() {
         TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
             tab.icon = icons[position]
         }.attach()
-
-        fab.setOnClickListener {
-            if (!appContext.areFabsOpen) {
-                showFabMenu()
-            } else {
-                closeFabMenu()
-            }
-        }
 
         addSmackSpotFab.setOnClickListener {
             if (!appContext.areAddSmackSpotFabsOpen) {
@@ -80,54 +78,6 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (appContext.shouldCloseFabs) {
-            appContext.shouldCloseFabs = false
-            closeFabMenu()
-        }
-    }
-
-    private fun openAddSmackSpotFabs() {
-        viewPager2.post {
-            viewPager2.setCurrentItem(MAP_PAGE, true)
-        }
-        okFab.visibility = View.VISIBLE
-        cancelFab.visibility = View.VISIBLE
-
-        okFab.animate().rotationBy(720f)
-            .translationX(-resources.getDimension(R.dimen.standard_110))
-        cancelFab.animate().rotationBy(720f)
-            .translationX(-resources.getDimension(R.dimen.standard_185))
-
-        val crosshair: ImageView? = findViewById(R.id.centerCrosshair)
-        if (crosshair != null) {
-            crosshair.visibility = View.VISIBLE
-            val addSmackspotText: TextView = findViewById(R.id.mapAddSmackspotText)
-            addSmackspotText.visibility = View.VISIBLE
-        }
-
-        appContext.areAddSmackSpotFabsOpen = true
-    }
-
-    private fun closeAddSmackSpotFabs() {
-        okFab.animate().rotationBy(720f).translationX(0f).withEndAction {
-            okFab.visibility = View.GONE
-        }
-        cancelFab.animate().rotationBy(720f).translationX(0f).withEndAction {
-            cancelFab.visibility = View.GONE
-        }
-
-        val crosshair: ImageView? = findViewById(R.id.centerCrosshair)
-        if (crosshair != null) {
-            crosshair.visibility = View.GONE
-            val addSmackspotText: TextView = findViewById(R.id.mapAddSmackspotText)
-            addSmackspotText.visibility = View.GONE
-        }
-
-        appContext.areAddSmackSpotFabsOpen = false
-    }
-
     private fun initViews() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -136,49 +86,113 @@ class MainActivity : AppCompatActivity() {
         viewPager2.adapter = ViewPagerAdapter(this)
 //        viewPager2.setPageTransformer(ZoomOutPageTransformer())
         tabLayout = binding.tabLayout
-        fab = binding.fab
-        addSmackFab = binding.addSmackFab
+
+        changeMapModeFab = binding.changeMapModeFab
+
         addSmackSpotFab = binding.addSmackSpotFab
         okFab = binding.okFab
         cancelFab = binding.cancelFab
+
+        addSmackFab = binding.addSmackFab
+        addToWishlistFab = binding.addToWishlistFab
+        reportSmackSpotFab = binding.reportSmackSpotFab
     }
 
-    private fun showFabMenu() {
-        appContext.areFabsOpen = true
-        addSmackFab.animate().rotationBy(360f)
-            .translationY(-resources.getDimension(R.dimen.standard_75))
-        addSmackSpotFab.animate().rotationBy(360f)
-            .translationY(-resources.getDimension(R.dimen.standard_150))
-        fab.animate().rotationBy(180f)
-        fab.setImageDrawable(
-            AppCompatResources.getDrawable(
-                applicationContext,
-                R.drawable.ic_baseline_remove_24
-            )
-        )
-        fab.animate().rotationBy(180f)
+    override fun onResume() {
+        super.onResume()
+        appContext.mapMarkerClickedListener = this
+        if (appContext.shouldCloseFabs) {
+            appContext.shouldCloseFabs = false
+            closeAddSmackSpotFabs()
+            closeMarkerFabMenu()
+        }
     }
 
-    private fun closeFabMenu() {
-        appContext.areFabsOpen = false
-        addSmackFab.animate().rotationBy(360f).translationY(0f)
-        addSmackSpotFab.animate().rotationBy(360f).translationY(0f)
-        fab.animate().rotationBy(180f)
-        fab.setImageDrawable(
-            AppCompatResources.getDrawable(
-                applicationContext,
-                R.drawable.ic_baseline_add_24
-            )
-        )
-        fab.animate().rotationBy(180f)
-        closeAddSmackSpotFabs()
+    override fun onMarkerOpened() {
+        openMarkerFabMenu()
+    }
+
+    override fun onMarkerClosed() {
+        closeMarkerFabMenu()
+    }
+
+    private fun openAddSmackSpotFabs() {
+        if (!appContext.areAddSmackSpotFabsOpen) {
+            closeMarkerFabMenu()
+            viewPager2.post {
+                viewPager2.setCurrentItem(MAP_PAGE, true)
+            }
+            okFab.visibility = View.VISIBLE
+            cancelFab.visibility = View.VISIBLE
+
+            okFab.animate().rotationBy(360f)
+                .translationX(-resources.getDimension(R.dimen.standard_110))
+            cancelFab.animate().rotationBy(360f)
+                .translationX(-resources.getDimension(R.dimen.standard_185))
+            addSmackSpotFab.animate().rotationBy(360f)
+
+            val crosshair: ImageView? = findViewById(R.id.centerCrosshair)
+            if (crosshair != null) {
+                crosshair.visibility = View.VISIBLE
+                val addSmackspotText: TextView = findViewById(R.id.mapAddSmackspotText)
+                addSmackspotText.visibility = View.VISIBLE
+            }
+
+            appContext.areAddSmackSpotFabsOpen = true
+        }
+    }
+
+    private fun closeAddSmackSpotFabs() {
+        if (appContext.areAddSmackSpotFabsOpen) {
+            okFab.animate().rotationBy(720f).translationX(0f).withEndAction {
+                okFab.visibility = View.GONE
+            }
+            cancelFab.animate().rotationBy(720f).translationX(0f).withEndAction {
+                cancelFab.visibility = View.GONE
+            }
+            addSmackSpotFab.animate().rotationBy(360f)
+
+            val crosshair: ImageView? = findViewById(R.id.centerCrosshair)
+            if (crosshair != null) {
+                crosshair.visibility = View.GONE
+                val addSmackspotText: TextView = findViewById(R.id.mapAddSmackspotText)
+                addSmackspotText.visibility = View.GONE
+            }
+
+            appContext.areAddSmackSpotFabsOpen = false
+        }
+    }
+
+    private fun openMarkerFabMenu() {
+        if (!appContext.areMarkerFabsOpen) {
+            closeAddSmackSpotFabs()
+            appContext.areMarkerFabsOpen = true
+            reportSmackSpotFab.animate().rotationBy(360f)
+                .translationX(resources.getDimension(R.dimen.standard_75))
+            addToWishlistFab.animate().rotationBy(360f)
+                .translationX(resources.getDimension(R.dimen.standard_150))
+            addSmackFab.animate().rotationBy(360f)
+                .translationX(resources.getDimension(R.dimen.standard_225))
+        }
+    }
+
+    private fun closeMarkerFabMenu() {
+        if (appContext.areMarkerFabsOpen) {
+            appContext.areMarkerFabsOpen = false
+            reportSmackSpotFab.animate().rotationBy(360f)
+                .translationX(0f)
+            addToWishlistFab.animate().rotationBy(360f)
+                .translationX(0f)
+            addSmackFab.animate().rotationBy(360f)
+                .translationX(0f)
+        }
     }
 
     private fun initIcons(): Array<Drawable> {
         return arrayOf(
             AppCompatResources.getDrawable(
                 applicationContext,
-                R.drawable.ic_baseline_favorite_border_24
+                R.drawable.ic_two_hearts_com
             )!!,
             AppCompatResources.getDrawable(
                 applicationContext,

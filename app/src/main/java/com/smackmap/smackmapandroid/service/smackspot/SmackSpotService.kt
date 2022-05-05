@@ -32,8 +32,24 @@ class SmackSpotService(
     }
 
     suspend fun refresh(id: Long): SmackSpot? {
-        TODO("implement backend api and this code" +
-                "will be needed for the use case when you add a spot + also review it because you smacked there")
+        return withContext(Dispatchers.IO) {
+            val localSpot = smackSpotDao.loadSingle(id)
+            val call = smackSpotApi.find(id)
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
+                toaster.showNoServerToast()
+                return@withContext localSpot
+            }
+            if (response.isSuccessful) {
+                val smackSpot = response.body()!!
+                smackSpotDao.insert(smackSpot)
+                smackSpot
+            } else {
+                toaster.showNoServerToast()
+                localSpot
+            }
+        }
     }
 
     suspend fun create(request: CreateSmackSpotRequest): SmackSpot? {

@@ -6,10 +6,14 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface SmackSpotApi {
     @POST("/smackspot")
     fun create(@Body request: CreateSmackSpotRequest): Call<SmackSpot>
+
+    @GET("/smackspot/{id}")
+    fun find(@Path("id") id: Long): Call<SmackSpot>
 
     @POST("/smackspot/search")
     fun search(@Body request: SmackSpotSearchRequest): Call<List<SmackSpot>>

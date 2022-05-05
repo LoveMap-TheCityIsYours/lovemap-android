@@ -12,6 +12,7 @@ import com.smackmap.smackmapandroid.service.Toaster
 import com.smackmap.smackmapandroid.service.authentication.AuthenticationService
 import com.smackmap.smackmapandroid.service.smacker.SmackerService
 import com.smackmap.smackmapandroid.service.smackspot.SmackSpotService
+import com.smackmap.smackmapandroid.ui.main.MapMarkerClickedListener
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -27,7 +28,9 @@ class AppContext : Application() {
     lateinit var metadataStore: MetadataStore
     lateinit var database: AppDatabase
 
-    var areFabsOpen = false
+    lateinit var mapMarkerClickedListener: MapMarkerClickedListener
+
+    var areMarkerFabsOpen = false
     var areAddSmackSpotFabsOpen = false
     var shouldCloseFabs = false
 
