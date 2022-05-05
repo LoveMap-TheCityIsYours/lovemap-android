@@ -20,7 +20,7 @@ import com.smackmap.smackmapandroid.ui.main.smackspotlist.AddSmackSpotActivity
 
 private const val MAP_PAGE = 2
 
-class MainActivity : AppCompatActivity(), MapMarkerClickedListener {
+class MainActivity : AppCompatActivity(), MapMarkerEventListener {
 
     private val appContext = AppContext.INSTANCE
     private lateinit var viewPager2: ViewPager2
@@ -31,10 +31,6 @@ class MainActivity : AppCompatActivity(), MapMarkerClickedListener {
     private lateinit var addSmackSpotFab: FloatingActionButton
     private lateinit var okFab: FloatingActionButton
     private lateinit var cancelFab: FloatingActionButton
-
-    private lateinit var addSmackFab: FloatingActionButton
-    private lateinit var addToWishlistFab: FloatingActionButton
-    private lateinit var reportSmackSpotFab: FloatingActionButton
 
     private lateinit var tabLayout: TabLayout
     private lateinit var icons: Array<Drawable>
@@ -84,7 +80,6 @@ class MainActivity : AppCompatActivity(), MapMarkerClickedListener {
         icons = initIcons()
         viewPager2 = binding.viewPager
         viewPager2.adapter = ViewPagerAdapter(this)
-//        viewPager2.setPageTransformer(ZoomOutPageTransformer())
         tabLayout = binding.tabLayout
 
         changeMapModeFab = binding.changeMapModeFab
@@ -92,33 +87,28 @@ class MainActivity : AppCompatActivity(), MapMarkerClickedListener {
         addSmackSpotFab = binding.addSmackSpotFab
         okFab = binding.okFab
         cancelFab = binding.cancelFab
-
-        addSmackFab = binding.addSmackFab
-        addToWishlistFab = binding.addToWishlistFab
-        reportSmackSpotFab = binding.reportSmackSpotFab
     }
 
     override fun onResume() {
         super.onResume()
-        appContext.mapMarkerClickedListener = this
+        appContext.mapMarkerEventListener = this
         if (appContext.shouldCloseFabs) {
             appContext.shouldCloseFabs = false
             closeAddSmackSpotFabs()
-            closeMarkerFabMenu()
         }
     }
 
-    override fun onMarkerOpened() {
-        openMarkerFabMenu()
+    override fun onMarkerClicked() {
+        closeAddSmackSpotFabs()
     }
 
-    override fun onMarkerClosed() {
-        closeMarkerFabMenu()
+    override fun onMapClicked() {
+        closeAddSmackSpotFabs()
     }
 
     private fun openAddSmackSpotFabs() {
         if (!appContext.areAddSmackSpotFabsOpen) {
-            closeMarkerFabMenu()
+            appContext.mainActivityEventListener.onOpenAddSmackSpotFabs()
             viewPager2.post {
                 viewPager2.setCurrentItem(MAP_PAGE, true)
             }
@@ -126,9 +116,9 @@ class MainActivity : AppCompatActivity(), MapMarkerClickedListener {
             cancelFab.visibility = View.VISIBLE
 
             okFab.animate().rotationBy(360f)
-                .translationX(-resources.getDimension(R.dimen.standard_110))
+                .translationX(-resources.getDimension(R.dimen.standard_75))
             cancelFab.animate().rotationBy(360f)
-                .translationX(-resources.getDimension(R.dimen.standard_185))
+                .translationX(-resources.getDimension(R.dimen.standard_150))
             addSmackSpotFab.animate().rotationBy(360f)
 
             val crosshair: ImageView? = findViewById(R.id.centerCrosshair)
@@ -144,10 +134,10 @@ class MainActivity : AppCompatActivity(), MapMarkerClickedListener {
 
     private fun closeAddSmackSpotFabs() {
         if (appContext.areAddSmackSpotFabsOpen) {
-            okFab.animate().rotationBy(720f).translationX(0f).withEndAction {
+            okFab.animate().rotationBy(360f).translationX(0f).withEndAction {
                 okFab.visibility = View.GONE
             }
-            cancelFab.animate().rotationBy(720f).translationX(0f).withEndAction {
+            cancelFab.animate().rotationBy(360f).translationX(0f).withEndAction {
                 cancelFab.visibility = View.GONE
             }
             addSmackSpotFab.animate().rotationBy(360f)
@@ -160,31 +150,6 @@ class MainActivity : AppCompatActivity(), MapMarkerClickedListener {
             }
 
             appContext.areAddSmackSpotFabsOpen = false
-        }
-    }
-
-    private fun openMarkerFabMenu() {
-        if (!appContext.areMarkerFabsOpen) {
-            closeAddSmackSpotFabs()
-            appContext.areMarkerFabsOpen = true
-            reportSmackSpotFab.animate().rotationBy(360f)
-                .translationX(resources.getDimension(R.dimen.standard_75))
-            addToWishlistFab.animate().rotationBy(360f)
-                .translationX(resources.getDimension(R.dimen.standard_150))
-            addSmackFab.animate().rotationBy(360f)
-                .translationX(resources.getDimension(R.dimen.standard_225))
-        }
-    }
-
-    private fun closeMarkerFabMenu() {
-        if (appContext.areMarkerFabsOpen) {
-            appContext.areMarkerFabsOpen = false
-            reportSmackSpotFab.animate().rotationBy(360f)
-                .translationX(0f)
-            addToWishlistFab.animate().rotationBy(360f)
-                .translationX(0f)
-            addSmackFab.animate().rotationBy(360f)
-                .translationX(0f)
         }
     }
 

@@ -81,39 +81,6 @@
         app:srcCompat="@drawable/ic_two_hearts_com" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addSmackFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="-70dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/add_smack"
-        android:textDirection="firstStrongRtl"
-        app:srcCompat="@drawable/ic_baseline_favorite_24" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/reportSmackSpotFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="-70dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/add_smack"
-        android:textDirection="firstStrongRtl"
-        app:srcCompat="@drawable/ic_baseline_error_outline_24" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addToWishlistFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="-70dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/add_smack"
-        android:textDirection="firstStrongRtl"
-        app:srcCompat="@drawable/ic_baseline_list_add_24" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addSmackSpotFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

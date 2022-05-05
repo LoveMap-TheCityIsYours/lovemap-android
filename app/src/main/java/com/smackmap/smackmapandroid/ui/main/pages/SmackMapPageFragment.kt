@@ -19,27 +19,34 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.smackmap.smackmapandroid.R
 import com.smackmap.smackmapandroid.api.smackspot.SmackSpotAvailabilityApiStatus.ALL_DAY
 import com.smackmap.smackmapandroid.config.AppContext
 import com.smackmap.smackmapandroid.data.smackspot.SmackSpot
 import com.smackmap.smackmapandroid.service.smackspot.SmackSpotService
+import com.smackmap.smackmapandroid.ui.main.MainActivityEventListener
 import com.smackmap.smackmapandroid.ui.utils.SmackSpotInfoWindowAdapter
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 @SuppressLint("MissingPermission")
-class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
+class SmackMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventListener {
     private val appContext = AppContext.INSTANCE
     private val smackSpotService: SmackSpotService = appContext.smackSpotService
     private var cameraMoved = false
     private var locationEnabled = false
 
+    private lateinit var viewPager2: ViewPager2
     private lateinit var smackSpotInfoWindowAdapter: SmackSpotInfoWindowAdapter
     private lateinit var mapFragment: SupportMapFragment
     private lateinit var dayBitmap: BitmapDescriptor
     private lateinit var nightBitmap: BitmapDescriptor
+
+    private lateinit var addSmackFab: FloatingActionButton
+    private lateinit var addToWishlistFab: FloatingActionButton
+    private lateinit var reportSmackSpotFab: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,13 +61,17 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
         mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         dayBitmap = getIconBitmap(R.drawable.ic_marker_sun)
         nightBitmap = getIconBitmap(R.drawable.ic_marker_moon)
+        addSmackFab = view.findViewById(R.id.addSmackFab)
+        addToWishlistFab = view.findViewById(R.id.addToWishlistFab)
+        reportSmackSpotFab = view.findViewById(R.id.reportSmackSpotFab)
         return view
     }
 
     override fun onResume() {
         super.onResume()
+        appContext.mainActivityEventListener = this
         mapFragment.getMapAsync(this)
-        val viewPager2 = getViewPager2(requireView())
+        viewPager2 = getViewPager2(requireView())
         val crosshair: ImageView = viewPager2.findViewById(R.id.centerCrosshair)
         val addSmackspotText: TextView = viewPager2.findViewById(R.id.mapAddSmackspotText)
         if (appContext.areAddSmackSpotFabsOpen) {
@@ -75,7 +86,7 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
     @SuppressLint("ClickableViewAccessibility")
     override fun onMapReady(googleMap: GoogleMap) {
         val thisView = requireView()
-        val viewPager2 = getViewPager2(thisView)
+        viewPager2 = getViewPager2(thisView)
         val linearLayout = viewPager2.parent as ViewGroup
         val tabLayout = linearLayout.findViewById<TabLayout>(R.id.tab_layout)
         MainScope().launch {
@@ -112,11 +123,14 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
 
     private fun putMarkersOnMap(googleMap: GoogleMap) {
         googleMap.setOnMarkerClickListener { marker ->
-            appContext.mapMarkerClickedListener.onMarkerOpened()
+            appContext.mapMarkerEventListener.onMarkerClicked()
+            openMarkerFabMenu()
             false
         }
         googleMap.setOnMapClickListener {
-            appContext.mapMarkerClickedListener.onMarkerClosed()
+            viewPager2.isUserInputEnabled = false
+            appContext.mapMarkerEventListener.onMapClicked()
+            closeMarkerFabMenu()
         }
         googleMap.setOnCameraIdleListener {
             if (cameraMoved) {
@@ -178,9 +192,6 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
         tabLayout: TabLayout,
         thisView: View
     ) {
-        googleMap.setOnMapClickListener {
-            viewPager2.isUserInputEnabled = false
-        }
         googleMap.setOnCameraMoveListener {
             if (tabLayout.selectedTabPosition == 2) {
                 viewPager2.isUserInputEnabled = false
@@ -228,5 +239,36 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback {
         locationPermissionRequest.launch(
             arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
         )
+    }
+
+    private fun openMarkerFabMenu() {
+        if (!appContext.areMarkerFabsOpen) {
+            appContext.areMarkerFabsOpen = true
+            reportSmackSpotFab.visibility = View.VISIBLE
+            addToWishlistFab.visibility = View.VISIBLE
+            addSmackFab.visibility = View.VISIBLE
+            reportSmackSpotFab.animate().rotationBy(360f)
+                .translationX(resources.getDimension(R.dimen.standard_75))
+            addToWishlistFab.animate().rotationBy(360f)
+                .translationX(resources.getDimension(R.dimen.standard_150))
+            addSmackFab.animate().rotationBy(360f)
+                .translationX(resources.getDimension(R.dimen.standard_225))
+        }
+    }
+
+    private fun closeMarkerFabMenu() {
+        if (appContext.areMarkerFabsOpen) {
+            appContext.areMarkerFabsOpen = false
+            reportSmackSpotFab.animate().rotationBy(360f).translationX(0f)
+                .withEndAction { reportSmackSpotFab.visibility = View.GONE }
+            addToWishlistFab.animate().rotationBy(360f).translationX(0f)
+                .withEndAction { addToWishlistFab.visibility = View.GONE }
+            addSmackFab.animate().rotationBy(360f).translationX(0f)
+                .withEndAction { addSmackFab.visibility = View.GONE }
+        }
+    }
+
+    override fun onOpenAddSmackSpotFabs() {
+        closeMarkerFabMenu()
     }
 }
