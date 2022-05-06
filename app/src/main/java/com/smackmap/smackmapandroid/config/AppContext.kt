@@ -35,12 +35,14 @@ class AppContext : Application() {
     var areMarkerFabsOpen = false
     var areAddSmackSpotFabsOpen = false
     var shouldCloseFabs = false
+    var displayDensity: Float = 0f
 
     private lateinit var gsonConverterFactory: GsonConverterFactory
     private lateinit var retrofit: Retrofit
 
     override fun onCreate() {
         super.onCreate()
+        displayDensity = applicationContext.resources.displayMetrics.density
         toaster = Toaster(applicationContext.mainLooper, applicationContext)
         metadataStore = MetadataStore(applicationContext)
         gsonConverterFactory = GsonConverterFactory.create()

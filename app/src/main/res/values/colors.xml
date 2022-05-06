@@ -29,5 +29,6 @@
 
     <color name="myColorOnBackground">#000000</color>
     <color name="gray">#757575</color>
+    <color name="crazy_pink">#D624B5</color>
 
 </resources>

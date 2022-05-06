@@ -11,7 +11,9 @@ import com.smackmap.smackmapandroid.api.smackspot.SmackSpotAvailabilityApiStatus
 import com.smackmap.smackmapandroid.api.smackspot.SmackSpotRisks
 import com.smackmap.smackmapandroid.data.smackspot.SmackSpot
 import com.smackmap.smackmapandroid.service.smackspot.SmackSpotService
+import com.smackmap.smackmapandroid.ui.events.MapInfoWindowShownEvent
 import kotlinx.coroutines.*
+import org.greenrobot.eventbus.EventBus
 
 class SmackSpotInfoWindowAdapter(
     private val smackSpotService: SmackSpotService,
@@ -28,6 +30,7 @@ class SmackSpotInfoWindowAdapter(
             R.layout.marker_info_window_layout,
             null
         )
+        EventBus.getDefault().post(MapInfoWindowShownEvent(marker))
         runBlocking {
             val smackSpot =
                 smackSpotService.findLocally(marker.snippet?.toLong() ?: -1)

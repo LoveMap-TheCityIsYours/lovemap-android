@@ -44,17 +44,34 @@
 
             <TextView
                 android:id="@+id/mapAddSmackspotText"
-                android:textColor="#D624B5"
-                android:visibility="gone"
+                style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/centerCrosshair"
+                android:layout_above="@id/centerCrosshair"
                 android:layout_centerInParent="true"
-                android:text="@string/add_smackspot_here" />
+                android:layout_marginBottom="@dimen/standard_100"
+                android:background="@color/myColorSecondary"
+                android:textColor="@color/myColorOnSecondary"
+                android:text="@string/new_smackspot"
+                android:visibility="gone" />
 
         </RelativeLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/spotReportText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:visibility="gone"
+        android:layout_marginStart="@dimen/standard_minus_40"
+        android:layout_marginBottom="68dp"
+        android:background="@color/myColorSecondary"
+        android:textColor="@color/myColorOnSecondary"
+        android:textSize="10sp"
+        android:text="@string/report_spot"
+        tools:ignore="SmallSp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/reportSmackSpotFab"
@@ -62,11 +79,24 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:visibility="gone"
-        android:layout_marginStart="-55dp"
+        android:layout_marginStart="@dimen/standard_minus_55"
         android:layout_marginBottom="10dp"
-        android:text="@string/add_smack"
         android:textDirection="firstStrongRtl"
         app:srcCompat="@drawable/ic_baseline_error_outline_24" />
+
+    <TextView
+        android:id="@+id/spotWishlistText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:visibility="gone"
+        android:layout_marginStart="@dimen/standard_minus_40"
+        android:layout_marginBottom="68dp"
+        android:background="@color/myColorSecondary"
+        android:textColor="@color/myColorOnSecondary"
+        android:textSize="10sp"
+        android:text="@string/to_wishlist"
+        tools:ignore="SmallSp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addToWishlistFab"
@@ -74,11 +104,24 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:visibility="gone"
-        android:layout_marginStart="-55dp"
+        android:layout_marginStart="@dimen/standard_minus_55"
         android:layout_marginBottom="10dp"
-        android:text="@string/add_smack"
         android:textDirection="firstStrongRtl"
         app:srcCompat="@drawable/ic_baseline_list_add_24" />
+
+    <TextView
+        android:id="@+id/smackOnSpotText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:visibility="gone"
+        android:layout_marginStart="@dimen/standard_minus_40"
+        android:layout_marginBottom="68dp"
+        android:background="@color/myColorSecondary"
+        android:textColor="@color/myColorOnSecondary"
+        android:textSize="10sp"
+        android:text="@string/add_smack"
+        tools:ignore="SmallSp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addSmackFab"
@@ -86,9 +129,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:visibility="gone"
-        android:layout_marginStart="-55dp"
+        android:layout_marginStart="@dimen/standard_minus_55"
         android:layout_marginBottom="10dp"
-        android:text="@string/add_smack"
         android:textDirection="firstStrongRtl"
         app:srcCompat="@drawable/ic_baseline_favorite_24" />
 

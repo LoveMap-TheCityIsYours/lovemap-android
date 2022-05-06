@@ -28,8 +28,8 @@ import com.smackmap.smackmapandroid.data.smackspot.SmackSpot
 import com.smackmap.smackmapandroid.service.smackspot.SmackSpotService
 import com.smackmap.smackmapandroid.ui.main.MainActivityEventListener
 import com.smackmap.smackmapandroid.ui.utils.SmackSpotInfoWindowAdapter
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
+import com.smackmap.smackmapandroid.ui.utils.pixelToDp
+import kotlinx.coroutines.*
 
 @SuppressLint("MissingPermission")
 class SmackMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventListener {
@@ -44,8 +44,11 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLi
     private lateinit var dayBitmap: BitmapDescriptor
     private lateinit var nightBitmap: BitmapDescriptor
 
+    private lateinit var addSmackText: TextView
     private lateinit var addSmackFab: FloatingActionButton
+    private lateinit var toWishlistText: TextView
     private lateinit var addToWishlistFab: FloatingActionButton
+    private lateinit var reportSpotText: TextView
     private lateinit var reportSmackSpotFab: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,8 +64,11 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLi
         mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         dayBitmap = getIconBitmap(R.drawable.ic_marker_sun)
         nightBitmap = getIconBitmap(R.drawable.ic_marker_moon)
+        addSmackText = view.findViewById(R.id.smackOnSpotText)
         addSmackFab = view.findViewById(R.id.addSmackFab)
+        toWishlistText = view.findViewById(R.id.spotWishlistText)
         addToWishlistFab = view.findViewById(R.id.addToWishlistFab)
+        reportSpotText = view.findViewById(R.id.spotReportText)
         reportSmackSpotFab = view.findViewById(R.id.reportSmackSpotFab)
         return view
     }
@@ -247,12 +253,36 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLi
             reportSmackSpotFab.visibility = View.VISIBLE
             addToWishlistFab.visibility = View.VISIBLE
             addSmackFab.visibility = View.VISIBLE
-            reportSmackSpotFab.animate().rotationBy(360f)
-                .translationX(resources.getDimension(R.dimen.standard_75))
-            addToWishlistFab.animate().rotationBy(360f)
-                .translationX(resources.getDimension(R.dimen.standard_150))
-            addSmackFab.animate().rotationBy(360f)
-                .translationX(resources.getDimension(R.dimen.standard_225))
+
+            reportSpotText.visibility = View.VISIBLE
+            toWishlistText.visibility = View.VISIBLE
+            addSmackText.visibility = View.VISIBLE
+
+            reportSmackSpotFab.animate().rotationBy(360f).translationX(resources.getDimension(R.dimen.standard_75))
+            addToWishlistFab.animate().rotationBy(360f).translationX(resources.getDimension(R.dimen.standard_150))
+            addSmackFab.animate().rotationBy(360f).translationX(resources.getDimension(R.dimen.standard_225))
+
+            MainScope().launch {
+                delay(50)
+                reportSpotText.animate().translationX(
+                    resources.getDimension(R.dimen.standard_75)
+                            + resources.getDimension(R.dimen.standard_minus_55)
+                            - resources.getDimension(R.dimen.standard_minus_40)
+                            - pixelToDp(reportSpotText.width.toFloat() - reportSmackSpotFab.width)
+                )
+                toWishlistText.animate().translationX(
+                    resources.getDimension(R.dimen.standard_150)
+                            + resources.getDimension(R.dimen.standard_minus_55)
+                            - resources.getDimension(R.dimen.standard_minus_40)
+                            - pixelToDp(toWishlistText.width.toFloat() - addToWishlistFab.width)
+                )
+                addSmackText.animate().translationX(
+                    resources.getDimension(R.dimen.standard_225)
+                            + resources.getDimension(R.dimen.standard_minus_55)
+                            - resources.getDimension(R.dimen.standard_minus_40)
+                            - pixelToDp(addSmackText.width.toFloat() - addSmackFab.width)
+                )
+            }
         }
     }
 
@@ -265,6 +295,17 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLi
                 .withEndAction { addToWishlistFab.visibility = View.GONE }
             addSmackFab.animate().rotationBy(360f).translationX(0f)
                 .withEndAction { addSmackFab.visibility = View.GONE }
+
+            MainScope().launch {
+                delay(50)
+                reportSpotText.animate().translationX(0f)
+                    .withEndAction { reportSpotText.visibility = View.GONE }
+                toWishlistText.animate().translationX(0f)
+                    .withEndAction { toWishlistText.visibility = View.GONE }
+                addSmackText.animate().translationX(0f)
+                    .withEndAction { addSmackText.visibility = View.GONE }
+            }
+
         }
     }
 
