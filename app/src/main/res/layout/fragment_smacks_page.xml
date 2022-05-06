@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/fragmentSmacksSmackList"
-        android:name="com.smackmap.smackmapandroid.ui.main.smacklist.SmackListFragment"
+        android:name="com.smackmap.smackmapandroid.ui.main.smack.SmackListFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

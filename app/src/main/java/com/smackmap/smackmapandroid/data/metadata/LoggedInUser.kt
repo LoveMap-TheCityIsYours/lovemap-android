@@ -1,4 +1,4 @@
-package com.smackmap.smackmapandroid.data.model
+package com.smackmap.smackmapandroid.data.metadata
 
 import com.smackmap.smackmapandroid.api.smacker.SmackerDto
 import com.smackmap.smackmapandroid.api.smacker.SmackerRelationsDto

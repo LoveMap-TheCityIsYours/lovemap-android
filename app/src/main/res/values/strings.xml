@@ -80,7 +80,7 @@
     <string name="new_smackspot">New Smack Spot</string>
     <string name="add_spot_name">Name</string>
     <string name="add_new_smack_spot">Add new Smack Spot</string>
-    <string name="add_spot_description">Description</string>
+    <string name="add_spot_description">How would you describe this Smack Spot?</string>
     <string name="submit">Submit</string>
     <string name="cancel">Cancel</string>
     <string name="invalid_spot_name">Name must be at least 3 chars long</string>
@@ -88,6 +88,12 @@
     <string name="smack_spot_added">Smack Spot added</string>
     <string name="report_spot">Report Spot</string>
     <string name="to_wishlist">To Wishlist</string>
+    <string name="record_my_smack">Record My Smack</string>
+    <string name="availability">Availability:</string>
+    <string name="add_private_note">Private note about your experience trying this Smack Spot</string>
+    <string name="add_review_text">Public review of this Smack Spot</string>
+    <string name="riskLevelText">How risky is this Smack Spot in your opinion?</string>
+    <string name="reviewStarsText">How good is this Smack Spot?</string>
 
 
 </resources>

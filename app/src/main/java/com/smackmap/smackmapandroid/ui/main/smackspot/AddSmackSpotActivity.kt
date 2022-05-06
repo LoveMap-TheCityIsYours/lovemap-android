@@ -1,4 +1,4 @@
-package com.smackmap.smackmapandroid.ui.main.smackspotlist
+package com.smackmap.smackmapandroid.ui.main.smackspot
 
 import android.os.Bundle
 import android.text.Editable

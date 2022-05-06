@@ -15,13 +15,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.smackmap.smackmapandroid.R
 import com.smackmap.smackmapandroid.config.AppContext
-import com.smackmap.smackmapandroid.data.model.LoggedInUser
+import com.smackmap.smackmapandroid.data.metadata.LoggedInUser
 import com.smackmap.smackmapandroid.data.validator.validateEmail
 import com.smackmap.smackmapandroid.data.validator.validatePassword
 import com.smackmap.smackmapandroid.data.validator.validatePasswordAgain
 import com.smackmap.smackmapandroid.data.validator.validateUsername
 import com.smackmap.smackmapandroid.databinding.ActivityRegisterBinding
-import com.smackmap.smackmapandroid.service.authentication.AuthenticationService
+import com.smackmap.smackmapandroid.service.AuthenticationService
 import com.smackmap.smackmapandroid.ui.main.MainActivity
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch

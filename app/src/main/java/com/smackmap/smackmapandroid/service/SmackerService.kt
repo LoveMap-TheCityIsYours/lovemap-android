@@ -1,8 +1,7 @@
-package com.smackmap.smackmapandroid.service.smacker
+package com.smackmap.smackmapandroid.service
 
 import com.smackmap.smackmapandroid.api.smacker.*
-import com.smackmap.smackmapandroid.data.MetadataStore
-import com.smackmap.smackmapandroid.service.Toaster
+import com.smackmap.smackmapandroid.data.metadata.MetadataStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

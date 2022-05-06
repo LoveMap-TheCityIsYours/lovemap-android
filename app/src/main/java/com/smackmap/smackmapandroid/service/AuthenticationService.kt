@@ -1,4 +1,4 @@
-package com.smackmap.smackmapandroid.service.authentication
+package com.smackmap.smackmapandroid.service
 
 import android.content.Context
 import android.os.Handler
@@ -9,9 +9,8 @@ import com.smackmap.smackmapandroid.api.authentication.AuthenticationApi
 import com.smackmap.smackmapandroid.api.authentication.CreateSmackerRequest
 import com.smackmap.smackmapandroid.api.authentication.LoginSmackerRequest
 import com.smackmap.smackmapandroid.api.getErrorMessages
-import com.smackmap.smackmapandroid.data.MetadataStore
-import com.smackmap.smackmapandroid.data.model.LoggedInUser
-import com.smackmap.smackmapandroid.service.Toaster
+import com.smackmap.smackmapandroid.data.metadata.MetadataStore
+import com.smackmap.smackmapandroid.data.metadata.LoggedInUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response

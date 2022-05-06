@@ -2,6 +2,7 @@ package com.smackmap.smackmapandroid.ui.main.pages
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
@@ -25,8 +26,9 @@ import com.smackmap.smackmapandroid.R
 import com.smackmap.smackmapandroid.api.smackspot.SmackSpotAvailabilityApiStatus.ALL_DAY
 import com.smackmap.smackmapandroid.config.AppContext
 import com.smackmap.smackmapandroid.data.smackspot.SmackSpot
-import com.smackmap.smackmapandroid.service.smackspot.SmackSpotService
-import com.smackmap.smackmapandroid.ui.main.MainActivityEventListener
+import com.smackmap.smackmapandroid.service.SmackSpotService
+import com.smackmap.smackmapandroid.ui.events.MainActivityEventListener
+import com.smackmap.smackmapandroid.ui.main.smack.AddSmackActivity
 import com.smackmap.smackmapandroid.ui.utils.SmackSpotInfoWindowAdapter
 import com.smackmap.smackmapandroid.ui.utils.pixelToDp
 import kotlinx.coroutines.*
@@ -70,6 +72,11 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLi
         addToWishlistFab = view.findViewById(R.id.addToWishlistFab)
         reportSpotText = view.findViewById(R.id.spotReportText)
         reportSmackSpotFab = view.findViewById(R.id.reportSmackSpotFab)
+
+        addSmackFab.setOnClickListener {
+            startActivity(Intent(requireContext(), AddSmackActivity::class.java))
+        }
+
         return view
     }
 

@@ -10,13 +10,13 @@ import java.time.LocalTime
 
 @Entity(tableName = "smack_spot")
 data class SmackSpot(
-    @PrimaryKey val id: Long,
-    @ColumnInfo val name: String,
-    @ColumnInfo val longitude: Double,
-    @ColumnInfo val latitude: Double,
-    @ColumnInfo val description: String,
-    @ColumnInfo val averageRating: Double?,
-    @ColumnInfo val numberOfReports: Int,
+    @PrimaryKey var id: Long,
+    @ColumnInfo var name: String,
+    @ColumnInfo var longitude: Double,
+    @ColumnInfo var latitude: Double,
+    @ColumnInfo var description: String,
+    @ColumnInfo var averageRating: Double?,
+    @ColumnInfo var numberOfReports: Int,
     @ColumnInfo var customAvailability: String?,
     @ColumnInfo var availability: SmackSpotAvailabilityApiStatus,
     @ColumnInfo var averageDanger: Double?,

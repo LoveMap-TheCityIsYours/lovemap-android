@@ -15,4 +15,10 @@
         <item>Night only</item>
     </string-array>
 
+    <string-array name="spot_risk_levels">
+        <item>Safe</item>
+        <item>Little risky</item>
+        <item>Very risky</item>
+    </string-array>
+
 </resources>

@@ -10,7 +10,7 @@ import com.smackmap.smackmapandroid.R
 import com.smackmap.smackmapandroid.api.smackspot.SmackSpotAvailabilityApiStatus
 import com.smackmap.smackmapandroid.api.smackspot.SmackSpotRisks
 import com.smackmap.smackmapandroid.data.smackspot.SmackSpot
-import com.smackmap.smackmapandroid.service.smackspot.SmackSpotService
+import com.smackmap.smackmapandroid.service.SmackSpotService
 import com.smackmap.smackmapandroid.ui.events.MapInfoWindowShownEvent
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
@@ -59,7 +59,7 @@ class SmackSpotInfoWindowAdapter(
         view: View,
         smackSpot: SmackSpot
     ) {
-        val ratingBar: RatingBar = view.findViewById(R.id.marker_rating)
+        val ratingBar: RatingBar = view.findViewById(R.id.spot_review_rating)
         smackSpot.averageRating?.let {
             ratingBar.rating = it.toFloat()
         } ?: run {

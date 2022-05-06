@@ -4,11 +4,7 @@ import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.smackmap.smackmapandroid.R
-import com.smackmap.smackmapandroid.config.AppContext
-import com.smackmap.smackmapandroid.data.model.LoggedInUser
-import kotlinx.coroutines.launch
 
 class LoginViewModel : ViewModel() {
 

@@ -15,7 +15,7 @@ data class SmackSpotReviewDto(
 data class SmackSpotReviewRequest(
     val smackId: Long,
     val reviewerId: Long,
-    val smackLocationId: Long,
+    val smackSpotId: Long,
     val reviewText: String,
     val reviewStars: Int,
 )

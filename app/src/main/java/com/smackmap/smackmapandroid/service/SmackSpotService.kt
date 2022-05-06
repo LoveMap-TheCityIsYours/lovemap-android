@@ -1,6 +1,5 @@
-package com.smackmap.smackmapandroid.service.smackspot
+package com.smackmap.smackmapandroid.service
 
-import android.content.Context
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.smackmap.smackmapandroid.api.smackspot.CreateSmackSpotRequest
@@ -8,10 +7,9 @@ import com.smackmap.smackmapandroid.api.smackspot.SmackSpotApi
 import com.smackmap.smackmapandroid.api.smackspot.SmackSpotRisks
 import com.smackmap.smackmapandroid.api.smackspot.SmackSpotSearchRequest
 import com.smackmap.smackmapandroid.api.smackspot.review.SmackSpotReviewRequest
-import com.smackmap.smackmapandroid.data.MetadataStore
+import com.smackmap.smackmapandroid.data.metadata.MetadataStore
 import com.smackmap.smackmapandroid.data.smackspot.SmackSpot
 import com.smackmap.smackmapandroid.data.smackspot.SmackSpotDao
-import com.smackmap.smackmapandroid.service.Toaster
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -20,7 +18,6 @@ class SmackSpotService(
     private val smackSpotDao: SmackSpotDao,
     private val metadataStore: MetadataStore,
     private val toaster: Toaster,
-    private val context: Context
 ) {
     private val fullyQueriedAreas = ArrayList<LatLngBounds>()
     private var risksQueried = false

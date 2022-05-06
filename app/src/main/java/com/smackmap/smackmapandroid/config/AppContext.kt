@@ -3,19 +3,22 @@ package com.smackmap.smackmapandroid.config
 import android.app.Application
 import androidx.room.Room
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.smackmap.smackmapandroid.api.authentication.AuthenticationApi
+import com.smackmap.smackmapandroid.api.smack.SmackApi
 import com.smackmap.smackmapandroid.api.smacker.SmackerApi
 import com.smackmap.smackmapandroid.api.smackspot.SmackSpotApi
 import com.smackmap.smackmapandroid.data.AppDatabase
-import com.smackmap.smackmapandroid.data.MetadataStore
-import com.smackmap.smackmapandroid.service.Toaster
-import com.smackmap.smackmapandroid.service.authentication.AuthenticationService
-import com.smackmap.smackmapandroid.service.smacker.SmackerService
-import com.smackmap.smackmapandroid.service.smackspot.SmackSpotService
-import com.smackmap.smackmapandroid.ui.main.MainActivityEventListener
-import com.smackmap.smackmapandroid.ui.main.MapMarkerEventListener
+import com.smackmap.smackmapandroid.data.metadata.MetadataStore
+import com.smackmap.smackmapandroid.service.*
+import com.smackmap.smackmapandroid.ui.events.MainActivityEventListener
+import com.smackmap.smackmapandroid.ui.events.MapInfoWindowShownEvent
+import com.smackmap.smackmapandroid.ui.events.MapMarkerEventListener
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -25,6 +28,7 @@ class AppContext : Application() {
     lateinit var authenticationService: AuthenticationService
     lateinit var smackerService: SmackerService
     lateinit var smackSpotService: SmackSpotService
+    lateinit var smackService: SmackService
 
     lateinit var metadataStore: MetadataStore
     lateinit var database: AppDatabase
@@ -32,10 +36,12 @@ class AppContext : Application() {
     lateinit var mapMarkerEventListener: MapMarkerEventListener
     lateinit var mainActivityEventListener: MainActivityEventListener
 
+    var userId: Long = 0
     var areMarkerFabsOpen = false
     var areAddSmackSpotFabsOpen = false
     var shouldCloseFabs = false
     var displayDensity: Float = 0f
+    var selectedMarker: Marker? = null
 
     private lateinit var gsonConverterFactory: GsonConverterFactory
     private lateinit var retrofit: Retrofit
@@ -60,8 +66,18 @@ class AppContext : Application() {
                 applicationContext
             )
         }
-
+        EventBus.getDefault().register(this)
         INSTANCE = this
+    }
+
+    override fun onTerminate() {
+        super.onTerminate()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMapInfoWindowShownEvent(event: MapInfoWindowShownEvent) {
+        selectedMarker = event.marker
     }
 
     private suspend fun initClients() {
@@ -71,7 +87,6 @@ class AppContext : Application() {
             .baseUrl(API_ENDPOINT)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-
         smackerService = SmackerService(
             retrofit.create(SmackerApi::class.java),
             metadataStore,
@@ -82,8 +97,18 @@ class AppContext : Application() {
             database.smackSpotDao(),
             metadataStore,
             toaster,
-            applicationContext
         )
+        smackService = SmackService(
+            retrofit.create(SmackApi::class.java),
+            database.smackDao(),
+            metadataStore,
+            toaster
+        )
+        userId = if (metadataStore.isLoggedIn()) {
+            metadataStore.getUser().id
+        } else {
+            0
+        }
     }
 
     private suspend fun createHttpClient(): OkHttpClient {

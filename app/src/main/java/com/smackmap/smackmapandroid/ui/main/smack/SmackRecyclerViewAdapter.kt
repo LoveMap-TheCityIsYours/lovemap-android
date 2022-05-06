@@ -1,4 +1,4 @@
-package com.smackmap.smackmapandroid.ui.main.smacklist
+package com.smackmap.smackmapandroid.ui.main.smack
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

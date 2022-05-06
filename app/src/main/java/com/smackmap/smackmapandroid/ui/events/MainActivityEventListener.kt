@@ -1,4 +1,4 @@
-package com.smackmap.smackmapandroid.ui.main
+package com.smackmap.smackmapandroid.ui.events
 
 interface MainActivityEventListener {
     fun onOpenAddSmackSpotFabs()

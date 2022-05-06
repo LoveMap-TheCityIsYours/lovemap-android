@@ -17,7 +17,7 @@ tools:context="com.smackmap.smackmapandroid.ui.main.pages.DiscoverPageFragment">
 
 <fragment
     android:id="@+id/fragmentDiscoverSmackSpotList"
-    android:name="com.smackmap.smackmapandroid.ui.main.smackspotlist.SmackSpotListFragment"
+    android:name="com.smackmap.smackmapandroid.ui.main.smackspot.SmackSpotListFragment"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" />
 

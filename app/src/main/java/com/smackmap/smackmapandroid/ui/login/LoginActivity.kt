@@ -17,7 +17,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.smackmap.smackmapandroid.R
 import com.smackmap.smackmapandroid.config.AppContext
-import com.smackmap.smackmapandroid.data.MetadataStore
+import com.smackmap.smackmapandroid.data.metadata.MetadataStore
 import com.smackmap.smackmapandroid.databinding.ActivityLoginBinding
 import com.smackmap.smackmapandroid.ui.main.MainActivity
 import com.smackmap.smackmapandroid.ui.register.RegisterActivity

@@ -18,7 +18,8 @@ import com.smackmap.smackmapandroid.R
 import com.smackmap.smackmapandroid.config.AppContext
 import com.smackmap.smackmapandroid.databinding.ActivityMainBinding
 import com.smackmap.smackmapandroid.ui.events.MapInfoWindowShownEvent
-import com.smackmap.smackmapandroid.ui.main.smackspotlist.AddSmackSpotActivity
+import com.smackmap.smackmapandroid.ui.events.MapMarkerEventListener
+import com.smackmap.smackmapandroid.ui.main.smackspot.AddSmackSpotActivity
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode

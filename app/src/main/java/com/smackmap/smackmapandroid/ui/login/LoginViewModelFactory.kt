@@ -2,8 +2,6 @@ package com.smackmap.smackmapandroid.ui.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.smackmap.smackmapandroid.data.LoginDataSource
-import com.smackmap.smackmapandroid.data.LoginRepository
 
 /**
  * ViewModel provider factory to instantiate LoginViewModel.

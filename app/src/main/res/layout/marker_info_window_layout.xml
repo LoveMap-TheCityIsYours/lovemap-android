@@ -29,7 +29,7 @@
         android:orientation="horizontal">
 
         <RatingBar
-            android:id="@+id/marker_rating"
+            android:id="@+id/spot_review_rating"
             style="?android:attr/ratingBarStyleSmall"
             android:layout_gravity="end"
             android:layout_width="wrap_content"

@@ -1,4 +1,4 @@
-package com.smackmap.smackmapandroid.data
+package com.smackmap.smackmapandroid.data.metadata
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -11,7 +11,6 @@ import com.smackmap.smackmapandroid.api.smacker.SmackerRanks
 import com.smackmap.smackmapandroid.api.smacker.SmackerRelationsDto
 import com.smackmap.smackmapandroid.api.smackspot.SmackSpotRisks
 import com.smackmap.smackmapandroid.config.AppContext
-import com.smackmap.smackmapandroid.data.model.LoggedInUser
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 

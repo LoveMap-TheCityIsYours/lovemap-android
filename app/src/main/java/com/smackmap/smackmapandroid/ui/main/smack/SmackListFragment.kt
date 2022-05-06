@@ -1,4 +1,4 @@
-package com.smackmap.smackmapandroid.ui.main.smacklist
+package com.smackmap.smackmapandroid.ui.main.smack
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
