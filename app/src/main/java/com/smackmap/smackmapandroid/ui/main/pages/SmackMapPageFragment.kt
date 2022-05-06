@@ -16,6 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -102,6 +103,17 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLi
         viewPager2 = getViewPager2(thisView)
         val linearLayout = viewPager2.parent as ViewGroup
         val tabLayout = linearLayout.findViewById<TabLayout>(R.id.tab_layout)
+        if (appContext.selectedMarker != null) {
+            if (appContext.shouldMoveMapCamera) {
+                appContext.shouldMoveMapCamera = false
+                googleMap.animateCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        appContext.selectedMarker!!.position,
+                        15f
+                    )
+                )
+            }
+        }
         MainScope().launch {
             smackSpotInfoWindowAdapter = SmackSpotInfoWindowAdapter(
                 smackSpotService,
@@ -265,9 +277,12 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLi
             toWishlistText.visibility = View.VISIBLE
             addSmackText.visibility = View.VISIBLE
 
-            reportSmackSpotFab.animate().rotationBy(360f).translationX(resources.getDimension(R.dimen.standard_75))
-            addToWishlistFab.animate().rotationBy(360f).translationX(resources.getDimension(R.dimen.standard_150))
-            addSmackFab.animate().rotationBy(360f).translationX(resources.getDimension(R.dimen.standard_225))
+            reportSmackSpotFab.animate().rotationBy(360f)
+                .translationX(resources.getDimension(R.dimen.standard_75))
+            addToWishlistFab.animate().rotationBy(360f)
+                .translationX(resources.getDimension(R.dimen.standard_150))
+            addSmackFab.animate().rotationBy(360f)
+                .translationX(resources.getDimension(R.dimen.standard_225))
 
             MainScope().launch {
                 delay(50)

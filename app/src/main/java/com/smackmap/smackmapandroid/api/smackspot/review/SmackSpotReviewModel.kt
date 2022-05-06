@@ -18,4 +18,5 @@ data class SmackSpotReviewRequest(
     val smackSpotId: Long,
     val reviewText: String,
     val reviewStars: Int,
+    val riskLevel: Int,
 )

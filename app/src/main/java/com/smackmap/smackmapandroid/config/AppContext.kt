@@ -42,6 +42,7 @@ class AppContext : Application() {
     var shouldCloseFabs = false
     var displayDensity: Float = 0f
     var selectedMarker: Marker? = null
+    var shouldMoveMapCamera: Boolean = false
 
     private lateinit var gsonConverterFactory: GsonConverterFactory
     private lateinit var retrofit: Retrofit

@@ -176,4 +176,10 @@ class SmackSpotService(
                     it.contains(LatLng(request.latFrom, request.longTo)) &&
                     it.contains(LatLng(request.latTo, request.longFrom))
         }
+
+    suspend fun update(smackSpot: SmackSpot) {
+        return withContext(Dispatchers.IO) {
+            smackSpotDao.insert(smackSpot)
+        }
+    }
 }
