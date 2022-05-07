@@ -4,6 +4,6 @@
         <color android:color="@color/splash_screen" />
     </item>
     <item
-        android:drawable="@drawable/ic_customcolor_logo_transparent_background"
+        android:drawable="@drawable/ic_base_logo_transparent_background"
         android:gravity="center" />
 </layer-list>

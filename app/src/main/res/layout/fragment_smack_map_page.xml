@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.smackmap.smackmapandroid.ui.main.pages.SmackMapPageFragment">
+    tools:context="com.lovemap.lovemapandroid.ui.main.pages.SmackMapPageFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

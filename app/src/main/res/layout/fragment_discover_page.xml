@@ -4,7 +4,7 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:orientation="vertical"
-tools:context="com.smackmap.smackmapandroid.ui.main.pages.DiscoverPageFragment">
+tools:context="com.lovemap.lovemapandroid.ui.main.pages.DiscoverPageFragment">
 
 <TextView
     android:id="@+id/discoverTitle"
@@ -17,7 +17,7 @@ tools:context="com.smackmap.smackmapandroid.ui.main.pages.DiscoverPageFragment">
 
 <fragment
     android:id="@+id/fragmentDiscoverSmackSpotList"
-    android:name="com.smackmap.smackmapandroid.ui.main.smackspot.SmackSpotListFragment"
+    android:name="com.lovemap.lovemapandroid.ui.main.smackspot.SmackSpotListFragment"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" />
 

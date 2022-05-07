@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.smackmap.smackmapandroid.ui.main.pages.SmacksPageFragment">
+    tools:context="com.lovemap.lovemapandroid.ui.main.pages.SmacksPageFragment">
 
     <TextView
         android:id="@+id/smacksTitle"
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/fragmentSmacksSmackList"
-        android:name="com.smackmap.smackmapandroid.ui.main.smack.SmackListFragment"
+        android:name="com.lovemap.lovemapandroid.ui.main.smack.SmackListFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

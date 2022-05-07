@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "smackmap-android"
+rootProject.name = "lovemap-android"
 include ':app'

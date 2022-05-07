@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Smackmap</string>
+    <string name="app_name">LoveMap</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_main">MainActivity</string>
 
