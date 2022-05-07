@@ -42,7 +42,7 @@ class LoginActivity : AppCompatActivity() {
         if (loggedIn) {
             startActivity(Intent(this, MainActivity::class.java))
         } else {
-            setTheme(R.style.Theme_Smackmapandroid)
+            setTheme(R.style.Theme_Lovemapandroid)
         }
 
         binding = ActivityLoginBinding.inflate(layoutInflater)

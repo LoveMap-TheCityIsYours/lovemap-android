@@ -68,9 +68,9 @@
                         android:layout_marginEnd="@dimen/standard_8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/number_of_smacks" />
+                        android:text="@string/number_of_loves" />
                     <TextView
-                        android:id="@+id/profileNumberOfSmacks"
+                        android:id="@+id/profileNumberOfLoves"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="100" />
@@ -87,9 +87,9 @@
                         android:layout_marginEnd="@dimen/standard_8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/smack_spots_added" />
+                        android:text="@string/love_spots_added" />
                     <TextView
-                        android:id="@+id/profileNumberOfSmackSpots"
+                        android:id="@+id/profileNumberOfLoveSpots"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="100" />

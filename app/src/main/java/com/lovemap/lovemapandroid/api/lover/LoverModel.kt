@@ -1,17 +1,17 @@
-package com.lovemap.lovemapandroid.api.smacker
+package com.lovemap.lovemapandroid.api.lover
 
 import com.lovemap.lovemapandroid.api.relation.RelationStatusDto
 import java.time.Instant
 
-data class SmackerDto(
+data class LoverDto(
     val id: Long,
     val userName: String,
     val email: String,
     val rank: Int,
     val points: Int,
-    val numberOfSmacks: Int,
+    val numberOfLoves: Int,
     val numberOfReports: Int,
-    val smackSpotsAdded: Int,
+    val loveSpotsAdded: Int,
     val numberOfFollowers: Int,
     val createdAt: String,
     val shareableLink: String? = null,
@@ -24,16 +24,16 @@ data class SmackerDto(
     }
 }
 
-data class SmackerRelationsDto(
+data class LoverRelationsDto(
     val id: Long,
-    val relations: List<SmackerViewDto>,
+    val relations: List<LoverViewDto>,
     val userName: String,
     val email: String,
     val rank: Int,
     val points: Int,
-    val numberOfSmacks: Int,
+    val numberOfLoves: Int,
     val numberOfReports: Int,
-    val smackSpotsAdded: Int,
+    val loveSpotsAdded: Int,
     val numberOfFollowers: Int,
     val createdAt: String,
     val shareableLink: String? = null,
@@ -46,14 +46,14 @@ data class SmackerRelationsDto(
     }
 }
 
-data class SmackerViewDto(
+data class LoverViewDto(
     val id: Long,
     val userName: String,
     val rank: Int,
     val relation: RelationStatusDto
 )
 
-data class SmackerRanks(val rankList: List<Rank>) {
+data class LoverRanks(val rankList: List<Rank>) {
     data class Rank(
         val rank: Int,
         val nameEN: String,

@@ -24,10 +24,10 @@ import com.google.android.gms.maps.model.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.lovemap.lovemapandroid.R
-import com.lovemap.lovemapandroid.api.smackspot.SmackSpotAvailabilityApiStatus.ALL_DAY
+import com.lovemap.lovemapandroid.api.lovespot.LoveSpotAvailabilityApiStatus.ALL_DAY
 import com.lovemap.lovemapandroid.config.AppContext
-import com.lovemap.lovemapandroid.data.smackspot.SmackSpot
-import com.lovemap.lovemapandroid.service.SmackSpotService
+import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
+import com.lovemap.lovemapandroid.service.LoveSpotService
 import com.lovemap.lovemapandroid.ui.events.MainActivityEventListener
 import com.lovemap.lovemapandroid.ui.main.love.AddLoveActivity
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotInfoWindowAdapter
@@ -37,7 +37,7 @@ import kotlinx.coroutines.*
 @SuppressLint("MissingPermission")
 class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventListener {
     private val appContext = AppContext.INSTANCE
-    private val smackSpotService: SmackSpotService = appContext.smackSpotService
+    private val loveSpotService: LoveSpotService = appContext.loveSpotService
     private var cameraMoved = false
     private var locationEnabled = false
 
@@ -47,12 +47,12 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
     private lateinit var dayBitmap: BitmapDescriptor
     private lateinit var nightBitmap: BitmapDescriptor
 
-    private lateinit var addSmackText: TextView
-    private lateinit var addSmackFab: FloatingActionButton
+    private lateinit var addLoveText: TextView
+    private lateinit var addLoveFab: FloatingActionButton
     private lateinit var toWishlistText: TextView
     private lateinit var addToWishlistFab: FloatingActionButton
     private lateinit var reportSpotText: TextView
-    private lateinit var reportSmackSpotFab: FloatingActionButton
+    private lateinit var reportLoveSpotFab: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,14 +67,14 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
         mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         dayBitmap = getIconBitmap(R.drawable.ic_marker_sun)
         nightBitmap = getIconBitmap(R.drawable.ic_marker_moon)
-        addSmackText = view.findViewById(R.id.smackOnSpotText)
-        addSmackFab = view.findViewById(R.id.addSmackFab)
+        addLoveText = view.findViewById(R.id.loveOnSpotText)
+        addLoveFab = view.findViewById(R.id.addLoveFab)
         toWishlistText = view.findViewById(R.id.spotWishlistText)
         addToWishlistFab = view.findViewById(R.id.addToWishlistFab)
         reportSpotText = view.findViewById(R.id.spotReportText)
-        reportSmackSpotFab = view.findViewById(R.id.reportSmackSpotFab)
+        reportLoveSpotFab = view.findViewById(R.id.reportLoveSpotFab)
 
-        addSmackFab.setOnClickListener {
+        addLoveFab.setOnClickListener {
             startActivity(Intent(requireContext(), AddLoveActivity::class.java))
         }
 
@@ -87,13 +87,13 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
         mapFragment.getMapAsync(this)
         viewPager2 = getViewPager2(requireView())
         val crosshair: ImageView = viewPager2.findViewById(R.id.centerCrosshair)
-        val addSmackspotText: TextView = viewPager2.findViewById(R.id.mapAddSmackspotText)
-        if (appContext.areAddSmackSpotFabsOpen) {
+        val addLovespotText: TextView = viewPager2.findViewById(R.id.mapAddLovespotText)
+        if (appContext.areAddLoveSpotFabsOpen) {
             crosshair.visibility = View.VISIBLE
-            addSmackspotText.visibility = View.VISIBLE
+            addLovespotText.visibility = View.VISIBLE
         } else {
             crosshair.visibility = View.GONE
-            addSmackspotText.visibility = View.GONE
+            addLovespotText.visibility = View.GONE
         }
     }
 
@@ -116,12 +116,12 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
         }
         MainScope().launch {
             loveSpotInfoWindowAdapter = LoveSpotInfoWindowAdapter(
-                smackSpotService,
+                loveSpotService,
                 requireActivity(),
-                smackSpotService.getRisks()
+                loveSpotService.getRisks()
             )
             googleMap.setInfoWindowAdapter(loveSpotInfoWindowAdapter)
-            fetchSmackSpots(googleMap)
+            fetchLoveSpots(googleMap)
         }
         setMyLocation(googleMap)
         putMarkersOnMap(googleMap)
@@ -160,34 +160,34 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
         googleMap.setOnCameraIdleListener {
             if (cameraMoved) {
                 MainScope().launch {
-                    fetchSmackSpots(googleMap)
+                    fetchLoveSpots(googleMap)
                 }
             }
         }
     }
 
-    private suspend fun fetchSmackSpots(
+    private suspend fun fetchLoveSpots(
         googleMap: GoogleMap
     ) {
         val visibleRegion = googleMap.projection.visibleRegion
         appContext.mapCameraTarget = googleMap.cameraPosition.target
-        smackSpotService
+        loveSpotService
             .search(visibleRegion.latLngBounds)
-            .map { smackSpotToMarkerOptions(it) }
+            .map { loveSpotToMarkerOptions(it) }
             .forEach { googleMap.addMarker(it) }
     }
 
-    private fun smackSpotToMarkerOptions(smackSpot: SmackSpot): MarkerOptions {
-        val icon = if (smackSpot.availability == ALL_DAY) {
+    private fun loveSpotToMarkerOptions(loveSpot: LoveSpot): MarkerOptions {
+        val icon = if (loveSpot.availability == ALL_DAY) {
             dayBitmap
         } else {
             nightBitmap
         }
         return MarkerOptions()
             .icon(icon)
-            .position(LatLng(smackSpot.latitude, smackSpot.longitude))
-            .snippet(smackSpot.id.toString())
-            .title(smackSpot.name)
+            .position(LatLng(loveSpot.latitude, loveSpot.longitude))
+            .snippet(loveSpot.id.toString())
+            .title(loveSpot.name)
     }
 
     private fun getIconBitmap(drawableId: Int): BitmapDescriptor {
@@ -269,19 +269,19 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
     private fun openMarkerFabMenu() {
         if (!appContext.areMarkerFabsOpen) {
             appContext.areMarkerFabsOpen = true
-            reportSmackSpotFab.visibility = View.VISIBLE
+            reportLoveSpotFab.visibility = View.VISIBLE
             addToWishlistFab.visibility = View.VISIBLE
-            addSmackFab.visibility = View.VISIBLE
+            addLoveFab.visibility = View.VISIBLE
 
             reportSpotText.visibility = View.VISIBLE
             toWishlistText.visibility = View.VISIBLE
-            addSmackText.visibility = View.VISIBLE
+            addLoveText.visibility = View.VISIBLE
 
-            reportSmackSpotFab.animate().rotationBy(360f)
+            reportLoveSpotFab.animate().rotationBy(360f)
                 .translationX(resources.getDimension(R.dimen.standard_75))
             addToWishlistFab.animate().rotationBy(360f)
                 .translationX(resources.getDimension(R.dimen.standard_150))
-            addSmackFab.animate().rotationBy(360f)
+            addLoveFab.animate().rotationBy(360f)
                 .translationX(resources.getDimension(R.dimen.standard_225))
 
             MainScope().launch {
@@ -290,7 +290,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
                     resources.getDimension(R.dimen.standard_75)
                             + resources.getDimension(R.dimen.standard_minus_55)
                             - resources.getDimension(R.dimen.standard_minus_40)
-                            - pixelToDp(reportSpotText.width.toFloat() - reportSmackSpotFab.width)
+                            - pixelToDp(reportSpotText.width.toFloat() - reportLoveSpotFab.width)
                 )
                 toWishlistText.animate().translationX(
                     resources.getDimension(R.dimen.standard_150)
@@ -298,11 +298,11 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
                             - resources.getDimension(R.dimen.standard_minus_40)
                             - pixelToDp(toWishlistText.width.toFloat() - addToWishlistFab.width)
                 )
-                addSmackText.animate().translationX(
+                addLoveText.animate().translationX(
                     resources.getDimension(R.dimen.standard_225)
                             + resources.getDimension(R.dimen.standard_minus_55)
                             - resources.getDimension(R.dimen.standard_minus_40)
-                            - pixelToDp(addSmackText.width.toFloat() - addSmackFab.width)
+                            - pixelToDp(addLoveText.width.toFloat() - addLoveFab.width)
                 )
             }
         }
@@ -311,12 +311,12 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
     private fun closeMarkerFabMenu() {
         if (appContext.areMarkerFabsOpen) {
             appContext.areMarkerFabsOpen = false
-            reportSmackSpotFab.animate().rotationBy(360f).translationX(0f)
-                .withEndAction { reportSmackSpotFab.visibility = View.GONE }
+            reportLoveSpotFab.animate().rotationBy(360f).translationX(0f)
+                .withEndAction { reportLoveSpotFab.visibility = View.GONE }
             addToWishlistFab.animate().rotationBy(360f).translationX(0f)
                 .withEndAction { addToWishlistFab.visibility = View.GONE }
-            addSmackFab.animate().rotationBy(360f).translationX(0f)
-                .withEndAction { addSmackFab.visibility = View.GONE }
+            addLoveFab.animate().rotationBy(360f).translationX(0f)
+                .withEndAction { addLoveFab.visibility = View.GONE }
 
             MainScope().launch {
                 delay(50)
@@ -324,14 +324,14 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
                     .withEndAction { reportSpotText.visibility = View.GONE }
                 toWishlistText.animate().translationX(0f)
                     .withEndAction { toWishlistText.visibility = View.GONE }
-                addSmackText.animate().translationX(0f)
-                    .withEndAction { addSmackText.visibility = View.GONE }
+                addLoveText.animate().translationX(0f)
+                    .withEndAction { addLoveText.visibility = View.GONE }
             }
 
         }
     }
 
-    override fun onOpenAddSmackSpotFabs() {
+    override fun onOpenAddLoveSpotFabs() {
         closeMarkerFabMenu()
     }
 }

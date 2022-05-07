@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/standard_16"
-        android:text="@string/add_new_smack_spot" />
+        android:text="@string/add_new_love_spot" />
 
     <ScrollView
         android:layout_width="match_parent"

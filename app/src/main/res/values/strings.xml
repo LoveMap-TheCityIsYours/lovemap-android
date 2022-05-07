@@ -8,7 +8,7 @@
     <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_password_again">Password again</string>
-    <string name="register">Not a Smacker yet?\nRegister</string>
+    <string name="register">Not a Lover yet?\nRegister</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_register">Register</string>
     <string name="welcome">"Welcome "</string>
@@ -23,7 +23,7 @@
     <!-- Main activity strings -->
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
-    <string name="add_smack">Make Love</string>
+    <string name="add_love">Make Love</string>
 
     <!-- Profile fragment -->
     <string name="logout">logout</string>
@@ -47,9 +47,9 @@
     <string name="settings">Settings</string>
     <string name="placeholder">Placeholder</string>
     <string name="your_profile">Your Profile</string>
-    <string name="your_smacks">Your Love History</string>
+    <string name="your_loves">Your Love History</string>
     <string name="discover">Discover</string>
-    <string name="smack_map">Love Map</string>
+    <string name="love_map">Love Map</string>
     <string name="profileUserName">ProfileUserPlaceholder</string>
     <string name="profileUserLevelText">Public Love God</string>
     <string name="profileShareableLink">Get shareable link</string>
@@ -66,8 +66,8 @@
     <string name="points_to_next_level">Points to next level</string>
     <string name="points">Points</string>
     <string name="reports">Reports:</string>
-    <string name="smack_spots_added">Love Spots added:</string>
-    <string name="number_of_smacks">Number of Smacks:</string>
+    <string name="love_spots_added">Love Spots added:</string>
+    <string name="number_of_loves">Number of Loves:</string>
     <string name="marker_rating">Rating:</string>
     <string name="marker_availability">Availability:</string>
     <string name="marker_risk">Risk:</string>
@@ -77,18 +77,18 @@
     <string name="available_night_only">Night only</string>
     <string name="custom_availability_text">Custom availability</string>
     <string name="risk_unknown">Unknown</string>
-    <string name="new_smackspot">New Love Spot</string>
+    <string name="new_lovespot">New Love Spot</string>
     <string name="add_spot_name">Name</string>
-    <string name="add_new_smack_spot">Add new Love Spot</string>
+    <string name="add_new_love_spot">Add new Love Spot</string>
     <string name="add_spot_description">How would you describe this Love Spot?</string>
     <string name="submit">Submit</string>
     <string name="cancel">Cancel</string>
     <string name="invalid_spot_name">Name must be at least 3 chars long</string>
     <string name="invalid_spot_description">Description must be at least 3 chars long</string>
-    <string name="smack_spot_added">Love Spot added</string>
+    <string name="love_spot_added">Love Spot added</string>
     <string name="report_spot">Report Spot</string>
     <string name="to_wishlist">To Wishlist</string>
-    <string name="record_my_smack">Record My Lovemaking</string>
+    <string name="record_my_love">Record My Lovemaking</string>
     <string name="availability">Availability:</string>
     <string name="add_private_note">Private note about your experience trying this Love Spot</string>
     <string name="add_review_text">Public review of this Love Spot</string>

@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity(), MapMarkerEventListener {
 
     private lateinit var changeMapModeFab: FloatingActionButton
 
-    private lateinit var addSmackSpotFab: FloatingActionButton
+    private lateinit var addLoveSpotFab: FloatingActionButton
     private lateinit var okFab: FloatingActionButton
     private lateinit var cancelFab: FloatingActionButton
 
@@ -63,11 +63,11 @@ class MainActivity : AppCompatActivity(), MapMarkerEventListener {
             tab.icon = icons[position]
         }.attach()
 
-        addSmackSpotFab.setOnClickListener {
-            if (!appContext.areAddSmackSpotFabsOpen) {
-                openAddSmackSpotFabs()
+        addLoveSpotFab.setOnClickListener {
+            if (!appContext.areAddLoveSpotFabsOpen) {
+                openAddLoveSpotFabs()
             } else {
-                closeAddSmackSpotFabs()
+                closeAddLoveSpotFabs()
             }
         }
 
@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity(), MapMarkerEventListener {
         }
 
         cancelFab.setOnClickListener {
-            closeAddSmackSpotFabs()
+            closeAddLoveSpotFabs()
         }
 
         // Starter page is map for performance reasons
@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity(), MapMarkerEventListener {
         viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 if (position != MAP_PAGE) {
-                    closeAddSmackSpotFabs()
+                    closeAddLoveSpotFabs()
                 }
             }
         })
@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity(), MapMarkerEventListener {
 
         changeMapModeFab = binding.changeMapModeFab
 
-        addSmackSpotFab = binding.addSmackSpotFab
+        addLoveSpotFab = binding.addLoveSpotFab
         okFab = binding.okFab
         cancelFab = binding.cancelFab
     }
@@ -113,7 +113,7 @@ class MainActivity : AppCompatActivity(), MapMarkerEventListener {
         appContext.mapMarkerEventListener = this
         if (appContext.shouldCloseFabs) {
             appContext.shouldCloseFabs = false
-            closeAddSmackSpotFabs()
+            closeAddLoveSpotFabs()
         }
     }
 
@@ -123,16 +123,16 @@ class MainActivity : AppCompatActivity(), MapMarkerEventListener {
     }
 
     override fun onMarkerClicked() {
-        closeAddSmackSpotFabs()
+        closeAddLoveSpotFabs()
     }
 
     override fun onMapClicked() {
-        closeAddSmackSpotFabs()
+        closeAddLoveSpotFabs()
     }
 
-    private fun openAddSmackSpotFabs() {
-        if (!appContext.areAddSmackSpotFabsOpen) {
-            appContext.mainActivityEventListener.onOpenAddSmackSpotFabs()
+    private fun openAddLoveSpotFabs() {
+        if (!appContext.areAddLoveSpotFabsOpen) {
+            appContext.mainActivityEventListener.onOpenAddLoveSpotFabs()
             viewPager2.post {
                 viewPager2.setCurrentItem(MAP_PAGE, true)
             }
@@ -143,39 +143,39 @@ class MainActivity : AppCompatActivity(), MapMarkerEventListener {
                 .translationX(-resources.getDimension(R.dimen.standard_75))
             cancelFab.animate().rotationBy(360f)
                 .translationX(-resources.getDimension(R.dimen.standard_150))
-            addSmackSpotFab.animate().rotationBy(360f)
+            addLoveSpotFab.animate().rotationBy(360f)
 
             lastShownInfoWindowMarker?.hideInfoWindow()
 
             val crosshair: ImageView? = findViewById(R.id.centerCrosshair)
             if (crosshair != null) {
                 crosshair.visibility = View.VISIBLE
-                val addSmackspotText: TextView = findViewById(R.id.mapAddSmackspotText)
-                addSmackspotText.visibility = View.VISIBLE
+                val addLovespotText: TextView = findViewById(R.id.mapAddLovespotText)
+                addLovespotText.visibility = View.VISIBLE
             }
 
-            appContext.areAddSmackSpotFabsOpen = true
+            appContext.areAddLoveSpotFabsOpen = true
         }
     }
 
-    private fun closeAddSmackSpotFabs() {
-        if (appContext.areAddSmackSpotFabsOpen) {
+    private fun closeAddLoveSpotFabs() {
+        if (appContext.areAddLoveSpotFabsOpen) {
             okFab.animate().rotationBy(360f).translationX(0f).withEndAction {
                 okFab.visibility = View.GONE
             }
             cancelFab.animate().rotationBy(360f).translationX(0f).withEndAction {
                 cancelFab.visibility = View.GONE
             }
-            addSmackSpotFab.animate().rotationBy(360f)
+            addLoveSpotFab.animate().rotationBy(360f)
 
             val crosshair: ImageView? = findViewById(R.id.centerCrosshair)
             if (crosshair != null) {
                 crosshair.visibility = View.GONE
-                val addSmackspotText: TextView = findViewById(R.id.mapAddSmackspotText)
-                addSmackspotText.visibility = View.GONE
+                val addLovespotText: TextView = findViewById(R.id.mapAddLovespotText)
+                addLovespotText.visibility = View.GONE
             }
 
-            appContext.areAddSmackSpotFabsOpen = false
+            appContext.areAddLoveSpotFabsOpen = false
         }
     }
 

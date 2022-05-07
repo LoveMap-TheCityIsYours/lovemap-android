@@ -2,36 +2,36 @@ package com.lovemap.lovemapandroid.service
 
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
-import com.lovemap.lovemapandroid.api.smackspot.CreateSmackSpotRequest
-import com.lovemap.lovemapandroid.api.smackspot.SmackSpotApi
-import com.lovemap.lovemapandroid.api.smackspot.SmackSpotRisks
-import com.lovemap.lovemapandroid.api.smackspot.SmackSpotSearchRequest
-import com.lovemap.lovemapandroid.api.smackspot.review.SmackSpotReviewRequest
+import com.lovemap.lovemapandroid.api.lovespot.CreateLoveSpotRequest
+import com.lovemap.lovemapandroid.api.lovespot.LoveSpotApi
+import com.lovemap.lovemapandroid.api.lovespot.LoveSpotRisks
+import com.lovemap.lovemapandroid.api.lovespot.LoveSpotSearchRequest
+import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
-import com.lovemap.lovemapandroid.data.smackspot.SmackSpot
-import com.lovemap.lovemapandroid.data.smackspot.SmackSpotDao
+import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
+import com.lovemap.lovemapandroid.data.lovespot.LoveSpotDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class SmackSpotService(
-    private val smackSpotApi: SmackSpotApi,
-    private val smackSpotDao: SmackSpotDao,
+class LoveSpotService(
+    private val loveSpotApi: LoveSpotApi,
+    private val loveSpotDao: LoveSpotDao,
     private val metadataStore: MetadataStore,
     private val toaster: Toaster,
 ) {
     private val fullyQueriedAreas = ArrayList<LatLngBounds>()
     private var risksQueried = false
 
-    suspend fun findLocally(id: Long): SmackSpot? {
+    suspend fun findLocally(id: Long): LoveSpot? {
         return withContext(Dispatchers.IO) {
-            smackSpotDao.loadSingle(id)
+            loveSpotDao.loadSingle(id)
         }
     }
 
-    suspend fun refresh(id: Long): SmackSpot? {
+    suspend fun refresh(id: Long): LoveSpot? {
         return withContext(Dispatchers.IO) {
-            val localSpot = smackSpotDao.loadSingle(id)
-            val call = smackSpotApi.find(id)
+            val localSpot = loveSpotDao.loadSingle(id)
+            val call = loveSpotApi.find(id)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
@@ -39,9 +39,9 @@ class SmackSpotService(
                 return@withContext localSpot
             }
             if (response.isSuccessful) {
-                val smackSpot = response.body()!!
-                smackSpotDao.insert(smackSpot)
-                smackSpot
+                val loveSpot = response.body()!!
+                loveSpotDao.insert(loveSpot)
+                loveSpot
             } else {
                 toaster.showNoServerToast()
                 localSpot
@@ -49,9 +49,9 @@ class SmackSpotService(
         }
     }
 
-    suspend fun create(request: CreateSmackSpotRequest): SmackSpot? {
+    suspend fun create(request: CreateLoveSpotRequest): LoveSpot? {
         return withContext(Dispatchers.IO) {
-            val call = smackSpotApi.create(request)
+            val call = loveSpotApi.create(request)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
@@ -59,9 +59,9 @@ class SmackSpotService(
                 return@withContext null
             }
             if (response.isSuccessful) {
-                val smackSpot = response.body()!!
-                smackSpotDao.insert(smackSpot)
-                smackSpot
+                val loveSpot = response.body()!!
+                loveSpotDao.insert(loveSpot)
+                loveSpot
             } else {
                 toaster.showNoServerToast()
                 null
@@ -69,10 +69,10 @@ class SmackSpotService(
         }
     }
 
-    suspend fun search(latLngBounds: LatLngBounds): List<SmackSpot> {
+    suspend fun search(latLngBounds: LatLngBounds): List<LoveSpot> {
         return withContext(Dispatchers.IO) {
-            val request = smackSpotSearchRequestFromBounds(latLngBounds)
-            val localSpots = smackSpotDao.search(
+            val request = loveSpotSearchRequestFromBounds(latLngBounds)
+            val localSpots = loveSpotDao.search(
                 request.longFrom,
                 request.longTo,
                 request.latFrom,
@@ -83,7 +83,7 @@ class SmackSpotService(
                 return@withContext localSpots
             }
 
-            val call = smackSpotApi.search(request)
+            val call = loveSpotApi.search(request)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
@@ -96,10 +96,10 @@ class SmackSpotService(
                     fullyQueriedAreas.add(latLngBounds)
                 }
                 val localSpotSet = HashSet(localSpots)
-                val serverSpotSet: Set<SmackSpot> = HashSet(serverSpots)
+                val serverSpotSet: Set<LoveSpot> = HashSet(serverSpots)
                 val deletedSpots = localSpotSet.subtract(serverSpotSet)
-                smackSpotDao.delete(*deletedSpots.toTypedArray())
-                smackSpotDao.insert(*serverSpotSet.toTypedArray())
+                loveSpotDao.delete(*deletedSpots.toTypedArray())
+                loveSpotDao.insert(*serverSpotSet.toTypedArray())
                 serverSpots
             } else {
                 toaster.showNoServerToast()
@@ -108,9 +108,9 @@ class SmackSpotService(
         }
     }
 
-    suspend fun addReview(request: SmackSpotReviewRequest): SmackSpot? {
+    suspend fun addReview(request: LoveSpotReviewRequest): LoveSpot? {
         return withContext(Dispatchers.IO) {
-            val call = smackSpotApi.addReview(request)
+            val call = loveSpotApi.addReview(request)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
@@ -126,9 +126,9 @@ class SmackSpotService(
         }
     }
 
-    suspend fun getRisks(): SmackSpotRisks? {
+    suspend fun getRisks(): LoveSpotRisks? {
         return withContext(Dispatchers.IO) {
-            val localRisks: SmackSpotRisks? = if (metadataStore.isRisksStored()) {
+            val localRisks: LoveSpotRisks? = if (metadataStore.isRisksStored()) {
                 metadataStore.getRisks()
             } else {
                 null
@@ -136,7 +136,7 @@ class SmackSpotService(
             if (risksQueried) {
                 return@withContext localRisks
             } else {
-                val call = smackSpotApi.getRisks()
+                val call = loveSpotApi.getRisks()
                 try {
                     val response = call.execute()
                     if (response.isSuccessful) {
@@ -157,10 +157,10 @@ class SmackSpotService(
         }
     }
 
-    private fun smackSpotSearchRequestFromBounds(latLngBounds: LatLngBounds): SmackSpotSearchRequest {
+    private fun loveSpotSearchRequestFromBounds(latLngBounds: LatLngBounds): LoveSpotSearchRequest {
         val northeast = latLngBounds.northeast
         val southwest = latLngBounds.southwest
-        return SmackSpotSearchRequest(
+        return LoveSpotSearchRequest(
             latFrom = if (northeast.latitude < southwest.latitude) northeast.latitude else southwest.latitude,
             longFrom = if (northeast.longitude < southwest.longitude) northeast.longitude else southwest.longitude,
             latTo = if (northeast.latitude >= southwest.latitude) northeast.latitude else southwest.latitude,
@@ -169,7 +169,7 @@ class SmackSpotService(
         )
     }
 
-    private fun areaFullyQueried(request: SmackSpotSearchRequest) =
+    private fun areaFullyQueried(request: LoveSpotSearchRequest) =
         fullyQueriedAreas.any {
             it.contains(LatLng(request.latFrom, request.longFrom)) &&
                     it.contains(LatLng(request.latTo, request.longTo)) &&
@@ -177,9 +177,9 @@ class SmackSpotService(
                     it.contains(LatLng(request.latTo, request.longFrom))
         }
 
-    suspend fun update(smackSpot: SmackSpot) {
+    suspend fun update(loveSpot: LoveSpot) {
         return withContext(Dispatchers.IO) {
-            smackSpotDao.insert(smackSpot)
+            loveSpotDao.insert(loveSpot)
         }
     }
 }

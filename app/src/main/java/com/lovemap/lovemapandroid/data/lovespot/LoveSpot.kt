@@ -1,15 +1,15 @@
-package com.lovemap.lovemapandroid.data.smackspot
+package com.lovemap.lovemapandroid.data.lovespot
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.lovemap.lovemapandroid.api.smackspot.SmackSpotAvailabilityApiStatus
+import com.lovemap.lovemapandroid.api.lovespot.LoveSpotAvailabilityApiStatus
 import java.time.LocalTime
 
-@Entity(tableName = "smack_spot")
-data class SmackSpot(
+@Entity(tableName = "love_spot")
+data class LoveSpot(
     @PrimaryKey var id: Long,
     @ColumnInfo var name: String,
     @ColumnInfo var longitude: Double,
@@ -18,7 +18,7 @@ data class SmackSpot(
     @ColumnInfo var averageRating: Double?,
     @ColumnInfo var numberOfReports: Int,
     @ColumnInfo var customAvailability: String?,
-    @ColumnInfo var availability: SmackSpotAvailabilityApiStatus,
+    @ColumnInfo var availability: LoveSpotAvailabilityApiStatus,
     @ColumnInfo var averageDanger: Double?,
     @ColumnInfo var numberOfRatings: Int,
 ) {

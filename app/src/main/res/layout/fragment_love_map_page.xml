@@ -14,13 +14,13 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/smackMapTitle"
+            android:id="@+id/loveMapTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="@dimen/text_margin"
             style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-            android:text="@string/smack_map"/>
+            android:text="@string/love_map"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -43,7 +43,7 @@
                 android:src="@drawable/ic_outline_crosshair_pink_24" />
 
             <TextView
-                android:id="@+id/mapAddSmackspotText"
+                android:id="@+id/mapAddLovespotText"
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
                 android:layout_marginBottom="@dimen/standard_100"
                 android:background="@color/myColorSecondary"
                 android:textColor="@color/myColorOnSecondary"
-                android:text="@string/new_smackspot"
+                android:text="@string/new_lovespot"
                 android:visibility="gone" />
 
         </RelativeLayout>
@@ -74,7 +74,7 @@
         tools:ignore="SmallSp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/reportSmackSpotFab"
+        android:id="@+id/reportLoveSpotFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -110,7 +110,7 @@
         app:srcCompat="@drawable/ic_baseline_list_add_24" />
 
     <TextView
-        android:id="@+id/smackOnSpotText"
+        android:id="@+id/loveOnSpotText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -120,11 +120,11 @@
         android:background="@color/myColorSecondary"
         android:textColor="@color/myColorOnSecondary"
         android:textSize="10sp"
-        android:text="@string/add_smack"
+        android:text="@string/add_love"
         tools:ignore="SmallSp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addSmackFab"
+        android:id="@+id/addLoveFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

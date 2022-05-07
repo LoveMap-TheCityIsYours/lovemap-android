@@ -76,12 +76,12 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="85dp"
-        android:text="@string/add_smack"
+        android:text="@string/add_love"
         android:textDirection="firstStrongRtl"
         app:srcCompat="@drawable/ic_two_hearts_com" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addSmackSpotFab"
+        android:id="@+id/addLoveSpotFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

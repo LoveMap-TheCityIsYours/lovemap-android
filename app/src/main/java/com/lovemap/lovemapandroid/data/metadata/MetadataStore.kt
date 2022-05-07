@@ -7,9 +7,9 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.google.gson.GsonBuilder
-import com.lovemap.lovemapandroid.api.smacker.SmackerRanks
-import com.lovemap.lovemapandroid.api.smacker.SmackerRelationsDto
-import com.lovemap.lovemapandroid.api.smackspot.SmackSpotRisks
+import com.lovemap.lovemapandroid.api.lover.LoverRanks
+import com.lovemap.lovemapandroid.api.lover.LoverRelationsDto
+import com.lovemap.lovemapandroid.api.lovespot.LoveSpotRisks
 import com.lovemap.lovemapandroid.config.AppContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -19,7 +19,7 @@ class MetadataStore(private val context: Context) {
     private val gson = GsonBuilder().create()
 
     private val userKeyName = "user"
-    private val smackerKeyName = "smacker"
+    private val loverKeyName = "lover"
     private val riskKeyName = "risks"
     private val ranksKeyName = "ranks"
 
@@ -46,29 +46,29 @@ class MetadataStore(private val context: Context) {
         }.first()
     }
 
-    suspend fun saveSmacker(smacker: SmackerRelationsDto): SmackerRelationsDto {
-        val smackerKey = stringPreferencesKey(smackerKeyName)
+    suspend fun saveLover(lover: LoverRelationsDto): LoverRelationsDto {
+        val loverKey = stringPreferencesKey(loverKeyName)
         context.dataStore.edit { dataStore ->
-            dataStore[smackerKey] = gson.toJson(smacker)
+            dataStore[loverKey] = gson.toJson(lover)
         }
-        return smacker
+        return lover
     }
 
-    suspend fun isSmackerStored(): Boolean {
-        val smackerKey = stringPreferencesKey(smackerKeyName)
+    suspend fun isLoverStored(): Boolean {
+        val loverKey = stringPreferencesKey(loverKeyName)
         return context.dataStore.data.map { dataStore ->
-            dataStore[smackerKey] != null
+            dataStore[loverKey] != null
         }.first()
     }
 
-    suspend fun getSmacker(): SmackerRelationsDto {
-        val smackerKey = stringPreferencesKey(smackerKeyName)
+    suspend fun getLover(): LoverRelationsDto {
+        val loverKey = stringPreferencesKey(loverKeyName)
         return context.dataStore.data.map { dataStore ->
-            gson.fromJson(dataStore[smackerKey], SmackerRelationsDto::class.java)
+            gson.fromJson(dataStore[loverKey], LoverRelationsDto::class.java)
         }.first()
     }
 
-    suspend fun saveRisks(risks: SmackSpotRisks): SmackSpotRisks {
+    suspend fun saveRisks(risks: LoveSpotRisks): LoveSpotRisks {
         val risksKey = stringPreferencesKey(riskKeyName)
         context.dataStore.edit { dataStore ->
             dataStore[risksKey] = gson.toJson(risks)
@@ -76,10 +76,10 @@ class MetadataStore(private val context: Context) {
         return risks
     }
 
-    suspend fun getRisks(): SmackSpotRisks {
+    suspend fun getRisks(): LoveSpotRisks {
         val risksKey = stringPreferencesKey(riskKeyName)
         return context.dataStore.data.map { dataStore ->
-            gson.fromJson(dataStore[risksKey], SmackSpotRisks::class.java)
+            gson.fromJson(dataStore[risksKey], LoveSpotRisks::class.java)
         }.first()
     }
 
@@ -90,7 +90,7 @@ class MetadataStore(private val context: Context) {
         }.first()
     }
 
-    suspend fun saveRanks(ranks: SmackerRanks): SmackerRanks {
+    suspend fun saveRanks(ranks: LoverRanks): LoverRanks {
         val ranksKey = stringPreferencesKey(ranksKeyName)
         context.dataStore.edit { dataStore ->
             dataStore[ranksKey] = gson.toJson(ranks)
@@ -98,10 +98,10 @@ class MetadataStore(private val context: Context) {
         return ranks
     }
 
-    suspend fun getRanks(): SmackerRanks {
+    suspend fun getRanks(): LoverRanks {
         val ranksKey = stringPreferencesKey(ranksKeyName)
         return context.dataStore.data.map { dataStore ->
-            gson.fromJson(dataStore[ranksKey], SmackerRanks::class.java)
+            gson.fromJson(dataStore[ranksKey], LoverRanks::class.java)
         }.first()
     }
 

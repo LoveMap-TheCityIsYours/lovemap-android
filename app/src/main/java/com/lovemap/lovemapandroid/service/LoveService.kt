@@ -1,24 +1,24 @@
 package com.lovemap.lovemapandroid.service
 
-import com.lovemap.lovemapandroid.api.smack.CreateSmackRequest
-import com.lovemap.lovemapandroid.api.smack.SmackApi
-import com.lovemap.lovemapandroid.api.smack.SmackListDto
+import com.lovemap.lovemapandroid.api.love.CreateLoveRequest
+import com.lovemap.lovemapandroid.api.love.LoveApi
+import com.lovemap.lovemapandroid.api.love.LoveListDto
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
-import com.lovemap.lovemapandroid.data.smack.Smack
-import com.lovemap.lovemapandroid.data.smack.SmackDao
+import com.lovemap.lovemapandroid.data.love.Love
+import com.lovemap.lovemapandroid.data.love.LoveDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class SmackService(
-    private val smackApi: SmackApi,
-    private val smackDao: SmackDao,
+class LoveService(
+    private val loveApi: LoveApi,
+    private val loveDao: LoveDao,
     private val metadataStore: MetadataStore,
     private val toaster: Toaster,
 ) {
 
-    suspend fun getComplexList(): SmackListDto? {
+    suspend fun getComplexList(): LoveListDto? {
         return withContext(Dispatchers.IO) {
-            val call = smackApi.list(metadataStore.getUser().id)
+            val call = loveApi.list(metadataStore.getUser().id)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
@@ -26,9 +26,9 @@ class SmackService(
                 return@withContext null
             }
             if (response.isSuccessful) {
-                val smackListDto = response.body()!!
-                smackDao.insert(*smackListDto.smacks.toTypedArray())
-                smackListDto
+                val loveListDto = response.body()!!
+                loveDao.insert(*loveListDto.loves.toTypedArray())
+                loveListDto
             } else {
                 toaster.showNoServerToast()
                 null
@@ -36,10 +36,10 @@ class SmackService(
         }
     }
 
-    suspend fun list(): List<Smack> {
+    suspend fun list(): List<Love> {
         return withContext(Dispatchers.IO) {
-            val localSpot = smackDao.getAll()
-            val call = smackApi.list(metadataStore.getUser().id)
+            val localSpot = loveDao.getAll()
+            val call = loveApi.list(metadataStore.getUser().id)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
@@ -47,9 +47,9 @@ class SmackService(
                 return@withContext localSpot
             }
             if (response.isSuccessful) {
-                val smackListDto = response.body()!!
-                smackDao.insert(*smackListDto.smacks.toTypedArray())
-                smackListDto.smacks
+                val loveListDto = response.body()!!
+                loveDao.insert(*loveListDto.loves.toTypedArray())
+                loveListDto.loves
             } else {
                 toaster.showNoServerToast()
                 localSpot
@@ -57,9 +57,9 @@ class SmackService(
         }
     }
 
-    suspend fun create(request: CreateSmackRequest): Smack? {
+    suspend fun create(request: CreateLoveRequest): Love? {
         return withContext(Dispatchers.IO) {
-            val call = smackApi.create(request)
+            val call = loveApi.create(request)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
@@ -67,9 +67,9 @@ class SmackService(
                 return@withContext null
             }
             if (response.isSuccessful) {
-                val smackSpot = response.body()!!
-                smackDao.insert(smackSpot)
-                smackSpot
+                val loveSpot = response.body()!!
+                loveDao.insert(loveSpot)
+                loveSpot
             } else {
                 toaster.showNoServerToast()
                 null

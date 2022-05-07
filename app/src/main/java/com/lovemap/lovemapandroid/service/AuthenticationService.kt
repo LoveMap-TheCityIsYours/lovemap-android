@@ -6,8 +6,8 @@ import android.os.Looper
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.ErrorCode.*
 import com.lovemap.lovemapandroid.api.authentication.AuthenticationApi
-import com.lovemap.lovemapandroid.api.authentication.CreateSmackerRequest
-import com.lovemap.lovemapandroid.api.authentication.LoginSmackerRequest
+import com.lovemap.lovemapandroid.api.authentication.CreateLoverRequest
+import com.lovemap.lovemapandroid.api.authentication.LoginLoverRequest
 import com.lovemap.lovemapandroid.api.getErrorMessages
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.data.metadata.LoggedInUser
@@ -27,7 +27,7 @@ class AuthenticationService(
         var loggedInUser: LoggedInUser? = null
         return withContext(Dispatchers.IO) {
             val call = authenticationApi.login(
-                LoginSmackerRequest(email, password)
+                LoginLoverRequest(email, password)
             )
             val response = try {
                 call.execute()
@@ -53,7 +53,7 @@ class AuthenticationService(
         var loggedInUser: LoggedInUser? = null
         return withContext(Dispatchers.IO) {
             val call = authenticationApi.register(
-                CreateSmackerRequest(userName, password, email)
+                CreateLoverRequest(userName, password, email)
             )
             val response = try {
                 call.execute()

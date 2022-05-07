@@ -14,12 +14,12 @@ object LoveSpotContent {
     /**
      * An array of sample (placeholder) items.
      */
-    val ITEMS: MutableList<SmackSpotItem> = ArrayList()
+    val ITEMS: MutableList<LoveSpotItem> = ArrayList()
 
     /**
      * A map of sample (placeholder) items, by ID.
      */
-    val ITEM_MAP: MutableMap<String, SmackSpotItem> = HashMap()
+    val ITEM_MAP: MutableMap<String, LoveSpotItem> = HashMap()
 
     private val COUNT = 25
 
@@ -30,13 +30,13 @@ object LoveSpotContent {
         }
     }
 
-    private fun addItem(item: SmackSpotItem) {
+    private fun addItem(item: LoveSpotItem) {
         ITEMS.add(item)
         ITEM_MAP.put(item.id, item)
     }
 
-    private fun createPlaceholderItem(position: Int): SmackSpotItem {
-        return SmackSpotItem(position.toString(), "Smack Spot $position", makeDetails(position))
+    private fun createPlaceholderItem(position: Int): LoveSpotItem {
+        return LoveSpotItem(position.toString(), "Love Spot $position", makeDetails(position))
     }
 
     private fun makeDetails(position: Int): String {
@@ -51,7 +51,7 @@ object LoveSpotContent {
     /**
      * A placeholder item representing a piece of content.
      */
-    data class SmackSpotItem(val id: String, val content: String, val details: String) {
+    data class LoveSpotItem(val id: String, val content: String, val details: String) {
         override fun toString(): String = content
     }
 }

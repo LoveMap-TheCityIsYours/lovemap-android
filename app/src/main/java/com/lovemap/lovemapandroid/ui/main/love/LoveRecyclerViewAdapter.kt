@@ -5,14 +5,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.lovemap.lovemapandroid.databinding.FragmentLovespotItemBinding
-import com.lovemap.lovemapandroid.ui.data.LoveContent.SmackItem
+import com.lovemap.lovemapandroid.ui.data.LoveContent.LoveItem
 
 /**
- * [RecyclerView.Adapter] that can display a [SmackItem].
+ * [RecyclerView.Adapter] that can display a [LoveItem].
  * TODO: Replace the implementation with code for your data type.
  */
 class LoveRecyclerViewAdapter(
-    private val values: List<SmackItem>
+    private val values: List<LoveItem>
 ) : RecyclerView.Adapter<LoveRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

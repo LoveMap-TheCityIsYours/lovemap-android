@@ -9,19 +9,18 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.lovemap.lovemapandroid.R
-import com.lovemap.lovemapandroid.api.smackspot.CreateSmackSpotRequest
-import com.lovemap.lovemapandroid.api.smackspot.SmackSpotAvailabilityApiStatus.ALL_DAY
-import com.lovemap.lovemapandroid.api.smackspot.SmackSpotAvailabilityApiStatus.NIGHT_ONLY
+import com.lovemap.lovemapandroid.api.lovespot.CreateLoveSpotRequest
+import com.lovemap.lovemapandroid.api.lovespot.LoveSpotAvailabilityApiStatus.ALL_DAY
+import com.lovemap.lovemapandroid.api.lovespot.LoveSpotAvailabilityApiStatus.NIGHT_ONLY
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.databinding.ActivityAddLoveSpotBinding
-import com.lovemap.lovemapandroid.databinding.FragmentLovespotItemBinding
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 class AddLoveSpotActivity : AppCompatActivity() {
 
     private val appContext = AppContext.INSTANCE
-    private val smackSpotService = appContext.smackSpotService
+    private val loveSpotService = appContext.loveSpotService
 
     private lateinit var binding: ActivityAddLoveSpotBinding
     private lateinit var addSpotName: EditText
@@ -56,8 +55,8 @@ class AddLoveSpotActivity : AppCompatActivity() {
         addSpotSubmit.setOnClickListener {
             if (addSpotSubmit.isEnabled) {
                 MainScope().launch {
-                    val smackSpot = smackSpotService.create(
-                        CreateSmackSpotRequest(
+                    val loveSpot = loveSpotService.create(
+                        CreateLoveSpotRequest(
                             name,
                             appContext.mapCameraTarget.longitude,
                             appContext.mapCameraTarget.latitude,
@@ -66,8 +65,8 @@ class AddLoveSpotActivity : AppCompatActivity() {
                             availability
                         )
                     )
-                    if (smackSpot != null) {
-                        appContext.toaster.showToast(R.string.smack_spot_added)
+                    if (loveSpot != null) {
+                        appContext.toaster.showToast(R.string.love_spot_added)
                         appContext.shouldCloseFabs = true
                         onBackPressed()
                     }

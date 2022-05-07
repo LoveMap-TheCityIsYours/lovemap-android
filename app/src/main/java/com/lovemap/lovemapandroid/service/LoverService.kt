@@ -1,46 +1,46 @@
 package com.lovemap.lovemapandroid.service
 
-import com.lovemap.lovemapandroid.api.smacker.*
+import com.lovemap.lovemapandroid.api.lover.*
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class SmackerService(
-    private val smackerApi: SmackerApi,
+class LoverService(
+    private val loverApi: LoverApi,
     private val metadataStore: MetadataStore,
     private val toaster: Toaster,
 ) {
     private var ranksQueried = false
 
-    suspend fun getById(): SmackerRelationsDto? {
+    suspend fun getById(): LoverRelationsDto? {
         return withContext(Dispatchers.IO) {
-            val localSmacker: SmackerRelationsDto? = if (metadataStore.isSmackerStored()) {
-                metadataStore.getSmacker()
+            val localLover: LoverRelationsDto? = if (metadataStore.isLoverStored()) {
+                metadataStore.getLover()
             } else {
                 null
             }
             val loggedInUser = metadataStore.getUser()
-            val call = smackerApi.getById(loggedInUser.id)
+            val call = loverApi.getById(loggedInUser.id)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
                 toaster.showNoServerToast()
-                return@withContext localSmacker
+                return@withContext localLover
             }
             if (response.isSuccessful) {
-                val result: SmackerRelationsDto = response.body()!!
-                metadataStore.saveSmacker(result)
+                val result: LoverRelationsDto = response.body()!!
+                metadataStore.saveLover(result)
             } else {
                 toaster.showNoServerToast()
-                localSmacker
+                localLover
             }
         }
     }
 
-    suspend fun generateLink(): SmackerDto? {
+    suspend fun generateLink(): LoverDto? {
         return withContext(Dispatchers.IO) {
             val loggedInUser = metadataStore.getUser()
-            val call = smackerApi.generateLink(loggedInUser.id)
+            val call = loverApi.generateLink(loggedInUser.id)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
@@ -56,10 +56,10 @@ class SmackerService(
         }
     }
 
-    suspend fun deleteLink(): SmackerDto? {
+    suspend fun deleteLink(): LoverDto? {
         return withContext(Dispatchers.IO) {
             val loggedInUser = metadataStore.getUser()
-            val call = smackerApi.deleteLink(loggedInUser.id)
+            val call = loverApi.deleteLink(loggedInUser.id)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
@@ -75,9 +75,9 @@ class SmackerService(
         }
     }
 
-    suspend fun getByLink(smackerLink: String): SmackerViewDto? {
+    suspend fun getByLink(loverLink: String): LoverViewDto? {
         return withContext(Dispatchers.IO) {
-            val call = smackerApi.getByLink(smackerLink)
+            val call = loverApi.getByLink(loverLink)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
@@ -93,9 +93,9 @@ class SmackerService(
         }
     }
 
-    suspend fun getRanks(): SmackerRanks? {
+    suspend fun getRanks(): LoverRanks? {
         return withContext(Dispatchers.IO) {
-            val localRanks: SmackerRanks? = if (metadataStore.isRanksStored()) {
+            val localRanks: LoverRanks? = if (metadataStore.isRanksStored()) {
                 metadataStore.getRanks()
             } else {
                 null
@@ -106,7 +106,7 @@ class SmackerService(
                 if (localRanks != null) {
                     return@withContext localRanks
                 }
-                val call = smackerApi.getRanks()
+                val call = loverApi.getRanks()
                 try {
                     val response = call.execute()
                     if (response.isSuccessful) {

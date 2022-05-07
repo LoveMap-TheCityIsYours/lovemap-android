@@ -4,19 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.lovemap.lovemapandroid.ui.main.pages.SmacksPageFragment">
+    tools:context="com.lovemap.lovemapandroid.ui.main.pages.LovesPageFragment">
 
     <TextView
-        android:id="@+id/smacksTitle"
+        android:id="@+id/lovesTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="@dimen/text_margin"
         style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-        android:text="@string/your_smacks"/>
+        android:text="@string/your_loves"/>
 
     <fragment
-        android:id="@+id/fragmentSmacksSmackList"
+        android:id="@+id/fragmentLovesLoveList"
         android:name="com.lovemap.lovemapandroid.ui.main.love.LoveListFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

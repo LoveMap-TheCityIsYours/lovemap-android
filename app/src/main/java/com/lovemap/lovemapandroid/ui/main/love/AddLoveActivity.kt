@@ -6,8 +6,8 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
-import com.lovemap.lovemapandroid.api.smack.CreateSmackRequest
-import com.lovemap.lovemapandroid.api.smackspot.review.SmackSpotReviewRequest
+import com.lovemap.lovemapandroid.api.love.CreateLoveRequest
+import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.databinding.ActivityAddLoveBinding
 import com.lovemap.lovemapandroid.ui.main.MainActivity
@@ -18,11 +18,11 @@ import kotlinx.coroutines.runBlocking
 class AddLoveActivity : AppCompatActivity() {
 
     private val appContext = AppContext.INSTANCE
-    private val smackService = appContext.smackService
-    private val smackSpotService = appContext.smackSpotService
+    private val loveService = appContext.loveService
+    private val loveSpotService = appContext.loveSpotService
 
     private lateinit var binding: ActivityAddLoveBinding
-    private lateinit var addSmackSubmit: Button
+    private lateinit var addLoveSubmit: Button
     private lateinit var spotRiskDropdown: Spinner
 
     private var rating: Int = 0
@@ -37,16 +37,16 @@ class AddLoveActivity : AppCompatActivity() {
     private fun initViews() {
         binding = ActivityAddLoveBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        addSmackSubmit = binding.addSmackSubmit
+        addLoveSubmit = binding.addLoveSubmit
         spotRiskDropdown = binding.spotRiskDropdown
 
-        binding.addSmackCancel.setOnClickListener {
+        binding.addLoveCancel.setOnClickListener {
             onBackPressed()
         }
 
         binding.spotReviewRating.setOnRatingBarChangeListener { ratingBar, ratingValue, _ ->
             rating = ratingValue.toInt()
-            addSmackSubmit.isEnabled = true
+            addLoveSubmit.isEnabled = true
         }
     }
 
@@ -66,25 +66,25 @@ class AddLoveActivity : AppCompatActivity() {
     }
 
     private fun setSubmitButton() {
-        addSmackSubmit.setOnClickListener {
-            if (addSmackSubmit.isEnabled) {
+        addLoveSubmit.setOnClickListener {
+            if (addLoveSubmit.isEnabled) {
                 appContext.selectedMarker?.let {
                     val spotId = it.snippet!!.toLong()
                     MainScope().launch {
-                        val smackSpot = smackSpotService.findLocally(spotId)!!
-                        val smack = smackService.create(
-                            CreateSmackRequest(
-                                smackSpot.name,
+                        val loveSpot = loveSpotService.findLocally(spotId)!!
+                        val love = loveService.create(
+                            CreateLoveRequest(
+                                loveSpot.name,
                                 spotId,
                                 appContext.userId,
                                 null,   // TODO: add partner
                                 binding.addPrivateNote.text.toString()
                             )
                         )
-                        smack?.let {
-                            val reviewedSpot = smackSpotService.addReview(
-                                SmackSpotReviewRequest(
-                                    smack.id,
+                        love?.let {
+                            val reviewedSpot = loveSpotService.addReview(
+                                LoveSpotReviewRequest(
+                                    love.id,
                                     appContext.userId,
                                     spotId,
                                     binding.addReviewText.text.toString(),
@@ -93,7 +93,7 @@ class AddLoveActivity : AppCompatActivity() {
                                 )
                             )
                             reviewedSpot?.let {
-                                smackSpotService.update(reviewedSpot)
+                                loveSpotService.update(reviewedSpot)
                             }
                         }
                         appContext.shouldMoveMapCamera = true

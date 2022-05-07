@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/standard_16"
-        android:text="@string/record_my_smack" />
+        android:text="@string/record_my_love" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -90,7 +90,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/addSmackCancel"
+                    android:id="@+id/addLoveCancel"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/standard_16"
@@ -105,7 +105,7 @@
                     android:layout_weight="6" />
 
                 <Button
-                    android:id="@+id/addSmackSubmit"
+                    android:id="@+id/addLoveSubmit"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/standard_16"

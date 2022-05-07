@@ -7,22 +7,22 @@ import android.widget.TextView
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
 import com.lovemap.lovemapandroid.R
-import com.lovemap.lovemapandroid.api.smackspot.SmackSpotAvailabilityApiStatus
-import com.lovemap.lovemapandroid.api.smackspot.SmackSpotRisks
-import com.lovemap.lovemapandroid.data.smackspot.SmackSpot
-import com.lovemap.lovemapandroid.service.SmackSpotService
+import com.lovemap.lovemapandroid.api.lovespot.LoveSpotAvailabilityApiStatus
+import com.lovemap.lovemapandroid.api.lovespot.LoveSpotRisks
+import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
+import com.lovemap.lovemapandroid.service.LoveSpotService
 import com.lovemap.lovemapandroid.ui.events.MapInfoWindowShownEvent
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 
 class LoveSpotInfoWindowAdapter(
-    private val smackSpotService: SmackSpotService,
+    private val loveSpotService: LoveSpotService,
     private val activity: Activity,
-    private var smackSpotRisks: SmackSpotRisks?
+    private var loveSpotRisks: LoveSpotRisks?
 ) : GoogleMap.InfoWindowAdapter {
 
-    suspend fun initSmackSpotRisks() {
-        smackSpotRisks = smackSpotService.getRisks()
+    suspend fun initLoveSpotRisks() {
+        loveSpotRisks = loveSpotService.getRisks()
     }
 
     override fun getInfoWindow(marker: Marker): View? {
@@ -32,14 +32,14 @@ class LoveSpotInfoWindowAdapter(
         )
         EventBus.getDefault().post(MapInfoWindowShownEvent(marker))
         runBlocking {
-            val smackSpot =
-                smackSpotService.findLocally(marker.snippet?.toLong() ?: -1)
-            if (smackSpot != null) {
-                setTexts(view, smackSpot)
-                setRating(view, smackSpot)
-                setAvailability(view, smackSpot)
-                setRisk(smackSpot, view)
-                setCustomAvailability(view, smackSpot)
+            val loveSpot =
+                loveSpotService.findLocally(marker.snippet?.toLong() ?: -1)
+            if (loveSpot != null) {
+                setTexts(view, loveSpot)
+                setRating(view, loveSpot)
+                setAvailability(view, loveSpot)
+                setRisk(loveSpot, view)
+                setCustomAvailability(view, loveSpot)
             }
         }
         return view
@@ -47,20 +47,20 @@ class LoveSpotInfoWindowAdapter(
 
     private fun setTexts(
         view: View,
-        smackSpot: SmackSpot
+        loveSpot: LoveSpot
     ) {
         val title: TextView = view.findViewById(R.id.marker_title)
-        title.text = smackSpot.name
+        title.text = loveSpot.name
         val description: TextView = view.findViewById(R.id.marker_description)
-        description.text = smackSpot.description
+        description.text = loveSpot.description
     }
 
     private fun setRating(
         view: View,
-        smackSpot: SmackSpot
+        loveSpot: LoveSpot
     ) {
         val ratingBar: RatingBar = view.findViewById(R.id.spot_review_rating)
-        smackSpot.averageRating?.let {
+        loveSpot.averageRating?.let {
             ratingBar.rating = it.toFloat()
         } ?: run {
             ratingBar.rating = 0f
@@ -69,11 +69,11 @@ class LoveSpotInfoWindowAdapter(
 
     private fun setAvailability(
         view: View,
-        smackSpot: SmackSpot
+        loveSpot: LoveSpot
     ) {
         val availability: TextView = view.findViewById(R.id.marker_availability)
         availability.text =
-            if (smackSpot.availability == SmackSpotAvailabilityApiStatus.ALL_DAY) {
+            if (loveSpot.availability == LoveSpotAvailabilityApiStatus.ALL_DAY) {
                 activity.getString(R.string.available_all_day)
             } else {
                 activity.getString(R.string.available_night_only)
@@ -81,14 +81,14 @@ class LoveSpotInfoWindowAdapter(
     }
 
     private suspend fun setRisk(
-        smackSpot: SmackSpot,
+        loveSpot: LoveSpot,
         view: View
     ) {
         val risk: TextView = view.findViewById(R.id.marker_risk)
-        if (smackSpotRisks != null && smackSpot.averageDanger != null) {
-            val riskValue = smackSpot.averageDanger!!
-            val riskList = smackSpotRisks!!.riskList
-            val smackSpotRisk = when {
+        if (loveSpotRisks != null && loveSpot.averageDanger != null) {
+            val riskValue = loveSpot.averageDanger!!
+            val riskList = loveSpotRisks!!.riskList
+            val loveSpotRisk = when {
                 riskValue < 1.5 -> {
                     riskList[0]
                 }
@@ -100,24 +100,24 @@ class LoveSpotInfoWindowAdapter(
                 }
             }
 
-            risk.text = smackSpotRisk.nameEN
-        } else if (smackSpot.averageDanger != null) {
-            initSmackSpotRisks()
-            risk.text = smackSpot.averageDanger.toString()
+            risk.text = loveSpotRisk.nameEN
+        } else if (loveSpot.averageDanger != null) {
+            initLoveSpotRisks()
+            risk.text = loveSpot.averageDanger.toString()
         } else {
-            initSmackSpotRisks()
+            initLoveSpotRisks()
             risk.text = activity.getString(R.string.risk_unknown)
         }
     }
 
     private fun setCustomAvailability(
         view: View,
-        smackSpot: SmackSpot
+        loveSpot: LoveSpot
     ) {
         val customAvText: TextView = view.findViewById(R.id.marker_custom_availability_text)
         val customAv: TextView = view.findViewById(R.id.marker_custom_availability)
-        if (smackSpot.customAvailability != null) {
-            customAv.text = smackSpot.customAvailability
+        if (loveSpot.customAvailability != null) {
+            customAv.text = loveSpot.customAvailability
         } else {
             customAvText.visibility = View.GONE
             customAv.visibility = View.GONE

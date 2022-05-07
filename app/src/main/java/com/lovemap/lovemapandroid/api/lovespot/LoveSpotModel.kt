@@ -1,21 +1,21 @@
-package com.lovemap.lovemapandroid.api.smackspot
+package com.lovemap.lovemapandroid.api.lovespot
 
 import java.time.LocalTime
 
-enum class SmackSpotAvailabilityApiStatus {
+enum class LoveSpotAvailabilityApiStatus {
     ALL_DAY, NIGHT_ONLY
 }
 
-data class CreateSmackSpotRequest(
+data class CreateLoveSpotRequest(
     val name: String,
     val longitude: Double,
     val latitude: Double,
     val description: String,
     var customAvailability: Pair<LocalTime, LocalTime>?,
-    var availability: SmackSpotAvailabilityApiStatus
+    var availability: LoveSpotAvailabilityApiStatus
 )
 
-data class SmackSpotSearchRequest(
+data class LoveSpotSearchRequest(
     val latFrom: Double,
     val longFrom: Double,
     val latTo: Double,
@@ -23,7 +23,7 @@ data class SmackSpotSearchRequest(
     val limit: Int
 )
 
-data class SmackSpotRisks(val levels: Int, val riskList: List<Risk>) {
+data class LoveSpotRisks(val levels: Int, val riskList: List<Risk>) {
     data class Risk(
         val level: Int,
         val nameEN: String,

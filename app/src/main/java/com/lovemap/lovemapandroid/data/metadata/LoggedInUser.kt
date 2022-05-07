@@ -1,7 +1,7 @@
 package com.lovemap.lovemapandroid.data.metadata
 
-import com.lovemap.lovemapandroid.api.smacker.SmackerDto
-import com.lovemap.lovemapandroid.api.smacker.SmackerRelationsDto
+import com.lovemap.lovemapandroid.api.lover.LoverDto
+import com.lovemap.lovemapandroid.api.lover.LoverRelationsDto
 
 data class LoggedInUser(
     var id: Long = 0,
@@ -11,22 +11,22 @@ data class LoggedInUser(
     var shareableLink: String? = null,
 ) {
     companion object {
-        fun of(smackerDto: SmackerDto, jwt: String): LoggedInUser {
+        fun of(loverDto: LoverDto, jwt: String): LoggedInUser {
             return LoggedInUser(
-                id = smackerDto.id,
-                userName = smackerDto.userName,
-                email = smackerDto.email,
-                shareableLink = smackerDto.shareableLink,
+                id = loverDto.id,
+                userName = loverDto.userName,
+                email = loverDto.email,
+                shareableLink = loverDto.shareableLink,
                 jwt = jwt
             )
         }
 
-        fun of(smackerDto: SmackerRelationsDto, jwt: String): LoggedInUser {
+        fun of(loverDto: LoverRelationsDto, jwt: String): LoggedInUser {
             return LoggedInUser(
-                id = smackerDto.id,
-                userName = smackerDto.userName,
-                email = smackerDto.email,
-                shareableLink = smackerDto.shareableLink,
+                id = loverDto.id,
+                userName = loverDto.userName,
+                email = loverDto.email,
+                shareableLink = loverDto.shareableLink,
                 jwt = jwt
             )
         }

@@ -5,9 +5,9 @@ import androidx.room.Room
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.lovemap.lovemapandroid.api.authentication.AuthenticationApi
-import com.lovemap.lovemapandroid.api.smack.SmackApi
-import com.lovemap.lovemapandroid.api.smacker.SmackerApi
-import com.lovemap.lovemapandroid.api.smackspot.SmackSpotApi
+import com.lovemap.lovemapandroid.api.love.LoveApi
+import com.lovemap.lovemapandroid.api.lover.LoverApi
+import com.lovemap.lovemapandroid.api.lovespot.LoveSpotApi
 import com.lovemap.lovemapandroid.data.AppDatabase
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.service.*
@@ -26,9 +26,9 @@ class AppContext : Application() {
     lateinit var mapCameraTarget: LatLng
     lateinit var toaster: Toaster
     lateinit var authenticationService: AuthenticationService
-    lateinit var smackerService: SmackerService
-    lateinit var smackSpotService: SmackSpotService
-    lateinit var smackService: SmackService
+    lateinit var loverService: LoverService
+    lateinit var loveSpotService: LoveSpotService
+    lateinit var loveService: LoveService
 
     lateinit var metadataStore: MetadataStore
     lateinit var database: AppDatabase
@@ -38,7 +38,7 @@ class AppContext : Application() {
 
     var userId: Long = 0
     var areMarkerFabsOpen = false
-    var areAddSmackSpotFabsOpen = false
+    var areAddLoveSpotFabsOpen = false
     var shouldCloseFabs = false
     var displayDensity: Float = 0f
     var selectedMarker: Marker? = null
@@ -88,20 +88,20 @@ class AppContext : Application() {
             .baseUrl(API_ENDPOINT)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        smackerService = SmackerService(
-            retrofit.create(SmackerApi::class.java),
+        loverService = LoverService(
+            retrofit.create(LoverApi::class.java),
             metadataStore,
             toaster
         )
-        smackSpotService = SmackSpotService(
-            retrofit.create(SmackSpotApi::class.java),
-            database.smackSpotDao(),
+        loveSpotService = LoveSpotService(
+            retrofit.create(LoveSpotApi::class.java),
+            database.loveSpotDao(),
             metadataStore,
             toaster,
         )
-        smackService = SmackService(
-            retrofit.create(SmackApi::class.java),
-            database.smackDao(),
+        loveService = LoveService(
+            retrofit.create(LoveApi::class.java),
+            database.loveDao(),
             metadataStore,
             toaster
         )

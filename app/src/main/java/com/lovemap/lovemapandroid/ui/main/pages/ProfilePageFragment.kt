@@ -11,8 +11,8 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.relation.RelationStatusDto
-import com.lovemap.lovemapandroid.api.smacker.SmackerRelationsDto
-import com.lovemap.lovemapandroid.api.smacker.SmackerViewDto
+import com.lovemap.lovemapandroid.api.lover.LoverRelationsDto
+import com.lovemap.lovemapandroid.api.lover.LoverViewDto
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.ui.login.LoginActivity
 import kotlinx.coroutines.MainScope
@@ -26,14 +26,14 @@ class ProfilePageFragment : Fragment() {
     private lateinit var link: TextView
     private lateinit var linkToggle: SwitchCompat
     private lateinit var linkToggleText: TextView
-    private lateinit var numberOfSmacks: TextView
-    private lateinit var smackSpotsAdded: TextView
+    private lateinit var numberOfLoves: TextView
+    private lateinit var loveSpotsAdded: TextView
     private lateinit var reports: TextView
     private lateinit var points: TextView
     private lateinit var pointsToNextLevel: TextView
     private lateinit var currentRank: TextView
 
-    private val smackerService = AppContext.INSTANCE.smackerService
+    private val loverService = AppContext.INSTANCE.loverService
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,8 +56,8 @@ class ProfilePageFragment : Fragment() {
         link = view.findViewById(R.id.profileShareableLink)
         linkToggle = view.findViewById(R.id.profileShareableLinkToggle)
         linkToggleText = view.findViewById(R.id.profileShareableLinkToggleText)
-        numberOfSmacks = view.findViewById(R.id.profileNumberOfSmacks)
-        smackSpotsAdded = view.findViewById(R.id.profileNumberOfSmackSpots)
+        numberOfLoves = view.findViewById(R.id.profileNumberOfLoves)
+        loveSpotsAdded = view.findViewById(R.id.profileNumberOfLoveSpots)
         reports = view.findViewById(R.id.profileNumberOfReports)
         points = view.findViewById(R.id.profilePoints)
         pointsToNextLevel = view.findViewById(R.id.profilePointsToNextLevel)
@@ -69,23 +69,23 @@ class ProfilePageFragment : Fragment() {
         MainScope().launch {
             val user = AppContext.INSTANCE.metadataStore.getUser()
             userNameView.text = user.userName
-            val smacker = smackerService.getById()
-            smacker?.let {
-                setRanks(smacker)
-                setTexts(smacker)
-                setPartnerships(smacker)
-                setLinkSharing(smacker)
+            val lover = loverService.getById()
+            lover?.let {
+                setRanks(lover)
+                setTexts(lover)
+                setPartnerships(lover)
+                setLinkSharing(lover)
             }
         }
     }
 
-    private suspend fun setRanks(smacker: SmackerRelationsDto) {
-        val ranks = smackerService.getRanks()
+    private suspend fun setRanks(lover: LoverRelationsDto) {
+        val ranks = loverService.getRanks()
         ranks?.let {
             val rankList = ranks.rankList
             var levelIndex = 1
             for ((index, rank) in rankList.withIndex()) {
-                levelIndex = if (rank.pointsNeeded > smacker.points) {
+                levelIndex = if (rank.pointsNeeded > lover.points) {
                     levelIndex = index
                     break
                 } else {
@@ -97,25 +97,25 @@ class ProfilePageFragment : Fragment() {
         }
     }
 
-    private fun setTexts(smacker: SmackerRelationsDto) {
-        numberOfSmacks.text = smacker.numberOfSmacks.toString()
-        smackSpotsAdded.text = smacker.smackSpotsAdded.toString()
-        reports.text = smacker.numberOfReports.toString()
-        points.text = smacker.points.toString()
+    private fun setTexts(lover: LoverRelationsDto) {
+        numberOfLoves.text = lover.numberOfLoves.toString()
+        loveSpotsAdded.text = lover.loveSpotsAdded.toString()
+        reports.text = lover.numberOfReports.toString()
+        points.text = lover.points.toString()
     }
 
-    private fun setPartnerships(smacker: SmackerRelationsDto) {
-        if (smacker.relations.any { partnerFilter(it) }) {
-            partnersView.text = smacker.relations
+    private fun setPartnerships(lover: LoverRelationsDto) {
+        if (lover.relations.any { partnerFilter(it) }) {
+            partnersView.text = lover.relations
                 .filter { partnerFilter(it) }
                 .joinToString { it.userName }
         }
     }
 
-    private fun setLinkSharing(smacker: SmackerRelationsDto) {
-        if (smacker.shareableLink != null) {
+    private fun setLinkSharing(lover: LoverRelationsDto) {
+        if (lover.shareableLink != null) {
             linkToggle.isChecked = true
-            turnOnSharing(smacker.shareableLink)
+            turnOnSharing(lover.shareableLink)
         } else {
             linkToggle.isChecked = false
             turnOffSharing()
@@ -123,12 +123,12 @@ class ProfilePageFragment : Fragment() {
         linkToggle.setOnClickListener {
             MainScope().launch {
                 if (linkToggle.isChecked) {
-                    val smacker = smackerService.generateLink()
-                    smacker?.shareableLink?.let {
+                    val lover = loverService.generateLink()
+                    lover?.shareableLink?.let {
                         turnOnSharing(it)
                     }
                 } else {
-                    smackerService.deleteLink()?.let {
+                    loverService.deleteLink()?.let {
                         turnOffSharing()
                     }
                 }
@@ -136,7 +136,7 @@ class ProfilePageFragment : Fragment() {
         }
     }
 
-    private fun partnerFilter(it: SmackerViewDto) =
+    private fun partnerFilter(it: LoverViewDto) =
         it.relation == RelationStatusDto.PARTNER
 
     private fun setLogoutListener(view: View) {

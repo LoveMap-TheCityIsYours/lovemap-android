@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Smackmapandroid" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Lovemapandroid" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/myColorPrimary</item>
         <item name="colorPrimaryVariant">@color/myColorPrimaryVariant</item>
@@ -17,14 +17,14 @@
 <!--        <item name="android:logo">@drawable/transparent_logo_purple</item>-->
     </style>
 
-    <style name="Theme.Smackmapandroid.NoActionBar">
+    <style name="Theme.Lovemapandroid.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.Smackmapandroid.PopupOverlay" parent="Theme.Smackmapandroid" />
+    <style name="Theme.Lovemapandroid.PopupOverlay" parent="Theme.Lovemapandroid" />
 
-    <style name="splashScreenTheme" parent="Theme.Smackmapandroid">
+    <style name="splashScreenTheme" parent="Theme.Lovemapandroid">
         <item name="android:statusBarColor">@color/splash_screen</item>
         <item name="android:windowBackground">@drawable/background_splash</item>
     </style>
