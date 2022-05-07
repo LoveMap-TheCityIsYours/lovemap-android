@@ -9,17 +9,17 @@ import java.util.HashMap
  *
  * TODO: Replace all uses of this class before publishing your app.
  */
-object SmackSpotContent {
+object LoveContent {
 
     /**
      * An array of sample (placeholder) items.
      */
-    val ITEMS: MutableList<SmackSpotItem> = ArrayList()
+    val ITEMS: MutableList<SmackItem> = ArrayList()
 
     /**
      * A map of sample (placeholder) items, by ID.
      */
-    val ITEM_MAP: MutableMap<String, SmackSpotItem> = HashMap()
+    val ITEM_MAP: MutableMap<String, SmackItem> = HashMap()
 
     private val COUNT = 25
 
@@ -30,13 +30,13 @@ object SmackSpotContent {
         }
     }
 
-    private fun addItem(item: SmackSpotItem) {
+    private fun addItem(item: SmackItem) {
         ITEMS.add(item)
         ITEM_MAP.put(item.id, item)
     }
 
-    private fun createPlaceholderItem(position: Int): SmackSpotItem {
-        return SmackSpotItem(position.toString(), "Smack Spot $position", makeDetails(position))
+    private fun createPlaceholderItem(position: Int): SmackItem {
+        return SmackItem(position.toString(), "Smack $position", makeDetails(position))
     }
 
     private fun makeDetails(position: Int): String {
@@ -51,7 +51,7 @@ object SmackSpotContent {
     /**
      * A placeholder item representing a piece of content.
      */
-    data class SmackSpotItem(val id: String, val content: String, val details: String) {
+    data class SmackItem(val id: String, val content: String, val details: String) {
         override fun toString(): String = content
     }
 }

@@ -17,10 +17,10 @@
         android:theme="@style/Theme.Smackmapandroid"
         android:usesCleartextTraffic="true" >
         <activity
-            android:name="com.lovemap.lovemapandroid.ui.main.smack.AddSmackActivity"
+            android:name="com.lovemap.lovemapandroid.ui.main.love.AddLoveActivity"
             android:exported="false" />
         <activity
-            android:name="com.lovemap.lovemapandroid.ui.main.smackspot.AddSmackSpotActivity"
+            android:name="com.lovemap.lovemapandroid.ui.main.lovespot.AddLoveSpotActivity"
             android:exported="false" />
 
         <meta-data

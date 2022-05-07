@@ -1,6 +1,5 @@
-package com.lovemap.lovemapandroid.ui.main.smack
+package com.lovemap.lovemapandroid.ui.main.love
 
-import android.R
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -10,19 +9,19 @@ import androidx.appcompat.app.AppCompatActivity
 import com.lovemap.lovemapandroid.api.smack.CreateSmackRequest
 import com.lovemap.lovemapandroid.api.smackspot.review.SmackSpotReviewRequest
 import com.lovemap.lovemapandroid.config.AppContext
-import com.lovemap.lovemapandroid.databinding.ActivityAddSmackBinding
+import com.lovemap.lovemapandroid.databinding.ActivityAddLoveBinding
 import com.lovemap.lovemapandroid.ui.main.MainActivity
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class AddSmackActivity : AppCompatActivity() {
+class AddLoveActivity : AppCompatActivity() {
 
     private val appContext = AppContext.INSTANCE
     private val smackService = appContext.smackService
     private val smackSpotService = appContext.smackSpotService
 
-    private lateinit var binding: ActivityAddSmackBinding
+    private lateinit var binding: ActivityAddLoveBinding
     private lateinit var addSmackSubmit: Button
     private lateinit var spotRiskDropdown: Spinner
 
@@ -36,7 +35,7 @@ class AddSmackActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        binding = ActivityAddSmackBinding.inflate(layoutInflater)
+        binding = ActivityAddLoveBinding.inflate(layoutInflater)
         setContentView(binding.root)
         addSmackSubmit = binding.addSmackSubmit
         spotRiskDropdown = binding.spotRiskDropdown
@@ -59,7 +58,7 @@ class AddSmackActivity : AppCompatActivity() {
                 val risks = appContext.metadataStore.getRisks()
                 spotRiskDropdown.adapter = ArrayAdapter(
                     applicationContext,
-                    R.layout.simple_spinner_dropdown_item,
+                    android.R.layout.simple_spinner_dropdown_item,
                     risks.riskList.map { it.nameEN }.toTypedArray()
                 )
             }

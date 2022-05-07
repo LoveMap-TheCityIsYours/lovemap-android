@@ -5,10 +5,10 @@ import androidx.room.*
 @Dao
 interface SmackDao {
 
-    @Query("SELECT * FROM smack WHERE id = :id")
+    @Query("SELECT * FROM love WHERE id = :id")
     fun loadSingle(id: Long): Smack?
 
-    @Query("SELECT * FROM smack")
+    @Query("SELECT * FROM love")
     fun getAll(): List<Smack>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

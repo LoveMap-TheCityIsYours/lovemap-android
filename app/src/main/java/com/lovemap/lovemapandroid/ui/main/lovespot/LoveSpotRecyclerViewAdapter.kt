@@ -1,24 +1,24 @@
-package com.lovemap.lovemapandroid.ui.main.smack
+package com.lovemap.lovemapandroid.ui.main.lovespot
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.lovemap.lovemapandroid.databinding.FragmentSmackspotItemBinding
-import com.lovemap.lovemapandroid.ui.data.SmackContent.SmackItem
+import com.lovemap.lovemapandroid.databinding.FragmentLovespotItemBinding
+import com.lovemap.lovemapandroid.ui.data.LoveSpotContent.SmackSpotItem
 
 /**
- * [RecyclerView.Adapter] that can display a [SmackItem].
+ * [RecyclerView.Adapter] that can display a [SmackSpotItem].
  * TODO: Replace the implementation with code for your data type.
  */
-class SmackRecyclerViewAdapter(
-    private val values: List<SmackItem>
-) : RecyclerView.Adapter<SmackRecyclerViewAdapter.ViewHolder>() {
+class LoveSpotRecyclerViewAdapter(
+    private val values: List<SmackSpotItem>
+) : RecyclerView.Adapter<LoveSpotRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         return ViewHolder(
-            FragmentSmackspotItemBinding.inflate(
+            FragmentLovespotItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -35,7 +35,7 @@ class SmackRecyclerViewAdapter(
 
     override fun getItemCount(): Int = values.size
 
-    inner class ViewHolder(binding: FragmentSmackspotItemBinding) :
+    inner class ViewHolder(binding: FragmentLovespotItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val idView: TextView = binding.itemNumber
         val contentView: TextView = binding.content

@@ -19,7 +19,7 @@ import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.databinding.ActivityMainBinding
 import com.lovemap.lovemapandroid.ui.events.MapInfoWindowShownEvent
 import com.lovemap.lovemapandroid.ui.events.MapMarkerEventListener
-import com.lovemap.lovemapandroid.ui.main.smackspot.AddSmackSpotActivity
+import com.lovemap.lovemapandroid.ui.main.lovespot.AddLoveSpotActivity
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity(), MapMarkerEventListener {
         }
 
         okFab.setOnClickListener {
-            startActivity(Intent(this, AddSmackSpotActivity::class.java))
+            startActivity(Intent(this, AddLoveSpotActivity::class.java))
         }
 
         cancelFab.setOnClickListener {

@@ -1,4 +1,4 @@
-package com.lovemap.lovemapandroid.ui.main.smackspot
+package com.lovemap.lovemapandroid.ui.main.love
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,13 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.lovemap.lovemapandroid.ui.data.SmackSpotContent
+import com.lovemap.lovemapandroid.ui.data.LoveContent
 import com.lovemap.lovemapandroid.R
 
 /**
  * A fragment representing a list of Items.
  */
-class SmackSpotListFragment : Fragment() {
+class LoveListFragment : Fragment() {
 
     private var columnCount = 1
 
@@ -30,7 +30,7 @@ class SmackSpotListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_smackspot_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_lovespot_list, container, false)
 
         // Set the adapter
         if (view is RecyclerView) {
@@ -39,7 +39,7 @@ class SmackSpotListFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = SmackSpotRecyclerViewAdapter(SmackSpotContent.ITEMS)
+                adapter = LoveRecyclerViewAdapter(LoveContent.ITEMS)
             }
         }
         return view
@@ -53,7 +53,7 @@ class SmackSpotListFragment : Fragment() {
         // TODO: Customize parameter initialization
         @JvmStatic
         fun newInstance(columnCount: Int) =
-            SmackSpotListFragment().apply {
+            LoveListFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }

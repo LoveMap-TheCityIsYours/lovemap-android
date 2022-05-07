@@ -4,16 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:orientation="vertical"
     android:padding="@dimen/standard_16"
-    tools:context=".ui.main.smack.AddSmackActivity">
+    android:orientation="vertical"
+    tools:context=".ui.main.lovespot.AddLoveSpotActivity">
 
     <TextView
         style="@style/TextAppearance.AppCompat.Headline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/standard_16"
-        android:text="@string/record_my_smack" />
+        android:text="@string/add_new_smack_spot" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -29,75 +29,54 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/addPrivateNote"
+                android:id="@+id/addSpotName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/add_spot_name"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/addSpotDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minLines="2"
                 android:maxLines="5"
-                android:hint="@string/add_private_note"
+                android:hint="@string/add_spot_description"
                 android:inputType="textMultiLine" />
 
-            <EditText
-                android:id="@+id/addReviewText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/add_review_text"
-                android:inputType="textMultiLine"
-                android:maxLines="5" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="@string/reviewStarsText"
                 android:layout_gravity="start"
                 android:layout_margin="@dimen/standard_8"
-                />
-
-            <RatingBar
-                android:id="@+id/spot_review_rating"
-                style="?android:attr/ratingBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginStart="@dimen/standard_16"
-                android:layout_marginEnd="@dimen/standard_8"
-                android:isIndicator="false"
-                android:numStars="5"
-                android:stepSize="1" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/riskLevelText"
-                android:layout_gravity="start"
-                android:layout_margin="@dimen/standard_8"
-                />
+                android:text="@string/availability" />
 
             <Spinner
-                android:id="@+id/spotRiskDropdown"
+                android:id="@+id/addSpotAvailability"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standard_8"
                 android:layout_marginEnd="@dimen/standard_8"
                 android:layout_marginBottom="@dimen/standard_50"
-                android:entries="@array/spot_risk_levels"
+                android:entries="@array/availability_list"
                 android:spinnerMode="dropdown" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:context=".ui.main.lovespot.AddLoveSpotActivity">
 
                 <Button
-                    android:id="@+id/addSmackCancel"
+                    android:id="@+id/addSpotCancel"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/standard_10"
+                    android:layout_marginStart="@dimen/standard_16"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/standard_16"
-                    android:layout_weight="1"
                     android:drawableLeft="@drawable/ic_baseline_cancel_24"
-                    android:text="@string/cancel"
-                    android:textSize="@dimen/standard_10" />
+                    android:text="@string/cancel" />
 
                 <Space
                     android:layout_width="0dp"
@@ -105,15 +84,15 @@
                     android:layout_weight="6" />
 
                 <Button
-                    android:id="@+id/addSmackSubmit"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/standard_16"
+                    android:id="@+id/addSpotSubmit"
                     android:layout_weight="1"
-                    android:drawableLeft="@drawable/ic_baseline_done_24"
                     android:enabled="false"
-                    android:text="@string/submit"
-                    android:textSize="@dimen/standard_10" />
+                    android:layout_width="120dp"
+                    android:textSize="@dimen/standard_10"
+                    android:layout_marginEnd="@dimen/standard_16"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_baseline_done_24"
+                    android:text="@string/submit" />
             </LinearLayout>
         </LinearLayout>
 

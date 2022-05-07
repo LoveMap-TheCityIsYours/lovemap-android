@@ -29,20 +29,20 @@ import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.smackspot.SmackSpot
 import com.lovemap.lovemapandroid.service.SmackSpotService
 import com.lovemap.lovemapandroid.ui.events.MainActivityEventListener
-import com.lovemap.lovemapandroid.ui.main.smack.AddSmackActivity
-import com.lovemap.lovemapandroid.ui.utils.SmackSpotInfoWindowAdapter
+import com.lovemap.lovemapandroid.ui.main.love.AddLoveActivity
+import com.lovemap.lovemapandroid.ui.utils.LoveSpotInfoWindowAdapter
 import com.lovemap.lovemapandroid.ui.utils.pixelToDp
 import kotlinx.coroutines.*
 
 @SuppressLint("MissingPermission")
-class SmackMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventListener {
+class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventListener {
     private val appContext = AppContext.INSTANCE
     private val smackSpotService: SmackSpotService = appContext.smackSpotService
     private var cameraMoved = false
     private var locationEnabled = false
 
     private lateinit var viewPager2: ViewPager2
-    private lateinit var smackSpotInfoWindowAdapter: SmackSpotInfoWindowAdapter
+    private lateinit var loveSpotInfoWindowAdapter: LoveSpotInfoWindowAdapter
     private lateinit var mapFragment: SupportMapFragment
     private lateinit var dayBitmap: BitmapDescriptor
     private lateinit var nightBitmap: BitmapDescriptor
@@ -63,7 +63,7 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLi
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.fragment_smack_map_page, container, false)
+        val view = inflater.inflate(R.layout.fragment_love_map_page, container, false)
         mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         dayBitmap = getIconBitmap(R.drawable.ic_marker_sun)
         nightBitmap = getIconBitmap(R.drawable.ic_marker_moon)
@@ -75,7 +75,7 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLi
         reportSmackSpotFab = view.findViewById(R.id.reportSmackSpotFab)
 
         addSmackFab.setOnClickListener {
-            startActivity(Intent(requireContext(), AddSmackActivity::class.java))
+            startActivity(Intent(requireContext(), AddLoveActivity::class.java))
         }
 
         return view
@@ -115,12 +115,12 @@ class SmackMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLi
             }
         }
         MainScope().launch {
-            smackSpotInfoWindowAdapter = SmackSpotInfoWindowAdapter(
+            loveSpotInfoWindowAdapter = LoveSpotInfoWindowAdapter(
                 smackSpotService,
                 requireActivity(),
                 smackSpotService.getRisks()
             )
-            googleMap.setInfoWindowAdapter(smackSpotInfoWindowAdapter)
+            googleMap.setInfoWindowAdapter(loveSpotInfoWindowAdapter)
             fetchSmackSpots(googleMap)
         }
         setMyLocation(googleMap)

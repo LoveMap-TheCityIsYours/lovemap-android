@@ -15,7 +15,7 @@ import com.lovemap.lovemapandroid.ui.events.MapInfoWindowShownEvent
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 
-class SmackSpotInfoWindowAdapter(
+class LoveSpotInfoWindowAdapter(
     private val smackSpotService: SmackSpotService,
     private val activity: Activity,
     private var smackSpotRisks: SmackSpotRisks?

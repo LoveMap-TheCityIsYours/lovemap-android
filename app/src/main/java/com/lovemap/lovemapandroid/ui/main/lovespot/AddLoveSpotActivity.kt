@@ -1,4 +1,4 @@
-package com.lovemap.lovemapandroid.ui.main.smackspot
+package com.lovemap.lovemapandroid.ui.main.lovespot
 
 import android.os.Bundle
 import android.text.Editable
@@ -13,16 +13,17 @@ import com.lovemap.lovemapandroid.api.smackspot.CreateSmackSpotRequest
 import com.lovemap.lovemapandroid.api.smackspot.SmackSpotAvailabilityApiStatus.ALL_DAY
 import com.lovemap.lovemapandroid.api.smackspot.SmackSpotAvailabilityApiStatus.NIGHT_ONLY
 import com.lovemap.lovemapandroid.config.AppContext
-import com.lovemap.lovemapandroid.databinding.ActivityAddSmackSpotBinding
+import com.lovemap.lovemapandroid.databinding.ActivityAddLoveSpotBinding
+import com.lovemap.lovemapandroid.databinding.FragmentLovespotItemBinding
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
-class AddSmackSpotActivity : AppCompatActivity() {
+class AddLoveSpotActivity : AppCompatActivity() {
 
     private val appContext = AppContext.INSTANCE
     private val smackSpotService = appContext.smackSpotService
 
-    private lateinit var binding: ActivityAddSmackSpotBinding
+    private lateinit var binding: ActivityAddLoveSpotBinding
     private lateinit var addSpotName: EditText
     private lateinit var addSpotDescription: EditText
     private var availability = ALL_DAY
@@ -31,7 +32,7 @@ class AddSmackSpotActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAddSmackSpotBinding.inflate(layoutInflater)
+        binding = ActivityAddLoveSpotBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val addSpotCancel = binding.addSpotCancel
         addSpotName = binding.addSpotName

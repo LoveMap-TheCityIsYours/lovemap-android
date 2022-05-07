@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.lovemap.lovemapandroid.ui.main.pages.DiscoverPageFragment
 import com.lovemap.lovemapandroid.ui.main.pages.ProfilePageFragment
-import com.lovemap.lovemapandroid.ui.main.pages.SmackMapPageFragment
+import com.lovemap.lovemapandroid.ui.main.pages.LoveMapPageFragment
 import com.lovemap.lovemapandroid.ui.main.pages.SmacksPageFragment
 import java.lang.IllegalArgumentException
 
@@ -26,7 +26,7 @@ class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapte
         } else if (position == 1) {
             return DiscoverPageFragment()
         } else if (position == 2) {
-            return SmackMapPageFragment()
+            return LoveMapPageFragment()
         } else if (position == 3) {
             return ProfilePageFragment()
         }
