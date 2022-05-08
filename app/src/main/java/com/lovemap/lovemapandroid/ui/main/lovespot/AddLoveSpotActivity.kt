@@ -1,5 +1,6 @@
 package com.lovemap.lovemapandroid.ui.main.lovespot
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,6 +15,7 @@ import com.lovemap.lovemapandroid.api.lovespot.LoveSpotAvailabilityApiStatus.ALL
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotAvailabilityApiStatus.NIGHT_ONLY
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.databinding.ActivityAddLoveSpotBinding
+import com.lovemap.lovemapandroid.ui.main.MainActivity
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
@@ -68,7 +70,11 @@ class AddLoveSpotActivity : AppCompatActivity() {
                     if (loveSpot != null) {
                         appContext.toaster.showToast(R.string.love_spot_added)
                         appContext.shouldCloseFabs = true
+                        appContext.zoomOnNewLoveSpot = loveSpot
                         onBackPressed()
+//                        val intent = Intent(applicationContext, MainActivity::class.java)
+//                        intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
+//                        startActivity(intent)
                     }
                 }
             }

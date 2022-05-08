@@ -1,16 +1,15 @@
 package com.lovemap.lovemapandroid.ui.main.love
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
+import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.love.CreateLoveRequest
 import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.databinding.ActivityAddLoveBinding
-import com.lovemap.lovemapandroid.ui.main.MainActivity
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -61,6 +60,7 @@ class AddLoveActivity : AppCompatActivity() {
                     android.R.layout.simple_spinner_dropdown_item,
                     risks.riskList.map { it.nameEN }.toTypedArray()
                 )
+                spotRiskDropdown.setSelection(1)
             }
         }
     }
@@ -96,15 +96,12 @@ class AddLoveActivity : AppCompatActivity() {
                                 loveSpotService.update(reviewedSpot)
                             }
                         }
+                        appContext.toaster.showToast(R.string.lovemaking_recorded)
                         appContext.shouldMoveMapCamera = true
-                        val intent = Intent(applicationContext, MainActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
-                        startActivity(intent)
+                        onBackPressed()
                     }
                 }
             }
         }
     }
-
-
 }

@@ -10,19 +10,14 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.gms.maps.model.Marker
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.databinding.ActivityMainBinding
-import com.lovemap.lovemapandroid.ui.events.MapInfoWindowShownEvent
 import com.lovemap.lovemapandroid.ui.events.MapMarkerEventListener
 import com.lovemap.lovemapandroid.ui.main.lovespot.AddLoveSpotActivity
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 
 private const val MAP_PAGE = 2
@@ -42,18 +37,6 @@ class MainActivity : AppCompatActivity(), MapMarkerEventListener {
     private lateinit var tabLayout: TabLayout
     private lateinit var icons: Array<Drawable>
 
-    private var lastShownInfoWindowMarker: Marker? = null
-
-    override fun onStart() {
-        super.onStart()
-        EventBus.getDefault().register(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        EventBus.getDefault().unregister(this)
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,11 +53,9 @@ class MainActivity : AppCompatActivity(), MapMarkerEventListener {
                 closeAddLoveSpotFabs()
             }
         }
-
         okFab.setOnClickListener {
             startActivity(Intent(this, AddLoveSpotActivity::class.java))
         }
-
         cancelFab.setOnClickListener {
             closeAddLoveSpotFabs()
         }
@@ -117,11 +98,6 @@ class MainActivity : AppCompatActivity(), MapMarkerEventListener {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onMapInfoWindowShownEvent(event: MapInfoWindowShownEvent) {
-        lastShownInfoWindowMarker = event.marker
-    }
-
     override fun onMarkerClicked() {
         closeAddLoveSpotFabs()
     }
@@ -145,7 +121,8 @@ class MainActivity : AppCompatActivity(), MapMarkerEventListener {
                 .translationX(-resources.getDimension(R.dimen.standard_150))
             addLoveSpotFab.animate().rotationBy(360f)
 
-            lastShownInfoWindowMarker?.hideInfoWindow()
+            appContext.selectedMarker?.hideInfoWindow()
+            appContext.selectedMarker = null
 
             val crosshair: ImageView? = findViewById(R.id.centerCrosshair)
             if (crosshair != null) {

@@ -88,6 +88,9 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
         viewPager2 = getViewPager2(requireView())
         val crosshair: ImageView = viewPager2.findViewById(R.id.centerCrosshair)
         val addLovespotText: TextView = viewPager2.findViewById(R.id.mapAddLovespotText)
+        if (appContext.shouldCloseFabs) {
+            closeMarkerFabMenu()
+        }
         if (appContext.areAddLoveSpotFabsOpen) {
             crosshair.visibility = View.VISIBLE
             addLovespotText.visibility = View.VISIBLE
@@ -103,15 +106,10 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
         viewPager2 = getViewPager2(thisView)
         val linearLayout = viewPager2.parent as ViewGroup
         val tabLayout = linearLayout.findViewById<TabLayout>(R.id.tab_layout)
-        if (appContext.selectedMarker != null) {
+        if (appContext.selectedMarker != null && appContext.zoomOnNewLoveSpot == null) {
             if (appContext.shouldMoveMapCamera) {
                 appContext.shouldMoveMapCamera = false
-                googleMap.animateCamera(
-                    CameraUpdateFactory.newLatLngZoom(
-                        appContext.selectedMarker!!.position,
-                        15f
-                    )
-                )
+                moveCameraTo(appContext.selectedMarker!!.position, googleMap)
             }
         }
         MainScope().launch {
@@ -149,12 +147,14 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
     private fun putMarkersOnMap(googleMap: GoogleMap) {
         googleMap.setOnMarkerClickListener { marker ->
             appContext.mapMarkerEventListener.onMarkerClicked()
+            appContext.selectedMarker = marker
             openMarkerFabMenu()
             false
         }
         googleMap.setOnMapClickListener {
             viewPager2.isUserInputEnabled = false
             appContext.mapMarkerEventListener.onMapClicked()
+            appContext.selectedMarker = null
             closeMarkerFabMenu()
         }
         googleMap.setOnCameraIdleListener {
@@ -173,21 +173,36 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
         appContext.mapCameraTarget = googleMap.cameraPosition.target
         loveSpotService
             .search(visibleRegion.latLngBounds)
-            .map { loveSpotToMarkerOptions(it) }
+            .map { loveSpotToMarkerOptions(it, googleMap) }
             .forEach { googleMap.addMarker(it) }
+
+        if (appContext.selectedMarker != null) {
+            appContext.selectedMarker!!.showInfoWindow()
+            openMarkerFabMenu()
+        } else {
+            closeMarkerFabMenu()
+        }
     }
 
-    private fun loveSpotToMarkerOptions(loveSpot: LoveSpot): MarkerOptions {
+    private fun loveSpotToMarkerOptions(loveSpot: LoveSpot, googleMap: GoogleMap): MarkerOptions {
         val icon = if (loveSpot.availability == ALL_DAY) {
             dayBitmap
         } else {
             nightBitmap
         }
-        return MarkerOptions()
+        val position = LatLng(loveSpot.latitude, loveSpot.longitude)
+        val marker = MarkerOptions()
             .icon(icon)
-            .position(LatLng(loveSpot.latitude, loveSpot.longitude))
+            .position(position)
             .snippet(loveSpot.id.toString())
             .title(loveSpot.name)
+
+        if (appContext.zoomOnNewLoveSpot != null && appContext.zoomOnNewLoveSpot!!.id == loveSpot.id) {
+            appContext.zoomOnNewLoveSpot = null
+            moveCameraTo(position, googleMap)
+        }
+
+        return marker
     }
 
     private fun getIconBitmap(drawableId: Int): BitmapDescriptor {
@@ -329,6 +344,15 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
             }
 
         }
+    }
+
+    private fun moveCameraTo(position: LatLng, googleMap: GoogleMap) {
+        googleMap.animateCamera(
+            CameraUpdateFactory.newLatLngZoom(
+                position,
+                15f
+            )
+        )
     }
 
     override fun onOpenAddLoveSpotFabs() {

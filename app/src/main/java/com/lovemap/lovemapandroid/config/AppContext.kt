@@ -9,6 +9,7 @@ import com.lovemap.lovemapandroid.api.love.LoveApi
 import com.lovemap.lovemapandroid.api.lover.LoverApi
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotApi
 import com.lovemap.lovemapandroid.data.AppDatabase
+import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.service.*
 import com.lovemap.lovemapandroid.ui.events.MainActivityEventListener
@@ -43,6 +44,7 @@ class AppContext : Application() {
     var displayDensity: Float = 0f
     var selectedMarker: Marker? = null
     var shouldMoveMapCamera: Boolean = false
+    var zoomOnNewLoveSpot: LoveSpot? = null
 
     private lateinit var gsonConverterFactory: GsonConverterFactory
     private lateinit var retrofit: Retrofit

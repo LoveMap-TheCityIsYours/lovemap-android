@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="@dimen/standard_16"
+    tools:context=".ui.main.love.AddLoveFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/standard_16"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/addPrivateNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minLines="2"
+                android:maxLines="5"
+                android:hint="@string/add_private_note"
+                android:inputType="textMultiLine" />
+
+            <EditText
+                android:id="@+id/addReviewText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/add_review_text"
+                android:inputType="textMultiLine"
+                android:maxLines="5" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/reviewStarsText"
+                android:layout_gravity="start"
+                android:layout_margin="@dimen/standard_8"
+                />
+
+            <RatingBar
+                android:id="@+id/spot_review_rating"
+                style="?android:attr/ratingBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/standard_16"
+                android:layout_marginEnd="@dimen/standard_8"
+                android:isIndicator="false"
+                android:numStars="5"
+                android:stepSize="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/riskLevelText"
+                android:layout_gravity="start"
+                android:layout_margin="@dimen/standard_8"
+                />
+
+            <Spinner
+                android:id="@+id/spotRiskDropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standard_8"
+                android:layout_marginEnd="@dimen/standard_8"
+                android:layout_marginBottom="@dimen/standard_50"
+                android:entries="@array/spot_risk_levels"
+                android:spinnerMode="dropdown" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/addLoveCancel"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/standard_16"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_baseline_cancel_24"
+                    android:text="@string/cancel"
+                    android:textSize="@dimen/standard_10" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="6" />
+
+                <Button
+                    android:id="@+id/addLoveSubmit"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/standard_16"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_baseline_done_24"
+                    android:enabled="false"
+                    android:text="@string/submit"
+                    android:textSize="@dimen/standard_10" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

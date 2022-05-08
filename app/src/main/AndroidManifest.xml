@@ -18,6 +18,7 @@
         android:usesCleartextTraffic="true" >
         <activity
             android:name="com.lovemap.lovemapandroid.ui.main.love.AddLoveActivity"
+            android:noHistory="true"
             android:exported="false" />
         <activity
             android:name="com.lovemap.lovemapandroid.ui.main.lovespot.AddLoveSpotActivity"
