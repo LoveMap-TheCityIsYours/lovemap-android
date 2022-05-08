@@ -59,7 +59,7 @@ class LoveSpotInfoWindowAdapter(
         view: View,
         loveSpot: LoveSpot
     ) {
-        val ratingBar: RatingBar = view.findViewById(R.id.spot_review_rating)
+        val ratingBar: RatingBar = view.findViewById(R.id.spotReviewRating)
         loveSpot.averageRating?.let {
             ratingBar.rating = it.toFloat()
         } ?: run {
@@ -105,7 +105,6 @@ class LoveSpotInfoWindowAdapter(
             initLoveSpotRisks()
             risk.text = loveSpot.averageDanger.toString()
         } else {
-            initLoveSpotRisks()
             risk.text = activity.getString(R.string.risk_unknown)
         }
     }

@@ -15,10 +15,10 @@
         android:layout_marginBottom="@dimen/standard_16"
         android:text="@string/record_my_love" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+<!--    <ScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:orientation="vertical">-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,60 +28,11 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/addPrivateNote"
+            <fragment
+                android:id="@+id/addLoveFragment"
+                android:name="com.lovemap.lovemapandroid.ui.main.love.AddLoveFragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minLines="2"
-                android:maxLines="5"
-                android:hint="@string/add_private_note"
-                android:inputType="textMultiLine" />
-
-            <EditText
-                android:id="@+id/addReviewText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/add_review_text"
-                android:inputType="textMultiLine"
-                android:maxLines="5" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/reviewStarsText"
-                android:layout_gravity="start"
-                android:layout_margin="@dimen/standard_8"
-                />
-
-            <RatingBar
-                android:id="@+id/spot_review_rating"
-                style="?android:attr/ratingBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginStart="@dimen/standard_16"
-                android:layout_marginEnd="@dimen/standard_8"
-                android:isIndicator="false"
-                android:numStars="5"
-                android:stepSize="1" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/riskLevelText"
-                android:layout_gravity="start"
-                android:layout_margin="@dimen/standard_8"
-                />
-
-            <Spinner
-                android:id="@+id/spotRiskDropdown"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/standard_8"
-                android:layout_marginEnd="@dimen/standard_8"
-                android:layout_marginBottom="@dimen/standard_50"
-                android:entries="@array/spot_risk_levels"
-                android:spinnerMode="dropdown" />
+                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -115,9 +66,9 @@
                     android:text="@string/submit"
                     android:textSize="@dimen/standard_10" />
             </LinearLayout>
-        </LinearLayout>
 
-    </ScrollView>
+        </LinearLayout>
+<!--    </ScrollView>-->
 
 </LinearLayout>
 

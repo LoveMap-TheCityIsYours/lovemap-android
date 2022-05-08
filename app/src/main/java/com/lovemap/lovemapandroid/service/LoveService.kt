@@ -3,9 +3,9 @@ package com.lovemap.lovemapandroid.service
 import com.lovemap.lovemapandroid.api.love.CreateLoveRequest
 import com.lovemap.lovemapandroid.api.love.LoveApi
 import com.lovemap.lovemapandroid.api.love.LoveListDto
-import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.data.love.Love
 import com.lovemap.lovemapandroid.data.love.LoveDao
+import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

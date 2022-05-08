@@ -92,9 +92,10 @@
     <string name="availability">Availability:</string>
     <string name="add_private_note">Private note about your experience trying this Love Spot</string>
     <string name="add_review_text">Public review of this Love Spot</string>
-    <string name="riskLevelText">How risky is this Love Spot in your opinion?</string>
+    <string name="riskLevelText">What is the risk of being caught in the act?</string>
     <string name="reviewStarsText">How good is this Love Spot?</string>
     <string name="lovemaking_recorded">Lovemaking recorded</string>
+    <string name="also_made_love_here">I also made love here</string>
 
 
 </resources>

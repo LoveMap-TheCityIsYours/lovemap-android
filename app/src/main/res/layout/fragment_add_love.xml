@@ -2,16 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="@dimen/standard_16"
+    android:paddingTop="@dimen/standard_16"
+    android:paddingBottom="@dimen/standard_16"
     tools:context=".ui.main.love.AddLoveFragment">
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -47,7 +43,7 @@
                 />
 
             <RatingBar
-                android:id="@+id/spot_review_rating"
+                android:id="@+id/spotReviewRating"
                 style="?android:attr/ratingBarStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -72,44 +68,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standard_8"
                 android:layout_marginEnd="@dimen/standard_8"
-                android:layout_marginBottom="@dimen/standard_50"
                 android:entries="@array/spot_risk_levels"
                 android:spinnerMode="dropdown" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/addLoveCancel"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/standard_16"
-                    android:layout_weight="1"
-                    android:drawableLeft="@drawable/ic_baseline_cancel_24"
-                    android:text="@string/cancel"
-                    android:textSize="@dimen/standard_10" />
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="6" />
-
-                <Button
-                    android:id="@+id/addLoveSubmit"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/standard_16"
-                    android:layout_weight="1"
-                    android:drawableLeft="@drawable/ic_baseline_done_24"
-                    android:enabled="false"
-                    android:text="@string/submit"
-                    android:textSize="@dimen/standard_10" />
-            </LinearLayout>
         </LinearLayout>
-
-    </ScrollView>
-
 </LinearLayout>

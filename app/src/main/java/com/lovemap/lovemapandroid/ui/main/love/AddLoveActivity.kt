@@ -1,9 +1,7 @@
 package com.lovemap.lovemapandroid.ui.main.love
 
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.Spinner
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.love.CreateLoveRequest
@@ -12,24 +10,20 @@ import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.databinding.ActivityAddLoveBinding
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class AddLoveActivity : AppCompatActivity() {
-
     private val appContext = AppContext.INSTANCE
     private val loveService = appContext.loveService
     private val loveSpotService = appContext.loveSpotService
 
     private lateinit var binding: ActivityAddLoveBinding
     private lateinit var addLoveSubmit: Button
-    private lateinit var spotRiskDropdown: Spinner
 
     private var rating: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initViews()
-        setRiskDropdown()
         setSubmitButton()
     }
 
@@ -37,31 +31,14 @@ class AddLoveActivity : AppCompatActivity() {
         binding = ActivityAddLoveBinding.inflate(layoutInflater)
         setContentView(binding.root)
         addLoveSubmit = binding.addLoveSubmit
-        spotRiskDropdown = binding.spotRiskDropdown
 
         binding.addLoveCancel.setOnClickListener {
             onBackPressed()
         }
 
-        binding.spotReviewRating.setOnRatingBarChangeListener { ratingBar, ratingValue, _ ->
+        findViewById<RatingBar>(R.id.spotReviewRating).setOnRatingBarChangeListener { ratingBar, ratingValue, _ ->
             rating = ratingValue.toInt()
             addLoveSubmit.isEnabled = true
-        }
-    }
-
-    private fun setRiskDropdown() {
-        spotRiskDropdown.setSelection(1)
-        // TODO: i18n
-        runBlocking {
-            if (appContext.metadataStore.isRisksStored()) {
-                val risks = appContext.metadataStore.getRisks()
-                spotRiskDropdown.adapter = ArrayAdapter(
-                    applicationContext,
-                    android.R.layout.simple_spinner_dropdown_item,
-                    risks.riskList.map { it.nameEN }.toTypedArray()
-                )
-                spotRiskDropdown.setSelection(1)
-            }
         }
     }
 
@@ -78,7 +55,7 @@ class AddLoveActivity : AppCompatActivity() {
                                 spotId,
                                 appContext.userId,
                                 null,   // TODO: add partner
-                                binding.addPrivateNote.text.toString()
+                                findViewById<EditText>(R.id.addPrivateNote).text.toString()
                             )
                         )
                         love?.let {
@@ -87,9 +64,9 @@ class AddLoveActivity : AppCompatActivity() {
                                     love.id,
                                     appContext.userId,
                                     spotId,
-                                    binding.addReviewText.text.toString(),
+                                    findViewById<EditText>(R.id.addReviewText).text.toString(),
                                     rating,
-                                    spotRiskDropdown.selectedItemPosition + 1
+                                    findViewById<Spinner>(R.id.spotRiskDropdown).selectedItemPosition + 1
                                 )
                             )
                             reviewedSpot?.let {

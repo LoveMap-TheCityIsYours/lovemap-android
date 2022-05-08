@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:padding="@dimen/standard_16"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
     android:orientation="vertical"
     tools:context=".ui.main.lovespot.AddLoveSpotActivity">
 
-    <TextView
-        style="@style/TextAppearance.AppCompat.Headline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/standard_16"
-        android:text="@string/add_new_love_spot" />
-
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/addLoveSpotLL"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="@dimen/standard_16">
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_marginBottom="@dimen/standard_16"
+            android:text="@string/add_new_love_spot" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
             android:layout_marginBottom="@dimen/standard_16"
             android:gravity="center_horizontal"
             android:orientation="vertical">
@@ -39,10 +41,10 @@
                 android:id="@+id/addSpotDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minLines="2"
-                android:maxLines="5"
                 android:hint="@string/add_spot_description"
-                android:inputType="textMultiLine" />
+                android:inputType="textMultiLine"
+                android:maxLines="5"
+                android:minLines="2" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -57,26 +59,42 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standard_8"
                 android:layout_marginEnd="@dimen/standard_8"
-                android:layout_marginBottom="@dimen/standard_50"
+                android:layout_marginBottom="@dimen/standard_16"
                 android:entries="@array/availability_list"
                 android:spinnerMode="dropdown" />
+
+            <fragment
+                android:id="@+id/addLoveFragment"
+                android:name="com.lovemap.lovemapandroid.ui.main.love.AddLoveFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <CheckBox
+                android:id="@+id/madeLoveCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/addLoveSpotLL"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/standard_8"
+                android:checked="false"
+                android:text="@string/also_made_love_here" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                tools:context=".ui.main.lovespot.AddLoveSpotActivity">
+                android:layout_below="@id/madeLoveCheckBox"
+                android:gravity="bottom"
+                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/addSpotCancel"
-                    android:layout_weight="1"
-                    android:textSize="@dimen/standard_10"
-                    android:layout_marginStart="@dimen/standard_16"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/standard_16"
+                    android:layout_weight="1"
                     android:drawableLeft="@drawable/ic_baseline_cancel_24"
-                    android:text="@string/cancel" />
+                    android:text="@string/cancel"
+                    android:textSize="@dimen/standard_10" />
 
                 <Space
                     android:layout_width="0dp"
@@ -85,19 +103,20 @@
 
                 <Button
                     android:id="@+id/addSpotSubmit"
-                    android:layout_weight="1"
-                    android:enabled="false"
                     android:layout_width="120dp"
-                    android:textSize="@dimen/standard_10"
-                    android:layout_marginEnd="@dimen/standard_16"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/standard_16"
+                    android:layout_weight="1"
                     android:drawableLeft="@drawable/ic_baseline_done_24"
-                    android:text="@string/submit" />
+                    android:enabled="false"
+                    android:text="@string/submit"
+                    android:textSize="@dimen/standard_10" />
             </LinearLayout>
+
         </LinearLayout>
 
-    </ScrollView>
+    </LinearLayout>
 
-</LinearLayout>
+</ScrollView>
 
 
