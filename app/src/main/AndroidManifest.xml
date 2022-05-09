@@ -17,7 +17,7 @@
         android:theme="@style/Theme.Lovemapandroid"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ui.main.lovespot.ReviewLoveSpotActivity"
+            android:name=".ui.main.lovespot.LoveSpotDetailsActivity"
             android:exported="false" />
         <activity
             android:name=".ui.main.love.RecordLoveActivity"

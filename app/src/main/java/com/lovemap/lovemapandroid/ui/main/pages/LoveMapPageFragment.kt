@@ -34,7 +34,7 @@ import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.service.LoveSpotService
 import com.lovemap.lovemapandroid.ui.events.MainActivityEventListener
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
-import com.lovemap.lovemapandroid.ui.main.lovespot.ReviewLoveSpotActivity
+import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotInfoWindowAdapter
 import com.lovemap.lovemapandroid.ui.utils.pixelToDp
 import kotlinx.coroutines.MainScope
@@ -137,7 +137,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
         setMyLocation(googleMap)
         putMarkersOnMap(googleMap)
         googleMap.setOnInfoWindowClickListener {
-            startActivity(Intent(requireContext(), ReviewLoveSpotActivity::class.java))
+            startActivity(Intent(requireContext(), LoveSpotDetailsActivity::class.java))
         }
         configureUserInputForViews(googleMap, viewPager2, tabLayout, thisView)
     }

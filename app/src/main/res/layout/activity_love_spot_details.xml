@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
     android:orientation="vertical"
-    tools:context=".ui.main.lovespot.ReviewLoveSpotActivity">
+    tools:context=".ui.main.lovespot.LoveSpotDetailsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,6 +16,7 @@
         android:padding="@dimen/standard_16">
 
         <TextView
+            android:id="@+id/loveSpotDetailsTitle"
             style="@style/TextAppearance.AppCompat.Headline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

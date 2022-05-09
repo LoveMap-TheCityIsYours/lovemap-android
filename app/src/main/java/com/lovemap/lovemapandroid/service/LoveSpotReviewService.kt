@@ -44,8 +44,14 @@ class LoveSpotReviewService(
         }
     }
 
-    suspend fun hasReviewedAlready(spotId: Long) = getLocalReviewsByLover().any { review ->
-        review.loveSpotId == spotId
+    suspend fun hasReviewedAlready(spotId: Long): Boolean {
+        return findByLoverAndSpotId(spotId) != null
+    }
+
+    suspend fun findByLoverAndSpotId(spotId: Long): LoveSpotReview? {
+        return withContext(Dispatchers.IO) {
+            return@withContext loveSpotReviewDao.findByLoverAndSpotId(metadataStore.getUser().id, spotId)
+        }
     }
 
     suspend fun getLocalReviewsByLover(): List<LoveSpotReview> {

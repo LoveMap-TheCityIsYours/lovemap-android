@@ -9,18 +9,18 @@ import androidx.appcompat.app.AppCompatActivity
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.config.AppContext
-import com.lovemap.lovemapandroid.databinding.ActivityReviewLoveSpotBinding
+import com.lovemap.lovemapandroid.databinding.ActivityLoveSpotDetailsBinding
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
-class ReviewLoveSpotActivity : AppCompatActivity() {
+class LoveSpotDetailsActivity : AppCompatActivity() {
 
     private val appContext = AppContext.INSTANCE
     private val loveService = appContext.loveService
     private val loveSpotService = appContext.loveSpotService
     private val loveSpotReviewService = appContext.loveSpotReviewService
 
-    private lateinit var binding: ActivityReviewLoveSpotBinding
+    private lateinit var binding: ActivityLoveSpotDetailsBinding
     private lateinit var reviewSpotSubmit: Button
     private lateinit var reviewSpotCancel: Button
 
@@ -35,10 +35,15 @@ class ReviewLoveSpotActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        binding = ActivityReviewLoveSpotBinding.inflate(layoutInflater)
+        binding = ActivityLoveSpotDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         reviewSpotSubmit = binding.reviewSpotSubmit
         reviewSpotCancel = binding.reviewSpotCancel
+        MainScope().launch {
+            val spot =
+                loveSpotService.findLocally(appContext.selectedMarker!!.snippet!!.toLong())
+            binding.loveSpotDetailsTitle.text = spot!!.name
+        }
     }
 
     private fun setSubmitButton() {

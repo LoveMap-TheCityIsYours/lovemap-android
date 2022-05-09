@@ -11,11 +11,14 @@ import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class ReviewLoveSpotFragment : Fragment() {
 
     private val appContext = AppContext.INSTANCE
+    private val loveSpotReviewService = appContext.loveSpotReviewService
 
     private lateinit var spotRiskDropdown: Spinner
     private lateinit var spotReviewRating: RatingBar
@@ -29,6 +32,16 @@ class ReviewLoveSpotFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_review_love_spot, container, false)
         initViews(view)
         setRiskDropdown()
+        MainScope().launch {
+            appContext.selectedMarker?.let {
+                val review = loveSpotReviewService.findByLoverAndSpotId(it.snippet!!.toLong())
+                review?.let {
+                    reviewText.setText(review.reviewText)
+                    spotRiskDropdown.setSelection(review.riskLevel - 1)
+                    spotReviewRating.rating = review.reviewStars.toFloat()
+                }
+            }
+        }
         return view
     }
 

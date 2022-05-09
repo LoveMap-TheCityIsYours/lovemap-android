@@ -22,7 +22,7 @@ class RecordLoveActivity : AppCompatActivity() {
     private val loveSpotReviewService = appContext.loveSpotReviewService
 
     private lateinit var binding: ActivityRecordLoveBinding
-    private lateinit var addLoveSubmit: Button
+    private lateinit var recordLoveSubmit: Button
     private lateinit var reviewLoveSpotFragment: ReviewLoveSpotFragment
 
     private var rating: Int = 0
@@ -39,7 +39,7 @@ class RecordLoveActivity : AppCompatActivity() {
         reviewLoveSpotFragment =
             supportFragmentManager.findFragmentById(R.id.recordLoveReviewLoveSpotFragment) as ReviewLoveSpotFragment
 
-        addLoveSubmit = binding.addLoveSubmit
+        recordLoveSubmit = binding.recordLoveSubmit
 
         binding.addLoveCancel.setOnClickListener {
             onBackPressed()
@@ -47,7 +47,7 @@ class RecordLoveActivity : AppCompatActivity() {
 
         findViewById<RatingBar>(R.id.spotReviewRating).setOnRatingBarChangeListener { ratingBar, ratingValue, _ ->
             rating = ratingValue.toInt()
-            addLoveSubmit.isEnabled = true
+            recordLoveSubmit.isEnabled = rating != 0
         }
 
         supportFragmentManager
@@ -58,7 +58,9 @@ class RecordLoveActivity : AppCompatActivity() {
         appContext.selectedMarker?.let {
             val spotId = it.snippet!!.toLong()
             MainScope().launch {
-                if (!loveSpotReviewService.hasReviewedAlready(spotId)) {
+                if (loveSpotReviewService.hasReviewedAlready(spotId)) {
+                    recordLoveSubmit.isEnabled = true
+                } else {
                     supportFragmentManager
                         .beginTransaction()
                         .show(reviewLoveSpotFragment)
@@ -69,8 +71,8 @@ class RecordLoveActivity : AppCompatActivity() {
     }
 
     private fun setSubmitButton() {
-        addLoveSubmit.setOnClickListener {
-            if (addLoveSubmit.isEnabled) {
+        recordLoveSubmit.setOnClickListener {
+            if (recordLoveSubmit.isEnabled) {
                 appContext.selectedMarker?.let {
                     val spotId = it.snippet!!.toLong()
                     MainScope().launch {
