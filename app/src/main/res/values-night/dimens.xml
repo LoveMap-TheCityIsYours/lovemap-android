@@ -6,4 +6,10 @@
     <dimen name="standard_50">50dp</dimen>
     <dimen name="standard_80">80dp</dimen>
     <dimen name="standard_75">75dp</dimen>
+    <dimen name="standard_125">125dp</dimen>
+    <dimen name="standard_200">200dp</dimen>
+    <dimen name="standard_175">175dp</dimen>
+    <dimen name="standard_65">65dp</dimen>
+    <dimen name="standard_130">130dp</dimen>
+    <dimen name="standard_195">195dp</dimen>
 </resources>

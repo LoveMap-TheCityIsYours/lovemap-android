@@ -1,47 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
     android:orientation="vertical"
-    android:padding="@dimen/standard_16"
-    tools:context=".ui.main.love.AddLoveActivity">
+    tools:context=".ui.main.lovespot.ReviewLoveSpotActivity">
 
-    <TextView
-        style="@style/TextAppearance.AppCompat.Headline"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/standard_16"
-        android:text="@string/record_my_love" />
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="@dimen/standard_16">
 
-<!--    <ScrollView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:orientation="vertical">-->
+        <TextView
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_marginBottom="@dimen/standard_16"
+            android:text="@string/review_love_spot" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
             android:layout_marginBottom="@dimen/standard_16"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
             <fragment
-                android:id="@+id/addLoveFragment"
-                android:name="com.lovemap.lovemapandroid.ui.main.love.AddLoveFragment"
+                android:id="@+id/reviewActivityLoveSpotFragment"
+                android:name="com.lovemap.lovemapandroid.ui.main.lovespot.ReviewLoveSpotFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="bottom"
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/addLoveCancel"
+                    android:id="@+id/reviewSpotCancel"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/standard_16"
@@ -56,7 +58,7 @@
                     android:layout_weight="6" />
 
                 <Button
-                    android:id="@+id/addLoveSubmit"
+                    android:id="@+id/reviewSpotSubmit"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/standard_16"
@@ -68,8 +70,7 @@
             </LinearLayout>
 
         </LinearLayout>
-<!--    </ScrollView>-->
 
-</LinearLayout>
+    </LinearLayout>
 
-
+</ScrollView>

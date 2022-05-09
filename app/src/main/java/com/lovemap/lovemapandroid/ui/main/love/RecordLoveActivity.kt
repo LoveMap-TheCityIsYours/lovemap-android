@@ -1,23 +1,29 @@
 package com.lovemap.lovemapandroid.ui.main.love
 
 import android.os.Bundle
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.RatingBar
+import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.love.CreateLoveRequest
 import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.config.AppContext
-import com.lovemap.lovemapandroid.databinding.ActivityAddLoveBinding
+import com.lovemap.lovemapandroid.databinding.ActivityRecordLoveBinding
+import com.lovemap.lovemapandroid.ui.main.lovespot.ReviewLoveSpotFragment
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
-class AddLoveActivity : AppCompatActivity() {
+class RecordLoveActivity : AppCompatActivity() {
     private val appContext = AppContext.INSTANCE
     private val loveService = appContext.loveService
     private val loveSpotService = appContext.loveSpotService
+    private val loveSpotReviewService = appContext.loveSpotReviewService
 
-    private lateinit var binding: ActivityAddLoveBinding
+    private lateinit var binding: ActivityRecordLoveBinding
     private lateinit var addLoveSubmit: Button
+    private lateinit var reviewLoveSpotFragment: ReviewLoveSpotFragment
 
     private var rating: Int = 0
 
@@ -28,8 +34,11 @@ class AddLoveActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        binding = ActivityAddLoveBinding.inflate(layoutInflater)
+        binding = ActivityRecordLoveBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        reviewLoveSpotFragment =
+            supportFragmentManager.findFragmentById(R.id.recordLoveReviewLoveSpotFragment) as ReviewLoveSpotFragment
+
         addLoveSubmit = binding.addLoveSubmit
 
         binding.addLoveCancel.setOnClickListener {
@@ -39,6 +48,23 @@ class AddLoveActivity : AppCompatActivity() {
         findViewById<RatingBar>(R.id.spotReviewRating).setOnRatingBarChangeListener { ratingBar, ratingValue, _ ->
             rating = ratingValue.toInt()
             addLoveSubmit.isEnabled = true
+        }
+
+        supportFragmentManager
+            .beginTransaction()
+            .hide(reviewLoveSpotFragment)
+            .commit()
+
+        appContext.selectedMarker?.let {
+            val spotId = it.snippet!!.toLong()
+            MainScope().launch {
+                if (!loveSpotReviewService.hasReviewedAlready(spotId)) {
+                    supportFragmentManager
+                        .beginTransaction()
+                        .show(reviewLoveSpotFragment)
+                        .commit()
+                }
+            }
         }
     }
 
@@ -58,19 +84,21 @@ class AddLoveActivity : AppCompatActivity() {
                                 findViewById<EditText>(R.id.addPrivateNote).text.toString()
                             )
                         )
-                        love?.let {
-                            val reviewedSpot = loveSpotService.addReview(
-                                LoveSpotReviewRequest(
-                                    love.id,
-                                    appContext.userId,
-                                    spotId,
-                                    findViewById<EditText>(R.id.addReviewText).text.toString(),
-                                    rating,
-                                    findViewById<Spinner>(R.id.spotRiskDropdown).selectedItemPosition + 1
+                        if (!loveSpotReviewService.hasReviewedAlready(spotId)) {
+                            love?.let {
+                                val reviewedSpot = loveSpotReviewService.addReview(
+                                    LoveSpotReviewRequest(
+                                        love.id,
+                                        appContext.userId,
+                                        spotId,
+                                        findViewById<EditText>(R.id.addReviewText).text.toString(),
+                                        rating,
+                                        findViewById<Spinner>(R.id.spotRiskDropdown).selectedItemPosition + 1
+                                    )
                                 )
-                            )
-                            reviewedSpot?.let {
-                                loveSpotService.update(reviewedSpot)
+                                reviewedSpot?.let {
+                                    loveSpotService.update(reviewedSpot)
+                                }
                             }
                         }
                         appContext.toaster.showToast(R.string.lovemaking_recorded)

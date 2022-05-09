@@ -22,4 +22,10 @@
 
     <dimen name="standard_minus_55">-55dp</dimen>
     <dimen name="standard_minus_40">-40dp</dimen>
+    <dimen name="standard_125">125dp</dimen>
+    <dimen name="standard_200">200dp</dimen>
+    <dimen name="standard_175">175dp</dimen>
+    <dimen name="standard_65">65dp</dimen>
+    <dimen name="standard_130">130dp</dimen>
+    <dimen name="standard_195">195dp</dimen>
 </resources>

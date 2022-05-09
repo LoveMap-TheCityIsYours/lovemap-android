@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.lovemap.lovemapandroid.R
@@ -15,7 +14,7 @@ import com.lovemap.lovemapandroid.api.lovespot.LoveSpotAvailabilityApiStatus.NIG
 import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.databinding.ActivityAddLoveSpotBinding
-import com.lovemap.lovemapandroid.ui.main.love.AddLoveFragment
+import com.lovemap.lovemapandroid.ui.main.love.RecordLoveFragment
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
@@ -23,8 +22,9 @@ import kotlinx.coroutines.launch
 class AddLoveSpotActivity : AppCompatActivity() {
 
     private val appContext = AppContext.INSTANCE
-    private val loveSpotService = appContext.loveSpotService
     private val loveService = appContext.loveService
+    private val loveSpotService = appContext.loveSpotService
+    private val loveSpotReviewService = appContext.loveSpotReviewService
 
     private lateinit var binding: ActivityAddLoveSpotBinding
     private lateinit var addSpotName: EditText
@@ -32,7 +32,8 @@ class AddLoveSpotActivity : AppCompatActivity() {
     private lateinit var addSpotSubmit: Button
     private lateinit var addSpotCancel: Button
     private lateinit var madeLoveCheckBox: CheckBox
-    private lateinit var addLoveFragment: AddLoveFragment
+    private lateinit var reviewLoveSpotFragment: ReviewLoveSpotFragment
+    private lateinit var recordLoveFragment: RecordLoveFragment
 
     private var availability = ALL_DAY
     private var name = ""
@@ -59,12 +60,15 @@ class AddLoveSpotActivity : AppCompatActivity() {
         addSpotDescription = binding.addSpotDescription
         addSpotSubmit = binding.addSpotSubmit
         madeLoveCheckBox = binding.madeLoveCheckBox
-        addLoveFragment =
-            supportFragmentManager.findFragmentById(R.id.addLoveFragment) as AddLoveFragment
+        reviewLoveSpotFragment =
+                supportFragmentManager.findFragmentById(R.id.addSpotReviewLoveSpotFragment) as ReviewLoveSpotFragment
+        recordLoveFragment =
+            supportFragmentManager.findFragmentById(R.id.addSpotRecordLoveFragment) as RecordLoveFragment
 
         supportFragmentManager
             .beginTransaction()
-            .hide(addLoveFragment)
+            .hide(recordLoveFragment)
+            .hide(reviewLoveSpotFragment)
             .commit()
     }
 
@@ -77,7 +81,12 @@ class AddLoveSpotActivity : AppCompatActivity() {
                         android.R.anim.slide_in_left,
                         android.R.anim.slide_out_right
                     )
-                    .show(addLoveFragment)
+                    .show(reviewLoveSpotFragment)
+                    .setCustomAnimations(
+                        android.R.anim.slide_in_left,
+                        android.R.anim.slide_out_right
+                    )
+                    .show(recordLoveFragment)
                     .commit()
             } else {
                 supportFragmentManager
@@ -86,7 +95,12 @@ class AddLoveSpotActivity : AppCompatActivity() {
                         android.R.anim.slide_in_left,
                         android.R.anim.slide_out_right
                     )
-                    .hide(addLoveFragment)
+                    .hide(reviewLoveSpotFragment)
+                    .setCustomAnimations(
+                        android.R.anim.slide_in_left,
+                        android.R.anim.slide_out_right
+                    )
+                    .hide(recordLoveFragment)
                     .commit()
             }
         }
@@ -131,7 +145,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
                                 )
                             )
                             love?.let {
-                                val reviewedSpot = loveSpotService.addReview(
+                                val reviewedSpot = loveSpotReviewService.addReview(
                                     LoveSpotReviewRequest(
                                         love.id,
                                         appContext.userId,

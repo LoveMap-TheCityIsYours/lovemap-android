@@ -1,4 +1,4 @@
-package com.lovemap.lovemapandroid.ui.main.love
+package com.lovemap.lovemapandroid.ui.main.lovespot
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,13 +13,12 @@ import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import kotlinx.coroutines.runBlocking
 
-class AddLoveFragment : Fragment() {
+class ReviewLoveSpotFragment : Fragment() {
 
     private val appContext = AppContext.INSTANCE
 
     private lateinit var spotRiskDropdown: Spinner
     private lateinit var spotReviewRating: RatingBar
-    private lateinit var privateNote: EditText
     private lateinit var reviewText: EditText
 
     override fun onCreateView(
@@ -27,7 +26,7 @@ class AddLoveFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_add_love, container, false)
+        val view = inflater.inflate(R.layout.fragment_review_love_spot, container, false)
         initViews(view)
         setRiskDropdown()
         return view
@@ -36,7 +35,6 @@ class AddLoveFragment : Fragment() {
     private fun initViews(view: View) {
         spotRiskDropdown = view.findViewById(R.id.spotRiskDropdown)
         spotReviewRating = view.findViewById(R.id.spotReviewRating)
-        privateNote = view.findViewById(R.id.addPrivateNote)
         reviewText = view.findViewById(R.id.addReviewText)
     }
 

@@ -27,9 +27,10 @@ class AppContext : Application() {
     lateinit var mapCameraTarget: LatLng
     lateinit var toaster: Toaster
     lateinit var authenticationService: AuthenticationService
+    lateinit var loveService: LoveService
     lateinit var loverService: LoverService
     lateinit var loveSpotService: LoveSpotService
-    lateinit var loveService: LoveService
+    lateinit var loveSpotReviewService: LoveSpotReviewService
 
     lateinit var metadataStore: MetadataStore
     lateinit var database: AppDatabase
@@ -90,24 +91,33 @@ class AppContext : Application() {
             .baseUrl(API_ENDPOINT)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        loverService = LoverService(
-            retrofit.create(LoverApi::class.java),
-            metadataStore,
-            toaster
-        )
-        loveSpotService = LoveSpotService(
-            retrofit.create(LoveSpotApi::class.java),
-            database.loveSpotDao(),
-            metadataStore,
-            toaster,
-        )
         loveService = LoveService(
             retrofit.create(LoveApi::class.java),
             database.loveDao(),
             metadataStore,
             toaster
         )
+        loverService = LoverService(
+            retrofit.create(LoverApi::class.java),
+            metadataStore,
+            toaster
+        )
+        val loveSpotApi = retrofit.create(LoveSpotApi::class.java)
+        loveSpotService = LoveSpotService(
+            loveSpotApi,
+            database.loveSpotDao(),
+            metadataStore,
+            toaster,
+        )
+        loveSpotReviewService = LoveSpotReviewService(
+            loveSpotApi,
+            database.loveSpotReviewDao(),
+            metadataStore,
+            toaster,
+        )
         userId = if (metadataStore.isLoggedIn()) {
+            loveService.list()
+            loveSpotReviewService.getReviewsByLover()
             metadataStore.getUser().id
         } else {
             0

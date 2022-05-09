@@ -38,13 +38,13 @@ class LoveService(
 
     suspend fun list(): List<Love> {
         return withContext(Dispatchers.IO) {
-            val localSpot = loveDao.getAll()
+            val localLoves = loveDao.getAll()
             val call = loveApi.list(metadataStore.getUser().id)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
                 toaster.showNoServerToast()
-                return@withContext localSpot
+                return@withContext localLoves
             }
             if (response.isSuccessful) {
                 val loveListDto = response.body()!!
@@ -52,7 +52,7 @@ class LoveService(
                 loveListDto.loves
             } else {
                 toaster.showNoServerToast()
-                localSpot
+                localLoves
             }
         }
     }
@@ -74,6 +74,13 @@ class LoveService(
                 toaster.showNoServerToast()
                 null
             }
+        }
+    }
+
+    suspend fun getLoveByLoveSpotId(loveSpotId: Long): Love? {
+        return withContext(Dispatchers.IO) {
+            val localLoves = loveDao.getAll()
+            return@withContext localLoves.find { it.loveSpotId == loveSpotId }
         }
     }
 }

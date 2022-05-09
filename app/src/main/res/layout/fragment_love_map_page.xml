@@ -134,4 +134,16 @@
         android:textDirection="firstStrongRtl"
         app:srcCompat="@drawable/ic_baseline_favorite_24" />
 
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/changeMapModeFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_marginStart="@dimen/standard_8"
+        android:layout_marginBottom="90dp"
+        android:text="@string/switch_map_mode"
+        android:textSize="12sp"
+        android:textDirection="firstStrongRtl"
+        app:icon="@drawable/ic_two_hearts_com" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

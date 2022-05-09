@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="@dimen/standard_16"
+    tools:context=".ui.main.love.RecordLoveActivity">
+
+    <TextView
+        style="@style/TextAppearance.AppCompat.Headline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/standard_16"
+        android:text="@string/record_my_love" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/standard_16"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <fragment
+                android:id="@+id/recordLoveRecordLoveFragment"
+                android:name="com.lovemap.lovemapandroid.ui.main.love.RecordLoveFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <fragment
+                android:id="@+id/recordLoveReviewLoveSpotFragment"
+                android:name="com.lovemap.lovemapandroid.ui.main.lovespot.ReviewLoveSpotFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/addLoveCancel"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/standard_16"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_baseline_cancel_24"
+                    android:text="@string/cancel"
+                    android:textSize="@dimen/standard_10" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="6" />
+
+                <Button
+                    android:id="@+id/addLoveSubmit"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/standard_16"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_baseline_done_24"
+                    android:enabled="false"
+                    android:text="@string/submit"
+                    android:textSize="@dimen/standard_10" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+</LinearLayout>
+
+

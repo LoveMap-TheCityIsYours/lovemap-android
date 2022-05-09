@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:paddingTop="@dimen/standard_16"
     android:paddingBottom="@dimen/standard_16"
-    tools:context=".ui.main.love.AddLoveFragment">
+    tools:context=".ui.main.lovespot.ReviewLoveSpotFragment">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -16,15 +16,6 @@
             android:layout_marginBottom="@dimen/standard_16"
             android:gravity="center_horizontal"
             android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/addPrivateNote"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minLines="2"
-                android:maxLines="5"
-                android:hint="@string/add_private_note"
-                android:inputType="textMultiLine" />
 
             <EditText
                 android:id="@+id/addReviewText"

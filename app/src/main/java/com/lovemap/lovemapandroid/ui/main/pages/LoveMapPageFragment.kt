@@ -20,7 +20,11 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.lovemap.lovemapandroid.R
@@ -29,10 +33,13 @@ import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.service.LoveSpotService
 import com.lovemap.lovemapandroid.ui.events.MainActivityEventListener
-import com.lovemap.lovemapandroid.ui.main.love.AddLoveActivity
+import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
+import com.lovemap.lovemapandroid.ui.main.lovespot.ReviewLoveSpotActivity
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotInfoWindowAdapter
 import com.lovemap.lovemapandroid.ui.utils.pixelToDp
-import kotlinx.coroutines.*
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @SuppressLint("MissingPermission")
 class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventListener {
@@ -54,6 +61,8 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
     private lateinit var reportSpotText: TextView
     private lateinit var reportLoveSpotFab: FloatingActionButton
 
+    private lateinit var changeMapModeFab: ExtendedFloatingActionButton
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         askForLocationPermission()
@@ -73,9 +82,13 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
         addToWishlistFab = view.findViewById(R.id.addToWishlistFab)
         reportSpotText = view.findViewById(R.id.spotReportText)
         reportLoveSpotFab = view.findViewById(R.id.reportLoveSpotFab)
+        changeMapModeFab = view.findViewById(R.id.changeMapModeFab)
 
         addLoveFab.setOnClickListener {
-            startActivity(Intent(requireContext(), AddLoveActivity::class.java))
+            startActivity(Intent(requireContext(), RecordLoveActivity::class.java))
+        }
+        changeMapModeFab.setOnClickListener {
+
         }
 
         return view
@@ -123,6 +136,9 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
         }
         setMyLocation(googleMap)
         putMarkersOnMap(googleMap)
+        googleMap.setOnInfoWindowClickListener {
+            startActivity(Intent(requireContext(), ReviewLoveSpotActivity::class.java))
+        }
         configureUserInputForViews(googleMap, viewPager2, tabLayout, thisView)
     }
 
@@ -293,28 +309,28 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
             addLoveText.visibility = View.VISIBLE
 
             reportLoveSpotFab.animate().rotationBy(360f)
-                .translationX(resources.getDimension(R.dimen.standard_75))
+                .translationX(resources.getDimension(R.dimen.standard_65))
             addToWishlistFab.animate().rotationBy(360f)
-                .translationX(resources.getDimension(R.dimen.standard_150))
+                .translationX(resources.getDimension(R.dimen.standard_130))
             addLoveFab.animate().rotationBy(360f)
-                .translationX(resources.getDimension(R.dimen.standard_225))
+                .translationX(resources.getDimension(R.dimen.standard_195))
 
             MainScope().launch {
                 delay(50)
                 reportSpotText.animate().translationX(
-                    resources.getDimension(R.dimen.standard_75)
+                    resources.getDimension(R.dimen.standard_65)
                             + resources.getDimension(R.dimen.standard_minus_55)
                             - resources.getDimension(R.dimen.standard_minus_40)
                             - pixelToDp(reportSpotText.width.toFloat() - reportLoveSpotFab.width)
                 )
                 toWishlistText.animate().translationX(
-                    resources.getDimension(R.dimen.standard_150)
+                    resources.getDimension(R.dimen.standard_130)
                             + resources.getDimension(R.dimen.standard_minus_55)
                             - resources.getDimension(R.dimen.standard_minus_40)
                             - pixelToDp(toWishlistText.width.toFloat() - addToWishlistFab.width)
                 )
                 addLoveText.animate().translationX(
-                    resources.getDimension(R.dimen.standard_225)
+                    resources.getDimension(R.dimen.standard_195)
                             + resources.getDimension(R.dimen.standard_minus_55)
                             - resources.getDimension(R.dimen.standard_minus_40)
                             - pixelToDp(addLoveText.width.toFloat() - addLoveFab.width)

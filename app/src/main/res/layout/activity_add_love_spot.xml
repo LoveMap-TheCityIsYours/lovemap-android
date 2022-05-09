@@ -63,26 +63,30 @@
                 android:entries="@array/availability_list"
                 android:spinnerMode="dropdown" />
 
-            <fragment
-                android:id="@+id/addLoveFragment"
-                android:name="com.lovemap.lovemapandroid.ui.main.love.AddLoveFragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
             <CheckBox
                 android:id="@+id/madeLoveCheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/addLoveSpotLL"
                 android:layout_gravity="start"
                 android:layout_marginStart="@dimen/standard_8"
                 android:checked="false"
                 android:text="@string/also_made_love_here" />
 
+            <fragment
+                android:id="@+id/addSpotRecordLoveFragment"
+                android:name="com.lovemap.lovemapandroid.ui.main.love.RecordLoveFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <fragment
+                android:id="@+id/addSpotReviewLoveSpotFragment"
+                android:name="com.lovemap.lovemapandroid.ui.main.lovespot.ReviewLoveSpotFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/madeLoveCheckBox"
                 android:gravity="bottom"
                 android:orientation="horizontal">
 

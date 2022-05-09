@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -19,7 +20,6 @@ import com.lovemap.lovemapandroid.databinding.ActivityMainBinding
 import com.lovemap.lovemapandroid.ui.events.MapMarkerEventListener
 import com.lovemap.lovemapandroid.ui.main.lovespot.AddLoveSpotActivity
 
-
 private const val MAP_PAGE = 2
 
 class MainActivity : AppCompatActivity(), MapMarkerEventListener {
@@ -28,9 +28,7 @@ class MainActivity : AppCompatActivity(), MapMarkerEventListener {
     private lateinit var viewPager2: ViewPager2
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var changeMapModeFab: FloatingActionButton
-
-    private lateinit var addLoveSpotFab: FloatingActionButton
+    private lateinit var addLoveSpotFab: ExtendedFloatingActionButton
     private lateinit var okFab: FloatingActionButton
     private lateinit var cancelFab: FloatingActionButton
 
@@ -81,9 +79,6 @@ class MainActivity : AppCompatActivity(), MapMarkerEventListener {
         viewPager2 = binding.viewPager
         viewPager2.adapter = ViewPagerAdapter(this)
         tabLayout = binding.tabLayout
-
-        changeMapModeFab = binding.changeMapModeFab
-
         addLoveSpotFab = binding.addLoveSpotFab
         okFab = binding.okFab
         cancelFab = binding.cancelFab
@@ -115,11 +110,10 @@ class MainActivity : AppCompatActivity(), MapMarkerEventListener {
             okFab.visibility = View.VISIBLE
             cancelFab.visibility = View.VISIBLE
 
-            okFab.animate().rotationBy(360f)
-                .translationX(-resources.getDimension(R.dimen.standard_75))
-            cancelFab.animate().rotationBy(360f)
+            okFab.animate().rotationBy(720f)
                 .translationX(-resources.getDimension(R.dimen.standard_150))
-            addLoveSpotFab.animate().rotationBy(360f)
+            cancelFab.animate().rotationBy(720f)
+                .translationX(-resources.getDimension(R.dimen.standard_225))
 
             appContext.selectedMarker?.hideInfoWindow()
             appContext.selectedMarker = null
@@ -137,13 +131,12 @@ class MainActivity : AppCompatActivity(), MapMarkerEventListener {
 
     private fun closeAddLoveSpotFabs() {
         if (appContext.areAddLoveSpotFabsOpen) {
-            okFab.animate().rotationBy(360f).translationX(0f).withEndAction {
+            okFab.animate().rotationBy(720f).translationX(0f).withEndAction {
                 okFab.visibility = View.GONE
             }
-            cancelFab.animate().rotationBy(360f).translationX(0f).withEndAction {
+            cancelFab.animate().rotationBy(720f).translationX(0f).withEndAction {
                 cancelFab.visibility = View.GONE
             }
-            addLoveSpotFab.animate().rotationBy(360f)
 
             val crosshair: ImageView? = findViewById(R.id.centerCrosshair)
             if (crosshair != null) {

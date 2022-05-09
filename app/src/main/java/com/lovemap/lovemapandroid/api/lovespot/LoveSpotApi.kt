@@ -1,13 +1,10 @@
 package com.lovemap.lovemapandroid.api.lovespot
 
-import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewDto
 import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
+import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReview
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface LoveSpotApi {
     @POST("/lovespot")
@@ -19,11 +16,14 @@ interface LoveSpotApi {
     @POST("/lovespot/search")
     fun search(@Body request: LoveSpotSearchRequest): Call<List<LoveSpot>>
 
-    @POST("/lovespot/review")
+    @PUT("/lovespot/review")
     fun addReview(@Body request: LoveSpotReviewRequest): Call<LoveSpot>
 
-    @GET("/lovespot/review/{loveSpotId}")
-    fun getReviews(@Path("loveSpotId") loveSpotId: Long): Call<List<LoveSpotReviewDto>>
+    @GET("/lovespot/review/bySpot/{loveSpotId}")
+    fun getReviewsForSpot(@Path("loveSpotId") loveSpotId: Long): Call<List<LoveSpotReview>>
+
+    @GET("/lovespot/review/byLover/{loverId}")
+    fun getReviewsByLover(@Path("loverId") loverId: Long): Call<List<LoveSpotReview>>
 
     @GET("/lovespot/risks")
     fun getRisks(): Call<LoveSpotRisks>

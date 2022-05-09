@@ -108,24 +108,6 @@ class LoveSpotService(
         }
     }
 
-    suspend fun addReview(request: LoveSpotReviewRequest): LoveSpot? {
-        return withContext(Dispatchers.IO) {
-            val call = loveSpotApi.addReview(request)
-            val response = try {
-                call.execute()
-            } catch (e: Exception) {
-                toaster.showNoServerToast()
-                return@withContext null
-            }
-            if (response.isSuccessful) {
-                response.body()
-            } else {
-                toaster.showNoServerToast()
-                null
-            }
-        }
-    }
-
     suspend fun getRisks(): LoveSpotRisks? {
         return withContext(Dispatchers.IO) {
             val localRisks: LoveSpotRisks? = if (metadataStore.isRisksStored()) {
