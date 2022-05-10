@@ -75,6 +75,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
     private fun setMadeLoveCheckBox() {
         madeLoveCheckBox.setOnClickListener {
             if (madeLoveCheckBox.isChecked) {
+                addSpotSubmit.isEnabled = isSubmitReady()
                 supportFragmentManager
                     .beginTransaction()
                     .setCustomAnimations(
@@ -89,6 +90,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
                     .show(recordLoveFragment)
                     .commit()
             } else {
+                addSpotSubmit.isEnabled = isSubmitReady()
                 supportFragmentManager
                     .beginTransaction()
                     .setCustomAnimations(
