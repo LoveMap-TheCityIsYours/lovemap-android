@@ -129,7 +129,6 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
             loveSpotInfoWindowAdapter = LoveSpotInfoWindowAdapter(
                 loveSpotService,
                 requireActivity(),
-                loveSpotService.getRisks()
             )
             googleMap.setInfoWindowAdapter(loveSpotInfoWindowAdapter)
             fetchLoveSpots(googleMap)

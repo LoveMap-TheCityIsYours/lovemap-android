@@ -45,7 +45,7 @@ class RecordLoveActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-        findViewById<RatingBar>(R.id.spotReviewRating).setOnRatingBarChangeListener { ratingBar, ratingValue, _ ->
+        findViewById<RatingBar>(R.id.marker_review_rating_bar).setOnRatingBarChangeListener { ratingBar, ratingValue, _ ->
             rating = ratingValue.toInt()
             recordLoveSubmit.isEnabled = rating != 0
         }

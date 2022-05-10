@@ -47,7 +47,7 @@ class ReviewLoveSpotFragment : Fragment() {
 
     private fun initViews(view: View) {
         spotRiskDropdown = view.findViewById(R.id.spotRiskDropdown)
-        spotReviewRating = view.findViewById(R.id.spotReviewRating)
+        spotReviewRating = view.findViewById(R.id.marker_review_rating_bar)
         reviewText = view.findViewById(R.id.addReviewText)
     }
 

@@ -28,4 +28,5 @@
     <dimen name="standard_65">65dp</dimen>
     <dimen name="standard_130">130dp</dimen>
     <dimen name="standard_195">195dp</dimen>
+    <dimen name="standard_32">32dp</dimen>
 </resources>

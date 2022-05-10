@@ -117,6 +117,8 @@ class AppContext : Application() {
         )
         userId = if (metadataStore.isLoggedIn()) {
             loveService.list()
+            loverService.getRanks()
+            loveSpotService.getRisks()
             loveSpotReviewService.getReviewsByLover()
             metadataStore.getUser().id
         } else {

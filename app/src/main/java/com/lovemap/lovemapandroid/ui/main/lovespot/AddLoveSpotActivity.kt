@@ -107,7 +107,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
     }
 
     private fun setReviewRatingBar() {
-        findViewById<RatingBar>(R.id.spotReviewRating).setOnRatingBarChangeListener { ratingBar, ratingValue, _ ->
+        findViewById<RatingBar>(R.id.marker_review_rating_bar).setOnRatingBarChangeListener { ratingBar, ratingValue, _ ->
             rating = ratingValue.toInt()
             addSpotSubmit.isEnabled = isSubmitReady()
         }
