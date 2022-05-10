@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.main.love.RecordLoveFragment">
 
     <EditText
@@ -14,4 +15,44 @@
         android:hint="@string/add_private_note"
         android:inputType="textMultiLine" />
 
-</FrameLayout>
+   <TextView
+       android:layout_width="wrap_content"
+       android:layout_marginTop="@dimen/standard_16"
+       android:layout_height="wrap_content"
+       android:text="@string/happened_at"/>
+
+    <TextView
+        android:id="@+id/recordLoveHappenedAt"
+        style="@style/TextAppearance.AppCompat.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2022-04-03 12:11" />
+
+    <Button
+        android:id="@+id/recordLoveChangeDateTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/change" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/standard_16"
+        android:text="@string/select_partners"/>
+
+    <Spinner
+        android:id="@+id/recordLoveSelectPartnerDropdown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Spinner.DropDown"
+        android:layout_marginStart="@dimen/standard_8"
+        android:layout_marginEnd="@dimen/standard_8"
+        android:spinnerMode="dropdown" />
+
+    <Button
+        android:id="@+id/recordLoveAddPartner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_partner" />
+
+</LinearLayout>

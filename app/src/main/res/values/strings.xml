@@ -110,6 +110,10 @@
     <string name="your_review">Your Review:</string>
     <string name="user_reviews">User Reviews:</string>
     <string name="your_lovemakings_here">Your Lovemakings here:</string>
+    <string name="happened_at">Happened at:</string>
+    <string name="change">Change</string>
+    <string name="select_partners">Select Partners:</string>
+    <string name="add_partner">Add another</string>
 
 
 </resources>

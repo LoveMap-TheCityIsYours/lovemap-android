@@ -171,9 +171,17 @@ class MainActivity : AppCompatActivity(), MapMarkerEventListener {
     }
 
     override fun onBackPressed() {
-        val exit = Intent(Intent.ACTION_MAIN)
-        exit.addCategory(Intent.CATEGORY_HOME)
-        exit.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        startActivity(exit)
+        if (appContext.areAddLoveSpotFabsOpen) {
+            closeAddLoveSpotFabs()
+        } else if (appContext.areMarkerFabsOpen) {
+            appContext.mainActivityEventListener.onOpenAddLoveSpotFabs()
+            appContext.selectedMarker?.hideInfoWindow()
+            appContext.selectedMarker = null
+        } else {
+            val exit = Intent(Intent.ACTION_MAIN)
+            exit.addCategory(Intent.CATEGORY_HOME)
+            exit.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(exit)
+        }
     }
 }

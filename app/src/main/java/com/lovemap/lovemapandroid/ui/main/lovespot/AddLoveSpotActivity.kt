@@ -61,7 +61,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
         addSpotSubmit = binding.addSpotSubmit
         madeLoveCheckBox = binding.madeLoveCheckBox
         reviewLoveSpotFragment =
-                supportFragmentManager.findFragmentById(R.id.addSpotReviewLoveSpotFragment) as ReviewLoveSpotFragment
+            supportFragmentManager.findFragmentById(R.id.addSpotReviewLoveSpotFragment) as ReviewLoveSpotFragment
         recordLoveFragment =
             supportFragmentManager.findFragmentById(R.id.addSpotRecordLoveFragment) as RecordLoveFragment
 
@@ -107,10 +107,11 @@ class AddLoveSpotActivity : AppCompatActivity() {
     }
 
     private fun setReviewRatingBar() {
-        findViewById<RatingBar>(R.id.marker_review_rating_bar).setOnRatingBarChangeListener { ratingBar, ratingValue, _ ->
-            rating = ratingValue.toInt()
-            addSpotSubmit.isEnabled = isSubmitReady()
-        }
+        findViewById<RatingBar>(R.id.marker_review_rating_bar)
+            .setOnRatingBarChangeListener { ratingBar, ratingValue, _ ->
+                rating = ratingValue.toInt()
+                addSpotSubmit.isEnabled = isSubmitReady()
+            }
     }
 
     private fun setCancelButton() {
