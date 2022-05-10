@@ -31,17 +31,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            tools:context="com.lovemap.lovemapandroid.ui.main.ProfileFragment">
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:minWidth="200dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginEnd="@dimen/text_margin"
-                android:orientation="vertical"
-                tools:context="com.lovemap.lovemapandroid.ui.main.ProfileFragment">
+                android:minWidth="200dp"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/profileUserName"
@@ -58,17 +56,18 @@
                     android:textColor="@color/myColorOnBackground" />
 
                 <LinearLayout
-                    android:layout_marginTop="@dimen/standard_8"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    tools:context="com.lovemap.lovemapandroid.ui.main.ProfileFragment">
+                    android:layout_marginTop="@dimen/standard_8"
+                    android:orientation="horizontal">
+
                     <TextView
-                        android:layout_marginStart="@dimen/text_margin"
-                        android:layout_marginEnd="@dimen/standard_8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/text_margin"
+                        android:layout_marginEnd="@dimen/standard_8"
                         android:text="@string/number_of_loves" />
+
                     <TextView
                         android:id="@+id/profileNumberOfLoves"
                         android:layout_width="wrap_content"
@@ -77,17 +76,18 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="@dimen/standard_4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    tools:context="com.lovemap.lovemapandroid.ui.main.ProfileFragment">
+                    android:layout_marginTop="@dimen/standard_4"
+                    android:orientation="horizontal">
+
                     <TextView
-                        android:layout_marginStart="@dimen/text_margin"
-                        android:layout_marginEnd="@dimen/standard_8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/text_margin"
+                        android:layout_marginEnd="@dimen/standard_8"
                         android:text="@string/love_spots_added" />
+
                     <TextView
                         android:id="@+id/profileNumberOfLoveSpots"
                         android:layout_width="wrap_content"
@@ -96,17 +96,18 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="@dimen/standard_4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    tools:context="com.lovemap.lovemapandroid.ui.main.ProfileFragment">
+                    android:layout_marginTop="@dimen/standard_4"
+                    android:orientation="horizontal">
+
                     <TextView
-                        android:layout_marginStart="@dimen/text_margin"
-                        android:layout_marginEnd="@dimen/standard_8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/text_margin"
+                        android:layout_marginEnd="@dimen/standard_8"
                         android:text="@string/reports" />
+
                     <TextView
                         android:id="@+id/profileNumberOfReports"
                         android:layout_width="wrap_content"
@@ -126,8 +127,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginEnd="@dimen/text_margin"
-                android:orientation="vertical"
-                tools:context="com.lovemap.lovemapandroid.ui.main.ProfileFragment">
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/profilePublicImage"
@@ -142,6 +142,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:enabled="false"
                     android:src="@drawable/ic_baseline_toggle_off_24" />
 
                 <TextView
@@ -168,30 +169,31 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            tools:context="com.lovemap.lovemapandroid.ui.main.ProfileFragment">
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:orientation="vertical"
-                tools:context="com.lovemap.lovemapandroid.ui.main.ProfileFragment">
-            <TextView
-                style="@style/TextAppearance.AppCompat.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/standard_8"
-                android:layout_marginTop="@dimen/standard_8"
-                android:text="@string/profileRank" />
-            <ImageView
-                android:id="@+id/profileUserLevelImage"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginStart="@dimen/text_margin"
-                android:layout_marginEnd="@dimen/text_margin"
-                android:layout_marginBottom="@dimen/text_margin"
-                android:src="@drawable/ic_crown" />
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/standard_8"
+                    android:layout_marginTop="@dimen/standard_8"
+                    android:text="@string/profileRank" />
+
+                <ImageView
+                    android:id="@+id/profileUserLevelImage"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_marginTop="@dimen/standard_8"
+                    android:layout_marginStart="@dimen/text_margin"
+                    android:layout_marginEnd="@dimen/text_margin"
+                    android:layout_marginBottom="@dimen/text_margin"
+                    android:src="@drawable/ic_rank_svgrepo_com" />
             </LinearLayout>
 
             <TextView
@@ -199,10 +201,10 @@
                 style="@style/TextAppearance.AppCompat.Body2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:inputType="textMultiLine"
                 android:maxWidth="150dp"
                 android:maxLines="2"
-                android:layout_gravity="center"
                 android:text="@string/profileUserLevelText" />
 
             <Space
@@ -216,32 +218,33 @@
                 android:layout_gravity="end"
                 android:layout_marginStart="@dimen/standard_8"
                 android:layout_marginEnd="@dimen/standard_8"
-                android:orientation="vertical"
-                tools:context="com.lovemap.lovemapandroid.ui.main.ProfileFragment">
+                android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_marginTop="@dimen/standard_8"
-                        android:layout_height="wrap_content"
-                        android:text="@string/points" />
-                    <TextView
-                        android:id="@+id/profilePoints"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/text_margin"
-                        android:text="10000" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/standard_8"
+                    android:text="@string/points" />
+
+                <TextView
+                    android:id="@+id/profilePoints"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/text_margin"
+                    android:text="10000" />
 
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/points_to_next_level" />
-                    <TextView
-                        android:id="@+id/profilePointsToNextLevel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/text_margin"
-                        android:text="20000" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/points_to_next_level" />
+
+                <TextView
+                    android:id="@+id/profilePointsToNextLevel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/text_margin"
+                    android:text="20000" />
 
             </LinearLayout>
 
@@ -259,21 +262,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            tools:context="com.lovemap.lovemapandroid.ui.main.ProfileFragment">
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/profilePartnershipImage"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_margin="@dimen/text_margin"
-                android:src="@drawable/ic_baseline_link_24" />
+                android:src="@drawable/ic_baseline_favorite_colorful_24" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                tools:context="com.lovemap.lovemapandroid.ui.main.ProfileFragment">
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/profilePartnershipWithText"
                     style="@style/TextAppearance.AppCompat.Small"
@@ -282,15 +284,16 @@
                     android:layout_gravity="center_vertical"
                     android:layout_margin="@dimen/text_margin"
                     android:text="@string/profileInPartnershipWith" />
+
                 <TextView
                     android:id="@+id/profilePartners"
                     style="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:inputType="textMultiLine"
                     android:maxWidth="280dp"
                     android:maxLines="2"
-                    android:layout_gravity="center"
                     android:text="@string/profilePartnersEmpty" />
             </LinearLayout>
 
@@ -305,63 +308,62 @@
             android:background="@color/separatorLine"
             android:gravity="center_horizontal" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        tools:context="com.lovemap.lovemapandroid.ui.main.ProfileFragment">
-
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_margin="@dimen/text_margin"
-            android:orientation="vertical"
-            tools:context="com.lovemap.lovemapandroid.ui.main.ProfileFragment">
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/profileShareableLinkToggle"
+            android:orientation="horizontal">
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/text_margin"
-                android:src="@drawable/ic_baseline_toggle_off_24" />
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/text_margin"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/profileShareableLinkToggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/text_margin"
+                    android:src="@drawable/ic_baseline_toggle_off_24" />
+
+                <TextView
+                    android:id="@+id/profileShareableLinkToggleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/linkShareOff" />
+            </LinearLayout>
+
             <TextView
-                android:id="@+id/profileShareableLinkToggleText"
+                android:id="@+id/profileShareableLink"
+                style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/linkShareOff" />
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/standard_8"
+                android:clickable="true"
+                android:focusable="true"
+                android:inputType="textMultiLine"
+                android:maxWidth="150dp"
+                android:text="@string/profileShareableLink" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+
+            <ImageButton
+                android:id="@+id/shareLinkButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/text_margin"
+                android:backgroundTint="@color/myColorSecondary"
+                android:src="@drawable/ic_baseline_share_24_primary" />
+
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/profileShareableLink"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:clickable="true"
-            android:layout_margin="@dimen/standard_8"
-            android:focusable="true"
-            android:inputType="textMultiLine"
-            android:maxWidth="150dp"
-            android:text="@string/profileShareableLink" />
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-
-        <ImageButton
-            android:id="@+id/shareLinkButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/text_margin"
-            android:backgroundTint="@color/myColorSecondary"
-            android:src="@drawable/ic_baseline_share_24_primary"
-            />
-
-    </LinearLayout>
 
         <TextView
             style="?android:attr/weekSeparatorLineColor"
@@ -376,8 +378,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:orientation="horizontal"
-            tools:context="com.lovemap.lovemapandroid.ui.main.ProfileFragment">
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/settings"

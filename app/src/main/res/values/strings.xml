@@ -50,8 +50,8 @@
     <string name="your_loves">Your Love History</string>
     <string name="discover">Discover</string>
     <string name="love_map">Love Map</string>
-    <string name="profileUserName">ProfileUserPlaceholder</string>
-    <string name="profileUserLevelText">Public Love God</string>
+    <string name="profileUserName"> - </string>
+    <string name="profileUserLevelText"> - </string>
     <string name="profileShareableLink">Get shareable link</string>
     <string name="linkShareOff">Link Sharing Off</string>
     <string name="linkShareOn">Link Sharing On</string>
@@ -114,10 +114,20 @@
     <string name="change">Change</string>
     <string name="select_partners">Select Partners:</string>
     <string name="add_partner">Add another</string>
-    <string name="dummy_date">2022-04-03 12:11</string>
+    <string name="dummy_date">2022–04–03 12:11</string>
     <string name="no_partners_yet">No partners yet</string>
     <string name="not_app_user">Not app user</string>
     <string name="select_partner">Selected partner:</string>
-
+    <string name="my_lovemap_profile_link">My LoveMap profile</string>
+    <string name="share_subject">View my LoveMap profile with this link ;)</string>
+    <string name="filter_view_other_lover">View Lover profile</string>
+    <string name="yourRelationWith">Your Relation with the user:</string>
+    <string name="relationPlaceholder">Nothing</string>
+    <string name="follow">Follow</string>
+    <string name="requestPartnership">Request Partnership</string>
+    <string name="nothing">Nothing</string>
+    <string name="following">Following</string>
+    <string name="partner">Partner</string>
+    <string name="blocked">Blocked</string>
 
 </resources>

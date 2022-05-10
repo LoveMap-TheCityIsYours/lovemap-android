@@ -9,12 +9,17 @@ import com.lovemap.lovemapandroid.api.love.LoveApi
 import com.lovemap.lovemapandroid.api.lover.LoverApi
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotApi
 import com.lovemap.lovemapandroid.data.AppDatabase
+import com.lovemap.lovemapandroid.data.love.LoveDao
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
+import com.lovemap.lovemapandroid.data.lovespot.LoveSpotDao
+import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReviewDao
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.service.*
 import com.lovemap.lovemapandroid.ui.events.MainActivityEventListener
 import com.lovemap.lovemapandroid.ui.events.MapInfoWindowShownEvent
 import com.lovemap.lovemapandroid.ui.events.MapMarkerEventListener
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import org.greenrobot.eventbus.EventBus
@@ -31,6 +36,10 @@ class AppContext : Application() {
     lateinit var loverService: LoverService
     lateinit var loveSpotService: LoveSpotService
     lateinit var loveSpotReviewService: LoveSpotReviewService
+
+    lateinit var loveDao: LoveDao
+    lateinit var loveSpotDao: LoveSpotDao
+    lateinit var loveSpotReviewDao: LoveSpotReviewDao
 
     lateinit var metadataStore: MetadataStore
     lateinit var database: AppDatabase
@@ -91,9 +100,9 @@ class AppContext : Application() {
             .baseUrl(API_ENDPOINT)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        val loveDao = database.loveDao()
-        val loveSpotDao = database.loveSpotDao()
-        val loveSpotReviewDao = database.loveSpotReviewDao()
+        loveDao = database.loveDao()
+        loveSpotDao = database.loveSpotDao()
+        loveSpotReviewDao = database.loveSpotReviewDao()
         val loveSpotApi = retrofit.create(LoveSpotApi::class.java)
         loveService = LoveService(
             retrofit.create(LoveApi::class.java),
@@ -163,5 +172,14 @@ class AppContext : Application() {
 
     suspend fun onLogin() {
         initClients()
+    }
+
+    fun deleteAllData() {
+        MainScope().launch {
+            metadataStore.deleteAll()
+            loveDao.delete(*loveDao.getAll().toTypedArray())
+            loveSpotDao.delete(*loveSpotDao.getAll().toTypedArray())
+            loveSpotReviewDao.delete(*loveSpotReviewDao.getAll().toTypedArray())
+        }
     }
 }

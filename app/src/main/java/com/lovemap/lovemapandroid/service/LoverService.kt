@@ -1,7 +1,7 @@
 package com.lovemap.lovemapandroid.service
 
 import com.lovemap.lovemapandroid.api.lover.*
-import com.lovemap.lovemapandroid.data.love.Love
+import com.lovemap.lovemapandroid.config.LINK_PREFIX
 import com.lovemap.lovemapandroid.data.love.LoveDao
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpotDao
 import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReviewDao
@@ -104,9 +104,9 @@ class LoverService(
         }
     }
 
-    suspend fun getByLink(loverLink: String): LoverViewDto? {
+    suspend fun getByUuid(uuid: String): LoverViewDto? {
         return withContext(Dispatchers.IO) {
-            val call = loverApi.getByLink(loverLink)
+            val call = loverApi.getByUuid(uuid.substringAfter(LINK_PREFIX))
             val response = try {
                 call.execute()
             } catch (e: Exception) {

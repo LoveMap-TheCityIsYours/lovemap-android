@@ -1,9 +1,10 @@
 package com.lovemap.lovemapandroid.api.lover
 
-import com.lovemap.lovemapandroid.api.relation.RelationStatusDto
+import com.lovemap.lovemapandroid.api.relation.RelationStatus
 import com.lovemap.lovemapandroid.data.love.Love
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReview
+import com.lovemap.lovemapandroid.ui.utils.instantOfApiString
 import java.time.Instant
 
 data class LoverDto(
@@ -17,13 +18,11 @@ data class LoverDto(
     val loveSpotsAdded: Int,
     val numberOfFollowers: Int,
     val createdAt: String,
+    val publicProfile: Boolean = false,
     val shareableLink: String? = null,
 ) {
     fun getCreatedAt(): Instant {
-        return Instant.ofEpochSecond(
-            createdAt.substringBefore(".").toLong(),
-            createdAt.substringAfter(".").toLong()
-        )
+        return instantOfApiString(createdAt)
     }
 }
 
@@ -45,13 +44,11 @@ data class LoverRelationsDto(
     val loveSpotsAdded: Int,
     val numberOfFollowers: Int,
     val createdAt: String,
+    val publicProfile: Boolean = false,
     val shareableLink: String? = null,
 ) {
     fun getCreatedAt(): Instant {
-        return Instant.ofEpochSecond(
-            createdAt.substringBefore(".").toLong(),
-            createdAt.substringAfter(".").toLong()
-        )
+        return instantOfApiString(createdAt)
     }
 }
 
@@ -59,7 +56,8 @@ data class LoverViewDto(
     val id: Long,
     val userName: String,
     val rank: Int,
-    val relation: RelationStatusDto
+    val relation: RelationStatus,
+    val publicProfile: Boolean = false,
 )
 
 data class LoverRanks(val rankList: List<Rank>) {

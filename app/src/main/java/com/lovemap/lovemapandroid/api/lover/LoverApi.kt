@@ -17,8 +17,8 @@ interface LoverApi {
     @DELETE("/lover/{loverId}/shareableLink")
     fun deleteLink(@Path("loverId") loverId: Long): Call<LoverDto>
 
-    @GET("/lover/byLink")
-    fun getByLink(@Query("loverLink") loverLink: String): Call<LoverViewDto>
+    @GET("/lover")
+    fun getByUuid(@Query("uuid") uuid: String): Call<LoverViewDto>
 
     @GET("/lover/ranks")
     fun getRanks(): Call<LoverRanks>

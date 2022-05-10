@@ -6,13 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import com.lovemap.lovemapandroid.R
-import com.lovemap.lovemapandroid.api.relation.RelationStatusDto
 import com.lovemap.lovemapandroid.api.lover.LoverRelationsDto
-import com.lovemap.lovemapandroid.api.lover.LoverViewDto
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.ui.login.LoginActivity
 import com.lovemap.lovemapandroid.ui.utils.isPartner
@@ -20,6 +19,7 @@ import com.lovemap.lovemapandroid.ui.utils.partnersFromRelations
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.util.*
 
 class ProfilePageFragment : Fragment() {
 
@@ -28,6 +28,7 @@ class ProfilePageFragment : Fragment() {
     private lateinit var link: TextView
     private lateinit var linkToggle: SwitchCompat
     private lateinit var linkToggleText: TextView
+    private lateinit var shareLinkButton: ImageButton
     private lateinit var numberOfLoves: TextView
     private lateinit var loveSpotsAdded: TextView
     private lateinit var reports: TextView
@@ -58,6 +59,7 @@ class ProfilePageFragment : Fragment() {
         link = view.findViewById(R.id.profileShareableLink)
         linkToggle = view.findViewById(R.id.profileShareableLinkToggle)
         linkToggleText = view.findViewById(R.id.profileShareableLinkToggleText)
+        shareLinkButton = view.findViewById(R.id.shareLinkButton)
         numberOfLoves = view.findViewById(R.id.profileNumberOfLoves)
         loveSpotsAdded = view.findViewById(R.id.profileNumberOfLoveSpots)
         reports = view.findViewById(R.id.profileNumberOfReports)
@@ -134,6 +136,18 @@ class ProfilePageFragment : Fragment() {
                     }
                 }
             }
+
+        }
+        shareLinkButton.setOnClickListener {
+            val intent: Intent = Intent(Intent.ACTION_SEND).apply {
+                putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject))
+                putExtra(Intent.EXTRA_TEXT, link.text.toString() + "\n\n" + getString(R.string.share_subject))
+
+                type = "text/plain"
+            }
+            val shareIntent =
+                Intent.createChooser(intent, getString(R.string.my_lovemap_profile_link))
+            startActivity(shareIntent)
         }
     }
 
@@ -141,7 +155,7 @@ class ProfilePageFragment : Fragment() {
         val logout = view.findViewById<Button>(R.id.logout)
         logout.setOnClickListener {
             runBlocking {
-                AppContext.INSTANCE.metadataStore.deleteAll()
+                AppContext.INSTANCE.deleteAllData()
             }
             val intent = Intent(context, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -152,10 +166,12 @@ class ProfilePageFragment : Fragment() {
     private fun turnOnSharing(shareableLink: String) {
         link.text = shareableLink
         linkToggleText.text = getString(R.string.linkShareOn)
+        shareLinkButton.isEnabled = true
     }
 
     private fun turnOffSharing() {
         link.text = getString(R.string.profileShareableLink)
         linkToggleText.text = getString(R.string.linkShareOff)
+        shareLinkButton.isEnabled = false
     }
 }

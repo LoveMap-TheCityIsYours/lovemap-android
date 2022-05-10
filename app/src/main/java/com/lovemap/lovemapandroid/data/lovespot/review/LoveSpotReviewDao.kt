@@ -17,6 +17,9 @@ interface LoveSpotReviewDao {
     @Query("SELECT * FROM love_spot_review WHERE loveSpotId = :spotId")
     fun getAllBySpot(spotId: Long): List<LoveSpotReview>
 
+    @Query("SELECT * FROM love_spot_review")
+    fun getAll(): List<LoveSpotReview>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg reviews: LoveSpotReview)
 
