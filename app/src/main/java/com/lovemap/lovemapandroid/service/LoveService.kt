@@ -2,7 +2,6 @@ package com.lovemap.lovemapandroid.service
 
 import com.lovemap.lovemapandroid.api.love.CreateLoveRequest
 import com.lovemap.lovemapandroid.api.love.LoveApi
-import com.lovemap.lovemapandroid.api.love.LoveListDto
 import com.lovemap.lovemapandroid.data.love.Love
 import com.lovemap.lovemapandroid.data.love.LoveDao
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
@@ -16,26 +15,6 @@ class LoveService(
     private val toaster: Toaster,
 ) {
 
-    suspend fun getComplexList(): LoveListDto? {
-        return withContext(Dispatchers.IO) {
-            val call = loveApi.list(metadataStore.getUser().id)
-            val response = try {
-                call.execute()
-            } catch (e: Exception) {
-                toaster.showNoServerToast()
-                return@withContext null
-            }
-            if (response.isSuccessful) {
-                val loveListDto = response.body()!!
-                loveDao.insert(*loveListDto.loves.toTypedArray())
-                loveListDto
-            } else {
-                toaster.showNoServerToast()
-                null
-            }
-        }
-    }
-
     suspend fun list(): List<Love> {
         return withContext(Dispatchers.IO) {
             val localLoves = loveDao.getAll()
@@ -47,9 +26,9 @@ class LoveService(
                 return@withContext localLoves
             }
             if (response.isSuccessful) {
-                val loveListDto = response.body()!!
-                loveDao.insert(*loveListDto.loves.toTypedArray())
-                loveListDto.loves
+                val loveList = response.body()!!
+                loveDao.insert(*loveList.toTypedArray())
+                loveList
             } else {
                 toaster.showNoServerToast()
                 localLoves

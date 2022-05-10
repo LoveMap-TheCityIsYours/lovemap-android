@@ -1,6 +1,9 @@
 package com.lovemap.lovemapandroid.api.lover
 
 import com.lovemap.lovemapandroid.api.relation.RelationStatusDto
+import com.lovemap.lovemapandroid.data.love.Love
+import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
+import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReview
 import java.time.Instant
 
 data class LoverDto(
@@ -23,6 +26,12 @@ data class LoverDto(
         )
     }
 }
+
+data class LoverContributionsDto(
+    val loves: List<Love>,
+    val loveSpots: List<LoveSpot>,
+    val loveSpotReviews: List<LoveSpotReview>
+)
 
 data class LoverRelationsDto(
     val id: Long,

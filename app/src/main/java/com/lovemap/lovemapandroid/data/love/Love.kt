@@ -10,6 +10,7 @@ data class Love(
     @ColumnInfo var name: String,
     @ColumnInfo var loveSpotId: Long,
     @ColumnInfo var loverId: Long,
+    @ColumnInfo var happenedAt: String,
     @ColumnInfo var loverPartnerId: Long? = null,
-    @ColumnInfo var note: String? = null,
+    @ColumnInfo var note: String? = null
 )

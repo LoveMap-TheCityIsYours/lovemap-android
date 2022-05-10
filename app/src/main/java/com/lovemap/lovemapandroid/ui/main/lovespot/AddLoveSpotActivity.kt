@@ -15,6 +15,7 @@ import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.databinding.ActivityAddLoveSpotBinding
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveFragment
+import com.lovemap.lovemapandroid.ui.utils.toApiString
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
@@ -143,8 +144,9 @@ class AddLoveSpotActivity : AppCompatActivity() {
                                     loveSpot.name,
                                     loveSpot.id,
                                     appContext.userId,
-                                    null,   // TODO: add partner
-                                    findViewById<EditText>(R.id.addPrivateNote).text.toString()
+                                    recordLoveFragment.selectedTime.toApiString(),
+                                    recordLoveFragment.selectedPartner(),
+                                    recordLoveFragment.addPrivateNote.text.toString()
                                 )
                             )
                             love?.let {

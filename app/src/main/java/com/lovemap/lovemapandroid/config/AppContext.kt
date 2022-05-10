@@ -91,27 +91,33 @@ class AppContext : Application() {
             .baseUrl(API_ENDPOINT)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+        val loveDao = database.loveDao()
+        val loveSpotDao = database.loveSpotDao()
+        val loveSpotReviewDao = database.loveSpotReviewDao()
+        val loveSpotApi = retrofit.create(LoveSpotApi::class.java)
         loveService = LoveService(
             retrofit.create(LoveApi::class.java),
-            database.loveDao(),
+            loveDao,
             metadataStore,
             toaster
         )
         loverService = LoverService(
             retrofit.create(LoverApi::class.java),
+            loveDao,
+            loveSpotDao,
+            loveSpotReviewDao,
             metadataStore,
             toaster
         )
-        val loveSpotApi = retrofit.create(LoveSpotApi::class.java)
         loveSpotService = LoveSpotService(
             loveSpotApi,
-            database.loveSpotDao(),
+            loveSpotDao,
             metadataStore,
             toaster,
         )
         loveSpotReviewService = LoveSpotReviewService(
             loveSpotApi,
-            database.loveSpotReviewDao(),
+            loveSpotReviewDao,
             metadataStore,
             toaster,
         )

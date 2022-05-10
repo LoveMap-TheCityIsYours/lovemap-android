@@ -54,7 +54,7 @@ class ReviewLoveSpotFragment : Fragment() {
     private fun setRiskDropdown() {
         spotRiskDropdown.setSelection(1)
         // TODO: i18n
-        runBlocking {
+        MainScope().launch {
             if (appContext.metadataStore.isRisksStored()) {
                 val risks = appContext.metadataStore.getRisks()
                 spotRiskDropdown.adapter = ArrayAdapter(

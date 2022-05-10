@@ -12,6 +12,7 @@ import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.databinding.ActivityRecordLoveBinding
 import com.lovemap.lovemapandroid.ui.main.lovespot.ReviewLoveSpotFragment
+import com.lovemap.lovemapandroid.ui.utils.toApiString
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
@@ -24,6 +25,7 @@ class RecordLoveActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRecordLoveBinding
     private lateinit var recordLoveSubmit: Button
     private lateinit var reviewLoveSpotFragment: ReviewLoveSpotFragment
+    private lateinit var recordLoveFragment: RecordLoveFragment
 
     private var rating: Int = 0
 
@@ -38,6 +40,8 @@ class RecordLoveActivity : AppCompatActivity() {
         setContentView(binding.root)
         reviewLoveSpotFragment =
             supportFragmentManager.findFragmentById(R.id.recordLoveReviewLoveSpotFragment) as ReviewLoveSpotFragment
+        recordLoveFragment =
+            supportFragmentManager.findFragmentById(R.id.recordLoveRecordLoveFragment) as RecordLoveFragment
 
         recordLoveSubmit = binding.recordLoveSubmit
 
@@ -82,8 +86,9 @@ class RecordLoveActivity : AppCompatActivity() {
                                 loveSpot.name,
                                 spotId,
                                 appContext.userId,
-                                null,   // TODO: add partner
-                                findViewById<EditText>(R.id.addPrivateNote).text.toString()
+                                recordLoveFragment.selectedTime.toApiString(),
+                                recordLoveFragment.selectedPartner(),
+                                recordLoveFragment.addPrivateNote.text.toString()
                             )
                         )
                         if (!loveSpotReviewService.hasReviewedAlready(spotId)) {

@@ -1,12 +1,19 @@
 package com.lovemap.lovemapandroid.service
 
 import com.lovemap.lovemapandroid.api.lover.*
+import com.lovemap.lovemapandroid.data.love.Love
+import com.lovemap.lovemapandroid.data.love.LoveDao
+import com.lovemap.lovemapandroid.data.lovespot.LoveSpotDao
+import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReviewDao
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class LoverService(
     private val loverApi: LoverApi,
+    private val loveDao: LoveDao,
+    private val loveSpotDao: LoveSpotDao,
+    private val loveSpotReviewDao: LoveSpotReviewDao,
     private val metadataStore: MetadataStore,
     private val toaster: Toaster,
 ) {
@@ -68,6 +75,28 @@ class LoverService(
             }
             if (response.isSuccessful) {
                 response.body()
+            } else {
+                toaster.showNoServerToast()
+                null
+            }
+        }
+    }
+
+    suspend fun contributions(): LoverContributionsDto? {
+        return withContext(Dispatchers.IO) {
+            val call = loverApi.contributions(metadataStore.getUser().id)
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
+                toaster.showNoServerToast()
+                return@withContext null
+            }
+            if (response.isSuccessful) {
+                val loveListDto = response.body()!!
+                loveDao.insert(*loveListDto.loves.toTypedArray())
+                loveSpotDao.insert(*loveListDto.loveSpots.toTypedArray())
+                loveSpotReviewDao.insert(*loveListDto.loveSpotReviews.toTypedArray())
+                loveListDto
             } else {
                 toaster.showNoServerToast()
                 null

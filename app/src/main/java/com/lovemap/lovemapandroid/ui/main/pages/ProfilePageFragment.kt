@@ -15,6 +15,8 @@ import com.lovemap.lovemapandroid.api.lover.LoverRelationsDto
 import com.lovemap.lovemapandroid.api.lover.LoverViewDto
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.ui.login.LoginActivity
+import com.lovemap.lovemapandroid.ui.utils.isPartner
+import com.lovemap.lovemapandroid.ui.utils.partnersFromRelations
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -105,9 +107,8 @@ class ProfilePageFragment : Fragment() {
     }
 
     private fun setPartnerships(lover: LoverRelationsDto) {
-        if (lover.relations.any { partnerFilter(it) }) {
-            partnersView.text = lover.relations
-                .filter { partnerFilter(it) }
+        if (lover.relations.any { isPartner(it) }) {
+            partnersView.text = partnersFromRelations(lover.relations)
                 .joinToString { it.userName }
         }
     }
@@ -135,9 +136,6 @@ class ProfilePageFragment : Fragment() {
             }
         }
     }
-
-    private fun partnerFilter(it: LoverViewDto) =
-        it.relation == RelationStatusDto.PARTNER
 
     private fun setLogoutListener(view: View) {
         val logout = view.findViewById<Button>(R.id.logout)

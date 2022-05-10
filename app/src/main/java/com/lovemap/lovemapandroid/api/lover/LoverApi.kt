@@ -8,6 +8,9 @@ interface LoverApi {
     @GET("/lover/{loverId}")
     fun getById(@Path("loverId") loverId: Long): Call<LoverRelationsDto>
 
+    @GET("/lover/contributions/{loverId}")
+    fun contributions(@Path("loverId") loverId: Long): Call<LoverContributionsDto>
+
     @POST("/lover/{loverId}/shareableLink")
     fun generateLink(@Path("loverId") loverId: Long): Call<LoverDto>
 
