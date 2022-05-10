@@ -114,6 +114,7 @@
     <string name="change">Change</string>
     <string name="select_partners">Select Partners:</string>
     <string name="add_partner">Add another</string>
+    <string name="dummy_date">2022-04-03 12:11</string>
 
 
 </resources>
