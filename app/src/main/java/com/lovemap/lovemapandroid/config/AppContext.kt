@@ -8,12 +8,14 @@ import com.lovemap.lovemapandroid.api.authentication.AuthenticationApi
 import com.lovemap.lovemapandroid.api.love.LoveApi
 import com.lovemap.lovemapandroid.api.lover.LoverApi
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotApi
+import com.lovemap.lovemapandroid.api.partnership.PartnershipApi
 import com.lovemap.lovemapandroid.data.AppDatabase
 import com.lovemap.lovemapandroid.data.love.LoveDao
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpotDao
 import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReviewDao
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
+import com.lovemap.lovemapandroid.data.partnership.PartnershipDao
 import com.lovemap.lovemapandroid.service.*
 import com.lovemap.lovemapandroid.ui.events.MainActivityEventListener
 import com.lovemap.lovemapandroid.ui.events.MapInfoWindowShownEvent
@@ -36,10 +38,12 @@ class AppContext : Application() {
     lateinit var loverService: LoverService
     lateinit var loveSpotService: LoveSpotService
     lateinit var loveSpotReviewService: LoveSpotReviewService
+    lateinit var partnershipService: PartnershipService
 
     lateinit var loveDao: LoveDao
     lateinit var loveSpotDao: LoveSpotDao
     lateinit var loveSpotReviewDao: LoveSpotReviewDao
+    lateinit var partnershipDao: PartnershipDao
 
     lateinit var metadataStore: MetadataStore
     lateinit var database: AppDatabase
@@ -103,6 +107,7 @@ class AppContext : Application() {
         loveDao = database.loveDao()
         loveSpotDao = database.loveSpotDao()
         loveSpotReviewDao = database.loveSpotReviewDao()
+        partnershipDao = database.partnershipDao()
         val loveSpotApi = retrofit.create(LoveSpotApi::class.java)
         loveService = LoveService(
             retrofit.create(LoveApi::class.java),
@@ -129,6 +134,12 @@ class AppContext : Application() {
             loveSpotReviewDao,
             metadataStore,
             toaster,
+        )
+        partnershipService = PartnershipService(
+            retrofit.create(PartnershipApi::class.java),
+            partnershipDao,
+            metadataStore,
+            toaster
         )
         userId = if (metadataStore.isLoggedIn()) {
             loveService.list()

@@ -8,10 +8,16 @@ import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpotDao
 import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReview
 import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReviewDao
+import com.lovemap.lovemapandroid.data.partnership.Partnership
+import com.lovemap.lovemapandroid.data.partnership.PartnershipDao
 
-@Database(entities = [Love::class, LoveSpot::class, LoveSpotReview::class], version = 4)
+@Database(
+    entities = [Love::class, LoveSpot::class, LoveSpotReview::class, Partnership::class],
+    version = 5
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun loveDao(): LoveDao
     abstract fun loveSpotDao(): LoveSpotDao
     abstract fun loveSpotReviewDao(): LoveSpotReviewDao
+    abstract fun partnershipDao(): PartnershipDao
 }

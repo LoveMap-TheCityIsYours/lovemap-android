@@ -3,6 +3,7 @@ package com.lovemap.lovemapandroid.ui.relations
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.lovemap.lovemapandroid.api.lover.LoverViewDto
+import com.lovemap.lovemapandroid.api.partnership.RequestPartnershipRequest
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.config.LINK_PREFIX
 import com.lovemap.lovemapandroid.databinding.ActivityViewOtherLoverBinding
@@ -14,8 +15,10 @@ class ViewOtherLoverActivity : AppCompatActivity() {
 
     private val appContext = AppContext.INSTANCE
     private val loverService = AppContext.INSTANCE.loverService
+    private val partnershipService = AppContext.INSTANCE.partnershipService
 
     private lateinit var binding: ActivityViewOtherLoverBinding
+    private var lover: LoverViewDto? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,16 +29,20 @@ class ViewOtherLoverActivity : AppCompatActivity() {
         val loverUuid = loverLink.substringAfter(LINK_PREFIX)
 
         MainScope().launch {
-            val lover = appContext.loverService.getByUuid(loverUuid)
+            lover = appContext.loverService.getByUuid(loverUuid)
             lover?.let {
-                binding.profileUserName.text = lover.userName
-                binding.relationText.text = I18nUtils.relationStatus(lover.relation, applicationContext)
-                setRank(lover)
+                binding.profileUserName.text = lover!!.userName
+                binding.relationText.text = I18nUtils.relationStatus(lover!!.relation, applicationContext)
+                setRank(lover!!)
             }
         }
 
         binding.requestPartnershipFab.setOnClickListener {
-
+            MainScope().launch {
+                lover?.let {
+                    partnershipService.requestPartnership(lover!!.id)
+                }
+            }
         }
     }
 
