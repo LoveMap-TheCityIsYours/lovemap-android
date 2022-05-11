@@ -9,12 +9,12 @@ import retrofit2.http.Path
 
 interface PartnershipApi {
 
-    @GET("/partnership/{loverId}")
+    @GET("/partnerships/{loverId}")
     fun getLoverPartnerships(@Path("loverId") loverId: Long): Call<LoverPartnershipsResponse>
 
-    @PUT("/partnership/requestPartnership")
+    @PUT("/partnerships/requestPartnership")
     fun requestPartnership(@Body request: RequestPartnershipRequest): Call<Partnership>
 
-    @PUT("/partnership/respondPartnership")
+    @PUT("/partnerships/respondPartnership")
     fun respondPartnership(@Body request: RespondPartnershipRequest): Call<LoverPartnershipsResponse>
 }

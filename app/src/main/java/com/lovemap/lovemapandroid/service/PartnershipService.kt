@@ -1,10 +1,11 @@
 package com.lovemap.lovemapandroid.service
 
+import com.lovemap.lovemapandroid.api.ErrorMessage
 import com.lovemap.lovemapandroid.api.getErrorMessages
-import com.lovemap.lovemapandroid.api.partnership.LoverPartnershipsResponse
 import com.lovemap.lovemapandroid.api.partnership.PartnershipApi
 import com.lovemap.lovemapandroid.api.partnership.RequestPartnershipRequest
 import com.lovemap.lovemapandroid.api.partnership.RespondPartnershipRequest
+import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.data.partnership.Partnership
 import com.lovemap.lovemapandroid.data.partnership.PartnershipDao
@@ -51,7 +52,7 @@ class PartnershipService(
             val response = try {
                 call.execute()
             } catch (e: Exception) {
-                toaster.showToast(e.message!!)
+                toaster.showNoServerToast()
                 return@withContext null
             }
             if (response.isSuccessful) {
@@ -59,7 +60,8 @@ class PartnershipService(
                 partnershipDao.insert(partnership)
                 partnership
             } else {
-                toaster.showToast(response.getErrorMessages().toString())
+                val errorMessage: ErrorMessage = response.getErrorMessages()[0]
+                toaster.showToast(errorMessage.translatedString(AppContext.INSTANCE.applicationContext))
                 null
             }
         }

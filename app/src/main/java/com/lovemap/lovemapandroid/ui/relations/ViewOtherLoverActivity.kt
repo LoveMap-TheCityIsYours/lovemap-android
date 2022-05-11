@@ -2,7 +2,9 @@ package com.lovemap.lovemapandroid.ui.relations
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lover.LoverViewDto
+import com.lovemap.lovemapandroid.api.partnership.PartnershipStatus
 import com.lovemap.lovemapandroid.api.partnership.RequestPartnershipRequest
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.config.LINK_PREFIX
@@ -32,7 +34,8 @@ class ViewOtherLoverActivity : AppCompatActivity() {
             lover = appContext.loverService.getByUuid(loverUuid)
             lover?.let {
                 binding.profileUserName.text = lover!!.userName
-                binding.relationText.text = I18nUtils.relationStatus(lover!!.relation, applicationContext)
+                binding.relationText.text =
+                    I18nUtils.relationStatus(lover!!.relation, applicationContext)
                 setRank(lover!!)
             }
         }
@@ -40,7 +43,13 @@ class ViewOtherLoverActivity : AppCompatActivity() {
         binding.requestPartnershipFab.setOnClickListener {
             MainScope().launch {
                 lover?.let {
-                    partnershipService.requestPartnership(lover!!.id)
+                    if (partnershipService.getPartnerships()
+                            .any { it.partnershipStatus == PartnershipStatus.IN_PARTNERSHIP }
+                    ) {
+                        appContext.toaster.showToast(R.string.already_have_a_partner)
+                    } else {
+                        partnershipService.requestPartnership(lover!!.id)
+                    }
                 }
             }
         }

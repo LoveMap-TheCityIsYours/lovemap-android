@@ -5,19 +5,19 @@ import retrofit2.http.*
 
 interface LoverApi {
 
-    @GET("/lover/{loverId}")
+    @GET("/lovers/{loverId}")
     fun getById(@Path("loverId") loverId: Long): Call<LoverRelationsDto>
 
-    @GET("/lover/contributions/{loverId}")
+    @GET("/lovers/contributions/{loverId}")
     fun contributions(@Path("loverId") loverId: Long): Call<LoverContributionsDto>
 
-    @POST("/lover/{loverId}/shareableLink")
+    @POST("/lovers/{loverId}/shareableLink")
     fun generateLink(@Path("loverId") loverId: Long): Call<LoverDto>
 
-    @DELETE("/lover/{loverId}/shareableLink")
+    @DELETE("/lovers/{loverId}/shareableLink")
     fun deleteLink(@Path("loverId") loverId: Long): Call<LoverDto>
 
-    @GET("/lover")
+    @GET("/lovers")
     fun getByUuid(@Query("uuid") uuid: String): Call<LoverViewDto>
 
     @GET("/lover/ranks")

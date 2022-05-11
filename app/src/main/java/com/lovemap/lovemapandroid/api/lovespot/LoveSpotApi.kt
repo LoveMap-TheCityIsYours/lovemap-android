@@ -7,24 +7,24 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface LoveSpotApi {
-    @POST("/lovespot")
+    @POST("/lovespots")
     fun create(@Body request: CreateLoveSpotRequest): Call<LoveSpot>
 
-    @GET("/lovespot/{id}")
+    @GET("/lovespots/{id}")
     fun find(@Path("id") id: Long): Call<LoveSpot>
 
-    @POST("/lovespot/search")
+    @POST("/lovespots/search")
     fun search(@Body request: LoveSpotSearchRequest): Call<List<LoveSpot>>
 
-    @PUT("/lovespot/review")
+    @PUT("/lovespots/reviews")
     fun addReview(@Body request: LoveSpotReviewRequest): Call<LoveSpot>
 
-    @GET("/lovespot/review/bySpot/{loveSpotId}")
+    @GET("/lovespots/reviews/bySpot/{loveSpotId}")
     fun getReviewsForSpot(@Path("loveSpotId") loveSpotId: Long): Call<List<LoveSpotReview>>
 
-    @GET("/lovespot/review/byLover/{loverId}")
+    @GET("/lovespots/reviews/byLover/{loverId}")
     fun getReviewsByLover(@Path("loverId") loverId: Long): Call<List<LoveSpotReview>>
 
-    @GET("/lovespot/risks")
+    @GET("/lovespots/risks")
     fun getRisks(): Call<LoveSpotRisks>
 }

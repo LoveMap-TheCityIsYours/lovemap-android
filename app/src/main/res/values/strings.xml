@@ -129,5 +129,7 @@
     <string name="following">Following</string>
     <string name="partner">Partner</string>
     <string name="blocked">Blocked</string>
+    <string name="already_have_a_partner">Already have a partner</string>
+    <string name="partnership_already_requested">Partnership already requested</string>
 
 </resources>

@@ -1,7 +1,9 @@
 package com.lovemap.lovemapandroid.api
 
+import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
+import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.ErrorCode.UNDEFINED
 import retrofit2.Response
 
@@ -32,7 +34,17 @@ data class ErrorMessage(
     val errorCode: ErrorCode,
     val subject: String,
     val message: String,
-)
+) {
+    fun translatedString(context: Context): String {
+        val stringId: Int? = errorCodeMessageMap[errorCode]
+        return stringId?.let { context.getString(it) } ?: errorCode.toString()
+    }
+}
+
+private val errorCodeMessageMap = HashMap<ErrorCode, Int>().apply {
+    put(ErrorCode.PartnershipAlreadyRequested, R.string.partnership_already_requested)
+    put(ErrorCode.PartnershipRerequestTimeNotPassed, R.string.partnership_already_requested)
+}
 
 enum class ErrorCode {
     UserOccupied,
@@ -55,3 +67,4 @@ enum class ErrorCode {
 
     UNDEFINED
 }
+

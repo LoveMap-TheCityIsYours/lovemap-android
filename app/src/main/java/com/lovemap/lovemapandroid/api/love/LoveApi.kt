@@ -9,9 +9,9 @@ import retrofit2.http.Path
 
 interface LoveApi {
 
-    @GET("/love/{loverId}")
+    @GET("/loves/{loverId}")
     fun list(@Path("loverId") loverId: Long): Call<List<Love>>
 
-    @POST("/love")
+    @POST("/loves")
     fun create(@Body request: CreateLoveRequest): Call<Love>
 }
