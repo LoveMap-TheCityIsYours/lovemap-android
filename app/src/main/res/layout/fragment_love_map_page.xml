@@ -67,9 +67,11 @@
         android:visibility="gone"
         android:layout_marginStart="@dimen/standard_minus_40"
         android:layout_marginBottom="68dp"
-        android:background="@color/myColorSecondary"
+        android:background="@drawable/rounded_corner"
         android:textColor="@color/myColorOnSecondary"
         android:textSize="10sp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
         android:text="@string/report_spot"
         tools:ignore="SmallSp" />
 
@@ -92,9 +94,11 @@
         android:visibility="gone"
         android:layout_marginStart="@dimen/standard_minus_40"
         android:layout_marginBottom="68dp"
-        android:background="@color/myColorSecondary"
+        android:background="@drawable/rounded_corner"
         android:textColor="@color/myColorOnSecondary"
         android:textSize="10sp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
         android:text="@string/to_wishlist"
         tools:ignore="SmallSp" />
 
@@ -117,9 +121,11 @@
         android:visibility="gone"
         android:layout_marginStart="@dimen/standard_minus_40"
         android:layout_marginBottom="68dp"
-        android:background="@color/myColorSecondary"
         android:textColor="@color/myColorOnSecondary"
+        android:background="@drawable/rounded_corner"
         android:textSize="10sp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
         android:text="@string/add_love"
         tools:ignore="SmallSp" />
 

@@ -19,7 +19,7 @@ import com.lovemap.lovemapandroid.ui.utils.partnersFromRelations
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.util.*
+
 
 class ProfilePageFragment : Fragment() {
 
@@ -35,8 +35,10 @@ class ProfilePageFragment : Fragment() {
     private lateinit var points: TextView
     private lateinit var pointsToNextLevel: TextView
     private lateinit var currentRank: TextView
+    private lateinit var profileShareDescription: TextView
 
     private val loverService = AppContext.INSTANCE.loverService
+    private val partnershipService = AppContext.INSTANCE.partnershipService
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,6 +68,7 @@ class ProfilePageFragment : Fragment() {
         points = view.findViewById(R.id.profilePoints)
         pointsToNextLevel = view.findViewById(R.id.profilePointsToNextLevel)
         currentRank = view.findViewById(R.id.profileUserLevelText)
+        profileShareDescription = view.findViewById(R.id.profileShareDescription)
         return view
     }
 
@@ -108,7 +111,12 @@ class ProfilePageFragment : Fragment() {
         points.text = lover.points.toString()
     }
 
-    private fun setPartnerships(lover: LoverRelationsDto) {
+    fun setPartnerships(lover: LoverRelationsDto) {
+        // TODO: finish this with new /partnerships API call 
+//        val partnerships = partnershipService.getPartnerships()
+//        if (partnerships.isNotEmpty()) {
+//            partnersView.text =
+//        }
         if (lover.relations.any { isPartner(it) }) {
             partnersView.text = partnersFromRelations(lover.relations)
                 .joinToString { it.userName }
@@ -126,8 +134,8 @@ class ProfilePageFragment : Fragment() {
         linkToggle.setOnClickListener {
             MainScope().launch {
                 if (linkToggle.isChecked) {
-                    val lover = loverService.generateLink()
-                    lover?.shareableLink?.let {
+                    val loverDto = loverService.generateLink()
+                    loverDto?.shareableLink?.let {
                         turnOnSharing(it)
                     }
                 } else {
@@ -141,7 +149,10 @@ class ProfilePageFragment : Fragment() {
         shareLinkButton.setOnClickListener {
             val intent: Intent = Intent(Intent.ACTION_SEND).apply {
                 putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject))
-                putExtra(Intent.EXTRA_TEXT, link.text.toString() + "\n\n" + getString(R.string.share_subject))
+                putExtra(
+                    Intent.EXTRA_TEXT,
+                    link.text.toString() + "\n\n" + getString(R.string.share_subject)
+                )
 
                 type = "text/plain"
             }
@@ -164,14 +175,28 @@ class ProfilePageFragment : Fragment() {
     }
 
     private fun turnOnSharing(shareableLink: String) {
-        link.text = shareableLink
+        link.animate().alpha(0f).setDuration(250).withEndAction {
+            link.text = shareableLink
+            link.animate().alpha(1f).duration = 250
+        }
         linkToggleText.text = getString(R.string.linkShareOn)
         shareLinkButton.isEnabled = true
+        profileShareDescription.visibility = View.VISIBLE
+        profileShareDescription.animate().alpha(1f).duration = 500
     }
 
     private fun turnOffSharing() {
-        link.text = getString(R.string.profileShareableLink)
+        link.animate().alpha(0f).setDuration(250).withEndAction {
+            link.text = getString(R.string.profileShareableLink)
+            link.animate().alpha(1f).duration = 250
+        }
         linkToggleText.text = getString(R.string.linkShareOff)
         shareLinkButton.isEnabled = false
+        profileShareDescription.animate().alpha(0f).apply {
+            withEndAction {
+                profileShareDescription.visibility = View.GONE
+            }
+        }.duration = 500
+
     }
 }

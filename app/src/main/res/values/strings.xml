@@ -131,5 +131,12 @@
     <string name="blocked">Blocked</string>
     <string name="already_have_a_partner">Already have a partner</string>
     <string name="partnership_already_requested">Partnership already requested</string>
+    <string name="invalid_operation_on_yourself">Invalid operation on yourself</string>
+    <string name="link_sharing_hint">- With Link Sharing you can share your profile with others.\n\n
+        - He/She/It can use the link to add you as a Partner or follow your activities as a Follower.\n\n
+        - If you become Partners, you can manage your LoveMakings together.\n\n
+        - If they become your Follower, they can see your activities. (Following feature is not yet implemented.)\n\n
+        - Turn off Link Sharing to render a link unusable. Generate a new link anytime.
+    </string>
 
 </resources>

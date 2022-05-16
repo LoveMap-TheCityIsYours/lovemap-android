@@ -20,6 +20,6 @@ interface LoverApi {
     @GET("/lovers")
     fun getByUuid(@Query("uuid") uuid: String): Call<LoverViewDto>
 
-    @GET("/lover/ranks")
+    @GET("/lovers/ranks")
     fun getRanks(): Call<LoverRanks>
 }

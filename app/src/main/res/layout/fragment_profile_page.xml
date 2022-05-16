@@ -72,7 +72,7 @@
                         android:id="@+id/profileNumberOfLoves"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="100" />
+                        android:text=" - " />
                 </LinearLayout>
 
                 <LinearLayout
@@ -92,7 +92,7 @@
                         android:id="@+id/profileNumberOfLoveSpots"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="100" />
+                        android:text=" - " />
                 </LinearLayout>
 
                 <LinearLayout
@@ -112,7 +112,7 @@
                         android:id="@+id/profileNumberOfReports"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="100" />
+                        android:text=" - " />
                 </LinearLayout>
 
             </LinearLayout>
@@ -231,7 +231,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/text_margin"
-                    android:text="10000" />
+                    android:text=" - " />
 
 
                 <TextView
@@ -244,7 +244,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/text_margin"
-                    android:text="20000" />
+                    android:text=" - " />
 
             </LinearLayout>
 
@@ -325,6 +325,7 @@
                     android:id="@+id/profileShareableLinkToggle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:tooltipText="@string/link_sharing_hint"
                     android:layout_marginHorizontal="@dimen/text_margin"
                     android:src="@drawable/ic_baseline_toggle_off_24" />
 
@@ -344,6 +345,8 @@
                 android:layout_margin="@dimen/standard_8"
                 android:clickable="true"
                 android:focusable="true"
+                android:linksClickable="true"
+                android:autoLink="web"
                 android:inputType="textMultiLine"
                 android:maxWidth="150dp"
                 android:text="@string/profileShareableLink" />
@@ -366,6 +369,18 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/profileShareDescription"
+            android:animateLayoutChanges="true"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/standard_8"
+            android:layout_marginStart="@dimen/standard_16"
+            android:layout_marginEnd="@dimen/standard_16"
+            android:text="@string/link_sharing_hint"
+            />
+
+        <TextView
             style="?android:attr/weekSeparatorLineColor"
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -378,6 +393,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/standard_50"
             android:orientation="horizontal">
 
             <Button

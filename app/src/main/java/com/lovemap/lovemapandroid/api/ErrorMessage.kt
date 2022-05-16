@@ -44,6 +44,7 @@ data class ErrorMessage(
 private val errorCodeMessageMap = HashMap<ErrorCode, Int>().apply {
     put(ErrorCode.PartnershipAlreadyRequested, R.string.partnership_already_requested)
     put(ErrorCode.PartnershipRerequestTimeNotPassed, R.string.partnership_already_requested)
+    put(ErrorCode.InvalidOperationOnYourself, R.string.invalid_operation_on_yourself)
 }
 
 enum class ErrorCode {
@@ -64,6 +65,7 @@ enum class ErrorCode {
     AlreadyPartners,
     PartnershipRerequestTimeNotPassed,
     PartnershipAlreadyRequested,
+    InvalidOperationOnYourself,
 
     UNDEFINED
 }
