@@ -20,9 +20,7 @@ import com.lovemap.lovemapandroid.service.*
 import com.lovemap.lovemapandroid.ui.events.MainActivityEventListener
 import com.lovemap.lovemapandroid.ui.events.MapInfoWindowShownEvent
 import com.lovemap.lovemapandroid.ui.events.MapMarkerEventListener
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -185,8 +183,8 @@ class AppContext : Application() {
         initClients()
     }
 
-    fun deleteAllData() {
-        MainScope().launch {
+    suspend fun deleteAllData() {
+        withContext(Dispatchers.IO) {
             metadataStore.deleteAll()
             loveDao.delete(*loveDao.getAll().toTypedArray())
             loveSpotDao.delete(*loveSpotDao.getAll().toTypedArray())

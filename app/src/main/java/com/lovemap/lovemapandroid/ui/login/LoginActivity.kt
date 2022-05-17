@@ -115,7 +115,7 @@ class LoginActivity : AppCompatActivity() {
 
     fun login(email: String, password: String) {
         MainScope().launch {
-            val loggedInUser = authenticationService.login(email, password)
+            val loggedInUser = authenticationService.login(email, password, this@LoginActivity)
             if (loggedInUser != null) {
                 Handler(Looper.getMainLooper()).post {
                     val toast = Toast.makeText(

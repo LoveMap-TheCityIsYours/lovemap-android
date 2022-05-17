@@ -127,7 +127,8 @@ class RegisterActivity : AppCompatActivity() {
                 val loggedInUser: LoggedInUser? = authenticationService.register(
                     userName = username.text.toString(),
                     email = email.text.toString(),
-                    password = password.text.toString()
+                    password = password.text.toString(),
+                    this@RegisterActivity
                 )
                 if (loggedInUser != null) {
                     Handler(Looper.getMainLooper()).post {
