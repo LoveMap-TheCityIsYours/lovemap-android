@@ -19,6 +19,7 @@ import com.lovemap.lovemapandroid.ui.main.love.RecordLoveFragment
 import com.lovemap.lovemapandroid.ui.utils.toApiString
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import org.w3c.dom.Text
 
 
 class AddLoveSpotActivity : AppCompatActivity() {
@@ -36,6 +37,8 @@ class AddLoveSpotActivity : AppCompatActivity() {
     private lateinit var madeLoveCheckBox: CheckBox
     private lateinit var reviewLoveSpotFragment: ReviewLoveSpotFragment
     private lateinit var recordLoveFragment: RecordLoveFragment
+    private lateinit var addSpotSeparator1: TextView
+    private lateinit var addSpotSeparator2: TextView
 
     private var availability = ALL_DAY
     private var name = ""
@@ -62,11 +65,15 @@ class AddLoveSpotActivity : AppCompatActivity() {
         addSpotDescription = binding.addSpotDescription
         addSpotSubmit = binding.addSpotSubmit
         madeLoveCheckBox = binding.madeLoveCheckBox
+        addSpotSeparator1 = binding.addSpotSeparator1
+        addSpotSeparator2 = binding.addSpotSeparator2
         reviewLoveSpotFragment =
             supportFragmentManager.findFragmentById(R.id.addSpotReviewLoveSpotFragment) as ReviewLoveSpotFragment
         recordLoveFragment =
             supportFragmentManager.findFragmentById(R.id.addSpotRecordLoveFragment) as RecordLoveFragment
 
+        addSpotSeparator1.visibility = View.GONE
+        addSpotSeparator2.visibility = View.GONE
         supportFragmentManager
             .beginTransaction()
             .hide(recordLoveFragment)
@@ -78,36 +85,48 @@ class AddLoveSpotActivity : AppCompatActivity() {
         madeLoveCheckBox.setOnClickListener {
             if (madeLoveCheckBox.isChecked) {
                 addSpotSubmit.isEnabled = isSubmitReady()
-                supportFragmentManager
-                    .beginTransaction()
-                    .setCustomAnimations(
-                        android.R.anim.slide_in_left,
-                        android.R.anim.slide_out_right
-                    )
-                    .show(reviewLoveSpotFragment)
-                    .setCustomAnimations(
-                        android.R.anim.slide_in_left,
-                        android.R.anim.slide_out_right
-                    )
-                    .show(recordLoveFragment)
-                    .commit()
+                showFragments()
             } else {
                 addSpotSubmit.isEnabled = isSubmitReady()
-                supportFragmentManager
-                    .beginTransaction()
-                    .setCustomAnimations(
-                        android.R.anim.slide_in_left,
-                        android.R.anim.slide_out_right
-                    )
-                    .hide(reviewLoveSpotFragment)
-                    .setCustomAnimations(
-                        android.R.anim.slide_in_left,
-                        android.R.anim.slide_out_right
-                    )
-                    .hide(recordLoveFragment)
-                    .commit()
+                hideFragments()
             }
         }
+    }
+
+    private fun showFragments() {
+        supportFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(
+                android.R.anim.slide_in_left,
+                android.R.anim.slide_out_right
+            )
+            .show(reviewLoveSpotFragment)
+            .setCustomAnimations(
+                android.R.anim.slide_in_left,
+                android.R.anim.slide_out_right
+            )
+            .show(recordLoveFragment)
+            .commit()
+        addSpotSeparator1.visibility = View.VISIBLE
+        addSpotSeparator2.visibility = View.VISIBLE
+    }
+
+    private fun hideFragments() {
+        supportFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(
+                android.R.anim.slide_in_left,
+                android.R.anim.slide_out_right
+            )
+            .hide(reviewLoveSpotFragment)
+            .setCustomAnimations(
+                android.R.anim.slide_in_left,
+                android.R.anim.slide_out_right
+            )
+            .hide(recordLoveFragment)
+            .commit()
+        addSpotSeparator1.visibility = View.GONE
+        addSpotSeparator2.visibility = View.GONE
     }
 
     private fun setReviewRatingBar() {
