@@ -13,6 +13,7 @@ import com.lovemap.lovemapandroid.api.lovespot.LoveSpotAvailabilityApiStatus.ALL
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotAvailabilityApiStatus.NIGHT_ONLY
 import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.config.AppContext
+import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.databinding.ActivityAddLoveSpotBinding
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveFragment
 import com.lovemap.lovemapandroid.ui.utils.toApiString
@@ -135,19 +136,25 @@ class AddLoveSpotActivity : AppCompatActivity() {
                             description,
                             null,
                             availability
-                        )
+                        ), this@AddLoveSpotActivity
                     )
                     if (loveSpot != null) {
                         if (madeLoveCheckBox.isChecked) {
+                            val reviewText =
+                                findViewById<EditText>(R.id.addReviewText).text.toString()
+                            val riskLevel =
+                                findViewById<Spinner>(R.id.spotRiskDropdown).selectedItemPosition + 1
+                            val loveRequest = CreateLoveRequest(
+                                loveSpot.name,
+                                loveSpot.id,
+                                appContext.userId,
+                                recordLoveFragment.selectedTime.toApiString(),
+                                recordLoveFragment.selectedPartner(),
+                                recordLoveFragment.addPrivateNote.text.toString()
+                            )
+                            returnHome(loveSpot)
                             val love = loveService.create(
-                                CreateLoveRequest(
-                                    loveSpot.name,
-                                    loveSpot.id,
-                                    appContext.userId,
-                                    recordLoveFragment.selectedTime.toApiString(),
-                                    recordLoveFragment.selectedPartner(),
-                                    recordLoveFragment.addPrivateNote.text.toString()
-                                )
+                                loveRequest
                             )
                             love?.let {
                                 val reviewedSpot = loveSpotReviewService.addReview(
@@ -155,25 +162,29 @@ class AddLoveSpotActivity : AppCompatActivity() {
                                         love.id,
                                         appContext.userId,
                                         loveSpot.id,
-                                        findViewById<EditText>(R.id.addReviewText).text.toString(),
+                                        reviewText,
                                         rating,
-                                        findViewById<Spinner>(R.id.spotRiskDropdown).selectedItemPosition + 1
+                                        riskLevel
                                     )
                                 )
                                 reviewedSpot?.let {
                                     loveSpotService.update(reviewedSpot)
                                 }
                             }
+                        } else {
+                            returnHome(loveSpot)
                         }
-
-                        appContext.toaster.showToast(R.string.love_spot_added)
-                        appContext.shouldCloseFabs = true
-                        appContext.zoomOnNewLoveSpot = loveSpot
-                        onBackPressed()
                     }
                 }
             }
         }
+    }
+
+    private fun returnHome(loveSpot: LoveSpot) {
+        appContext.toaster.showToast(R.string.love_spot_added)
+        appContext.shouldCloseFabs = true
+        appContext.zoomOnNewLoveSpot = loveSpot
+        onBackPressed()
     }
 
     private fun setNameText() {

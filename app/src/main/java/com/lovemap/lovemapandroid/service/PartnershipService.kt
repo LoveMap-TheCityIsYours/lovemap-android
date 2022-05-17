@@ -1,5 +1,6 @@
 package com.lovemap.lovemapandroid.service
 
+import android.app.Activity
 import com.lovemap.lovemapandroid.api.ErrorMessage
 import com.lovemap.lovemapandroid.api.getErrorMessages
 import com.lovemap.lovemapandroid.api.partnership.PartnershipApi
@@ -9,6 +10,7 @@ import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.data.partnership.Partnership
 import com.lovemap.lovemapandroid.data.partnership.PartnershipDao
+import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -41,7 +43,7 @@ class PartnershipService(
         }
     }
 
-    suspend fun requestPartnership(respondentId: Long): Partnership? {
+    suspend fun requestPartnership(respondentId: Long, activity: Activity): Partnership? {
         return withContext(Dispatchers.IO) {
             val call = partnershipApi.requestPartnership(
                 RequestPartnershipRequest(
@@ -49,17 +51,21 @@ class PartnershipService(
                     respondentId
                 )
             )
+            val loadingBarShower = LoadingBarShower(activity)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
+                loadingBarShower.onResponse()
                 toaster.showNoServerToast()
                 return@withContext null
             }
             if (response.isSuccessful) {
+                loadingBarShower.onResponse()
                 val partnership = response.body()!!
                 partnershipDao.insert(partnership)
                 partnership
             } else {
+                loadingBarShower.onResponse()
                 val errorMessage: ErrorMessage = response.getErrorMessages()[0]
                 toaster.showToast(errorMessage.translatedString(AppContext.INSTANCE.applicationContext))
                 null

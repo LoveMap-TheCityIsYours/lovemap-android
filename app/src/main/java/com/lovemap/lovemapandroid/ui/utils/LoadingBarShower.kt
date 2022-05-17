@@ -3,13 +3,14 @@ package com.lovemap.lovemapandroid.ui.utils
 import android.app.Activity
 import android.app.ProgressDialog
 import android.view.WindowManager
+import com.lovemap.lovemapandroid.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class LoadingCallback(private val activity: Activity) {
+class LoadingBarShower(private val activity: Activity) {
 
     private lateinit var progressBar: ProgressDialog
 
@@ -17,25 +18,31 @@ class LoadingCallback(private val activity: Activity) {
         MainScope().launch {
             withContext(Dispatchers.Main) {
                 progressBar = ProgressDialog(activity)
+            }
+        }
+    }
+
+    fun show(): LoadingBarShower {
+        MainScope().launch {
+            withContext(Dispatchers.Main) {
                 activity.window.setFlags(
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                 )
-                progressBar.setIndeterminate(true)
-                progressBar.setMessage("Loading...")
+                progressBar.isIndeterminate = true
+                progressBar.setMessage(activity.getString(R.string.loadingDotDotDot))
                 progressBar.setCanceledOnTouchOutside(false)
                 progressBar.show()
             }
         }
+        return this
     }
 
     fun onResponse() {
         MainScope().launch {
             withContext(Dispatchers.Main) {
-                if (progressBar.isShowing()) {
-                    progressBar.dismiss()
-                    activity.window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-                }
+                progressBar.dismiss()
+                activity.window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
             }
         }
     }

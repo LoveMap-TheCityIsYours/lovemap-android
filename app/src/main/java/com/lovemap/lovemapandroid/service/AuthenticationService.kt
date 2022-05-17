@@ -12,11 +12,10 @@ import com.lovemap.lovemapandroid.api.authentication.LoginLoverRequest
 import com.lovemap.lovemapandroid.api.getErrorMessages
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.data.metadata.LoggedInUser
-import com.lovemap.lovemapandroid.ui.utils.LoadingCallback
+import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
-import retrofit2.awaitResponse
 
 class AuthenticationService(
     private val authenticationApi: AuthenticationApi,
@@ -32,16 +31,16 @@ class AuthenticationService(
             val call = authenticationApi.login(
                 LoginLoverRequest(email, password)
             )
-            val loadingCallback = LoadingCallback(activity)
+            val loadingBarShower = LoadingBarShower(activity)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
-                loadingCallback.onResponse()
+                loadingBarShower.onResponse()
                 toaster.showToast(e.message ?: "null")
                 return@withContext null
             }
             if (response.isSuccessful) {
-                loadingCallback.onResponse()
+                loadingBarShower.onResponse()
                 loggedInUser = metadataStore.login(
                     LoggedInUser.of(
                         response.body()!!,
@@ -49,7 +48,7 @@ class AuthenticationService(
                     )
                 )
             } else {
-                loadingCallback.onResponse()
+                loadingBarShower.onResponse()
                 showErrorToast(response)
             }
             loggedInUser
@@ -62,16 +61,16 @@ class AuthenticationService(
             val call = authenticationApi.register(
                 CreateLoverRequest(userName, password, email)
             )
-            val loadingCallback = LoadingCallback(activity)
+            val loadingBarShower = LoadingBarShower(activity)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
-                loadingCallback.onResponse()
+                loadingBarShower.onResponse()
                 toaster.showNoServerToast()
                 return@withContext null
             }
             if (response.isSuccessful) {
-                loadingCallback.onResponse()
+                loadingBarShower.onResponse()
                 loggedInUser = metadataStore.login(
                     LoggedInUser.of(
                         response.body()!!,
@@ -79,7 +78,7 @@ class AuthenticationService(
                     )
                 )
             } else {
-                loadingCallback.onResponse()
+                loadingBarShower.onResponse()
                 showErrorToast(response)
             }
             loggedInUser

@@ -1,15 +1,16 @@
 package com.lovemap.lovemapandroid.service
 
+import android.app.Activity
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.lovemap.lovemapandroid.api.lovespot.CreateLoveSpotRequest
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotApi
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotRisks
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotSearchRequest
-import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
-import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpotDao
+import com.lovemap.lovemapandroid.data.metadata.MetadataStore
+import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -49,20 +50,26 @@ class LoveSpotService(
         }
     }
 
-    suspend fun create(request: CreateLoveSpotRequest): LoveSpot? {
+    suspend fun create(request: CreateLoveSpotRequest, activity: Activity): LoveSpot? {
         return withContext(Dispatchers.IO) {
             val call = loveSpotApi.create(request)
+            // TODO: show or not???
+//            val loadingBarShower = LoadingBarShower(activity).show()
+            val loadingBarShower = LoadingBarShower(activity)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
+                loadingBarShower.onResponse()
                 toaster.showNoServerToast()
                 return@withContext null
             }
             if (response.isSuccessful) {
+                loadingBarShower.onResponse()
                 val loveSpot = response.body()!!
                 loveSpotDao.insert(loveSpot)
                 loveSpot
             } else {
+                loadingBarShower.onResponse()
                 toaster.showNoServerToast()
                 null
             }

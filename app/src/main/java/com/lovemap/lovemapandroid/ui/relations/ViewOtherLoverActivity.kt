@@ -48,7 +48,7 @@ class ViewOtherLoverActivity : AppCompatActivity() {
                     ) {
                         appContext.toaster.showToast(R.string.already_have_a_partner)
                     } else {
-                        partnershipService.requestPartnership(lover!!.id)
+                        partnershipService.requestPartnership(lover!!.id, this@ViewOtherLoverActivity)
                     }
                 }
             }

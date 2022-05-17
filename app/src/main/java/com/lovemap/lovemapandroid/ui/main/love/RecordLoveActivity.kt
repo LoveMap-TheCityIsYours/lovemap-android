@@ -91,29 +91,39 @@ class RecordLoveActivity : AppCompatActivity() {
                                 recordLoveFragment.addPrivateNote.text.toString()
                             )
                         )
-                        if (!loveSpotReviewService.hasReviewedAlready(spotId)) {
-                            love?.let {
+                        if (love != null) {
+                            if (!loveSpotReviewService.hasReviewedAlready(spotId)) {
+                                val reviewText =
+                                    findViewById<EditText>(R.id.addReviewText).text.toString()
+                                val riskLevel =
+                                    findViewById<Spinner>(R.id.spotRiskDropdown).selectedItemPosition + 1
+                                returnHome()
                                 val reviewedSpot = loveSpotReviewService.addReview(
                                     LoveSpotReviewRequest(
                                         love.id,
                                         appContext.userId,
                                         spotId,
-                                        findViewById<EditText>(R.id.addReviewText).text.toString(),
+                                        reviewText,
                                         rating,
-                                        findViewById<Spinner>(R.id.spotRiskDropdown).selectedItemPosition + 1
+                                        riskLevel
                                     )
                                 )
                                 reviewedSpot?.let {
                                     loveSpotService.update(reviewedSpot)
                                 }
+                            } else {
+                                returnHome()
                             }
                         }
-                        appContext.toaster.showToast(R.string.lovemaking_recorded)
-                        appContext.shouldMoveMapCamera = true
-                        onBackPressed()
                     }
                 }
             }
         }
+    }
+
+    private fun returnHome() {
+        appContext.toaster.showToast(R.string.lovemaking_recorded)
+        appContext.shouldMoveMapCamera = true
+        onBackPressed()
     }
 }
