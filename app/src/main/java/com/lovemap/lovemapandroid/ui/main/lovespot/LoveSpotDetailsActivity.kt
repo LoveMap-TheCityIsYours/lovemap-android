@@ -50,10 +50,13 @@ class LoveSpotDetailsActivity : AppCompatActivity() {
         setReviewRatingBar()
         setSubmitButton()
         setCancelButton()
-        setDetails()
         setMakeLoveButton()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setDetails()
         setDynamicTexts()
-//        detailsReviewLoveSpotFragment.setContent()
     }
 
     private fun initViews() {
@@ -155,12 +158,8 @@ class LoveSpotDetailsActivity : AppCompatActivity() {
     }
 
     private fun setMakeLoveButton() {
-        val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            finish()
-            startActivity(intent)
-        }
         makeLoveFabOnDetails.setOnClickListener {
-            launcher.launch(Intent(applicationContext, RecordLoveActivity::class.java))
+            startActivity(Intent(applicationContext, RecordLoveActivity::class.java))
         }
     }
 
@@ -181,14 +180,4 @@ class LoveSpotDetailsActivity : AppCompatActivity() {
     }
 
     private fun ratingValid() = rating != 0
-
-    fun restartFragment(fragmentId: Int) {
-        val currentFragment = this.supportFragmentManager.findFragmentById(fragmentId)!!
-        this.supportFragmentManager.beginTransaction()
-            .detach(currentFragment)
-            .commit()
-        this.supportFragmentManager.beginTransaction()
-            .attach(currentFragment)
-            .commit()
-    }
 }

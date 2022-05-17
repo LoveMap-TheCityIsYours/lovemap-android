@@ -97,7 +97,6 @@ class RecordLoveActivity : AppCompatActivity() {
                                     findViewById<EditText>(R.id.addReviewText).text.toString()
                                 val riskLevel =
                                     findViewById<Spinner>(R.id.spotRiskDropdown).selectedItemPosition + 1
-//                                returnHome()
                                 val reviewedSpot = loveSpotReviewService.addReview(
                                     LoveSpotReviewRequest(
                                         love.id,
@@ -111,10 +110,8 @@ class RecordLoveActivity : AppCompatActivity() {
                                 reviewedSpot?.let {
                                     loveSpotService.update(reviewedSpot)
                                 }
-                            } else {
-//                                returnHome()
                             }
-                            returnHome()
+                            goBack()
                         }
                     }
                 }
@@ -122,7 +119,7 @@ class RecordLoveActivity : AppCompatActivity() {
         }
     }
 
-    private fun returnHome() {
+    private fun goBack() {
         appContext.toaster.showToast(R.string.lovemaking_recorded)
         appContext.shouldMoveMapCamera = true
         onBackPressed()

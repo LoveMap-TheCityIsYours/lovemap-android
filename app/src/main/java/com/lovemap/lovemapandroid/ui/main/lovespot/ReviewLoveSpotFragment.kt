@@ -32,8 +32,12 @@ class ReviewLoveSpotFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_review_love_spot, container, false)
         initViews(view)
         setRiskDropdown()
-        setContent()
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setContent()
     }
 
     fun setContent() {
