@@ -32,6 +32,11 @@ class ReviewLoveSpotFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_review_love_spot, container, false)
         initViews(view)
         setRiskDropdown()
+        setContent()
+        return view
+    }
+
+    fun setContent() {
         MainScope().launch {
             appContext.selectedMarker?.let {
                 val review = loveSpotReviewService.findByLoverAndSpotId(it.snippet!!.toLong())
@@ -42,7 +47,6 @@ class ReviewLoveSpotFragment : Fragment() {
                 }
             }
         }
-        return view
     }
 
     private fun initViews(view: View) {

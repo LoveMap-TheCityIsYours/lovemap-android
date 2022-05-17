@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -41,12 +42,12 @@
             <RatingBar
                 android:id="@+id/spotDetailsRating"
                 style="?android:attr/ratingBarStyleIndicator"
-                android:layout_marginBottom="@dimen/standard_16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/standard_16"
                 android:isIndicator="true"
-                android:numStars="5"/>
+                android:numStars="5" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -57,10 +58,10 @@
 
             <TextView
                 android:id="@+id/spotDetailsRisk"
-                android:layout_marginBottom="@dimen/standard_16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/standard_16"
                 android:textColor="@color/myColorOnBackground" />
 
             <TextView
@@ -72,10 +73,10 @@
 
             <TextView
                 android:id="@+id/spotDetailsDescription"
-                android:layout_marginBottom="@dimen/standard_16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/standard_16"
                 android:maxWidth="@dimen/standard_225"
                 android:maxLines="5"
                 android:textColor="@color/myColorOnBackground" />
@@ -89,10 +90,10 @@
 
             <TextView
                 android:id="@+id/spotDetailsAvailability"
-                android:layout_marginBottom="@dimen/standard_16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/standard_16"
                 android:text="@string/night_only"
                 android:textColor="@color/myColorOnBackground" />
 
@@ -101,19 +102,128 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:visibility="gone"
                 android:text="@string/marker_custom_availability"
-                android:textColor="@color/gray" />
+                android:textColor="@color/gray"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/spotDetailsCustomAvailability"
-                android:layout_marginBottom="@dimen/standard_16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:visibility="gone"
+                android:layout_marginBottom="@dimen/standard_16"
                 android:maxWidth="@dimen/standard_75"
-                android:textColor="@color/myColorOnBackground" />
+                android:textColor="@color/myColorOnBackground"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <TextView
+            style="?android:attr/weekSeparatorLineColor"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="@dimen/standard_10"
+            android:layout_marginTop="@dimen/standard_10"
+            android:layout_marginEnd="@dimen/standard_10"
+            android:layout_marginBottom="@dimen/standard_10"
+            android:background="@color/separatorLine"
+            android:gravity="center_horizontal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/standard_8"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/your_lovemakings_here" />
+
+            <TextView
+                android:id="@+id/haveNotMadeLoveText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/have_not_made_love_here_yet"
+                android:textAlignment="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standard_16"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/standard_50"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/spotWishlistText"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_corner"
+                        android:layout_marginBottom="@dimen/standard_4"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
+                        android:text="@string/to_wishlist"
+                        android:textColor="@color/myColorOnSecondary"
+                        android:textSize="10sp"
+                        tools:ignore="SmallSp" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/addToWishlistFabOnDetails"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textDirection="firstStrongRtl"
+                        app:srcCompat="@drawable/ic_baseline_list_add_24" />
+
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/standard_50"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/loveOnSpotText"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/standard_4"
+                        android:background="@drawable/rounded_corner"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
+                        android:text="@string/add_love"
+                        android:textColor="@color/myColorOnSecondary"
+                        android:textSize="10sp"
+                        tools:ignore="SmallSp" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/makeLoveFabOnDetails"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textDirection="firstStrongRtl"
+                        app:srcCompat="@drawable/ic_baseline_favorite_24" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -123,39 +233,17 @@
             android:layout_height="1dp"
             android:layout_marginStart="@dimen/standard_10"
             android:layout_marginEnd="@dimen/standard_10"
-            android:layout_marginTop="@dimen/standard_10"
             android:layout_marginBottom="@dimen/standard_10"
             android:background="@color/separatorLine"
             android:gravity="center_horizontal" />
 
         <TextView
+            style="@style/TextAppearance.AppCompat.Large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="@dimen/standard_32"
-            android:text="@string/your_lovemakings_here"
-            style="@style/TextAppearance.AppCompat.Large"
-            />
-
-        <TextView
-            style="?android:attr/weekSeparatorLineColor"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="@dimen/standard_10"
-            android:layout_marginEnd="@dimen/standard_10"
-            android:layout_marginTop="@dimen/standard_10"
-            android:layout_marginBottom="@dimen/standard_10"
-            android:background="@color/separatorLine"
-            android:gravity="center_horizontal" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="@dimen/standard_32"
-            android:text="@string/user_reviews"
-            style="@style/TextAppearance.AppCompat.Large"
-            />
+            android:text="@string/user_reviews" />
 
 
         <TextView
@@ -163,27 +251,35 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginStart="@dimen/standard_10"
-            android:layout_marginEnd="@dimen/standard_10"
             android:layout_marginTop="@dimen/standard_10"
+            android:layout_marginEnd="@dimen/standard_10"
             android:layout_marginBottom="@dimen/standard_10"
             android:background="@color/separatorLine"
             android:gravity="center_horizontal" />
 
         <TextView
+            style="@style/TextAppearance.AppCompat.Large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="@string/your_review"
-            style="@style/TextAppearance.AppCompat.Large"
-            />
+            android:text="@string/your_review" />
+
+        <TextView
+            android:id="@+id/haveNotMadeLoveReviewText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/have_not_made_love_review"
+            android:textAlignment="center" />
 
         <fragment
-            android:id="@+id/reviewActivityLoveSpotFragment"
+            android:id="@+id/detailsReviewLoveSpotFragment"
             android:name="com.lovemap.lovemapandroid.ui.main.lovespot.ReviewLoveSpotFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <LinearLayout
+            android:id="@+id/detailsReviewButtons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="bottom"

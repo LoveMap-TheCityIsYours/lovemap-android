@@ -139,5 +139,7 @@
         - Turn off Link Sharing to render a link unusable. Generate a new link anytime.
     </string>
     <string name="loadingDotDotDot">Loading…</string>
+    <string name="have_not_made_love_review">Have not made love here yet. \nMake love here first to review.</string>
+    <string name="have_not_made_love_here_yet">Have not made love here yet.</string>
 
 </resources>

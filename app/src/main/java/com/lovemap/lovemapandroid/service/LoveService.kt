@@ -62,4 +62,16 @@ class LoveService(
             return@withContext localLoves.find { it.loveSpotId == loveSpotId }
         }
     }
+
+    suspend fun getLovesForSpot(spotId: Long): List<Love> {
+        return withContext(Dispatchers.IO) {
+            return@withContext loveDao.findByLoverAndSpotId(metadataStore.getUser().id, spotId)
+        }
+    }
+
+    suspend fun madeLoveAlready(spotId: Long): Boolean {
+        return withContext(Dispatchers.IO) {
+            return@withContext loveDao.findByLoverAndSpotId(metadataStore.getUser().id, spotId).isNotEmpty()
+        }
+    }
 }

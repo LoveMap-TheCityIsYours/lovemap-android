@@ -72,11 +72,33 @@
                 android:checked="false"
                 android:text="@string/also_made_love_here" />
 
+            <TextView
+                style="?android:attr/weekSeparatorLineColor"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/standard_10"
+                android:layout_marginTop="@dimen/standard_10"
+                android:layout_marginEnd="@dimen/standard_10"
+                android:layout_marginBottom="@dimen/standard_10"
+                android:background="@color/separatorLine"
+                android:gravity="center_horizontal" />
+
             <fragment
                 android:id="@+id/addSpotRecordLoveFragment"
                 android:name="com.lovemap.lovemapandroid.ui.main.love.RecordLoveFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <TextView
+                style="?android:attr/weekSeparatorLineColor"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/standard_10"
+                android:layout_marginTop="@dimen/standard_10"
+                android:layout_marginEnd="@dimen/standard_10"
+                android:layout_marginBottom="@dimen/standard_10"
+                android:background="@color/separatorLine"
+                android:gravity="center_horizontal" />
 
             <fragment
                 android:id="@+id/addSpotReviewLoveSpotFragment"

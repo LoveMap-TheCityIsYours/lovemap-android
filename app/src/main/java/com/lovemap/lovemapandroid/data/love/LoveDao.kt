@@ -16,4 +16,7 @@ interface LoveDao {
 
     @Delete
     fun delete(vararg loves: Love)
+
+    @Query("SELECT * FROM love WHERE loverId = :loverId AND loveSpotId = :spotId")
+    fun findByLoverAndSpotId(loverId: Long, spotId: Long): List<Love>
 }

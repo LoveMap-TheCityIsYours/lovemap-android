@@ -5,8 +5,7 @@
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:paddingTop="@dimen/standard_16"
-    android:paddingBottom="@dimen/standard_16"
+    android:paddingTop="@dimen/standard_8"
     tools:context=".ui.main.lovespot.ReviewLoveSpotFragment">
 
         <LinearLayout
