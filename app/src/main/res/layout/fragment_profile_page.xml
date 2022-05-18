@@ -232,7 +232,6 @@
                     android:layout_marginTop="@dimen/standard_8"
                     android:layout_marginStart="@dimen/text_margin"
                     android:layout_marginEnd="@dimen/text_margin"
-                    android:layout_marginBottom="@dimen/text_margin"
                     android:src="@drawable/ic_rank_svgrepo_com" />
             </LinearLayout>
 
@@ -296,6 +295,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standard_50"
             android:layout_marginEnd="@dimen/standard_50"
+            android:layout_marginTop="@dimen/standard_8"
+            android:layout_marginBottom="@dimen/standard_8"
             style="@android:style/Widget.Material.ProgressBar.Horizontal"
             />
 
