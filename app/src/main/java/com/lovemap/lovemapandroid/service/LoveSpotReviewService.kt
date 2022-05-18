@@ -1,6 +1,6 @@
 package com.lovemap.lovemapandroid.service
 
-import com.lovemap.lovemapandroid.api.lovespot.LoveSpotApi
+import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewApi
 import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReview
@@ -10,14 +10,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class LoveSpotReviewService(
-    private val loveSpotApi: LoveSpotApi,
+    private val loveSpotReviewApi: LoveSpotReviewApi,
     private val loveSpotReviewDao: LoveSpotReviewDao,
     private val metadataStore: MetadataStore,
     private val toaster: Toaster,
 ) {
-    suspend fun addReview(request: LoveSpotReviewRequest): LoveSpot? {
+    suspend fun submitReview(request: LoveSpotReviewRequest): LoveSpot? {
         return withContext(Dispatchers.IO) {
-            val call = loveSpotApi.addReview(request)
+            val call = loveSpotReviewApi.submitReview(request)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
@@ -27,7 +27,7 @@ class LoveSpotReviewService(
             if (response.isSuccessful) {
                 val loveSpot = response.body()
                 try {
-                    val reviewsCall = loveSpotApi.getReviewsByLover(request.reviewerId)
+                    val reviewsCall = loveSpotReviewApi.getReviewsByLover(request.reviewerId)
                     val reviewsResponse = reviewsCall.execute()
                     if (reviewsResponse.isSuccessful) {
                         val reviews = reviewsResponse.body()!!
@@ -65,7 +65,7 @@ class LoveSpotReviewService(
         return withContext(Dispatchers.IO) {
             val loverId = metadataStore.getUser().id
             val localReviews = loveSpotReviewDao.getAllByLover(loverId)
-            val call = loveSpotApi.getReviewsByLover(loverId)
+            val call = loveSpotReviewApi.getReviewsByLover(loverId)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
@@ -86,7 +86,7 @@ class LoveSpotReviewService(
     suspend fun getReviewsBySpot(spotId: Long): List<LoveSpotReview> {
         return withContext(Dispatchers.IO) {
             val localReviews = loveSpotReviewDao.getAllBySpot(spotId)
-            val call = loveSpotApi.getReviewsForSpot(spotId)
+            val call = loveSpotReviewApi.getReviewsForSpot(spotId)
             val response = try {
                 call.execute()
             } catch (e: Exception) {

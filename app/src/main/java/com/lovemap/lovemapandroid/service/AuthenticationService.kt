@@ -10,8 +10,8 @@ import com.lovemap.lovemapandroid.api.authentication.AuthenticationApi
 import com.lovemap.lovemapandroid.api.authentication.CreateLoverRequest
 import com.lovemap.lovemapandroid.api.authentication.LoginLoverRequest
 import com.lovemap.lovemapandroid.api.getErrorMessages
-import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.data.metadata.LoggedInUser
+import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

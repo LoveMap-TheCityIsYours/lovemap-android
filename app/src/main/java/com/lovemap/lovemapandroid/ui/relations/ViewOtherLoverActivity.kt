@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lover.LoverViewDto
 import com.lovemap.lovemapandroid.api.partnership.PartnershipStatus
-import com.lovemap.lovemapandroid.api.partnership.RequestPartnershipRequest
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.config.LINK_PREFIX
 import com.lovemap.lovemapandroid.databinding.ActivityViewOtherLoverBinding

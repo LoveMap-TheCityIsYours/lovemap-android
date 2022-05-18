@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.lovemap.lovemapandroid.ui.data.LoveContent
 import com.lovemap.lovemapandroid.R
+import com.lovemap.lovemapandroid.ui.data.LoveContent
 
 /**
  * A fragment representing a list of Items.

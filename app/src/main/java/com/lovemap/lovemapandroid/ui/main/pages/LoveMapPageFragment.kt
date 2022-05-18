@@ -35,6 +35,7 @@ import com.lovemap.lovemapandroid.service.LoveSpotService
 import com.lovemap.lovemapandroid.ui.events.MainActivityEventListener
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
+import com.lovemap.lovemapandroid.ui.main.lovespot.ReportLoveSpotActivity
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotInfoWindowAdapter
 import com.lovemap.lovemapandroid.ui.utils.pixelToDp
 import kotlinx.coroutines.MainScope
@@ -83,6 +84,10 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
         reportSpotText = view.findViewById(R.id.spotReportText)
         reportLoveSpotFab = view.findViewById(R.id.reportLoveSpotFab)
         changeMapModeFab = view.findViewById(R.id.changeMapModeFab)
+
+        reportLoveSpotFab.setOnClickListener {
+            startActivity(Intent(requireContext(), ReportLoveSpotActivity::class.java))
+        }
 
         addLoveFab.setOnClickListener {
             startActivity(Intent(requireContext(), RecordLoveActivity::class.java))

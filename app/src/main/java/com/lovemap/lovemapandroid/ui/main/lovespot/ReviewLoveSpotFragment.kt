@@ -13,7 +13,6 @@ import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class ReviewLoveSpotFragment : Fragment() {
 

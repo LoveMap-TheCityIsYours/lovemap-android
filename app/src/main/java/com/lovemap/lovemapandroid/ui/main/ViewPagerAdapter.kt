@@ -5,10 +5,9 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.lovemap.lovemapandroid.ui.main.pages.DiscoverPageFragment
-import com.lovemap.lovemapandroid.ui.main.pages.ProfilePageFragment
 import com.lovemap.lovemapandroid.ui.main.pages.LoveMapPageFragment
 import com.lovemap.lovemapandroid.ui.main.pages.LovesPageFragment
-import java.lang.IllegalArgumentException
+import com.lovemap.lovemapandroid.ui.main.pages.ProfilePageFragment
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to

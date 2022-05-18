@@ -8,6 +8,8 @@ import com.lovemap.lovemapandroid.api.authentication.AuthenticationApi
 import com.lovemap.lovemapandroid.api.love.LoveApi
 import com.lovemap.lovemapandroid.api.lover.LoverApi
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotApi
+import com.lovemap.lovemapandroid.api.lovespot.report.LoveSpotReportApi
+import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewApi
 import com.lovemap.lovemapandroid.api.partnership.PartnershipApi
 import com.lovemap.lovemapandroid.data.AppDatabase
 import com.lovemap.lovemapandroid.data.love.LoveDao
@@ -20,7 +22,9 @@ import com.lovemap.lovemapandroid.service.*
 import com.lovemap.lovemapandroid.ui.events.MainActivityEventListener
 import com.lovemap.lovemapandroid.ui.events.MapInfoWindowShownEvent
 import com.lovemap.lovemapandroid.ui.events.MapMarkerEventListener
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -31,11 +35,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 class AppContext : Application() {
     lateinit var mapCameraTarget: LatLng
     lateinit var toaster: Toaster
+
     lateinit var authenticationService: AuthenticationService
     lateinit var loveService: LoveService
     lateinit var loverService: LoverService
     lateinit var loveSpotService: LoveSpotService
     lateinit var loveSpotReviewService: LoveSpotReviewService
+    lateinit var loveSpotReportService: LoveSpotReportService
     lateinit var partnershipService: PartnershipService
 
     lateinit var loveDao: LoveDao
@@ -55,6 +61,7 @@ class AppContext : Application() {
     var shouldCloseFabs = false
     var displayDensity: Float = 0f
     var selectedMarker: Marker? = null
+    var selectedLoveSpot: LoveSpot? = null
     var shouldMoveMapCamera: Boolean = false
     var zoomOnNewLoveSpot: LoveSpot? = null
 
@@ -93,6 +100,7 @@ class AppContext : Application() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMapInfoWindowShownEvent(event: MapInfoWindowShownEvent) {
         selectedMarker = event.marker
+        selectedLoveSpot = event.loveSpot
     }
 
     private suspend fun initClients() {
@@ -106,7 +114,6 @@ class AppContext : Application() {
         loveSpotDao = database.loveSpotDao()
         loveSpotReviewDao = database.loveSpotReviewDao()
         partnershipDao = database.partnershipDao()
-        val loveSpotApi = retrofit.create(LoveSpotApi::class.java)
         loveService = LoveService(
             retrofit.create(LoveApi::class.java),
             loveDao,
@@ -122,14 +129,19 @@ class AppContext : Application() {
             toaster
         )
         loveSpotService = LoveSpotService(
-            loveSpotApi,
+            retrofit.create(LoveSpotApi::class.java),
             loveSpotDao,
             metadataStore,
             toaster,
         )
         loveSpotReviewService = LoveSpotReviewService(
-            loveSpotApi,
+            retrofit.create(LoveSpotReviewApi::class.java),
             loveSpotReviewDao,
+            metadataStore,
+            toaster,
+        )
+        loveSpotReportService = LoveSpotReportService(
+            retrofit.create(LoveSpotReportApi::class.java),
             metadataStore,
             toaster,
         )

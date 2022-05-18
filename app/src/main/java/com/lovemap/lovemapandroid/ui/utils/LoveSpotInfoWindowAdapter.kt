@@ -2,12 +2,10 @@ package com.lovemap.lovemapandroid.ui.utils
 
 import android.app.Activity
 import android.view.View
-import android.widget.RatingBar
 import android.widget.TextView
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
 import com.lovemap.lovemapandroid.R
-import com.lovemap.lovemapandroid.api.lovespot.LoveSpotAvailabilityApiStatus
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.service.LoveSpotService
 import com.lovemap.lovemapandroid.ui.events.MapInfoWindowShownEvent
@@ -24,10 +22,10 @@ class LoveSpotInfoWindowAdapter(
             R.layout.marker_info_window_layout,
             null
         )
-        EventBus.getDefault().post(MapInfoWindowShownEvent(marker))
         runBlocking {
             val loveSpot =
                 loveSpotService.findLocally(marker.snippet?.toLong() ?: -1)
+            EventBus.getDefault().post(MapInfoWindowShownEvent(marker, loveSpot))
             if (loveSpot != null) {
                 setTexts(view, loveSpot)
                 LoveSpotDetailsUtils.setRating(

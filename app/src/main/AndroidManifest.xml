@@ -17,18 +17,22 @@
         android:theme="@style/Theme.Lovemapandroid"
         android:usesCleartextTraffic="true">
         <activity
-            android:exported="true"
-            android:name=".ui.relations.ViewOtherLoverActivity">
-
+            android:name=".ui.main.lovespot.ReportLoveSpotActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.relations.ViewOtherLoverActivity"
+            android:exported="true">
             <intent-filter android:label="@string/filter_view_other_lover">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https"
-                    android:host="api.lovemap.app"
-                    android:pathPrefix="/lover" />
-            </intent-filter>
 
+                <data
+                    android:host="api.lovemap.app"
+                    android:pathPrefix="/lover"
+                    android:scheme="https" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ui.main.lovespot.LoveSpotDetailsActivity"

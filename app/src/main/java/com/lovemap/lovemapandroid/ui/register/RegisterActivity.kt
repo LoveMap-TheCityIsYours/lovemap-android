@@ -82,6 +82,7 @@ class RegisterActivity : AppCompatActivity() {
                 val usernameText = username.text.toString()
                 if (validateUsername(usernameText)) {
                     enableRegister()
+                    username.error = null
                 } else {
                     username.error = getString(R.string.invalid_username)
                 }
@@ -97,6 +98,7 @@ class RegisterActivity : AppCompatActivity() {
                 val passwordText = password.text.toString()
                 if (validatePassword(passwordText)) {
                     enableRegister()
+                    password.error = null
                 } else {
                     password.error = getString(R.string.invalid_password)
                 }
@@ -113,6 +115,7 @@ class RegisterActivity : AppCompatActivity() {
                 val passwordAgainText = passwordAgain.text.toString()
                 if (validatePasswordAgain(passwordText, passwordAgainText)) {
                     enableRegister()
+                    passwordAgain.error = null
                 } else {
                     passwordAgain.error = getString(R.string.invalid_password_again)
                 }

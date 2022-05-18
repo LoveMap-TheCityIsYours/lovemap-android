@@ -4,12 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.config.AppContext
+import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.databinding.ActivityLoveSpotDetailsBinding
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotDetailsUtils
@@ -40,6 +41,8 @@ class LoveSpotDetailsActivity : AppCompatActivity() {
     private lateinit var makeLoveFabOnDetails: FloatingActionButton
     private lateinit var haveNotMadeLoveText: TextView
 
+    private lateinit var spotDetailsReportButton: ExtendedFloatingActionButton
+
     private var spotId: Long = 0
     private var rating: Int = 0
 
@@ -47,6 +50,9 @@ class LoveSpotDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         spotId = appContext.selectedMarker!!.snippet!!.toLong()
         initViews()
+        spotDetailsReportButton.setOnClickListener {
+            startActivity(Intent(applicationContext, ReportLoveSpotActivity::class.java))
+        }
         setReviewRatingBar()
         setSubmitButton()
         setCancelButton()
@@ -74,38 +80,44 @@ class LoveSpotDetailsActivity : AppCompatActivity() {
         haveNotMadeLoveText = binding.haveNotMadeLoveText
         detailsReviewButtons = binding.detailsReviewButtons
         makeLoveFabOnDetails = binding.makeLoveFabOnDetails
+        spotDetailsReportButton = binding.spotDetailsReportButton
         detailsReviewLoveSpotFragment =
             supportFragmentManager.findFragmentById(R.id.detailsReviewLoveSpotFragment) as ReviewLoveSpotFragment
     }
 
     private fun setDetails() {
         MainScope().launch {
+            setDetails(appContext.selectedLoveSpot)
             val loveSpot = loveSpotService.refresh(spotId)
-            loveSpot?.let {
-                binding.loveSpotDetailsTitle.text = loveSpot.name
-                spotDetailsDescription.text = loveSpot.description
-                LoveSpotDetailsUtils.setRating(
-                    loveSpot,
-                    spotDetailsRating
-                )
-                LoveSpotDetailsUtils.setAvailability(
-                    loveSpot,
-                    applicationContext,
-                    spotDetailsAvailability
-                )
-                LoveSpotDetailsUtils.setRisk(
-                    loveSpot,
-                    loveSpotService,
-                    applicationContext,
-                    spotDetailsRisk
-                )
-                LoveSpotDetailsUtils.setCustomAvailability(
-                    loveSpot,
-                    applicationContext,
-                    spotDetailsCustomAvailabilityText,
-                    spotDetailsCustomAvailability
-                )
-            }
+            setDetails(loveSpot)
+        }
+    }
+
+    private suspend fun setDetails(loveSpot: LoveSpot?) {
+        loveSpot?.let {
+            binding.loveSpotDetailsTitle.text = loveSpot.name
+            spotDetailsDescription.text = loveSpot.description
+            LoveSpotDetailsUtils.setRating(
+                loveSpot,
+                spotDetailsRating
+            )
+            LoveSpotDetailsUtils.setAvailability(
+                loveSpot,
+                applicationContext,
+                spotDetailsAvailability
+            )
+            LoveSpotDetailsUtils.setRisk(
+                loveSpot,
+                loveSpotService,
+                applicationContext,
+                spotDetailsRisk
+            )
+            LoveSpotDetailsUtils.setCustomAvailability(
+                loveSpot,
+                applicationContext,
+                spotDetailsCustomAvailabilityText,
+                spotDetailsCustomAvailability
+            )
         }
     }
 
@@ -116,7 +128,7 @@ class LoveSpotDetailsActivity : AppCompatActivity() {
                     val spotId = appContext.selectedMarker!!.snippet!!.toLong()
                     val love = loveService.getLoveByLoveSpotId(spotId)
                     love?.let {
-                        val reviewedSpot = loveSpotReviewService.addReview(
+                        val reviewedSpot = loveSpotReviewService.submitReview(
                             LoveSpotReviewRequest(
                                 love.id,
                                 appContext.userId,

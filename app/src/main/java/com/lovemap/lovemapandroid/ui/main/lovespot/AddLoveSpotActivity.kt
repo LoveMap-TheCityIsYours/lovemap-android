@@ -19,7 +19,6 @@ import com.lovemap.lovemapandroid.ui.main.love.RecordLoveFragment
 import com.lovemap.lovemapandroid.ui.utils.toApiString
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import org.w3c.dom.Text
 
 
 class AddLoveSpotActivity : AppCompatActivity() {
@@ -176,7 +175,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
                                 loveRequest
                             )
                             love?.let {
-                                val reviewedSpot = loveSpotReviewService.addReview(
+                                val reviewedSpot = loveSpotReviewService.submitReview(
                                     LoveSpotReviewRequest(
                                         love.id,
                                         appContext.userId,
@@ -214,6 +213,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
                 if (nameValid()) {
                     name = addSpotName.text.toString()
                     addSpotSubmit.isEnabled = isSubmitReady()
+                    addSpotName.error = null
                 } else {
                     addSpotName.error = getString(R.string.invalid_spot_name)
                     addSpotSubmit.isEnabled = false
@@ -230,6 +230,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
                 if (descriptionValid()) {
                     description = addSpotDescription.text.toString()
                     addSpotSubmit.isEnabled = isSubmitReady()
+                    addSpotName.error = null
                 } else {
                     addSpotDescription.error = getString(R.string.invalid_spot_description)
                     addSpotSubmit.isEnabled = false

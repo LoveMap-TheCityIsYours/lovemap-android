@@ -97,7 +97,7 @@ class RecordLoveActivity : AppCompatActivity() {
                                     findViewById<EditText>(R.id.addReviewText).text.toString()
                                 val riskLevel =
                                     findViewById<Spinner>(R.id.spotRiskDropdown).selectedItemPosition + 1
-                                val reviewedSpot = loveSpotReviewService.addReview(
+                                val reviewedSpot = loveSpotReviewService.submitReview(
                                     LoveSpotReviewRequest(
                                         love.id,
                                         appContext.userId,
