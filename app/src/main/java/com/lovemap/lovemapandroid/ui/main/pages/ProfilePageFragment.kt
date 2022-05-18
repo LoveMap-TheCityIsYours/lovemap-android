@@ -30,7 +30,9 @@ class ProfilePageFragment : Fragment() {
     private lateinit var shareLinkButton: ImageButton
     private lateinit var numberOfLoves: TextView
     private lateinit var loveSpotsAdded: TextView
-    private lateinit var reports: TextView
+    private lateinit var reportsSubmitted: TextView
+    private lateinit var reportsReceived: TextView
+    private lateinit var meaningfulReviews: TextView
     private lateinit var points: TextView
     private lateinit var pointsToNextLevel: TextView
     private lateinit var currentRank: TextView
@@ -44,9 +46,13 @@ class ProfilePageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val view = initViews(inflater, container)
-        fillViewWithData()
         setLogoutListener(view)
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        fillViewWithData()
     }
 
     private fun initViews(
@@ -63,7 +69,9 @@ class ProfilePageFragment : Fragment() {
         shareLinkButton = view.findViewById(R.id.shareLinkButton)
         numberOfLoves = view.findViewById(R.id.profileNumberOfLoves)
         loveSpotsAdded = view.findViewById(R.id.profileNumberOfLoveSpots)
-        reports = view.findViewById(R.id.profileNumberOfReports)
+        reportsSubmitted = view.findViewById(R.id.profileReportsSubmitted)
+        reportsReceived = view.findViewById(R.id.profileReportsReceived)
+        meaningfulReviews = view.findViewById(R.id.profileMeaningfulReviews)
         points = view.findViewById(R.id.profilePoints)
         pointsToNextLevel = view.findViewById(R.id.profilePointsToNextLevel)
         currentRank = view.findViewById(R.id.profileUserLevelText)
@@ -106,7 +114,9 @@ class ProfilePageFragment : Fragment() {
     private fun setTexts(lover: LoverRelationsDto) {
         numberOfLoves.text = lover.numberOfLoves.toString()
         loveSpotsAdded.text = lover.loveSpotsAdded.toString()
-        reports.text = lover.reportsSubmitted.toString()
+        reportsSubmitted.text = lover.reportsSubmitted.toString()
+        reportsReceived.text = lover.reportsReceived.toString()
+        meaningfulReviews.text = lover.reviewsSubmitted.toString()
         points.text = lover.points.toString()
     }
 

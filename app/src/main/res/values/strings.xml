@@ -65,7 +65,7 @@
     <string name="noServer">Cannot connect to server</string>
     <string name="points_to_next_level">Points to next level</string>
     <string name="points">Points</string>
-    <string name="reports">Reports:</string>
+    <string name="reports_submitted">Reports submitted:</string>
     <string name="love_spots_added">Love Spots added:</string>
     <string name="number_of_loves">Number of Loves:</string>
     <string name="marker_rating">Rating:</string>
@@ -141,5 +141,7 @@
     <string name="loadingDotDotDot">Loading…</string>
     <string name="have_not_made_love_review">Have not made love here yet. \nMake love here first to review.</string>
     <string name="have_not_made_love_here_yet">Have not made love here yet.</string>
+    <string name="reports_received">Reports received:</string>
+    <string name="meaningful_reviews">Meaningful reviews:</string>
 
 </resources>
