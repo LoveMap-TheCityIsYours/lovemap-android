@@ -20,7 +20,6 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-
 class ProfilePageFragment : Fragment() {
 
     private lateinit var userNameView: TextView
@@ -107,7 +106,7 @@ class ProfilePageFragment : Fragment() {
     private fun setTexts(lover: LoverRelationsDto) {
         numberOfLoves.text = lover.numberOfLoves.toString()
         loveSpotsAdded.text = lover.loveSpotsAdded.toString()
-        reports.text = lover.numberOfReports.toString()
+        reports.text = lover.reportsSubmitted.toString()
         points.text = lover.points.toString()
     }
 
