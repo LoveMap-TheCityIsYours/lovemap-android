@@ -290,6 +290,15 @@
 
         </LinearLayout>
 
+        <ProgressBar
+            android:id="@+id/profileProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_50"
+            android:layout_marginEnd="@dimen/standard_50"
+            style="@android:style/Widget.Material.ProgressBar.Horizontal"
+            />
+
         <TextView
             style="?android:attr/weekSeparatorLineColor"
             android:layout_width="match_parent"

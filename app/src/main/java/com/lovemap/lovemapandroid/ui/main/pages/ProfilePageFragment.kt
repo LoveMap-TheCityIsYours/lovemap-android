@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
@@ -37,6 +38,7 @@ class ProfilePageFragment : Fragment() {
     private lateinit var pointsToNextLevel: TextView
     private lateinit var currentRank: TextView
     private lateinit var profileShareDescription: TextView
+    private lateinit var profileProgressBar: ProgressBar
 
     private val loverService = AppContext.INSTANCE.loverService
     private val partnershipService = AppContext.INSTANCE.partnershipService
@@ -76,6 +78,7 @@ class ProfilePageFragment : Fragment() {
         pointsToNextLevel = view.findViewById(R.id.profilePointsToNextLevel)
         currentRank = view.findViewById(R.id.profileUserLevelText)
         profileShareDescription = view.findViewById(R.id.profileShareDescription)
+        profileProgressBar = view.findViewById(R.id.profileProgressBar)
         return view
     }
 
@@ -106,8 +109,14 @@ class ProfilePageFragment : Fragment() {
                     1
                 }
             }
-            currentRank.text = rankList[levelIndex - 1].nameEN
-            pointsToNextLevel.text = rankList[levelIndex].pointsNeeded.toString()
+            val rank = rankList[levelIndex - 1]
+            val nextRank = rankList[levelIndex]
+            // TODO: translation
+            currentRank.text = rank.nameEN
+            pointsToNextLevel.text = nextRank.pointsNeeded.toString()
+            profileProgressBar.min = 0
+            profileProgressBar.max = nextRank.pointsNeeded - rank.pointsNeeded
+            profileProgressBar.setProgress(lover.points - rank.pointsNeeded, true)
         }
     }
 
@@ -121,10 +130,12 @@ class ProfilePageFragment : Fragment() {
     }
 
     fun setPartnerships(lover: LoverRelationsDto) {
-        // TODO: finish this with new /partnerships API call 
-//        val partnerships = partnershipService.getPartnerships()
-//        if (partnerships.isNotEmpty()) {
-//            partnersView.text =
+        // TODO: finish this with new /partnerships API call
+//        MainScope().launch {
+//            val partnerships = partnershipService.getPartnerships()
+//            if (partnerships.isNotEmpty()) {
+//                partnersView.text = partnerships[0].
+//            }
 //        }
         if (lover.relations.any { isPartner(it) }) {
             partnersView.text = partnersFromRelations(lover.relations)

@@ -7,6 +7,7 @@ import com.lovemap.lovemapandroid.api.relation.RelationStatus.*
 import java.util.*
 
 object I18nUtils {
+
     fun relationStatus(relationStatus: RelationStatus, context: Context): String {
         val language = Locale.getDefault().language
         return when (relationStatus) {
