@@ -88,7 +88,9 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
         reportLoveSpotFab.setOnClickListener {
             startActivity(Intent(requireContext(), ReportLoveSpotActivity::class.java))
         }
-
+        addToWishlistFab.setOnClickListener {
+            appContext.toaster.showToast(R.string.not_yet_implemented)
+        }
         addLoveFab.setOnClickListener {
             startActivity(Intent(requireContext(), RecordLoveActivity::class.java))
         }

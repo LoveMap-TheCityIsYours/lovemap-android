@@ -123,7 +123,7 @@ class ProfilePageFragment : Fragment() {
                     profileProgressBar
                 )
                 setTexts(lover)
-                setPartnerships(lover)
+                setPartnerships()
                 setLinkSharing(lover)
             }
             profileSwipeRefreshLayout.isRefreshing = false
@@ -139,7 +139,7 @@ class ProfilePageFragment : Fragment() {
         points.text = lover.points.toString()
     }
 
-    fun setPartnerships(lover: LoverRelationsDto) {
+    private fun setPartnerships() {
         // TODO: finish this with new /partnerships API call
         MainScope().launch {
             val partnerships = partnershipService.getPartnerships()
@@ -152,11 +152,10 @@ class ProfilePageFragment : Fragment() {
                         I18nUtils.partnershipStatus(partnership.partnershipStatus, requireContext())
                     profilePartnerRelation.visibility = View.VISIBLE
                 }
+            } else {
+                profilePartnerName.text = getString(R.string.profilePartnersEmpty)
+                profilePartnerRelation.visibility = View.INVISIBLE
             }
-        }
-        if (lover.relations.any { isPartner(it) }) {
-            profilePartnerName.text = partnersFromRelations(lover.relations)
-                .joinToString { it.userName }
         }
     }
 

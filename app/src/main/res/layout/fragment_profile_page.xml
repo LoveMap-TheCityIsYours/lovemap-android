@@ -326,7 +326,7 @@
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:layout_margin="@dimen/text_margin"
-                    android:src="@drawable/ic_baseline_favorite_colorful_24" />
+                    android:src="@drawable/ic_two_hearts_purple" />
 
                 <LinearLayout
                     android:id="@+id/profilePartnerView"

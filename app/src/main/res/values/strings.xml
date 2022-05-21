@@ -154,5 +154,6 @@
     <string name="partnership_requested">Partnership requested</string>
     <string name="in_partnership">In Partnership</string>
     <string name="cancelRequest">Cancel Request</string>
+    <string name="not_yet_implemented">Not yet implemented</string>
 
 </resources>

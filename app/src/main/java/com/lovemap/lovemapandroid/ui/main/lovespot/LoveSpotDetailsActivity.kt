@@ -38,6 +38,7 @@ class LoveSpotDetailsActivity : AppCompatActivity() {
     private lateinit var reviewSpotSubmit: Button
     private lateinit var reviewSpotCancel: Button
 
+    private lateinit var addToWishlistFabOnDetails: FloatingActionButton
     private lateinit var makeLoveFabOnDetails: FloatingActionButton
     private lateinit var haveNotMadeLoveText: TextView
 
@@ -52,6 +53,9 @@ class LoveSpotDetailsActivity : AppCompatActivity() {
         initViews()
         spotDetailsReportButton.setOnClickListener {
             startActivity(Intent(applicationContext, ReportLoveSpotActivity::class.java))
+        }
+        addToWishlistFabOnDetails.setOnClickListener {
+            appContext.toaster.showToast(R.string.not_yet_implemented)
         }
         setReviewRatingBar()
         setSubmitButton()
@@ -81,6 +85,7 @@ class LoveSpotDetailsActivity : AppCompatActivity() {
         detailsReviewButtons = binding.detailsReviewButtons
         makeLoveFabOnDetails = binding.makeLoveFabOnDetails
         spotDetailsReportButton = binding.spotDetailsReportButton
+        addToWishlistFabOnDetails = binding.addToWishlistFabOnDetails
         detailsReviewLoveSpotFragment =
             supportFragmentManager.findFragmentById(R.id.detailsReviewLoveSpotFragment) as ReviewLoveSpotFragment
     }
