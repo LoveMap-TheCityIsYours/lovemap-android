@@ -5,16 +5,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lover.LoverRelationsDto
+import com.lovemap.lovemapandroid.api.lover.LoverViewDto
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.ui.login.LoginActivity
+import com.lovemap.lovemapandroid.ui.relations.ViewOtherLoverActivity
+import com.lovemap.lovemapandroid.ui.utils.I18nUtils
+import com.lovemap.lovemapandroid.ui.utils.ProfileUtils
 import com.lovemap.lovemapandroid.ui.utils.isPartner
 import com.lovemap.lovemapandroid.ui.utils.partnersFromRelations
 import kotlinx.coroutines.MainScope
@@ -23,8 +25,13 @@ import kotlinx.coroutines.runBlocking
 
 class ProfilePageFragment : Fragment() {
 
+    private lateinit var profileSwipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var profilePartnerView: LinearLayout
+    private lateinit var profilePartnershipImage: ImageView
     private lateinit var userNameView: TextView
-    private lateinit var partnersView: TextView
+    private lateinit var profilePartnershipWithText: TextView
+    private lateinit var profilePartnerName: TextView
+    private lateinit var profilePartnerRelation: TextView
     private lateinit var link: TextView
     private lateinit var linkToggle: SwitchCompat
     private lateinit var linkToggleText: TextView
@@ -40,8 +47,16 @@ class ProfilePageFragment : Fragment() {
     private lateinit var profileShareDescription: TextView
     private lateinit var profileProgressBar: ProgressBar
 
-    private val loverService = AppContext.INSTANCE.loverService
-    private val partnershipService = AppContext.INSTANCE.partnershipService
+    private val appContext = AppContext.INSTANCE
+    private val loverService = appContext.loverService
+    private val partnershipService = appContext.partnershipService
+
+    private var partner: LoverViewDto? = null
+
+    private val refreshListener = SwipeRefreshLayout.OnRefreshListener {
+        profileSwipeRefreshLayout.isRefreshing = true
+        fillViewWithData()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,8 +78,21 @@ class ProfilePageFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_profile_page, container, false)
+        profileSwipeRefreshLayout = view.findViewById(R.id.profileSwipeRefreshLayout)
+        profileSwipeRefreshLayout.setOnRefreshListener(refreshListener)
+
+        profilePartnerView = view.findViewById(R.id.profilePartnerView)
+        profilePartnerView.setOnClickListener { onPartnerClicked() }
+        profilePartnershipImage = view.findViewById(R.id.profilePartnershipImage)
+        profilePartnershipImage.setOnClickListener { onPartnerClicked() }
+        profilePartnershipWithText = view.findViewById(R.id.profilePartnershipWithText)
+        profilePartnershipWithText.setOnClickListener { onPartnerClicked() }
+        profilePartnerName = view.findViewById(R.id.profilePartnerName)
+        profilePartnerName.setOnClickListener { onPartnerClicked() }
+        profilePartnerRelation = view.findViewById(R.id.profilePartnerRelation)
+        profilePartnerRelation.setOnClickListener { onPartnerClicked() }
+
         userNameView = view.findViewById(R.id.profileUserName)
-        partnersView = view.findViewById(R.id.profilePartners)
         link = view.findViewById(R.id.profileShareableLink)
         linkToggle = view.findViewById(R.id.profileShareableLinkToggle)
         linkToggleText = view.findViewById(R.id.profileShareableLinkToggleText)
@@ -76,7 +104,7 @@ class ProfilePageFragment : Fragment() {
         meaningfulReviews = view.findViewById(R.id.profileMeaningfulReviews)
         points = view.findViewById(R.id.profilePoints)
         pointsToNextLevel = view.findViewById(R.id.profilePointsToNextLevel)
-        currentRank = view.findViewById(R.id.profileUserLevelText)
+        currentRank = view.findViewById(R.id.current_rank)
         profileShareDescription = view.findViewById(R.id.profileShareDescription)
         profileProgressBar = view.findViewById(R.id.profileProgressBar)
         return view
@@ -84,39 +112,21 @@ class ProfilePageFragment : Fragment() {
 
     private fun fillViewWithData() {
         MainScope().launch {
-            val user = AppContext.INSTANCE.metadataStore.getUser()
+            val user = appContext.metadataStore.getUser()
             userNameView.text = user.userName
-            val lover = loverService.getById()
+            val lover = loverService.getMyself()
             lover?.let {
-                setRanks(lover)
+                ProfileUtils.setRanks(
+                    lover.points,
+                    currentRank,
+                    pointsToNextLevel,
+                    profileProgressBar
+                )
                 setTexts(lover)
                 setPartnerships(lover)
                 setLinkSharing(lover)
             }
-        }
-    }
-
-    private suspend fun setRanks(lover: LoverRelationsDto) {
-        val ranks = loverService.getRanks()
-        ranks?.let {
-            val rankList = ranks.rankList
-            var levelIndex = 1
-            for ((index, rank) in rankList.withIndex()) {
-                levelIndex = if (rank.pointsNeeded > lover.points) {
-                    levelIndex = index
-                    break
-                } else {
-                    1
-                }
-            }
-            val rank = rankList[levelIndex - 1]
-            val nextRank = rankList[levelIndex]
-            // TODO: translation
-            currentRank.text = rank.nameEN
-            pointsToNextLevel.text = nextRank.pointsNeeded.toString()
-            profileProgressBar.min = 0
-            profileProgressBar.max = nextRank.pointsNeeded - rank.pointsNeeded
-            profileProgressBar.setProgress(lover.points - rank.pointsNeeded, true)
+            profileSwipeRefreshLayout.isRefreshing = false
         }
     }
 
@@ -131,14 +141,21 @@ class ProfilePageFragment : Fragment() {
 
     fun setPartnerships(lover: LoverRelationsDto) {
         // TODO: finish this with new /partnerships API call
-//        MainScope().launch {
-//            val partnerships = partnershipService.getPartnerships()
-//            if (partnerships.isNotEmpty()) {
-//                partnersView.text = partnerships[0].
-//            }
-//        }
+        MainScope().launch {
+            val partnerships = partnershipService.getPartnerships()
+            if (partnerships.isNotEmpty()) {
+                val partnership = partnerships[0]
+                partner = loverService.getOtherById(partnership.getPartnerId())
+                partner?.let {
+                    profilePartnerName.text = it.userName
+                    profilePartnerRelation.text =
+                        I18nUtils.partnershipStatus(partnership.partnershipStatus, requireContext())
+                    profilePartnerRelation.visibility = View.VISIBLE
+                }
+            }
+        }
         if (lover.relations.any { isPartner(it) }) {
-            partnersView.text = partnersFromRelations(lover.relations)
+            profilePartnerName.text = partnersFromRelations(lover.relations)
                 .joinToString { it.userName }
         }
     }
@@ -182,11 +199,18 @@ class ProfilePageFragment : Fragment() {
         }
     }
 
+    private fun onPartnerClicked() {
+        partner?.let {
+            appContext.otherLoverId = it.id
+            startActivity(Intent(requireContext(), ViewOtherLoverActivity::class.java))
+        }
+    }
+
     private fun setLogoutListener(view: View) {
         val logout = view.findViewById<Button>(R.id.logout)
         logout.setOnClickListener {
             runBlocking {
-                AppContext.INSTANCE.deleteAllData()
+                appContext.deleteAllData()
             }
             val intent = Intent(context, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP

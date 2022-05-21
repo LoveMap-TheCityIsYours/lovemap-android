@@ -1,5 +1,6 @@
 package com.lovemap.lovemapandroid.service
 
+import com.lovemap.lovemapandroid.api.getErrorMessages
 import com.lovemap.lovemapandroid.api.lover.*
 import com.lovemap.lovemapandroid.config.LINK_PREFIX
 import com.lovemap.lovemapandroid.data.love.LoveDao
@@ -19,7 +20,7 @@ class LoverService(
 ) {
     private var ranksQueried = false
 
-    suspend fun getById(): LoverRelationsDto? {
+    suspend fun getMyself(): LoverRelationsDto? {
         return withContext(Dispatchers.IO) {
             val localLover: LoverRelationsDto? = if (metadataStore.isLoverStored()) {
                 metadataStore.getLover()
@@ -40,6 +41,26 @@ class LoverService(
             } else {
                 toaster.showNoServerToast()
                 localLover
+            }
+        }
+    }
+
+    suspend fun getOtherById(loverId: Long): LoverViewDto? {
+        return withContext(Dispatchers.IO) {
+            val call = loverApi.getLoverView(loverId)
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
+                toaster.showNoServerToast()
+                return@withContext null
+            }
+            if (response.isSuccessful) {
+                val result: LoverViewDto = response.body()!!
+                result
+            } else {
+                val errorMessages = response.getErrorMessages()
+                toaster.showToast(errorMessages.toString())
+                null
             }
         }
     }

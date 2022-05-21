@@ -146,5 +146,13 @@
     <string name="invalid_report_text">Report text must be longer than 5 characters.</string>
     <string name="report_love_spot_name_placeholder">-</string>
     <string name="loveSpotReported">Love Spot reported</string>
+    <string name="accept">Accept</string>
+    <string name="deny">Deny</string>
+    <string name="partnership_request_text">This user has sent you a Partnership request.\nIf you accept it, you become Partners and you can manage your LoveMakings together.</string>
+    <string name="itIsYou">This is you (｡•̀ᴗ-)✧</string>
+    <string name="endPartnership">End Partnership</string>
+    <string name="partnership_requested">Partnership requested</string>
+    <string name="in_partnership">In Partnership</string>
+    <string name="cancelRequest">Cancel Request</string>
 
 </resources>

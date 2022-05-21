@@ -61,7 +61,7 @@ class RecordLoveFragment : Fragment(), CustomDateTimePicker.ICustomDateTimeListe
         partnerIds[getString(R.string.not_app_user)] = null
         recordLoveSelectPartnerDropdown.setSelection(0)
         MainScope().launch {
-            loverService.getById()?.let { lover ->
+            loverService.getMyself()?.let { lover ->
                 partners.addAll(partnersFromRelations(lover.relations).map {
                     partnerIds[it.userName] = it.id
                     it.userName
@@ -71,6 +71,9 @@ class RecordLoveFragment : Fragment(), CustomDateTimePicker.ICustomDateTimeListe
                     android.R.layout.simple_spinner_dropdown_item,
                     partners.toTypedArray()
                 )
+                if (partners.size > 1) {
+                    recordLoveSelectPartnerDropdown.setSelection(1)
+                }
             }
         }
     }

@@ -56,6 +56,7 @@ class AppContext : Application() {
     lateinit var mainActivityEventListener: MainActivityEventListener
 
     var userId: Long = 0
+    var otherLoverId: Long = 0
     var areMarkerFabsOpen = false
     var areAddLoveSpotFabsOpen = false
     var shouldCloseFabs = false

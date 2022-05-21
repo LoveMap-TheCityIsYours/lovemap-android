@@ -59,7 +59,9 @@ data class LoverRelationsDto(
 data class LoverViewDto(
     val id: Long,
     val userName: String,
+    val points: Int,
     val rank: Int,
+    val createdAt: String,
     val relation: RelationStatus,
     val publicProfile: Boolean = false,
 )
