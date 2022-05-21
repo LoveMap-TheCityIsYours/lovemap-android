@@ -1,21 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:id="@+id/loveItemView"
+    android:clickable="true"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:layout_marginStart="@dimen/standard_8"
+    android:layout_marginEnd="@dimen/standard_8"
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/item_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        style="?android:attr/weekSeparatorLineColor"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/separatorLine"
+        android:gravity="center_horizontal" />
 
     <TextView
-        android:id="@+id/content"
+        android:id="@+id/loveItemName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:layout_gravity="center"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:text=" - " />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.Material3.LabelMedium"
+            android:text="@string/partner_colon"/>
+
+        <TextView
+            android:id="@+id/loveItemPartner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_8"
+            android:text=" - "
+            style="@style/TextAppearance.Material3.LabelLarge" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/loveItemNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text=" - "
+        style="@style/TextAppearance.Material3.LabelLarge"
+        />
+
+
+    <TextView
+        android:id="@+id/loveItemHappenedAt"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" - "
+        style="@style/TextAppearance.Material3.LabelMedium" />
+
+    <TextView
+        style="?android:attr/weekSeparatorLineColor"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/standard_10"
+        android:layout_marginBottom="@dimen/standard_10"
+        android:background="@color/separatorLine"
+        android:gravity="center_horizontal" />
 </LinearLayout>

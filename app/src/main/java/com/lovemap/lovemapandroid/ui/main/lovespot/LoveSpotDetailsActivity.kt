@@ -49,7 +49,7 @@ class LoveSpotDetailsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        spotId = appContext.selectedMarker!!.snippet!!.toLong()
+        spotId = appContext.selectedLoveSpotId!!
         initViews()
         spotDetailsReportButton.setOnClickListener {
             startActivity(Intent(applicationContext, ReportLoveSpotActivity::class.java))

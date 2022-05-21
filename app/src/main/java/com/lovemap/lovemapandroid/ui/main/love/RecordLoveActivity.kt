@@ -121,7 +121,7 @@ class RecordLoveActivity : AppCompatActivity() {
 
     private fun goBack() {
         appContext.toaster.showToast(R.string.lovemaking_recorded)
-        appContext.shouldMoveMapCamera = true
+        appContext.shouldMoveMapCamera = false
         onBackPressed()
     }
 }

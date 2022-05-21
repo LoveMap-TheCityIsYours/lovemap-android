@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.ui.utils.partnersFromRelations
+import com.lovemap.lovemapandroid.ui.utils.timeZone
+import com.lovemap.lovemapandroid.ui.utils.toFormattedString
 import com.noowenz.customdatetimepicker.CustomDateTimePicker
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -24,9 +26,8 @@ import java.util.*
 
 class RecordLoveFragment : Fragment(), CustomDateTimePicker.ICustomDateTimeListener {
 
-    private val dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
     private val appContext = AppContext.INSTANCE
-    private val loverService = AppContext.INSTANCE.loverService
+    private val loverService =appContext.loverService
 
     lateinit var datePicker: CustomDateTimePicker
     lateinit var recordLoveHappenedAt: TextView
@@ -34,14 +35,10 @@ class RecordLoveFragment : Fragment(), CustomDateTimePicker.ICustomDateTimeListe
     var selectedTime: Instant = Instant.now()
 
     lateinit var recordLoveSelectPartnerDropdown: Spinner
-    val partners: MutableList<String> = ArrayList()
-    val partnerIds: MutableMap<String, Long?> = HashMap()
+    private val partners: MutableList<String> = ArrayList()
+    private val partnerIds: MutableMap<String, Long?> = HashMap()
 
     lateinit var addPrivateNote: TextView
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -83,7 +80,7 @@ class RecordLoveFragment : Fragment(), CustomDateTimePicker.ICustomDateTimeListe
         datePicker.set24HourFormat(true)
         recordLoveChangeDateTime = view.findViewById(R.id.recordLoveChangeDateTime)
         recordLoveHappenedAt = view.findViewById(R.id.recordLoveHappenedAt)
-        recordLoveHappenedAt.text = ZonedDateTime.now().format(dateTimeFormatter)
+        recordLoveHappenedAt.text = Instant.now().toFormattedString()
         recordLoveChangeDateTime.setOnClickListener {
             datePicker.setDate(Calendar.getInstance())
             datePicker.showDialog()
@@ -116,10 +113,8 @@ class RecordLoveFragment : Fragment(), CustomDateTimePicker.ICustomDateTimeListe
         sec: Int,
         AM_PM: String
     ) {
-        val timeZone = TimeZone.getDefault()
         val zonedDateTime =
             ZonedDateTime.of(year, monthNumber, day, hour24, min, sec, 0, timeZone.toZoneId())
-        selectedTime = zonedDateTime.toInstant()
-        recordLoveHappenedAt.text = zonedDateTime.format(dateTimeFormatter)
+        recordLoveHappenedAt.text =  zonedDateTime.toInstant().toFormattedString()
     }
 }

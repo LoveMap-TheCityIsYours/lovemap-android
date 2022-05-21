@@ -155,5 +155,8 @@
     <string name="in_partnership">In Partnership</string>
     <string name="cancelRequest">Cancel Request</string>
     <string name="not_yet_implemented">Not yet implemented</string>
+    <string name="showing_love_makings">"Showing Your Lovemakings "</string>
+    <string name="showing_love_spots">Showing Love Spots</string>
+    <string name="partner_colon">Partner:</string>
 
 </resources>

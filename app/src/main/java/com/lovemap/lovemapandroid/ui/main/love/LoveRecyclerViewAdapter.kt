@@ -1,47 +1,59 @@
 package com.lovemap.lovemapandroid.ui.main.love
 
+import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.lovemap.lovemapandroid.databinding.FragmentLovespotItemBinding
-import com.lovemap.lovemapandroid.ui.data.LoveContent.LoveItem
+import com.lovemap.lovemapandroid.config.AppContext
+import com.lovemap.lovemapandroid.databinding.FragmentLoveItemBinding
+import com.lovemap.lovemapandroid.ui.data.LoveHolder
+import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
 
-/**
- * [RecyclerView.Adapter] that can display a [LoveItem].
- * TODO: Replace the implementation with code for your data type.
- */
 class LoveRecyclerViewAdapter(
-    private val values: List<LoveItem>
+    private val values: List<LoveHolder>
 ) : RecyclerView.Adapter<LoveRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-
-        return ViewHolder(
-            FragmentLovespotItemBinding.inflate(
+        val viewHolder = ViewHolder(
+            FragmentLoveItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
         )
 
+        return viewHolder
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = values[position]
-        holder.idView.text = item.id
-        holder.contentView.text = item.content
+        val love = values[position]
+        holder.loveItemName.text = love.name
+        holder.loveItemPartner.text = love.partner
+        holder.loveItemNote.text = love.note
+        holder.loveItemHappenedAt.text = love.happenedAt
     }
 
     override fun getItemCount(): Int = values.size
 
-    inner class ViewHolder(binding: FragmentLovespotItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        val idView: TextView = binding.itemNumber
-        val contentView: TextView = binding.content
+    inner class ViewHolder(binding: FragmentLoveItemBinding) :
+        RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+        val loveItemName: TextView = binding.loveItemName
+        val loveItemPartner: TextView = binding.loveItemPartner
+        val loveItemNote: TextView = binding.loveItemNote
+        val loveItemHappenedAt: TextView = binding.loveItemHappenedAt
 
-        override fun toString(): String {
-            return super.toString() + " '" + contentView.text + "'"
+        init {
+            binding.root.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            val loveSpotId = values[absoluteAdapterPosition].loveSpotId
+            AppContext.INSTANCE.selectedLoveSpotId = loveSpotId
+            v?.context?.startActivity(
+                Intent(v.context, LoveSpotDetailsActivity::class.java)
+            )
         }
     }
 }

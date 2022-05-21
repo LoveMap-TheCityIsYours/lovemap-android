@@ -31,11 +31,14 @@ import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotAvailabilityApiStatus.ALL_DAY
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
+import com.lovemap.lovemapandroid.service.LoveService
 import com.lovemap.lovemapandroid.service.LoveSpotService
 import com.lovemap.lovemapandroid.ui.events.MainActivityEventListener
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.ReportLoveSpotActivity
+import com.lovemap.lovemapandroid.ui.main.pages.LoveMapPageFragment.MapMode.LOVE_MAKINGS
+import com.lovemap.lovemapandroid.ui.main.pages.LoveMapPageFragment.MapMode.LOVE_SPOTS
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotInfoWindowAdapter
 import com.lovemap.lovemapandroid.ui.utils.pixelToDp
 import kotlinx.coroutines.MainScope
@@ -46,14 +49,18 @@ import kotlinx.coroutines.launch
 class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventListener {
     private val appContext = AppContext.INSTANCE
     private val loveSpotService: LoveSpotService = appContext.loveSpotService
+    private val loveService: LoveService = appContext.loveService
     private var cameraMoved = false
     private var locationEnabled = false
+    private var mapMode = LOVE_SPOTS
+    private var mapModeChanged = false
 
     private lateinit var viewPager2: ViewPager2
     private lateinit var loveSpotInfoWindowAdapter: LoveSpotInfoWindowAdapter
     private lateinit var mapFragment: SupportMapFragment
     private lateinit var dayBitmap: BitmapDescriptor
     private lateinit var nightBitmap: BitmapDescriptor
+    private lateinit var loveBitmap: BitmapDescriptor
 
     private lateinit var addLoveText: TextView
     private lateinit var addLoveFab: FloatingActionButton
@@ -77,6 +84,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
         mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         dayBitmap = getIconBitmap(R.drawable.ic_marker_sun)
         nightBitmap = getIconBitmap(R.drawable.ic_marker_moon)
+        loveBitmap = getIconBitmap(R.drawable.ic_marker_heart)
         addLoveText = view.findViewById(R.id.loveOnSpotText)
         addLoveFab = view.findViewById(R.id.addLoveFab)
         toWishlistText = view.findViewById(R.id.spotWishlistText)
@@ -84,7 +92,11 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
         reportSpotText = view.findViewById(R.id.spotReportText)
         reportLoveSpotFab = view.findViewById(R.id.reportLoveSpotFab)
         changeMapModeFab = view.findViewById(R.id.changeMapModeFab)
+        setButtons()
+        return view
+    }
 
+    private fun setButtons() {
         reportLoveSpotFab.setOnClickListener {
             startActivity(Intent(requireContext(), ReportLoveSpotActivity::class.java))
         }
@@ -95,10 +107,16 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
             startActivity(Intent(requireContext(), RecordLoveActivity::class.java))
         }
         changeMapModeFab.setOnClickListener {
-
+            mapModeChanged = true
+            mapMode = if (mapMode == LOVE_SPOTS) {
+                appContext.toaster.showToast(R.string.showing_love_makings)
+                LOVE_MAKINGS
+            } else {
+                appContext.toaster.showToast(R.string.showing_love_spots)
+                LOVE_SPOTS
+            }
+            mapFragment.getMapAsync(this)
         }
-
-        return view
     }
 
     override fun onResume() {
@@ -138,7 +156,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
                 requireActivity(),
             )
             googleMap.setInfoWindowAdapter(loveSpotInfoWindowAdapter)
-            fetchLoveSpots(googleMap)
+            putLoveSpotsOrLoveMakings(googleMap)
         }
         setMyLocation(googleMap)
         putMarkersOnMap(googleMap)
@@ -182,21 +200,37 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
         googleMap.setOnCameraIdleListener {
             if (cameraMoved) {
                 MainScope().launch {
-                    fetchLoveSpots(googleMap)
+                    putLoveSpotsOrLoveMakings(googleMap)
                 }
             }
         }
     }
 
-    private suspend fun fetchLoveSpots(
+    private suspend fun putLoveSpotsOrLoveMakings(
         googleMap: GoogleMap
     ) {
-        val visibleRegion = googleMap.projection.visibleRegion
         appContext.mapCameraTarget = googleMap.cameraPosition.target
-        loveSpotService
+
+        if (mapModeChanged) {
+            googleMap.clear()
+            mapModeChanged = false
+        }
+
+        val visibleRegion = googleMap.projection.visibleRegion
+        val loveSpotsInArea = loveSpotService
             .search(visibleRegion.latLngBounds)
-            .map { loveSpotToMarkerOptions(it, googleMap) }
-            .forEach { googleMap.addMarker(it) }
+
+        if (mapMode == LOVE_MAKINGS) {
+            val loves = loveService.list()
+            val spotIdsWithLove = loves.map { it.loveSpotId }.toHashSet()
+            loveSpotsInArea.filter { loveSpot -> spotIdsWithLove.contains(loveSpot.id) }
+                .map { loveMakingToMarkerOptions(it, googleMap) }
+                .forEach { googleMap.addMarker(it) }
+        } else {
+            loveSpotsInArea
+                .map { loveSpotToMarkerOptions(it, googleMap) }
+                .forEach { googleMap.addMarker(it) }
+        }
 
         if (appContext.selectedMarker != null) {
             appContext.selectedMarker!!.showInfoWindow()
@@ -212,6 +246,21 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
         } else {
             nightBitmap
         }
+        return loveSpotToMarkerOptionsAndZoom(loveSpot, icon, googleMap)
+    }
+
+    private fun loveMakingToMarkerOptions(
+        loveSpot: LoveSpot,
+        googleMap: GoogleMap
+    ): MarkerOptions {
+        return loveSpotToMarkerOptionsAndZoom(loveSpot, loveBitmap, googleMap)
+    }
+
+    private fun loveSpotToMarkerOptionsAndZoom(
+        loveSpot: LoveSpot,
+        icon: BitmapDescriptor,
+        googleMap: GoogleMap
+    ): MarkerOptions {
         val position = LatLng(loveSpot.latitude, loveSpot.longitude)
         val marker = MarkerOptions()
             .icon(icon)
@@ -223,7 +272,6 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
             appContext.zoomOnNewLoveSpot = null
             moveCameraTo(position, googleMap)
         }
-
         return marker
     }
 
@@ -379,5 +427,9 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
 
     override fun onOpenAddLoveSpotFabs() {
         closeMarkerFabMenu()
+    }
+
+    enum class MapMode {
+        LOVE_SPOTS, LOVE_MAKINGS
     }
 }

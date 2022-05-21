@@ -63,6 +63,7 @@ class AppContext : Application() {
     var displayDensity: Float = 0f
     var selectedMarker: Marker? = null
     var selectedLoveSpot: LoveSpot? = null
+    var selectedLoveSpotId: Long? = null
     var shouldMoveMapCamera: Boolean = false
     var zoomOnNewLoveSpot: LoveSpot? = null
 
@@ -102,6 +103,7 @@ class AppContext : Application() {
     fun onMapInfoWindowShownEvent(event: MapInfoWindowShownEvent) {
         selectedMarker = event.marker
         selectedLoveSpot = event.loveSpot
+        selectedLoveSpotId = event.loveSpot?.id
     }
 
     private suspend fun initClients() {
@@ -115,12 +117,6 @@ class AppContext : Application() {
         loveSpotDao = database.loveSpotDao()
         loveSpotReviewDao = database.loveSpotReviewDao()
         partnershipDao = database.partnershipDao()
-        loveService = LoveService(
-            retrofit.create(LoveApi::class.java),
-            loveDao,
-            metadataStore,
-            toaster
-        )
         loverService = LoverService(
             retrofit.create(LoverApi::class.java),
             loveDao,
@@ -128,6 +124,14 @@ class AppContext : Application() {
             loveSpotReviewDao,
             metadataStore,
             toaster
+        )
+        loveService = LoveService(
+            loveApi = retrofit.create(LoveApi::class.java),
+            loveDao = loveDao,
+            loverService = loverService,
+            metadataStore = metadataStore,
+            context = applicationContext,
+            toaster = toaster,
         )
         loveSpotService = LoveSpotService(
             retrofit.create(LoveSpotApi::class.java),
@@ -154,6 +158,7 @@ class AppContext : Application() {
         )
         userId = if (metadataStore.isLoggedIn()) {
             loveService.list()
+            loveService.initLoveHolderTreeSet()
             loverService.getRanks()
             loveSpotService.getRisks()
             loveSpotReviewService.getReviewsByLover()
