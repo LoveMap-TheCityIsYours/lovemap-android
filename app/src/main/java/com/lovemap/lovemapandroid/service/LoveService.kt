@@ -1,6 +1,7 @@
 package com.lovemap.lovemapandroid.service
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import com.lovemap.lovemapandroid.api.love.CreateLoveRequest
 import com.lovemap.lovemapandroid.api.love.LoveApi
 import com.lovemap.lovemapandroid.data.love.Love
@@ -51,7 +52,11 @@ class LoveService(
         }
     }
 
-    suspend fun initLoveHolderTreeSet(): MutableList<LoveHolder> {
+    fun getLoveHolderList(): MutableList<LoveHolder> {
+        return loveHolderList
+    }
+
+    suspend fun initLoveHolderList(): MutableList<LoveHolder> {
         return withContext(Dispatchers.IO) {
             loveHolderList.clear()
             val loves = list()

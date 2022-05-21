@@ -2,6 +2,7 @@ package com.lovemap.lovemapandroid.ui.data
 
 import android.content.Context
 import com.lovemap.lovemapandroid.R
+import com.lovemap.lovemapandroid.api.lover.LoverViewDto
 import com.lovemap.lovemapandroid.data.love.Love
 import com.lovemap.lovemapandroid.service.LoverService
 import com.lovemap.lovemapandroid.ui.utils.instantOfApiString
@@ -22,8 +23,9 @@ data class LoveHolder(
     companion object {
         suspend fun of(love: Love, loverService: LoverService, context: Context): LoveHolder {
             // TODO cache partners
-            val partner = love.getPartnerId()?.let {
-                loverService.getOtherById(love.getPartnerId()!!)
+            val partnerId = love.getPartnerId()
+            val partner: LoverViewDto? = partnerId?.let {
+                loverService.getOtherById(partnerId)
             }
             return LoveHolder(
                 loveSpotId = love.loveSpotId,

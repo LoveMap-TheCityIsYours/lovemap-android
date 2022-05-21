@@ -28,7 +28,7 @@ class LoveListFragment : Fragment() {
         with(recycleView) {
             layoutManager = LinearLayoutManager(context)
             MainScope().launch {
-                adapter = LoveRecyclerViewAdapter(loveService.initLoveHolderTreeSet())
+                adapter = LoveRecyclerViewAdapter(loveService.getLoveHolderList())
             }
         }
         return recycleView
@@ -37,7 +37,7 @@ class LoveListFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         if (loveService.lastUpdatedIndex != -1) {
-//            recycleView.adapter?.notifyItemInserted(loveService.lastUpdatedIndex)
+            recycleView.adapter?.notifyDataSetChanged()
             loveService.lastUpdatedIndex = -1
         }
     }

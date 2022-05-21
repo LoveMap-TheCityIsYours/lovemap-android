@@ -31,6 +31,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.atomic.AtomicLong
 
 class AppContext : Application() {
     lateinit var mapCameraTarget: LatLng
@@ -55,6 +56,7 @@ class AppContext : Application() {
     lateinit var mapMarkerEventListener: MapMarkerEventListener
     lateinit var mainActivityEventListener: MainActivityEventListener
 
+    @Volatile
     var userId: Long = 0
     var otherLoverId: Long = 0
     var areMarkerFabsOpen = false
@@ -72,6 +74,7 @@ class AppContext : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        INSTANCE = this
         displayDensity = applicationContext.resources.displayMetrics.density
         toaster = Toaster(applicationContext.mainLooper, applicationContext)
         metadataStore = MetadataStore(applicationContext)
@@ -81,6 +84,7 @@ class AppContext : Application() {
             AppDatabase::class.java,
             "database"
         ).build()
+        EventBus.getDefault().register(this)
         runBlocking {
             initClients()
             authenticationService = AuthenticationService(
@@ -90,8 +94,6 @@ class AppContext : Application() {
                 applicationContext
             )
         }
-        EventBus.getDefault().register(this)
-        INSTANCE = this
     }
 
     override fun onTerminate() {
@@ -157,14 +159,16 @@ class AppContext : Application() {
             toaster
         )
         userId = if (metadataStore.isLoggedIn()) {
-            loveService.list()
-            loveService.initLoveHolderTreeSet()
-            loverService.getRanks()
-            loveSpotService.getRisks()
-            loveSpotReviewService.getReviewsByLover()
             metadataStore.getUser().id
         } else {
             0
+        }
+        if (userId != 0L) {
+            loveService.list()
+            loveService.initLoveHolderList()
+            loverService.getRanks()
+            loveSpotService.getRisks()
+            loveSpotReviewService.getReviewsByLover()
         }
     }
 

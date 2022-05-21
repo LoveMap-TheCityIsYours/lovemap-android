@@ -16,15 +16,13 @@ class LoveRecyclerViewAdapter(
 ) : RecyclerView.Adapter<LoveRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val viewHolder = ViewHolder(
+        return ViewHolder(
             FragmentLoveItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
         )
-
-        return viewHolder
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
