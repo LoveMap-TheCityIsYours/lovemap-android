@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ListFragment">
+        <attr name="love_spot_based" format="boolean" default="false"/>
+        <attr name="is_clickable" format="boolean" default="true"/>
+    </declare-styleable>
+</resources>

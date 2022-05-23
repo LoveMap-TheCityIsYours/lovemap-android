@@ -12,7 +12,8 @@ import com.lovemap.lovemapandroid.ui.data.LoveHolder
 import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
 
 class LoveRecyclerViewAdapter(
-    private val values: List<LoveHolder>
+    private val values: List<LoveHolder>,
+    private val isClickable: Boolean
 ) : RecyclerView.Adapter<LoveRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -47,11 +48,13 @@ class LoveRecyclerViewAdapter(
         }
 
         override fun onClick(v: View?) {
-            val loveSpotId = values[absoluteAdapterPosition].loveSpotId
-            AppContext.INSTANCE.selectedLoveSpotId = loveSpotId
-            v?.context?.startActivity(
-                Intent(v.context, LoveSpotDetailsActivity::class.java)
-            )
+            if (isClickable) {
+                val loveSpotId = values[absoluteAdapterPosition].loveSpotId
+                AppContext.INSTANCE.selectedLoveSpotId = loveSpotId
+                v?.context?.startActivity(
+                    Intent(v.context, LoveSpotDetailsActivity::class.java)
+                )
+            }
         }
     }
 }

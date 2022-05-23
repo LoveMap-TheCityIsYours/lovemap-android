@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import com.lovemap.lovemapandroid.api.love.CreateLoveRequest
 import com.lovemap.lovemapandroid.api.love.LoveApi
+import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.love.Love
 import com.lovemap.lovemapandroid.data.love.LoveDao
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
@@ -54,6 +55,10 @@ class LoveService(
 
     fun getLoveHolderList(): MutableList<LoveHolder> {
         return loveHolderList
+    }
+
+    fun getLoveHolderListForSpot(): List<LoveHolder> {
+        return loveHolderList.filter { it.loveSpotId == AppContext.INSTANCE.selectedLoveSpotId }
     }
 
     suspend fun initLoveHolderList(): MutableList<LoveHolder> {

@@ -41,8 +41,8 @@ class ReviewLoveSpotFragment : Fragment() {
 
     fun setContent() {
         MainScope().launch {
-            appContext.selectedMarker?.let {
-                val review = loveSpotReviewService.findByLoverAndSpotId(it.snippet!!.toLong())
+            appContext.selectedLoveSpotId?.let {
+                val review = loveSpotReviewService.findByLoverAndSpotId(it)
                 review?.let {
                     reviewText.setText(review.reviewText)
                     spotRiskDropdown.setSelection(review.riskLevel - 1)

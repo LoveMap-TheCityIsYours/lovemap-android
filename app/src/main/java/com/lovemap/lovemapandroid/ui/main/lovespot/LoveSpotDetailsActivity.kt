@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.lovemap.lovemapandroid.R
@@ -12,6 +13,7 @@ import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.databinding.ActivityLoveSpotDetailsBinding
+import com.lovemap.lovemapandroid.ui.main.love.LoveListFragment
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotDetailsUtils
 import kotlinx.coroutines.MainScope
@@ -43,6 +45,8 @@ class LoveSpotDetailsActivity : AppCompatActivity() {
     private lateinit var haveNotMadeLoveText: TextView
 
     private lateinit var spotDetailsReportButton: ExtendedFloatingActionButton
+
+    private lateinit var detailsLoveListFragment: LoveListFragment
 
     private var spotId: Long = 0
     private var rating: Int = 0
@@ -88,10 +92,15 @@ class LoveSpotDetailsActivity : AppCompatActivity() {
         addToWishlistFabOnDetails = binding.addToWishlistFabOnDetails
         detailsReviewLoveSpotFragment =
             supportFragmentManager.findFragmentById(R.id.detailsReviewLoveSpotFragment) as ReviewLoveSpotFragment
+
+        detailsLoveListFragment =
+            supportFragmentManager.findFragmentById(R.id.detailsLoveListFragment) as LoveListFragment
+        (detailsLoveListFragment.view as RecyclerView).isNestedScrollingEnabled = false
     }
 
     private fun setDetails() {
         MainScope().launch {
+            appContext.selectedLoveSpot = loveSpotService.findLocally(spotId)
             setDetails(appContext.selectedLoveSpot)
             val loveSpot = loveSpotService.refresh(spotId)
             setDetails(loveSpot)
@@ -130,7 +139,6 @@ class LoveSpotDetailsActivity : AppCompatActivity() {
         reviewSpotSubmit.setOnClickListener {
             if (reviewSpotSubmit.isEnabled) {
                 MainScope().launch {
-                    val spotId = appContext.selectedMarker!!.snippet!!.toLong()
                     val love = loveService.getLoveByLoveSpotId(spotId)
                     love?.let {
                         val reviewedSpot = loveSpotReviewService.submitReview(
