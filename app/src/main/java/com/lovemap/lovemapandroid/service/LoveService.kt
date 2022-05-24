@@ -61,6 +61,10 @@ class LoveService(
         return loveHolderList.filter { it.loveSpotId == AppContext.INSTANCE.selectedLoveSpotId }
     }
 
+    fun getLoveHolderListForPartner(): List<LoveHolder> {
+        return loveHolderList.filter { it.partnerId == AppContext.INSTANCE.otherLoverId }
+    }
+
     suspend fun initLoveHolderList(): MutableList<LoveHolder> {
         return withContext(Dispatchers.IO) {
             loveHolderList.clear()

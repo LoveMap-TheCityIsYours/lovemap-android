@@ -6,6 +6,7 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.lovemap.lovemapandroid.R
@@ -20,6 +21,7 @@ import com.lovemap.lovemapandroid.config.LINK_PREFIX_API_CALL
 import com.lovemap.lovemapandroid.config.LINK_PREFIX_VISIBLE
 import com.lovemap.lovemapandroid.data.partnership.Partnership
 import com.lovemap.lovemapandroid.databinding.ActivityViewOtherLoverBinding
+import com.lovemap.lovemapandroid.ui.main.love.LoveListFragment
 import com.lovemap.lovemapandroid.ui.relations.ViewOtherLoverActivity.RelationState.*
 import com.lovemap.lovemapandroid.ui.utils.I18nUtils
 import com.lovemap.lovemapandroid.ui.utils.ProfileUtils
@@ -41,6 +43,7 @@ class ViewOtherLoverActivity : AppCompatActivity() {
     private lateinit var otherLoverRank: TextView
     private lateinit var otherLoverProgressBar: ProgressBar
     private lateinit var relationText: TextView
+    private lateinit var partnerViewLoveMakingsText: TextView
 
     private lateinit var followFab: ExtendedFloatingActionButton
     private lateinit var requestPartnershipFab: ExtendedFloatingActionButton
@@ -51,10 +54,14 @@ class ViewOtherLoverActivity : AppCompatActivity() {
 
     private lateinit var respondPartnershipViews: LinearLayout
 
+    private lateinit var partnerLoveListFragment: LoveListFragment
+
     private var userId: Long = 0
     private var loverUuid: String? = null
     private var otherLover: LoverViewDto? = null
     private var partnerships: List<Partnership> = emptyList()
+
+    private var relationState: RelationState = NOTHING
 
     private val refreshListener = SwipeRefreshLayout.OnRefreshListener {
         otherLoverSwipeRefreshLayout.isRefreshing = true
@@ -91,6 +98,7 @@ class ViewOtherLoverActivity : AppCompatActivity() {
         otherLoverRank = binding.otherLoverRank
         otherLoverProgressBar = binding.otherLoverProgressBar
         relationText = binding.relationText
+        partnerViewLoveMakingsText = binding.partnerViewLoveMakingsText
 
         followFab = binding.followFab
         requestPartnershipFab = binding.requestPartnershipFab
@@ -100,33 +108,66 @@ class ViewOtherLoverActivity : AppCompatActivity() {
         cancelRequestPartnershipFab = binding.cancelRequestPartnershipFab
 
         respondPartnershipViews = binding.respondPartnershipViews
+
+        partnerLoveListFragment =
+            supportFragmentManager.findFragmentById(R.id.partnerLoveListFragment) as LoveListFragment
+        (partnerLoveListFragment.view as RecyclerView).isNestedScrollingEnabled = false
+
+        supportFragmentManager
+            .beginTransaction()
+            .hide(partnerLoveListFragment)
+            .commit()
     }
 
     private fun setViewState() {
         MainScope().launch {
-            val otherLover =
-                loverUuid?.let { loverService.getByUuid(it) } ?: loverService.getOtherById(
-                    appContext.otherLoverId
-                )
+            val otherLover: LoverViewDto? = getOtherLover()
             val partnerships = partnershipService.getPartnerships()
             this@ViewOtherLoverActivity.otherLover = otherLover
             this@ViewOtherLoverActivity.partnerships = partnerships
-
-            otherLover?.let {
-                setPointsAndRank(it)
-                profileUserName.text = it.userName
-
-                if (userId == it.id) {
-                    setRelationState(YOURSELF)
-                } else {
-                    if (hasOtherPartner(partnerships, it)) {
-                        setRelationState(HAS_OTHER_PARTNER)
-                    } else {
-                        setStateWithOtherLover(partnerships)
-                    }
-                }
+            setTextsBasedOnRelationState(otherLover, partnerships)
+            if (relationState == PARTNERSHIP) {
+                partnerViewLoveMakingsText.visibility = View.VISIBLE
+                supportFragmentManager
+                    .beginTransaction()
+                    .setCustomAnimations(
+                        android.R.anim.slide_in_left,
+                        android.R.anim.slide_out_right
+                    )
+                    .show(partnerLoveListFragment)
+                    .commit()
             }
             otherLoverSwipeRefreshLayout.isRefreshing = false
+        }
+    }
+
+    private suspend fun getOtherLover(): LoverViewDto? {
+        val otherLover: LoverViewDto? = loverUuid?.let {
+            loverService.getByUuid(it)
+        } ?: loverService.getOtherById(
+            appContext.otherLoverId
+        )?.apply {
+            appContext.otherLoverId = id
+        }
+        return otherLover
+    }
+
+    private fun setTextsBasedOnRelationState(
+        otherLover: LoverViewDto?,
+        partnerships: List<Partnership>
+    ) {
+        otherLover?.let {
+            setPointsAndRank(it)
+            profileUserName.text = it.userName
+            if (userId == it.id) {
+                setRelationState(YOURSELF)
+            } else {
+                if (hasOtherPartner(partnerships, it)) {
+                    setRelationState(HAS_OTHER_PARTNER)
+                } else {
+                    setStateWithOtherLover(partnerships)
+                }
+            }
         }
     }
 
@@ -255,6 +296,7 @@ class ViewOtherLoverActivity : AppCompatActivity() {
     }
 
     private fun setRelationState(state: RelationState) {
+        relationState = state
         when (state) {
             NOTHING -> {
                 relationText.text =

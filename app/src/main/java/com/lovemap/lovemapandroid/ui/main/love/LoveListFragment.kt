@@ -19,6 +19,7 @@ class LoveListFragment : Fragment() {
 
     private val loveService = AppContext.INSTANCE.loveService
     private var isLoveSpotBased: Boolean = false
+    private var isPartnerBased: Boolean = false
     private var isClickable: Boolean = true
 
     private lateinit var recycleView: RecyclerView
@@ -27,6 +28,7 @@ class LoveListFragment : Fragment() {
         super.onInflate(context, attrs, savedInstanceState)
         val attributes = requireActivity().obtainStyledAttributes(attrs, R.styleable.ListFragment)
         isLoveSpotBased = attributes.getBoolean(R.styleable.ListFragment_love_spot_based, false)
+        isPartnerBased = attributes.getBoolean(R.styleable.ListFragment_partner_based, false)
         isClickable = attributes.getBoolean(R.styleable.ListFragment_is_clickable, true)
         attributes.recycle()
     }
@@ -40,12 +42,13 @@ class LoveListFragment : Fragment() {
 
         recycleView.isClickable = isClickable
 
-        // Set the adapter
         with(recycleView) {
             layoutManager = LinearLayoutManager(context)
             MainScope().launch {
                 adapter = if (isLoveSpotBased) {
                     LoveRecyclerViewAdapter(loveService.getLoveHolderListForSpot(), isClickable)
+                } else if (isPartnerBased) {
+                    LoveRecyclerViewAdapter(loveService.getLoveHolderListForPartner(), isClickable)
                 } else {
                     LoveRecyclerViewAdapter(loveService.getLoveHolderList(), isClickable)
                 }

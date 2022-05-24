@@ -10,4 +10,4 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context="com.lovemap.lovemapandroid.ui.main.love.LoveListFragment"
-    tools:listitem="@layout/fragment_lovespot_item" />
+    tools:listitem="@layout/fragment_love_item" />

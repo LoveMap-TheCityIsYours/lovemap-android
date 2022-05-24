@@ -15,7 +15,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+            android:layout_gravity="top"
             android:orientation="vertical"
             android:padding="@dimen/standard_8">
 
@@ -173,6 +173,26 @@
                 android:maxLines="2"
                 android:text=" - " />
 
+            <TextView
+                android:id="@+id/partnerViewLoveMakingsText"
+                style="@style/TextAppearance.AppCompat.Large"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/standard_16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/your_love_makings_together" />
+
+            <fragment
+                android:id="@+id/partnerLoveListFragment"
+                android:name="com.lovemap.lovemapandroid.ui.main.love.LoveListFragment"
+                app:love_spot_based="false"
+                app:partner_based="true"
+                app:is_clickable="true"
+                android:layout_marginTop="@dimen/standard_8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/requestPartnershipFab"
                 android:enabled="false"
@@ -267,6 +287,7 @@
                 android:layout_marginTop="@dimen/standard_16"
                 android:layout_marginBottom="@dimen/standard_16"
                 android:enabled="false"
+                android:visibility="gone"
                 android:text="@string/follow"
                 android:textSize="12sp"
                 app:icon="@drawable/ic_baseline_follow_the_signs_24" />
