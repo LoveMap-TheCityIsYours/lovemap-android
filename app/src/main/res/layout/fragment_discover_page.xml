@@ -11,12 +11,15 @@ tools:context="com.lovemap.lovemapandroid.ui.main.pages.DiscoverPageFragment">
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:layout_marginTop="@dimen/standard_8"
+    android:layout_marginBottom="@dimen/standard_8"
     style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-    android:text="@string/discover"/>
+    android:text="@string/discover_love_spots"/>
 
 <fragment
     android:id="@+id/fragmentDiscoverLoveSpotList"
     android:name="com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotListFragment"
+    android:layout_marginBottom="@dimen/standard_75"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" />
 

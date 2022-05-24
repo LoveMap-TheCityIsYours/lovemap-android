@@ -5,58 +5,44 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lovemap.lovemapandroid.R
-import com.lovemap.lovemapandroid.ui.data.LoveSpotContent
+import com.lovemap.lovemapandroid.config.AppContext
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 /**
  * A fragment representing a list of Items.
  */
 class LoveSpotListFragment : Fragment() {
+    private val loveSpotService = AppContext.INSTANCE.loveSpotService
 
-    private var columnCount = 1
+    private lateinit var recycleView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_lovespot_list, container, false)
-
-        // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                adapter = LoveSpotRecyclerViewAdapter(LoveSpotContent.ITEMS)
+    ): View {
+        recycleView =
+            inflater.inflate(R.layout.fragment_lovespot_list, container, false) as RecyclerView
+        recycleView.isClickable = true
+        MainScope().launch {
+            with(recycleView) {
+                layoutManager = LinearLayoutManager(context)
+                adapter = LoveSpotRecyclerViewAdapter(loveSpotService.getLoveHolderList())
             }
         }
-        return view
+        return recycleView
     }
 
-    companion object {
-
-        // TODO: Customize parameter argument names
-        const val ARG_COLUMN_COUNT = "column-count"
-
-        // TODO: Customize parameter initialization
-        @JvmStatic
-        fun newInstance(columnCount: Int) =
-            LoveSpotListFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_COLUMN_COUNT, columnCount)
-                }
-            }
+    override fun onResume() {
+        super.onResume()
+        recycleView.adapter?.notifyDataSetChanged()
     }
+
 }

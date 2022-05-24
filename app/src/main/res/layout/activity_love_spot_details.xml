@@ -124,8 +124,8 @@
             style="?android:attr/weekSeparatorLineColor"
             android:layout_width="match_parent"
             android:layout_height="5dp"
-            android:layout_marginTop="@dimen/standard_10"
-            android:layout_marginBottom="@dimen/standard_16"
+            android:layout_marginTop="@dimen/standard_50"
+            android:layout_marginBottom="@dimen/standard_75"
             android:background="@color/separatorLine"
             android:gravity="center_horizontal" />
 
@@ -240,7 +240,8 @@
             style="?android:attr/weekSeparatorLineColor"
             android:layout_width="match_parent"
             android:layout_height="5dp"
-            android:layout_marginBottom="@dimen/standard_16"
+            android:layout_marginTop="@dimen/standard_8"
+            android:layout_marginBottom="@dimen/standard_75"
             android:background="@color/separatorLine"
             android:gravity="center_horizontal" />
 
@@ -249,7 +250,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="@dimen/standard_32"
+            android:layout_marginBottom="@dimen/standard_16"
             android:text="@string/user_reviews" />
 
 
@@ -257,8 +258,8 @@
             style="?android:attr/weekSeparatorLineColor"
             android:layout_width="match_parent"
             android:layout_height="5dp"
-            android:layout_marginTop="@dimen/standard_10"
-            android:layout_marginBottom="@dimen/standard_16"
+            android:layout_marginTop="@dimen/standard_50"
+            android:layout_marginBottom="@dimen/standard_75"
             android:background="@color/separatorLine"
             android:gravity="center_horizontal" />
 

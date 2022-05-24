@@ -29,16 +29,16 @@ class LoveSpotInfoWindowAdapter(
             if (loveSpot != null) {
                 setTexts(view, loveSpot)
                 LoveSpotDetailsUtils.setRating(
-                    loveSpot,
+                    loveSpot.averageRating,
                     view.findViewById(R.id.marker_review_rating_bar)
                 )
                 LoveSpotDetailsUtils.setAvailability(
-                    loveSpot,
+                    loveSpot.availability,
                     activity,
                     view.findViewById(R.id.marker_availability)
                 )
                 LoveSpotDetailsUtils.setRisk(
-                    loveSpot,
+                    loveSpot.averageDanger,
                     loveSpotService,
                     activity,
                     view.findViewById(R.id.marker_risk)

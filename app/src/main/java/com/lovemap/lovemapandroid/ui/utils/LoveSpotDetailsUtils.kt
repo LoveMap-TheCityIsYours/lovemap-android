@@ -12,19 +12,19 @@ import com.lovemap.lovemapandroid.service.LoveSpotService
 object LoveSpotDetailsUtils {
 
     fun setRating(
-        loveSpot: LoveSpot,
+        rating: Double?,
         ratingBar: RatingBar
     ) {
-        ratingBar.rating = loveSpot.averageRating?.toFloat() ?: 0f
+        ratingBar.rating = rating?.toFloat() ?: 0f
     }
 
     fun setAvailability(
-        loveSpot: LoveSpot,
+        availability: LoveSpotAvailabilityApiStatus,
         context: Context,
-        availability: TextView
+        availabilityView: TextView
     ) {
-        availability.text =
-            if (loveSpot.availability == LoveSpotAvailabilityApiStatus.ALL_DAY) {
+        availabilityView.text =
+            if (availability == LoveSpotAvailabilityApiStatus.ALL_DAY) {
                 context.getString(R.string.available_all_day)
             } else {
                 context.getString(R.string.available_night_only)
@@ -32,20 +32,19 @@ object LoveSpotDetailsUtils {
     }
 
     suspend fun setRisk(
-        loveSpot: LoveSpot,
+        averageDanger: Double?,
         loveSpotService: LoveSpotService,
         context: Context,
         risk: TextView
     ) {
         val loveSpotRisks = loveSpotService.getRisks()
-        if (loveSpotRisks != null && loveSpot.averageDanger != null) {
-            val riskValue = loveSpot.averageDanger!!
+        if (loveSpotRisks != null && averageDanger != null) {
             val riskList = loveSpotRisks.riskList
             val loveSpotRisk = when {
-                riskValue < 1.5 -> {
+                averageDanger < 1.5 -> {
                     riskList[0]
                 }
-                riskValue < 2.5 -> {
+                averageDanger < 2.5 -> {
                     riskList[1]
                 }
                 else -> {
@@ -54,9 +53,9 @@ object LoveSpotDetailsUtils {
             }
 
             risk.text = loveSpotRisk.nameEN
-        } else if (loveSpot.averageDanger != null) {
+        } else if (averageDanger != null) {
             loveSpotService.getRisks()
-            risk.text = loveSpot.averageDanger.toString()
+            risk.text = averageDanger.toString()
         } else {
             risk.text = context.getString(R.string.risk_unknown)
         }

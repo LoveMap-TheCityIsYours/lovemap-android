@@ -87,11 +87,7 @@ class LoveService(
             }
             if (response.isSuccessful) {
                 val love = response.body()!!
-                val loveHolder = LoveHolder.of(love, loverService, context)
-                val index = Collections.binarySearch(loveHolderList, loveHolder)
-                val insertionIndex = -index - 1
-                lastUpdatedIndex = insertionIndex
-                loveHolderList.add(insertionIndex, loveHolder)
+                insertIntoViewHolder(love)
                 loveDao.insert(love)
                 love
             } else {
@@ -99,6 +95,14 @@ class LoveService(
                 null
             }
         }
+    }
+
+    private suspend fun insertIntoViewHolder(love: Love) {
+        val loveHolder = LoveHolder.of(love, loverService, context)
+        val index = Collections.binarySearch(loveHolderList, loveHolder)
+        val insertionIndex = -index - 1
+        lastUpdatedIndex = insertionIndex
+        loveHolderList.add(insertionIndex, loveHolder)
     }
 
     suspend fun getLoveByLoveSpotId(loveSpotId: Long): Love? {

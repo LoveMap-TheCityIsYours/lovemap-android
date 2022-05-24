@@ -10,6 +10,7 @@ import com.lovemap.lovemapandroid.api.lovespot.LoveSpotSearchRequest
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpotDao
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
+import com.lovemap.lovemapandroid.ui.data.LoveSpotHolder
 import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -20,12 +21,34 @@ class LoveSpotService(
     private val metadataStore: MetadataStore,
     private val toaster: Toaster,
 ) {
+    private val loveSpotHolderList: MutableList<LoveSpotHolder> = ArrayList()
     private val fullyQueriedAreas = ArrayList<LatLngBounds>()
     private var risksQueried = false
 
     suspend fun findLocally(id: Long): LoveSpot? {
         return withContext(Dispatchers.IO) {
             loveSpotDao.loadSingle(id)
+        }
+    }
+
+    suspend fun listSpotsLocally(): List<LoveSpot> {
+        return withContext(Dispatchers.IO) {
+            loveSpotDao.getAll()
+        }
+    }
+
+    fun getLoveHolderList(): MutableList<LoveSpotHolder> {
+        return loveSpotHolderList
+    }
+
+    suspend fun initLoveSpotHolderList(): MutableList<LoveSpotHolder> {
+        return withContext(Dispatchers.IO) {
+            loveSpotHolderList.clear()
+            val loveSpots = listSpotsLocally()
+            loveSpots.map { loveSpot -> LoveSpotHolder.of(loveSpot) }
+                .sortedByDescending { it.averageRating }
+                .forEach { loveSpotHolderList.add(it) }
+            return@withContext loveSpotHolderList
         }
     }
 
@@ -66,6 +89,8 @@ class LoveSpotService(
             if (response.isSuccessful) {
                 loadingBarShower.onResponse()
                 val loveSpot = response.body()!!
+                // TODO: optimize a lot
+                initLoveSpotHolderList()
                 loveSpotDao.insert(loveSpot)
                 loveSpot
             } else {
@@ -107,6 +132,8 @@ class LoveSpotService(
                 val deletedSpots = localSpotSet.subtract(serverSpotSet)
                 loveSpotDao.delete(*deletedSpots.toTypedArray())
                 loveSpotDao.insert(*serverSpotSet.toTypedArray())
+                // TODO: optimize a lot
+                initLoveSpotHolderList()
                 serverSpots
             } else {
                 toaster.showNoServerToast()

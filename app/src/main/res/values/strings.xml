@@ -46,7 +46,7 @@
     <string name="placeholder">Placeholder</string>
     <string name="your_profile">Your Profile</string>
     <string name="your_loves">Your Love History</string>
-    <string name="discover">Discover</string>
+    <string name="discover_love_spots">Discover Love Spots</string>
     <string name="love_map">Love Map</string>
     <string name="profileUserName"> - </string>
     <string name="profileUserLevelText"> - </string>
@@ -68,7 +68,7 @@
     <string name="number_of_loves">Number of Loves:</string>
     <string name="marker_rating">Rating:</string>
     <string name="marker_availability">Availability:</string>
-    <string name="marker_risk">Risk:</string>
+    <string name="risk">Risk:</string>
     <string name="marker_description">Description:</string>
     <string name="marker_custom_availability">Custom availability:</string>
     <string name="available_all_day">All day</string>
@@ -159,5 +159,6 @@
     <string name="showing_love_spots">Showing Love Spots</string>
     <string name="partner_colon">Partner:</string>
     <string name="your_love_makings_together">Your Love-makings together:</string>
+    <string name="rating">Rating:</string>
 
 </resources>

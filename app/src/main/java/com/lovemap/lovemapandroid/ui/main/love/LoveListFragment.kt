@@ -38,7 +38,7 @@ class LoveListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         recycleView =
-            inflater.inflate(R.layout.fragment_lovespot_list, container, false) as RecyclerView
+            inflater.inflate(R.layout.fragment_love_list, container, false) as RecyclerView
 
         recycleView.isClickable = isClickable
 

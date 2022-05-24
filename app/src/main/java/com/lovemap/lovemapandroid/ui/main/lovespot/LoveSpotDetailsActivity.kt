@@ -112,16 +112,16 @@ class LoveSpotDetailsActivity : AppCompatActivity() {
             binding.loveSpotDetailsTitle.text = loveSpot.name
             spotDetailsDescription.text = loveSpot.description
             LoveSpotDetailsUtils.setRating(
-                loveSpot,
+                loveSpot.averageRating,
                 spotDetailsRating
             )
             LoveSpotDetailsUtils.setAvailability(
-                loveSpot,
+                loveSpot.availability,
                 applicationContext,
                 spotDetailsAvailability
             )
             LoveSpotDetailsUtils.setRisk(
-                loveSpot,
+                loveSpot.averageDanger,
                 loveSpotService,
                 applicationContext,
                 spotDetailsRisk

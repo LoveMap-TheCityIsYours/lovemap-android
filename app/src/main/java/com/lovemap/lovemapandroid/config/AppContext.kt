@@ -190,6 +190,7 @@ class AppContext : Application() {
         if (userId != 0L) {
             loveService.list()
             loveService.initLoveHolderList()
+            loveSpotService.initLoveSpotHolderList()
             loverService.getRanks()
             loveSpotService.getRisks()
             loveSpotReviewService.getReviewsByLover()
@@ -246,6 +247,7 @@ class AppContext : Application() {
             loveDao.delete(*loveDao.getAll().toTypedArray())
             loveSpotDao.delete(*loveSpotDao.getAll().toTypedArray())
             loveSpotReviewDao.delete(*loveSpotReviewDao.getAll().toTypedArray())
+            partnershipDao.delete(*partnershipDao.getAll().toTypedArray())
         }
     }
 }

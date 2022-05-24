@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textAppearance="?attr/textAppearanceListItem"
+        style="@style/TextAppearance.Material3.TitleLarge"
         android:text=" - " />
 
     <LinearLayout
@@ -71,4 +71,5 @@
         android:layout_marginBottom="@dimen/standard_10"
         android:background="@color/separatorLine"
         android:gravity="center_horizontal" />
+
 </LinearLayout>
