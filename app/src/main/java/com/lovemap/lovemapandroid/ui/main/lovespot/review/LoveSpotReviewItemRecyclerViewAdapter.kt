@@ -37,7 +37,7 @@ class LoveSpotReviewItemRecyclerViewAdapter(
         )
         MainScope().launch {
             LoveSpotDetailsUtils.setRisk(
-                review.reviewStars.toDouble(),
+                review.riskLevel.toDouble(),
                 AppContext.INSTANCE.loveSpotService,
                 AppContext.INSTANCE.applicationContext,
                 holder.spotReviewRisk

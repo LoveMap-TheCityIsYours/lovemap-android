@@ -17,12 +17,14 @@ import com.lovemap.lovemapandroid.ui.main.love.LoveListFragment
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.report.ReportLoveSpotActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.LoveSpotReviewListFragment
+import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewListActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewLoveSpotFragment
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotDetailsUtils
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
-class LoveSpotDetailsActivity : AppCompatActivity() {
+class
+LoveSpotDetailsActivity : AppCompatActivity() {
 
     private val appContext = AppContext.INSTANCE
     private val loveService = appContext.loveService
@@ -42,6 +44,7 @@ class LoveSpotDetailsActivity : AppCompatActivity() {
     private lateinit var detailsReviewButtons: LinearLayout
     private lateinit var reviewSpotSubmit: Button
     private lateinit var reviewSpotCancel: Button
+    private lateinit var detailsSeeAllReviewsButton: Button
 
     private lateinit var addToWishlistFabOnDetails: FloatingActionButton
     private lateinit var makeLoveFabOnDetails: FloatingActionButton
@@ -64,6 +67,9 @@ class LoveSpotDetailsActivity : AppCompatActivity() {
         }
         addToWishlistFabOnDetails.setOnClickListener {
             appContext.toaster.showToast(R.string.not_yet_implemented)
+        }
+        detailsSeeAllReviewsButton.setOnClickListener {
+            startActivity(Intent(applicationContext, ReviewListActivity::class.java))
         }
         setReviewRatingBar()
         setSubmitButton()
@@ -94,6 +100,7 @@ class LoveSpotDetailsActivity : AppCompatActivity() {
         makeLoveFabOnDetails = binding.makeLoveFabOnDetails
         spotDetailsReportButton = binding.spotDetailsReportButton
         addToWishlistFabOnDetails = binding.addToWishlistFabOnDetails
+        detailsSeeAllReviewsButton = binding.detailsSeeAllReviewsButton
         detailsReviewLoveSpotFragment =
             supportFragmentManager.findFragmentById(R.id.detailsReviewLoveSpotFragment) as ReviewLoveSpotFragment
 

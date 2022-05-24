@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="bottom"
     android:orientation="vertical"
     tools:context=".ui.main.lovespot.LoveSpotDetailsActivity">
 
@@ -258,6 +257,14 @@
             android:name="com.lovemap.lovemapandroid.ui.main.lovespot.review.LoveSpotReviewListFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/detailsSeeAllReviewsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/see_all"
+            android:layout_gravity="center"
+            />
 
         <TextView
             style="?android:attr/weekSeparatorLineColor"
