@@ -31,7 +31,7 @@ class AuthenticationService(
             val call = authenticationApi.login(
                 LoginLoverRequest(email, password)
             )
-            val loadingBarShower = LoadingBarShower(activity)
+            val loadingBarShower = LoadingBarShower(activity).show()
             val response = try {
                 call.execute()
             } catch (e: Exception) {
@@ -61,7 +61,7 @@ class AuthenticationService(
             val call = authenticationApi.register(
                 CreateLoverRequest(userName, password, email)
             )
-            val loadingBarShower = LoadingBarShower(activity)
+            val loadingBarShower = LoadingBarShower(activity).show()
             val response = try {
                 call.execute()
             } catch (e: Exception) {

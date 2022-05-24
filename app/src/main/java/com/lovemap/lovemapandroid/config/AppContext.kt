@@ -31,7 +31,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.atomic.AtomicLong
+import java.util.concurrent.TimeUnit
 
 class AppContext : Application() {
     lateinit var mapCameraTarget: LatLng
@@ -58,29 +58,39 @@ class AppContext : Application() {
 
     @Volatile
     var userId: Long = 0
+
     @Volatile
     var otherLoverId: Long = 0
+
     @Volatile
     var areMarkerFabsOpen = false
+
     @Volatile
     var areAddLoveSpotFabsOpen = false
+
     @Volatile
     var shouldCloseFabs = false
+
     @Volatile
     var displayDensity: Float = 0f
+
     @Volatile
     var selectedMarker: Marker? = null
+
     @Volatile
     var selectedLoveSpot: LoveSpot? = null
+
     @Volatile
     var selectedLoveSpotId: Long? = null
+
     @Volatile
     var shouldMoveMapCamera: Boolean = false
+
     @Volatile
     var zoomOnNewLoveSpot: LoveSpot? = null
 
     private lateinit var gsonConverterFactory: GsonConverterFactory
-    private lateinit var retrofit: Retrofit
+    private lateinit var authorizingRetrofit: Retrofit
 
     override fun onCreate() {
         super.onCreate()
@@ -97,6 +107,11 @@ class AppContext : Application() {
         EventBus.getDefault().register(this)
         runBlocking {
             initClients()
+            val retrofit = Retrofit.Builder()
+                .client(httpClient())
+                .baseUrl(API_ENDPOINT)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
             authenticationService = AuthenticationService(
                 retrofit.create(AuthenticationApi::class.java),
                 metadataStore,
@@ -119,9 +134,8 @@ class AppContext : Application() {
     }
 
     private suspend fun initClients() {
-        val client = createHttpClient()
-        retrofit = Retrofit.Builder()
-            .client(client)
+        authorizingRetrofit = Retrofit.Builder()
+            .client(authorizingHttpClient())
             .baseUrl(API_ENDPOINT)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -130,7 +144,7 @@ class AppContext : Application() {
         loveSpotReviewDao = database.loveSpotReviewDao()
         partnershipDao = database.partnershipDao()
         loverService = LoverService(
-            retrofit.create(LoverApi::class.java),
+            authorizingRetrofit.create(LoverApi::class.java),
             loveDao,
             loveSpotDao,
             loveSpotReviewDao,
@@ -138,7 +152,7 @@ class AppContext : Application() {
             toaster
         )
         loveService = LoveService(
-            loveApi = retrofit.create(LoveApi::class.java),
+            loveApi = authorizingRetrofit.create(LoveApi::class.java),
             loveDao = loveDao,
             loverService = loverService,
             metadataStore = metadataStore,
@@ -146,24 +160,24 @@ class AppContext : Application() {
             toaster = toaster,
         )
         loveSpotService = LoveSpotService(
-            retrofit.create(LoveSpotApi::class.java),
+            authorizingRetrofit.create(LoveSpotApi::class.java),
             loveSpotDao,
             metadataStore,
             toaster,
         )
         loveSpotReviewService = LoveSpotReviewService(
-            retrofit.create(LoveSpotReviewApi::class.java),
+            authorizingRetrofit.create(LoveSpotReviewApi::class.java),
             loveSpotReviewDao,
             metadataStore,
             toaster,
         )
         loveSpotReportService = LoveSpotReportService(
-            retrofit.create(LoveSpotReportApi::class.java),
+            authorizingRetrofit.create(LoveSpotReportApi::class.java),
             metadataStore,
             toaster,
         )
         partnershipService = PartnershipService(
-            retrofit.create(PartnershipApi::class.java),
+            authorizingRetrofit.create(PartnershipApi::class.java),
             partnershipDao,
             metadataStore,
             toaster
@@ -182,10 +196,10 @@ class AppContext : Application() {
         }
     }
 
-    private suspend fun createHttpClient(): OkHttpClient {
+    private suspend fun authorizingHttpClient(): OkHttpClient {
+        val clientBuilder = getTimeoutClientBuilder()
         val client = if (metadataStore.isLoggedIn()) {
-            OkHttpClient.Builder()
-                .addInterceptor { chain ->
+            clientBuilder.addInterceptor { chain ->
                     val request = runBlocking {
                         val requestBuilder = chain.request()
                             .newBuilder()
@@ -202,10 +216,21 @@ class AppContext : Application() {
                 }
                 .build()
         } else {
-            OkHttpClient.Builder().build()
+            clientBuilder.build()
         }
         return client
     }
+
+    private fun httpClient(): OkHttpClient {
+        return getTimeoutClientBuilder()
+            .build()
+    }
+
+    private fun getTimeoutClientBuilder() = OkHttpClient.Builder()
+        .callTimeout(60, TimeUnit.SECONDS)
+        .connectTimeout(60, TimeUnit.SECONDS)
+        .readTimeout(60, TimeUnit.SECONDS)
+        .writeTimeout(60, TimeUnit.SECONDS)
 
     companion object {
         var INSTANCE = AppContext()
