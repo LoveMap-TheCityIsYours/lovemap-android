@@ -114,7 +114,8 @@ class RecordLoveFragment : Fragment(), CustomDateTimePicker.ICustomDateTimeListe
         AM_PM: String
     ) {
         val zonedDateTime =
-            ZonedDateTime.of(year, monthNumber, day, hour24, min, sec, 0, timeZone.toZoneId())
-        recordLoveHappenedAt.text =  zonedDateTime.toInstant().toFormattedString()
+            ZonedDateTime.of(year, monthNumber + 1, day, hour24, min, sec, 0, timeZone.toZoneId())
+        selectedTime = zonedDateTime.toInstant()
+        recordLoveHappenedAt.text =  selectedTime.toFormattedString()
     }
 }
