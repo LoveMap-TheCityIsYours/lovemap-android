@@ -58,15 +58,25 @@ class AppContext : Application() {
 
     @Volatile
     var userId: Long = 0
+    @Volatile
     var otherLoverId: Long = 0
+    @Volatile
     var areMarkerFabsOpen = false
+    @Volatile
     var areAddLoveSpotFabsOpen = false
+    @Volatile
     var shouldCloseFabs = false
+    @Volatile
     var displayDensity: Float = 0f
+    @Volatile
     var selectedMarker: Marker? = null
+    @Volatile
     var selectedLoveSpot: LoveSpot? = null
+    @Volatile
     var selectedLoveSpotId: Long? = null
+    @Volatile
     var shouldMoveMapCamera: Boolean = false
+    @Volatile
     var zoomOnNewLoveSpot: LoveSpot? = null
 
     private lateinit var gsonConverterFactory: GsonConverterFactory

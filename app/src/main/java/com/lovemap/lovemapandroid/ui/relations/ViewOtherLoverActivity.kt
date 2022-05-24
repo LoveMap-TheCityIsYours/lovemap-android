@@ -16,7 +16,8 @@ import com.lovemap.lovemapandroid.api.partnership.PartnershipStatus.PARTNERSHIP_
 import com.lovemap.lovemapandroid.api.partnership.RespondPartnershipRequest
 import com.lovemap.lovemapandroid.api.relation.RelationStatus
 import com.lovemap.lovemapandroid.config.AppContext
-import com.lovemap.lovemapandroid.config.LINK_PREFIX
+import com.lovemap.lovemapandroid.config.LINK_PREFIX_API_CALL
+import com.lovemap.lovemapandroid.config.LINK_PREFIX_VISIBLE
 import com.lovemap.lovemapandroid.data.partnership.Partnership
 import com.lovemap.lovemapandroid.databinding.ActivityViewOtherLoverBinding
 import com.lovemap.lovemapandroid.ui.relations.ViewOtherLoverActivity.RelationState.*
@@ -65,7 +66,10 @@ class ViewOtherLoverActivity : AppCompatActivity() {
         initViews()
         if (intent.data != null) {
             val loverLink = intent.data.toString()
-            loverUuid = loverLink.substringAfter(LINK_PREFIX)
+            loverUuid = loverLink.substringAfter(LINK_PREFIX_VISIBLE, "")
+            if (loverUuid == "") {
+                loverUuid = loverLink.substringAfter(LINK_PREFIX_API_CALL)
+            }
         }
         userId = appContext.userId
         setViewState()

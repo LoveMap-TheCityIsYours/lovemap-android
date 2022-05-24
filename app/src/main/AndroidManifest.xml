@@ -24,14 +24,16 @@
             android:exported="true">
             <intent-filter android:label="@string/filter_view_other_lover">
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data
+                    android:scheme="https"
                     android:host="api.lovemap.app"
-                    android:pathPrefix="/lover"
-                    android:scheme="https" />
+                    android:pathPrefix="/lover" />
+                <data
+                    android:scheme="https"
+                    android:host="api.lovemap.app"
+                    android:pathPrefix="/join-us" />
             </intent-filter>
         </activity>
         <activity
