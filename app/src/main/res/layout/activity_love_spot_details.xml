@@ -253,6 +253,11 @@
             android:layout_marginBottom="@dimen/standard_16"
             android:text="@string/user_reviews" />
 
+        <fragment
+            android:id="@+id/detailsReviewListFragment"
+            android:name="com.lovemap.lovemapandroid.ui.main.lovespot.review.LoveSpotReviewListFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <TextView
             style="?android:attr/weekSeparatorLineColor"
@@ -280,7 +285,7 @@
 
         <fragment
             android:id="@+id/detailsReviewLoveSpotFragment"
-            android:name="com.lovemap.lovemapandroid.ui.main.lovespot.ReviewLoveSpotFragment"
+            android:name="com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewLoveSpotFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

@@ -66,10 +66,6 @@ class LoveSpotRecyclerViewAdapter(
             binding.root.setOnClickListener(this)
         }
 
-        override fun toString(): String {
-            return super.toString() + " '" + loveSpotItemName.text + "'"
-        }
-
         override fun onClick(v: View?) {
             val loveSpotId = values[absoluteAdapterPosition].id
             AppContext.INSTANCE.selectedLoveSpotId = loveSpotId

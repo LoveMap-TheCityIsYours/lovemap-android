@@ -15,6 +15,9 @@ import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.databinding.ActivityLoveSpotDetailsBinding
 import com.lovemap.lovemapandroid.ui.main.love.LoveListFragment
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
+import com.lovemap.lovemapandroid.ui.main.lovespot.report.ReportLoveSpotActivity
+import com.lovemap.lovemapandroid.ui.main.lovespot.review.LoveSpotReviewListFragment
+import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewLoveSpotFragment
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotDetailsUtils
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -47,6 +50,7 @@ class LoveSpotDetailsActivity : AppCompatActivity() {
     private lateinit var spotDetailsReportButton: ExtendedFloatingActionButton
 
     private lateinit var detailsLoveListFragment: LoveListFragment
+    private lateinit var detailsReviewListFragment: LoveSpotReviewListFragment
 
     private var spotId: Long = 0
     private var rating: Int = 0
@@ -96,6 +100,10 @@ class LoveSpotDetailsActivity : AppCompatActivity() {
         detailsLoveListFragment =
             supportFragmentManager.findFragmentById(R.id.detailsLoveListFragment) as LoveListFragment
         (detailsLoveListFragment.view as RecyclerView).isNestedScrollingEnabled = false
+
+        detailsReviewListFragment =
+            supportFragmentManager.findFragmentById(R.id.detailsReviewListFragment) as LoveSpotReviewListFragment
+        (detailsReviewListFragment.view as RecyclerView).isNestedScrollingEnabled = false
     }
 
     private fun setDetails() {

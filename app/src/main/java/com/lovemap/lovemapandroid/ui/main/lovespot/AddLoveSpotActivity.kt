@@ -16,6 +16,7 @@ import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.databinding.ActivityAddLoveSpotBinding
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveFragment
+import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewLoveSpotFragment
 import com.lovemap.lovemapandroid.ui.utils.toApiString
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch

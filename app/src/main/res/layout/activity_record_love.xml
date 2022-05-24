@@ -31,7 +31,7 @@
 
             <fragment
                 android:id="@+id/recordLoveReviewLoveSpotFragment"
-                android:name="com.lovemap.lovemapandroid.ui.main.lovespot.ReviewLoveSpotFragment"
+                android:name="com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewLoveSpotFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

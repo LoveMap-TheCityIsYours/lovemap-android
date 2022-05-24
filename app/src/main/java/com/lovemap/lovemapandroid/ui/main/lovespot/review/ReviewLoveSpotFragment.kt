@@ -1,4 +1,4 @@
-package com.lovemap.lovemapandroid.ui.main.lovespot
+package com.lovemap.lovemapandroid.ui.main.lovespot.review
 
 import android.os.Bundle
 import android.view.LayoutInflater

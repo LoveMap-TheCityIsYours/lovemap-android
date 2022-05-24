@@ -36,7 +36,7 @@ import com.lovemap.lovemapandroid.service.LoveSpotService
 import com.lovemap.lovemapandroid.ui.events.MainActivityEventListener
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
-import com.lovemap.lovemapandroid.ui.main.lovespot.ReportLoveSpotActivity
+import com.lovemap.lovemapandroid.ui.main.lovespot.report.ReportLoveSpotActivity
 import com.lovemap.lovemapandroid.ui.main.pages.LoveMapPageFragment.MapMode.LOVE_MAKINGS
 import com.lovemap.lovemapandroid.ui.main.pages.LoveMapPageFragment.MapMode.LOVE_SPOTS
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotInfoWindowAdapter

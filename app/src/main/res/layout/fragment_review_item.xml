@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        style="?android:attr/weekSeparatorLineColor"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/separatorLine"
+        android:gravity="center_horizontal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.Material3.LabelMedium"
+            android:text="@string/rating"/>
+
+        <RatingBar
+            android:id="@+id/spotReviewRating"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/standard_8"
+            android:isIndicator="true"
+            android:numStars="5" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.Material3.LabelMedium"
+            android:text="@string/risk"/>
+
+        <TextView
+            android:id="@+id/spotReviewRisk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_8"
+            android:text=" - "
+            style="@style/TextAppearance.Material3.LabelLarge" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/spotReviewText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:text=" - "
+        style="@style/TextAppearance.Material3.LabelLarge"
+        />
+
+    <TextView
+        style="?android:attr/weekSeparatorLineColor"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/standard_10"
+        android:layout_marginBottom="@dimen/standard_10"
+        android:background="@color/separatorLine"
+        android:gravity="center_horizontal" />
+
+</LinearLayout>

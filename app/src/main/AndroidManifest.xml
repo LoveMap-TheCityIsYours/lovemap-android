@@ -17,7 +17,7 @@
         android:theme="@style/Theme.Lovemapandroid"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ui.main.lovespot.ReportLoveSpotActivity"
+            android:name=".ui.main.lovespot.report.ReportLoveSpotActivity"
             android:exported="false" />
         <activity
             android:name=".ui.relations.ViewOtherLoverActivity"

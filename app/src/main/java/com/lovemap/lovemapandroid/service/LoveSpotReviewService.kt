@@ -2,10 +2,12 @@ package com.lovemap.lovemapandroid.service
 
 import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewApi
 import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
+import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReview
 import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReviewDao
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
+import com.lovemap.lovemapandroid.ui.data.ReviewHolder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -50,7 +52,10 @@ class LoveSpotReviewService(
 
     suspend fun findByLoverAndSpotId(spotId: Long): LoveSpotReview? {
         return withContext(Dispatchers.IO) {
-            return@withContext loveSpotReviewDao.findByLoverAndSpotId(metadataStore.getUser().id, spotId)
+            return@withContext loveSpotReviewDao.findByLoverAndSpotId(
+                metadataStore.getUser().id,
+                spotId
+            )
         }
     }
 
@@ -83,8 +88,9 @@ class LoveSpotReviewService(
         }
     }
 
-    suspend fun getReviewsBySpot(spotId: Long): List<LoveSpotReview> {
+    suspend fun getReviewsBySpot(): List<LoveSpotReview> {
         return withContext(Dispatchers.IO) {
+            val spotId = AppContext.INSTANCE.selectedLoveSpotId!!
             val localReviews = loveSpotReviewDao.getAllBySpot(spotId)
             val call = loveSpotReviewApi.getReviewsForSpot(spotId)
             val response = try {
@@ -101,6 +107,12 @@ class LoveSpotReviewService(
                 toaster.showNoServerToast()
                 localReviews
             }
+        }
+    }
+
+    suspend fun getReviewHoldersBySpot(): List<ReviewHolder> {
+        return withContext(Dispatchers.IO) {
+            return@withContext getReviewsBySpot().map { ReviewHolder.of(it) }
         }
     }
 }
