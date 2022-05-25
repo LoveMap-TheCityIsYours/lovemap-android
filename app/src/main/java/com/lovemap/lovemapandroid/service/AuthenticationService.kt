@@ -25,22 +25,19 @@ class AuthenticationService(
 ) {
     private val mainLooper = Looper.getMainLooper()
 
-    suspend fun login(email: String, password: String, activity: Activity): LoggedInUser? {
+    suspend fun login(email: String, password: String): LoggedInUser? {
         var loggedInUser: LoggedInUser? = null
         return withContext(Dispatchers.IO) {
             val call = authenticationApi.login(
                 LoginLoverRequest(email, password)
             )
-            val loadingBarShower = LoadingBarShower(activity).show()
             val response = try {
                 call.execute()
             } catch (e: Exception) {
-                loadingBarShower.onResponse()
                 toaster.showToast(e.message ?: "null")
                 return@withContext null
             }
             if (response.isSuccessful) {
-                loadingBarShower.onResponse()
                 loggedInUser = metadataStore.login(
                     LoggedInUser.of(
                         response.body()!!,
@@ -48,7 +45,6 @@ class AuthenticationService(
                     )
                 )
             } else {
-                loadingBarShower.onResponse()
                 showErrorToast(response)
             }
             loggedInUser

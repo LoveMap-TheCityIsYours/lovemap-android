@@ -126,18 +126,20 @@ class ViewOtherLoverActivity : AppCompatActivity() {
             this@ViewOtherLoverActivity.otherLover = otherLover
             this@ViewOtherLoverActivity.partnerships = partnerships
             setTextsBasedOnRelationState(otherLover, partnerships)
-            if (relationState == PARTNERSHIP) {
-                partnerViewLoveMakingsText.visibility = View.VISIBLE
-                supportFragmentManager
-                    .beginTransaction()
-                    .setCustomAnimations(
-                        android.R.anim.slide_in_left,
-                        android.R.anim.slide_out_right
-                    )
-                    .show(partnerLoveListFragment)
-                    .commit()
+            if (!this@ViewOtherLoverActivity.isFinishing) {
+                if (relationState == PARTNERSHIP) {
+                    partnerViewLoveMakingsText.visibility = View.VISIBLE
+                    supportFragmentManager
+                        .beginTransaction()
+                        .setCustomAnimations(
+                            android.R.anim.slide_in_left,
+                            android.R.anim.slide_out_right
+                        )
+                        .show(partnerLoveListFragment)
+                        .commit()
+                }
+                otherLoverSwipeRefreshLayout.isRefreshing = false
             }
-            otherLoverSwipeRefreshLayout.isRefreshing = false
         }
     }
 

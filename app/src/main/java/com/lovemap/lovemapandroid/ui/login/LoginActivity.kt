@@ -15,12 +15,15 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.databinding.ActivityLoginBinding
 import com.lovemap.lovemapandroid.ui.main.MainActivity
 import com.lovemap.lovemapandroid.ui.register.RegisterActivity
+import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -30,12 +33,18 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
-    private val metadataStore: MetadataStore = AppContext.INSTANCE.metadataStore
-    private val authenticationService = AppContext.INSTANCE.authenticationService
+    private val appContext = AppContext.INSTANCE
+    private val metadataStore: MetadataStore = appContext.metadataStore
+    private val authenticationService = appContext.authenticationService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+        if (!hasPlayServices()) {
+            appContext.toaster.showToast("Not working without Google Play Services.")
+            onBackPressed()
+        }
+
         val loggedIn = runBlocking {
             metadataStore.isLoggedIn()
         }
@@ -115,7 +124,8 @@ class LoginActivity : AppCompatActivity() {
 
     fun login(email: String, password: String) {
         MainScope().launch {
-            val loggedInUser = authenticationService.login(email, password, this@LoginActivity)
+            val loadingBarShower = LoadingBarShower(this@LoginActivity).show()
+            val loggedInUser = authenticationService.login(email, password)
             if (loggedInUser != null) {
                 Handler(Looper.getMainLooper()).post {
                     val toast = Toast.makeText(
@@ -127,6 +137,7 @@ class LoginActivity : AppCompatActivity() {
                 }
                 startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             }
+            loadingBarShower.onResponse()
         }
     }
 
@@ -150,6 +161,9 @@ class LoginActivity : AppCompatActivity() {
         a.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(a)
     }
+
+    private fun hasPlayServices() = GoogleApiAvailability.getInstance()
+        .isGooglePlayServicesAvailable(applicationContext) == ConnectionResult.SUCCESS
 }
 
 /**

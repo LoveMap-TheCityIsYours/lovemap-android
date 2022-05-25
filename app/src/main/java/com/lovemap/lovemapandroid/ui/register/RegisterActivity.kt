@@ -23,6 +23,7 @@ import com.lovemap.lovemapandroid.data.validator.validateUsername
 import com.lovemap.lovemapandroid.databinding.ActivityRegisterBinding
 import com.lovemap.lovemapandroid.service.AuthenticationService
 import com.lovemap.lovemapandroid.ui.main.MainActivity
+import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
@@ -127,6 +128,7 @@ class RegisterActivity : AppCompatActivity() {
         register.setOnClickListener {
             loading.visibility = View.VISIBLE
             MainScope().launch {
+                val loadingBarShower = LoadingBarShower(this@RegisterActivity).show()
                 val loggedInUser: LoggedInUser? = authenticationService.register(
                     userName = username.text.toString(),
                     email = email.text.toString(),
@@ -144,6 +146,7 @@ class RegisterActivity : AppCompatActivity() {
                     }
                     startActivity(Intent(this@RegisterActivity, MainActivity::class.java))
                 }
+                loadingBarShower.onResponse()
             }
         }
     }
