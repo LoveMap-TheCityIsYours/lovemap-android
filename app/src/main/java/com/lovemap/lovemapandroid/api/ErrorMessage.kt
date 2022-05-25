@@ -22,6 +22,8 @@ fun Response<out Any>.getErrorMessages(): List<ErrorMessage> {
                 errorMessages.add(ErrorMessage(UNDEFINED, "", it))
             }
         }
+    } ?: run {
+        errorMessages.add(ErrorMessage(UNDEFINED, "", "No error message received."))
     }
     return errorMessages
 }
