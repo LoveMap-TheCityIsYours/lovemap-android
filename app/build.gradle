@@ -25,6 +25,8 @@ android {
                         "room.expandProjection":"true"]
             }
         }
+
+        ndk.debugSymbolLevel = 'FULL'
     }
 
     buildTypes {

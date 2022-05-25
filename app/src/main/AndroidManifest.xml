@@ -25,7 +25,10 @@
         <activity
             android:name=".ui.relations.ViewOtherLoverActivity"
             android:exported="true">
-            <intent-filter android:label="@string/filter_view_other_lover">
+            <intent-filter
+                android:autoVerify="true"
+                android:label="@string/filter_view_other_lover">
+
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
