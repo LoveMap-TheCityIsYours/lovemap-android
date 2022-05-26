@@ -67,6 +67,7 @@ class RegisterActivity : AppCompatActivity() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 val emailText = email.text.toString()
                 if (validateEmail(emailText)) {
+                    email.error = null
                     enableRegister()
                 } else {
                     email.error = getString(R.string.invalid_email)
@@ -82,8 +83,8 @@ class RegisterActivity : AppCompatActivity() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 val usernameText = username.text.toString()
                 if (validateUsername(usernameText)) {
-                    enableRegister()
                     username.error = null
+                    enableRegister()
                 } else {
                     username.error = getString(R.string.invalid_username)
                 }
@@ -98,8 +99,8 @@ class RegisterActivity : AppCompatActivity() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 val passwordText = password.text.toString()
                 if (validatePassword(passwordText)) {
-                    enableRegister()
                     password.error = null
+                    enableRegister()
                 } else {
                     password.error = getString(R.string.invalid_password)
                 }
@@ -115,8 +116,8 @@ class RegisterActivity : AppCompatActivity() {
                 val passwordText = password.text.toString()
                 val passwordAgainText = passwordAgain.text.toString()
                 if (validatePasswordAgain(passwordText, passwordAgainText)) {
-                    enableRegister()
                     passwordAgain.error = null
+                    enableRegister()
                 } else {
                     passwordAgain.error = getString(R.string.invalid_password_again)
                 }
@@ -156,9 +157,9 @@ class RegisterActivity : AppCompatActivity() {
             validEmail() && validUsername() && validPassword() && validPasswordAgain()
     }
 
-    private fun validEmail() = email.error == null || email.text.isNotEmpty()
-    private fun validUsername() = username.error == null || username.text.isNotEmpty()
-    private fun validPassword() = password.error == null || password.text.isNotEmpty()
+    private fun validEmail() = email.error == null && email.text.isNotEmpty()
+    private fun validUsername() = username.error == null && username.text.isNotEmpty()
+    private fun validPassword() = password.error == null && password.text.isNotEmpty()
     private fun validPasswordAgain() =
-        passwordAgain.error == null || passwordAgain.text.isNotEmpty()
+        passwordAgain.error == null && passwordAgain.text.isNotEmpty() && passwordAgain.text.toString() == password.text.toString()
 }

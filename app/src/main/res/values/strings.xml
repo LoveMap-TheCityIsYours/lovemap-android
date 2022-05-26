@@ -60,6 +60,9 @@
     <string name="userOccupied">Username is occupied</string>
     <string name="emailOccupied">A user with this email already registered</string>
     <string name="invalidCredentials">Invalid credentials</string>
+    <string name="invalidEmail">Invalid email address</string>
+    <string name="invalidUsername">Invalid username</string>
+    <string name="invalidPassword">Invalid password</string>
     <string name="noServer">Cannot connect to server</string>
     <string name="points_to_next_level">Points to next level</string>
     <string name="points">Points</string>
@@ -161,5 +164,6 @@
     <string name="your_love_makings_together">Your Love-makings together:</string>
     <string name="rating">Rating:</string>
     <string name="see_all">See All</string>
+    <string name="somethingWentWrong">Something went wrong</string>
 
 </resources>

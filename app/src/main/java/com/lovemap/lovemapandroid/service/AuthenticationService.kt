@@ -4,8 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import com.lovemap.lovemapandroid.R
-import com.lovemap.lovemapandroid.api.ErrorCode.*
 import com.lovemap.lovemapandroid.api.authentication.AuthenticationApi
 import com.lovemap.lovemapandroid.api.authentication.CreateLoverRequest
 import com.lovemap.lovemapandroid.api.authentication.LoginLoverRequest
@@ -83,26 +81,8 @@ class AuthenticationService(
 
     private fun showErrorToast(response: Response<out Any>) {
         val error = response.getErrorMessages().first()
-        val errorCode = error.errorCode
         Handler(mainLooper).post {
-            val message: String = when (errorCode) {
-                UserOccupied -> {
-                    context.getString(R.string.userOccupied)
-                }
-                EmailOccupied -> {
-                    context.getString(R.string.emailOccupied)
-                }
-                InvalidCredentialsEmail -> {
-                    context.getString(R.string.invalidCredentials)
-                }
-                InvalidCredentialsUser -> {
-                    context.getString(R.string.invalidCredentials)
-                }
-                else -> {
-                    context.getString(R.string.invalidCredentials)
-                }
-            }
-            toaster.showToast(message)
+            toaster.showToast(error.translatedString(context))
         }
     }
 }

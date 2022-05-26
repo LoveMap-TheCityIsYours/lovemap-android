@@ -1,25 +1,26 @@
 package com.lovemap.lovemapandroid.api
 
 import android.content.Context
-import com.google.gson.Gson
-import com.google.gson.JsonSyntaxException
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.lovemap.lovemapandroid.R
-import com.lovemap.lovemapandroid.api.ErrorCode.UNDEFINED
+import com.lovemap.lovemapandroid.api.ErrorCode.*
 import retrofit2.Response
 
-private val gson = Gson()
+private val objectMapper = jacksonObjectMapper()
 
 fun Response<out Any>.getErrorMessages(): List<ErrorMessage> {
     val errorMessages: MutableList<ErrorMessage> = ArrayList()
     errorBody()?.string()?.let {
         try {
-            val errorMessage = gson.fromJson(it, ErrorMessage::class.java)
-            errorMessages.add(errorMessage)
-        } catch (e: JsonSyntaxException) {
+            val error = objectMapper.readValue(it, ErrorMessage::class.java)
+            errorMessages.add(error)
+        } catch (e: Exception) {
             try {
-                return gson.fromJson(it, ErrorMessages::class.java).errors
-            } catch (e: JsonSyntaxException) {
-                errorMessages.add(ErrorMessage(UNDEFINED, "", it))
+                val errors = objectMapper.readValue(it, ErrorMessages::class.java)
+                errorMessages.addAll(errors.errors)
+            } catch (e: Exception) {
+                errorMessages.add(ErrorMessage(UNDEFINED, "", "No error message received."))
             }
         }
     } ?: run {
@@ -44,16 +45,26 @@ data class ErrorMessage(
 }
 
 private val errorCodeMessageMap = HashMap<ErrorCode, Int>().apply {
-    put(ErrorCode.PartnershipAlreadyRequested, R.string.partnership_already_requested)
-    put(ErrorCode.PartnershipRerequestTimeNotPassed, R.string.partnership_already_requested)
-    put(ErrorCode.InvalidOperationOnYourself, R.string.invalid_operation_on_yourself)
+    put(PartnershipAlreadyRequested, R.string.partnership_already_requested)
+    put(PartnershipRerequestTimeNotPassed, R.string.partnership_already_requested)
+    put(InvalidOperationOnYourself, R.string.invalid_operation_on_yourself)
+    put(UserOccupied, R.string.userOccupied)
+    put(EmailOccupied, R.string.emailOccupied)
+    put(InvalidCredentials, R.string.invalidCredentials)
+    put(InvalidCredentialsEmail, R.string.invalidEmail)
+    put(InvalidCredentialsUser, R.string.invalidUsername)
+    put(InvalidCredentialsPassword, R.string.invalidPassword)
+    put(BadRequest, R.string.somethingWentWrong)
+    put(UNDEFINED, R.string.somethingWentWrong)
 }
 
 enum class ErrorCode {
     UserOccupied,
     EmailOccupied,
+    InvalidCredentials,
     InvalidCredentialsEmail,
     InvalidCredentialsUser,
+    InvalidCredentialsPassword,
     NotFoundByLink,
     NotFoundById,
     ConstraintViolation,
