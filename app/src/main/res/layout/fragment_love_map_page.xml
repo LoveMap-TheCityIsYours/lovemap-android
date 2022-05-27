@@ -51,8 +51,8 @@
                 android:layout_above="@id/centerCrosshair"
                 android:layout_centerInParent="true"
                 android:layout_marginBottom="@dimen/standard_100"
-                android:background="@color/myColorPrimary"
-                android:textColor="@color/myColorOnPrimary"
+                android:background="@color/myColorSecondary"
+                android:textColor="@color/myColorOnSecondary"
                 android:text="@string/new_lovespot"
                 android:visibility="gone" />
         </RelativeLayout>
