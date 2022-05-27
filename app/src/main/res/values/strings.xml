@@ -165,5 +165,7 @@
     <string name="rating">Rating:</string>
     <string name="see_all">See All</string>
     <string name="somethingWentWrong">Something went wrong</string>
+    <string name="love_spot_not_available">Love Spot not available</string>
+    <string name="loveSpotDeleted">Love Spot deleted</string>
 
 </resources>

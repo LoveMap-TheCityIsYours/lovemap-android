@@ -11,12 +11,12 @@ import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.databinding.FragmentLovespotItemBinding
 import com.lovemap.lovemapandroid.ui.data.LoveSpotHolder
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotDetailsUtils
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
 
 class LoveSpotRecyclerViewAdapter(
     private val values: List<LoveSpotHolder>
 ) : RecyclerView.Adapter<LoveSpotRecyclerViewAdapter.ViewHolder>() {
+
+    private val appContext = AppContext.INSTANCE
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -41,14 +41,10 @@ class LoveSpotRecyclerViewAdapter(
             AppContext.INSTANCE.applicationContext,
             holder.lostSpotItemAvailability
         )
-        MainScope().launch {
-            LoveSpotDetailsUtils.setRisk(
-                loveSpot.averageDanger,
-                AppContext.INSTANCE.loveSpotService,
-                AppContext.INSTANCE.applicationContext,
-                holder.loveSpotItemRisk
-            )
-        }
+        LoveSpotDetailsUtils.setRisk(
+            loveSpot.averageDanger,
+            holder.loveSpotItemRisk
+        )
     }
 
     override fun getItemCount(): Int = values.size
@@ -68,7 +64,9 @@ class LoveSpotRecyclerViewAdapter(
 
         override fun onClick(v: View?) {
             val loveSpotId = values[absoluteAdapterPosition].id
-            AppContext.INSTANCE.selectedLoveSpotId = loveSpotId
+            appContext.selectedLoveSpotId = loveSpotId
+            appContext.selectedLoveSpot = null
+            appContext.selectedMarker = null
             v?.context?.startActivity(
                 Intent(v.context, LoveSpotDetailsActivity::class.java)
             )

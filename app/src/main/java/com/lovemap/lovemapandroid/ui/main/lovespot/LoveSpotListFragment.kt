@@ -34,7 +34,6 @@ class LoveSpotListFragment : Fragment() {
         MainScope().launch {
             with(recycleView) {
                 layoutManager = LinearLayoutManager(context)
-                adapter = LoveSpotRecyclerViewAdapter(loveSpotService.getLoveHolderList())
             }
         }
         return recycleView
@@ -42,7 +41,12 @@ class LoveSpotListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        recycleView.adapter?.notifyDataSetChanged()
+        MainScope().launch {
+            with(recycleView) {
+                adapter = LoveSpotRecyclerViewAdapter(loveSpotService.getLoveHolderList())
+                adapter?.notifyDataSetChanged()
+            }
+        }
     }
 
 }

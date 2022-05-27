@@ -1,7 +1,7 @@
 package com.lovemap.lovemapandroid.service
 
 import android.content.Context
-import androidx.lifecycle.LiveData
+import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.love.CreateLoveRequest
 import com.lovemap.lovemapandroid.api.love.LoveApi
 import com.lovemap.lovemapandroid.config.AppContext
@@ -12,7 +12,6 @@ import com.lovemap.lovemapandroid.ui.data.LoveHolder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
-import kotlin.collections.ArrayList
 
 class LoveService(
     private val loveApi: LoveApi,
@@ -24,26 +23,32 @@ class LoveService(
 ) {
     var lastUpdatedIndex = -1
 
-    private val loveHolderList: MutableList<LoveHolder> = ArrayList()
+    @Volatile
     private var lovesQueried = false
 
     suspend fun list(): List<Love> {
         return withContext(Dispatchers.IO) {
             val localLoves = loveDao.getAll()
             if (!lovesQueried) {
+                lovesQueried = true
                 val call = loveApi.list(metadataStore.getUser().id)
                 val response = try {
                     call.execute()
                 } catch (e: Exception) {
+                    lovesQueried = false
                     toaster.showNoServerToast()
                     return@withContext localLoves
                 }
                 if (response.isSuccessful) {
-                    lovesQueried = true
-                    val loveList = response.body()!!
-                    loveDao.insert(*loveList.toTypedArray())
-                    loveList
+                    val serverLoves = response.body()!!
+                    val localLoveSet = HashSet(localLoves)
+                    val serverLoveSet = HashSet(serverLoves)
+                    val deletedLoves = localLoveSet.subtract(serverLoveSet)
+                    loveDao.delete(*deletedLoves.toTypedArray())
+                    loveDao.insert(*serverLoveSet.toTypedArray())
+                    serverLoves
                 } else {
+                    lovesQueried = false
                     toaster.showNoServerToast()
                     localLoves
                 }
@@ -53,59 +58,27 @@ class LoveService(
         }
     }
 
-    fun getLoveHolderList(): MutableList<LoveHolder> {
-        return loveHolderList
-    }
-
-    fun getLoveHolderListForSpot(): List<LoveHolder> {
-        return loveHolderList.filter { it.loveSpotId == AppContext.INSTANCE.selectedLoveSpotId }
-    }
-
-    fun getLoveHolderListForPartner(): List<LoveHolder> {
-        return loveHolderList.filter { it.partnerId == AppContext.INSTANCE.otherLoverId }
-    }
-
-    suspend fun initLoveHolderList(): MutableList<LoveHolder> {
-        return withContext(Dispatchers.IO) {
-            loveHolderList.clear()
-            val loves = list()
-            loves.map { love -> LoveHolder.of(love, loverService, context) }
-                .sortedByDescending { it.happenedAtLong }
-                .forEach { loveHolderList.add(it) }
-            return@withContext loveHolderList
-        }
-    }
-
     suspend fun create(request: CreateLoveRequest): Love? {
         return withContext(Dispatchers.IO) {
             val call = loveApi.create(request)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
-                toaster.showNoServerToast()
+                toaster.showToast(R.string.love_spot_not_available)
                 return@withContext null
             }
             if (response.isSuccessful) {
                 val love = response.body()!!
-                insertIntoViewHolder(love)
                 loveDao.insert(love)
                 love
             } else {
-                toaster.showNoServerToast()
+                toaster.showToast(R.string.love_spot_not_available)
                 null
             }
         }
     }
 
-    private suspend fun insertIntoViewHolder(love: Love) {
-        val loveHolder = LoveHolder.of(love, loverService, context)
-        val index = Collections.binarySearch(loveHolderList, loveHolder)
-        val insertionIndex = -index - 1
-        lastUpdatedIndex = insertionIndex
-        loveHolderList.add(insertionIndex, loveHolder)
-    }
-
-    suspend fun getLoveByLoveSpotId(loveSpotId: Long): Love? {
+    suspend fun getAnyLoveByLoveSpotId(loveSpotId: Long): Love? {
         return withContext(Dispatchers.IO) {
             val localLoves = loveDao.getAll()
             return@withContext localLoves.find { it.loveSpotId == loveSpotId }
@@ -126,5 +99,28 @@ class LoveService(
         return withContext(Dispatchers.IO) {
             return@withContext getLovesForSpot(spotId).isNotEmpty()
         }
+    }
+
+    suspend fun getLoveHolderList(): List<LoveHolder> {
+        return withContext(Dispatchers.IO) {
+            val loves = list()
+            // TODO: sort with db
+            loves.map { love -> LoveHolder.of(love, loverService, context) }
+                .sortedByDescending { it.happenedAtLong }
+        }
+    }
+
+    suspend fun getLoveHolderListForSpot(): List<LoveHolder> {
+        AppContext.INSTANCE.selectedLoveSpotId?.let {
+            // TODO: sort with db
+            return getLovesForSpot(AppContext.INSTANCE.selectedLoveSpotId!!)
+                .map { love -> LoveHolder.of(love, loverService, context) }
+                .sortedByDescending { it.happenedAtLong }
+        }
+        return emptyList()
+    }
+
+    suspend fun getLoveHolderListForPartner(): List<LoveHolder> {
+        return getLoveHolderList().filter { it.partnerId == AppContext.INSTANCE.otherLoverId }
     }
 }

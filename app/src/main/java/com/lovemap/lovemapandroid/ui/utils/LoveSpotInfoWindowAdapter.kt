@@ -39,8 +39,6 @@ class LoveSpotInfoWindowAdapter(
                 )
                 LoveSpotDetailsUtils.setRisk(
                     loveSpot.averageDanger,
-                    loveSpotService,
-                    activity,
                     view.findViewById(R.id.marker_risk)
                 )
                 LoveSpotDetailsUtils.setCustomAvailability(

@@ -1,5 +1,6 @@
 package com.lovemap.lovemapandroid.service
 
+import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewApi
 import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.config.AppContext
@@ -14,6 +15,7 @@ import kotlinx.coroutines.withContext
 class LoveSpotReviewService(
     private val loveSpotReviewApi: LoveSpotReviewApi,
     private val loveSpotReviewDao: LoveSpotReviewDao,
+    private val loveSpotService: LoveSpotService,
     private val metadataStore: MetadataStore,
     private val toaster: Toaster,
 ) {
@@ -23,7 +25,7 @@ class LoveSpotReviewService(
             val response = try {
                 call.execute()
             } catch (e: Exception) {
-                toaster.showNoServerToast()
+                toaster.showToast(R.string.love_spot_not_available)
                 return@withContext null
             }
             if (response.isSuccessful) {
@@ -34,13 +36,14 @@ class LoveSpotReviewService(
                     if (reviewsResponse.isSuccessful) {
                         val reviews = reviewsResponse.body()!!
                         loveSpotReviewDao.insert(*reviews.toTypedArray())
+                        loveSpotService.refresh(request.loveSpotId)
                     }
                 } catch (e: Exception) {
-                    // TODO: find out what to do. nothing is good for now.
+                    toaster.showToast(R.string.love_spot_not_available)
                 }
                 loveSpot
             } else {
-                toaster.showNoServerToast()
+                toaster.showToast(R.string.love_spot_not_available)
                 null
             }
         }
@@ -96,7 +99,7 @@ class LoveSpotReviewService(
             val response = try {
                 call.execute()
             } catch (e: Exception) {
-                toaster.showNoServerToast()
+                toaster.showToast(R.string.love_spot_not_available)
                 return@withContext localReviews
             }
             if (response.isSuccessful) {
@@ -104,7 +107,7 @@ class LoveSpotReviewService(
                 loveSpotReviewDao.insert(*reviewList.toTypedArray())
                 reviewList
             } else {
-                toaster.showNoServerToast()
+                toaster.showToast(R.string.love_spot_not_available)
                 localReviews
             }
         }

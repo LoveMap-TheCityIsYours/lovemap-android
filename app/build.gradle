@@ -12,8 +12,8 @@ android {
         applicationId "com.lovemap.lovemapandroid"
         minSdk 26
         targetSdk 32
-        versionCode 17
-        versionName "1.1.7"
+        versionCode 18
+        versionName "1.2.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -78,6 +78,9 @@ dependencies {
     kapt("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-guava:$roomVersion")
     implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+    implementation 'androidx.lifecycle:extensions:2.4.1'
+    kapt("androidx.lifecycle:lifecycle-compiler:2.4.1")
 
     implementation("org.greenrobot:eventbus:3.3.1")
     implementation("com.github.noowenz:CustomDateTimePicker:1.01")

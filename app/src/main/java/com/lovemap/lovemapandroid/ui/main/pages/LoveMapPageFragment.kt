@@ -54,6 +54,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
     private var locationEnabled = false
     private var mapMode = LOVE_SPOTS
     private var mapModeChanged = false
+    private val drawnSpots = HashSet<Long>()
 
     private lateinit var viewPager2: ViewPager2
     private lateinit var loveSpotInfoWindowAdapter: LoveSpotInfoWindowAdapter
@@ -213,7 +214,14 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
 
         if (mapModeChanged) {
             googleMap.clear()
+            drawnSpots.clear()
             mapModeChanged = false
+        }
+
+        if (appContext.shouldClearMap) {
+            googleMap.clear()
+            drawnSpots.clear()
+            appContext.shouldClearMap = false
         }
 
         val visibleRegion = googleMap.projection.visibleRegion
@@ -223,11 +231,14 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
         if (mapMode == LOVE_MAKINGS) {
             val loves = loveService.list()
             val spotIdsWithLove = loves.map { it.loveSpotId }.toHashSet()
-            loveSpotsInArea.filter { loveSpot -> spotIdsWithLove.contains(loveSpot.id) }
+            loveSpotsInArea
+                .filter { loveSpot -> spotIdsWithLove.contains(loveSpot.id) }
+                .filter { isNotDrawnYet(it) }
                 .map { loveMakingToMarkerOptions(it, googleMap) }
                 .forEach { googleMap.addMarker(it) }
         } else {
             loveSpotsInArea
+                .filter { isNotDrawnYet(it) }
                 .map { loveSpotToMarkerOptions(it, googleMap) }
                 .forEach { googleMap.addMarker(it) }
         }
@@ -237,6 +248,15 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
             openMarkerFabMenu()
         } else {
             closeMarkerFabMenu()
+        }
+    }
+
+    private fun isNotDrawnYet(it: LoveSpot): Boolean {
+        return if (!drawnSpots.contains(it.id)) {
+            drawnSpots.add(it.id)
+            true
+        } else {
+            false
         }
     }
 

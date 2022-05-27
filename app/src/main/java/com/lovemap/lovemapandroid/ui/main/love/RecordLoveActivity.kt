@@ -59,8 +59,8 @@ class RecordLoveActivity : AppCompatActivity() {
             .hide(reviewLoveSpotFragment)
             .commit()
 
-        appContext.selectedMarker?.let {
-            val spotId = it.snippet!!.toLong()
+        appContext.selectedLoveSpotId?.let {
+            val spotId = appContext.selectedLoveSpotId!!
             MainScope().launch {
                 if (loveSpotReviewService.hasReviewedAlready(spotId)) {
                     recordLoveSubmit.isEnabled = true
@@ -77,8 +77,8 @@ class RecordLoveActivity : AppCompatActivity() {
     private fun setSubmitButton() {
         recordLoveSubmit.setOnClickListener {
             if (recordLoveSubmit.isEnabled) {
-                appContext.selectedMarker?.let {
-                    val spotId = it.snippet!!.toLong()
+                appContext.selectedLoveSpotId?.let {
+                    val spotId = it
                     MainScope().launch {
                         val loveSpot = loveSpotService.findLocally(spotId)!!
                         val love = loveService.create(

@@ -3,10 +3,12 @@ package com.lovemap.lovemapandroid.service
 import android.app.Activity
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.CreateLoveSpotRequest
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotApi
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotRisks
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotSearchRequest
+import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpotDao
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
@@ -21,7 +23,6 @@ class LoveSpotService(
     private val metadataStore: MetadataStore,
     private val toaster: Toaster,
 ) {
-    private val loveSpotHolderList: MutableList<LoveSpotHolder> = ArrayList()
     private val fullyQueriedAreas = ArrayList<LatLngBounds>()
     private var risksQueried = false
 
@@ -37,18 +38,12 @@ class LoveSpotService(
         }
     }
 
-    fun getLoveHolderList(): MutableList<LoveSpotHolder> {
-        return loveSpotHolderList
-    }
-
-    suspend fun initLoveSpotHolderList(): MutableList<LoveSpotHolder> {
+    suspend fun getLoveHolderList(): List<LoveSpotHolder> {
         return withContext(Dispatchers.IO) {
-            loveSpotHolderList.clear()
             val loveSpots = listSpotsLocally()
+            // TODO: sort with db
             loveSpots.map { loveSpot -> LoveSpotHolder.of(loveSpot) }
                 .sortedByDescending { it.averageRating }
-                .forEach { loveSpotHolderList.add(it) }
-            return@withContext loveSpotHolderList
         }
     }
 
@@ -59,7 +54,7 @@ class LoveSpotService(
             val response = try {
                 call.execute()
             } catch (e: Exception) {
-                toaster.showNoServerToast()
+                toaster.showToast(R.string.love_spot_not_available)
                 return@withContext localSpot
             }
             if (response.isSuccessful) {
@@ -67,7 +62,7 @@ class LoveSpotService(
                 loveSpotDao.insert(loveSpot)
                 loveSpot
             } else {
-                toaster.showNoServerToast()
+                toaster.showToast(R.string.love_spot_not_available)
                 localSpot
             }
         }
@@ -89,9 +84,8 @@ class LoveSpotService(
             if (response.isSuccessful) {
                 loadingBarShower.onResponse()
                 val loveSpot = response.body()!!
-                // TODO: optimize a lot
-                initLoveSpotHolderList()
                 loveSpotDao.insert(loveSpot)
+                // TODO: optimize a lot
                 loveSpot
             } else {
                 loadingBarShower.onResponse()
@@ -133,7 +127,6 @@ class LoveSpotService(
                 loveSpotDao.delete(*deletedSpots.toTypedArray())
                 loveSpotDao.insert(*serverSpotSet.toTypedArray())
                 // TODO: optimize a lot
-                initLoveSpotHolderList()
                 serverSpots
             } else {
                 toaster.showNoServerToast()
@@ -196,6 +189,17 @@ class LoveSpotService(
     suspend fun update(loveSpot: LoveSpot) {
         return withContext(Dispatchers.IO) {
             loveSpotDao.insert(loveSpot)
+        }
+    }
+
+    suspend fun deleteLocally(loveSpotId: Long) {
+        return withContext(Dispatchers.IO) {
+            loveSpotDao.loadSingle(loveSpotId)?.let {
+                loveSpotDao.delete(it)
+                AppContext.INSTANCE.shouldClearMap = true
+                // TODO: optimize a lot
+//                initLoveSpotHolderList()
+            }
         }
     }
 }

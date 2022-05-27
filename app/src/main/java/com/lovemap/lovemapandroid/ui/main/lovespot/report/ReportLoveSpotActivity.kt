@@ -33,7 +33,9 @@ class ReportLoveSpotActivity : AppCompatActivity() {
         reportLoveSpotName = binding.reportLoveSpotName
         reportSpotSubmit = binding.reportSpotSubmit
 
-        reportLoveSpotName.text = appContext.selectedLoveSpot!!.name
+        appContext.selectedLoveSpot?.let {
+            reportLoveSpotName.text = appContext.selectedLoveSpot!!.name
+        }
 
         addReportText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -51,13 +53,15 @@ class ReportLoveSpotActivity : AppCompatActivity() {
 
         reportSpotSubmit.setOnClickListener {
             MainScope().launch {
-                loveSpotReportService.submitReport(
-                    LoveSpotReportRequest(
-                        appContext.userId,
-                        appContext.selectedLoveSpot!!.id,
-                        addReportText.text.toString()
+                appContext.selectedLoveSpot?.let {
+                    loveSpotReportService.submitReport(
+                        LoveSpotReportRequest(
+                            appContext.userId,
+                            appContext.selectedLoveSpot!!.id,
+                            addReportText.text.toString()
+                        )
                     )
-                )
+                }
             }
             onBackPressed()
         }

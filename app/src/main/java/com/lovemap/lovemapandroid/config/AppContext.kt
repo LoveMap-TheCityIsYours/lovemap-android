@@ -4,10 +4,12 @@ import android.app.Application
 import androidx.room.Room
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
+import com.lovemap.lovemapandroid.api.admin.AdminApi
 import com.lovemap.lovemapandroid.api.authentication.AuthenticationApi
 import com.lovemap.lovemapandroid.api.love.LoveApi
 import com.lovemap.lovemapandroid.api.lover.LoverApi
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotApi
+import com.lovemap.lovemapandroid.api.lovespot.LoveSpotRisks
 import com.lovemap.lovemapandroid.api.lovespot.report.LoveSpotReportApi
 import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewApi
 import com.lovemap.lovemapandroid.api.partnership.PartnershipApi
@@ -89,6 +91,12 @@ class AppContext : Application() {
     @Volatile
     var zoomOnNewLoveSpot: LoveSpot? = null
 
+    @Volatile
+    var shouldClearMap: Boolean = false
+
+    @Volatile
+    var loveSpotRisks: LoveSpotRisks? = null
+
     private lateinit var gsonConverterFactory: GsonConverterFactory
     private lateinit var authorizingRetrofit: Retrofit
 
@@ -166,15 +174,19 @@ class AppContext : Application() {
             toaster,
         )
         loveSpotReviewService = LoveSpotReviewService(
-            authorizingRetrofit.create(LoveSpotReviewApi::class.java),
-            loveSpotReviewDao,
-            metadataStore,
-            toaster,
+            loveSpotReviewApi = authorizingRetrofit.create(LoveSpotReviewApi::class.java),
+            loveSpotReviewDao = loveSpotReviewDao,
+            loveSpotService = loveSpotService,
+            metadataStore = metadataStore,
+            toaster = toaster,
         )
         loveSpotReportService = LoveSpotReportService(
-            authorizingRetrofit.create(LoveSpotReportApi::class.java),
-            metadataStore,
-            toaster,
+            loveSpotReportApi = authorizingRetrofit.create(LoveSpotReportApi::class.java),
+            adminApi = authorizingRetrofit.create(AdminApi::class.java),
+            loveSpotService = loveSpotService,
+            loverService = loverService,
+            metadataStore = metadataStore,
+            toaster = toaster,
         )
         partnershipService = PartnershipService(
             authorizingRetrofit.create(PartnershipApi::class.java),
@@ -188,11 +200,10 @@ class AppContext : Application() {
             0
         }
         if (userId != 0L) {
-            loveService.list()
-            loveService.initLoveHolderList()
-            loveSpotService.initLoveSpotHolderList()
             loverService.getRanks()
-            loveSpotService.getRisks()
+            loveSpotRisks = loveSpotService.getRisks()
+//           TODO: for speeding up start, remove these 2 lines:
+            loveService.list()
             loveSpotReviewService.getReviewsByLover()
         }
     }
@@ -201,20 +212,20 @@ class AppContext : Application() {
         val clientBuilder = getTimeoutClientBuilder()
         val client = if (metadataStore.isLoggedIn()) {
             clientBuilder.addInterceptor { chain ->
-                    val request = runBlocking {
-                        val requestBuilder = chain.request()
-                            .newBuilder()
-                        if (metadataStore.isLoggedIn()) {
-                            val jwt = runBlocking { metadataStore.getUser().jwt }
-                            requestBuilder
-                                .addHeader(AUTHORIZATION_HEADER, "Bearer $jwt")
-                                .build()
-                        } else {
-                            requestBuilder.build()
-                        }
+                val request = runBlocking {
+                    val requestBuilder = chain.request()
+                        .newBuilder()
+                    if (metadataStore.isLoggedIn()) {
+                        val jwt = runBlocking { metadataStore.getUser().jwt }
+                        requestBuilder
+                            .addHeader(AUTHORIZATION_HEADER, "Bearer $jwt")
+                            .build()
+                    } else {
+                        requestBuilder.build()
                     }
-                    chain.proceed(request)
                 }
+                chain.proceed(request)
+            }
                 .build()
         } else {
             clientBuilder.build()

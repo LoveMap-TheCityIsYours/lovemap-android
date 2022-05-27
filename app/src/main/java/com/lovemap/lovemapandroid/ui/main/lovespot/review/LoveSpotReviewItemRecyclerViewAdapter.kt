@@ -1,17 +1,13 @@
 package com.lovemap.lovemapandroid.ui.main.lovespot.review
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.RatingBar
 import android.widget.TextView
-import com.lovemap.lovemapandroid.config.AppContext
+import androidx.recyclerview.widget.RecyclerView
 import com.lovemap.lovemapandroid.databinding.FragmentReviewItemBinding
-
 import com.lovemap.lovemapandroid.ui.data.ReviewHolder
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotDetailsUtils
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
 
 class LoveSpotReviewItemRecyclerViewAdapter(
     private val values: List<ReviewHolder>
@@ -35,14 +31,10 @@ class LoveSpotReviewItemRecyclerViewAdapter(
             review.reviewStars.toDouble(),
             holder.rating
         )
-        MainScope().launch {
-            LoveSpotDetailsUtils.setRisk(
-                review.riskLevel.toDouble(),
-                AppContext.INSTANCE.loveSpotService,
-                AppContext.INSTANCE.applicationContext,
-                holder.spotReviewRisk
-            )
-        }
+        LoveSpotDetailsUtils.setRisk(
+            review.riskLevel.toDouble(),
+            holder.spotReviewRisk
+        )
     }
 
     override fun getItemCount(): Int = values.size

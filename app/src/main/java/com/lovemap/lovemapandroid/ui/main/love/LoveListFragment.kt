@@ -44,24 +44,22 @@ class LoveListFragment : Fragment() {
 
         with(recycleView) {
             layoutManager = LinearLayoutManager(context)
-            MainScope().launch {
-                adapter = if (isLoveSpotBased) {
-                    LoveRecyclerViewAdapter(loveService.getLoveHolderListForSpot(), isClickable)
-                } else if (isPartnerBased) {
-                    LoveRecyclerViewAdapter(loveService.getLoveHolderListForPartner(), isClickable)
-                } else {
-                    LoveRecyclerViewAdapter(loveService.getLoveHolderList(), isClickable)
-                }
-            }
         }
         return recycleView
     }
 
     override fun onResume() {
         super.onResume()
-        if (loveService.lastUpdatedIndex != -1) {
+        MainScope().launch {
+            recycleView.adapter = if (isLoveSpotBased) {
+                LoveRecyclerViewAdapter(loveService.getLoveHolderListForSpot(), isClickable)
+            } else if (isPartnerBased) {
+                LoveRecyclerViewAdapter(loveService.getLoveHolderListForPartner(), isClickable)
+            } else {
+                LoveRecyclerViewAdapter(loveService.getLoveHolderList(), isClickable)
+            }
             recycleView.adapter?.notifyDataSetChanged()
-            loveService.lastUpdatedIndex = -1
         }
+
     }
 }

@@ -1,6 +1,7 @@
 package com.lovemap.lovemapandroid.service
 
 import com.lovemap.lovemapandroid.R
+import com.lovemap.lovemapandroid.api.admin.AdminApi
 import com.lovemap.lovemapandroid.api.lovespot.report.LoveSpotReportApi
 import com.lovemap.lovemapandroid.api.lovespot.report.LoveSpotReportRequest
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
@@ -9,14 +10,28 @@ import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class LoveSpotReportService(
+class LoveSpotReportService
+    (
     private val loveSpotReportApi: LoveSpotReportApi,
+    private val adminApi: AdminApi,
+    private val loveSpotService: LoveSpotService,
+    private val loverService: LoverService,
     private val metadataStore: MetadataStore,
     private val toaster: Toaster,
 ) {
     suspend fun submitReport(request: LoveSpotReportRequest): LoveSpot? {
         return withContext(Dispatchers.IO) {
-            val call = loveSpotReportApi.submitReport(request)
+            if (loverService.getMyself()?.isAdmin == true) {
+                deleteSpot(request.loveSpotId)
+            } else {
+                reportSpot(request)
+            }
+        }
+    }
+
+    private suspend fun deleteSpot(loveSpotId: Long): LoveSpot? {
+        return withContext(Dispatchers.IO) {
+            val call = adminApi.deleteLoveSpot(loveSpotId)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
@@ -25,10 +40,32 @@ class LoveSpotReportService(
             }
             if (response.isSuccessful) {
                 val loveSpot = response.body()
-                toaster.showToast(R.string.loveSpotReported)
+                toaster.showToast(R.string.loveSpotDeleted)
+                loveSpotService.deleteLocally(loveSpotId)
                 loveSpot
             } else {
                 toaster.showNoServerToast()
+                null
+            }
+        }
+    }
+
+
+    private suspend fun reportSpot(request: LoveSpotReportRequest): LoveSpot? {
+        return withContext(Dispatchers.IO) {
+            val call = loveSpotReportApi.submitReport(request)
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
+                toaster.showToast(R.string.love_spot_not_available)
+                return@withContext null
+            }
+            if (response.isSuccessful) {
+                val loveSpot = response.body()
+                toaster.showToast(R.string.loveSpotReported)
+                loveSpot
+            } else {
+                toaster.showToast(R.string.love_spot_not_available)
                 null
             }
         }

@@ -6,8 +6,11 @@ import android.widget.RatingBar
 import android.widget.TextView
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotAvailabilityApiStatus
+import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.service.LoveSpotService
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 object LoveSpotDetailsUtils {
 
@@ -31,13 +34,13 @@ object LoveSpotDetailsUtils {
             }
     }
 
-    suspend fun setRisk(
+    fun setRisk(
         averageDanger: Double?,
-        loveSpotService: LoveSpotService,
-        context: Context,
         risk: TextView
     ) {
-        val loveSpotRisks = loveSpotService.getRisks()
+        val loveSpotService = AppContext.INSTANCE.loveSpotService
+        val context = AppContext.INSTANCE.applicationContext
+        val loveSpotRisks = AppContext.INSTANCE.loveSpotRisks
         if (loveSpotRisks != null && averageDanger != null) {
             val riskList = loveSpotRisks.riskList
             val loveSpotRisk = when {
@@ -54,7 +57,9 @@ object LoveSpotDetailsUtils {
 
             risk.text = loveSpotRisk.nameEN
         } else if (averageDanger != null) {
-            loveSpotService.getRisks()
+            MainScope().launch {
+                loveSpotService.getRisks()
+            }
             risk.text = averageDanger.toString()
         } else {
             risk.text = context.getString(R.string.risk_unknown)

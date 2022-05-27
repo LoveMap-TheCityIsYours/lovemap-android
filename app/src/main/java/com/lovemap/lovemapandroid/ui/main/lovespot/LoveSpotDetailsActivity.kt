@@ -60,21 +60,23 @@ LoveSpotDetailsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        spotId = appContext.selectedLoveSpotId!!
-        initViews()
-        spotDetailsReportButton.setOnClickListener {
-            startActivity(Intent(applicationContext, ReportLoveSpotActivity::class.java))
+        appContext.selectedLoveSpotId?.let {
+            spotId = appContext.selectedLoveSpotId!!
+            initViews()
+            spotDetailsReportButton.setOnClickListener {
+                startActivity(Intent(applicationContext, ReportLoveSpotActivity::class.java))
+            }
+            addToWishlistFabOnDetails.setOnClickListener {
+                appContext.toaster.showToast(R.string.not_yet_implemented)
+            }
+            detailsSeeAllReviewsButton.setOnClickListener {
+                startActivity(Intent(applicationContext, ReviewListActivity::class.java))
+            }
+            setReviewRatingBar()
+            setReviewSubmitButton()
+            setCancelButton()
+            setMakeLoveButton()
         }
-        addToWishlistFabOnDetails.setOnClickListener {
-            appContext.toaster.showToast(R.string.not_yet_implemented)
-        }
-        detailsSeeAllReviewsButton.setOnClickListener {
-            startActivity(Intent(applicationContext, ReviewListActivity::class.java))
-        }
-        setReviewRatingBar()
-        setSubmitButton()
-        setCancelButton()
-        setMakeLoveButton()
     }
 
     override fun onResume() {
@@ -122,7 +124,7 @@ LoveSpotDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun setDetails(loveSpot: LoveSpot?) {
+    private fun setDetails(loveSpot: LoveSpot?) {
         loveSpot?.let {
             binding.loveSpotDetailsTitle.text = loveSpot.name
             spotDetailsDescription.text = loveSpot.description
@@ -137,8 +139,6 @@ LoveSpotDetailsActivity : AppCompatActivity() {
             )
             LoveSpotDetailsUtils.setRisk(
                 loveSpot.averageDanger,
-                loveSpotService,
-                applicationContext,
                 spotDetailsRisk
             )
             LoveSpotDetailsUtils.setCustomAvailability(
@@ -150,11 +150,11 @@ LoveSpotDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun setSubmitButton() {
+    private fun setReviewSubmitButton() {
         reviewSpotSubmit.setOnClickListener {
             if (reviewSpotSubmit.isEnabled) {
                 MainScope().launch {
-                    val love = loveService.getLoveByLoveSpotId(spotId)
+                    val love = loveService.getAnyLoveByLoveSpotId(spotId)
                     love?.let {
                         val reviewedSpot = loveSpotReviewService.submitReview(
                             LoveSpotReviewRequest(
@@ -178,7 +178,6 @@ LoveSpotDetailsActivity : AppCompatActivity() {
                         appContext.shouldCloseFabs = true
                         onBackPressed()
                     }
-
                 }
             }
         }

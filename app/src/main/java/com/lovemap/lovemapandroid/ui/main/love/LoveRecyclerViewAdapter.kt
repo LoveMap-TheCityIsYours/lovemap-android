@@ -16,6 +16,8 @@ class LoveRecyclerViewAdapter(
     private val isClickable: Boolean
 ) : RecyclerView.Adapter<LoveRecyclerViewAdapter.ViewHolder>() {
 
+    private val appContext = AppContext.INSTANCE
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             FragmentLoveItemBinding.inflate(
@@ -50,7 +52,9 @@ class LoveRecyclerViewAdapter(
         override fun onClick(v: View?) {
             if (isClickable) {
                 val loveSpotId = values[absoluteAdapterPosition].loveSpotId
-                AppContext.INSTANCE.selectedLoveSpotId = loveSpotId
+                appContext.selectedLoveSpotId = loveSpotId
+                appContext.selectedLoveSpot = null
+                appContext.selectedMarker = null
                 v?.context?.startActivity(
                     Intent(v.context, LoveSpotDetailsActivity::class.java)
                 )
