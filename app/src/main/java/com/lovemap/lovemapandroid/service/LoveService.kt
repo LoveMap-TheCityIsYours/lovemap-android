@@ -12,6 +12,7 @@ import com.lovemap.lovemapandroid.ui.data.LoveHolder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
+import kotlin.collections.ArrayList
 
 class LoveService(
     private val loveApi: LoveApi,
@@ -101,26 +102,27 @@ class LoveService(
         }
     }
 
-    suspend fun getLoveHolderList(): List<LoveHolder> {
+    suspend fun getLoveHolderList(): MutableList<LoveHolder> {
         return withContext(Dispatchers.IO) {
-            val loves = list()
-            // TODO: sort with db
+            val loves = loveDao.getAllOrderedByRating()
             loves.map { love -> LoveHolder.of(love, loverService, context) }
-                .sortedByDescending { it.happenedAtLong }
+                .toMutableList()
         }
     }
 
-    suspend fun getLoveHolderListForSpot(): List<LoveHolder> {
+    suspend fun getLoveHolderListForSpot(): MutableList<LoveHolder> {
         AppContext.INSTANCE.selectedLoveSpotId?.let {
-            // TODO: sort with db
             return getLovesForSpot(AppContext.INSTANCE.selectedLoveSpotId!!)
                 .map { love -> LoveHolder.of(love, loverService, context) }
                 .sortedByDescending { it.happenedAtLong }
+                .toMutableList()
         }
-        return emptyList()
+        return ArrayList()
     }
 
-    suspend fun getLoveHolderListForPartner(): List<LoveHolder> {
-        return getLoveHolderList().filter { it.partnerId == AppContext.INSTANCE.otherLoverId }
+    suspend fun getLoveHolderListForPartner(): MutableList<LoveHolder> {
+        return getLoveHolderList()
+            .filter { it.partnerId == AppContext.INSTANCE.otherLoverId }
+            .toMutableList()
     }
 }

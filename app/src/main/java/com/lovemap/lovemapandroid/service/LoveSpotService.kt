@@ -1,6 +1,7 @@
 package com.lovemap.lovemapandroid.service
 
 import android.app.Activity
+import androidx.lifecycle.LiveData
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.lovemap.lovemapandroid.R
@@ -38,12 +39,11 @@ class LoveSpotService(
         }
     }
 
-    suspend fun getLoveHolderList(): List<LoveSpotHolder> {
+    suspend fun getLoveHolderList(): MutableList<LoveSpotHolder> {
         return withContext(Dispatchers.IO) {
-            val loveSpots = listSpotsLocally()
-            // TODO: sort with db
+            val loveSpots = loveSpotDao.getAllOrderedByRating()
             loveSpots.map { loveSpot -> LoveSpotHolder.of(loveSpot) }
-                .sortedByDescending { it.averageRating }
+                .toMutableList()
         }
     }
 

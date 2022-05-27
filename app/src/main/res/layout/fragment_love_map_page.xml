@@ -51,8 +51,8 @@
                 android:layout_above="@id/centerCrosshair"
                 android:layout_centerInParent="true"
                 android:layout_marginBottom="@dimen/standard_100"
-                android:background="@color/myColorSecondary"
-                android:textColor="@color/myColorOnSecondary"
+                android:background="@color/myColorPrimary"
+                android:textColor="@color/myColorOnPrimary"
                 android:text="@string/new_lovespot"
                 android:visibility="gone" />
         </RelativeLayout>
@@ -84,6 +84,7 @@
         android:layout_marginStart="@dimen/standard_minus_55"
         android:layout_marginBottom="10dp"
         android:textDirection="firstStrongRtl"
+        app:iconTint="@color/myColorOnPrimary"
         app:srcCompat="@drawable/ic_baseline_error_outline_24" />
 
     <TextView
@@ -149,7 +150,10 @@
         android:layout_marginBottom="90dp"
         android:text="@string/switch_map_mode"
         android:textSize="12sp"
+        android:textColor="@color/myColorOnPrimary"
+        android:backgroundTint="@color/myColorPrimary"
         android:textDirection="firstStrongRtl"
+        app:iconTint="@color/myColorOnPrimary"
         app:icon="@drawable/ic_two_hearts_com" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

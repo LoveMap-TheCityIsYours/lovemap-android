@@ -111,7 +111,7 @@ class ViewOtherLoverActivity : AppCompatActivity() {
 
         partnerLoveListFragment =
             supportFragmentManager.findFragmentById(R.id.partnerLoveListFragment) as LoveListFragment
-        (partnerLoveListFragment.view as RecyclerView).isNestedScrollingEnabled = false
+        (partnerLoveListFragment.view?.findViewById(R.id.loveList) as RecyclerView).isNestedScrollingEnabled = false
 
         supportFragmentManager
             .beginTransaction()

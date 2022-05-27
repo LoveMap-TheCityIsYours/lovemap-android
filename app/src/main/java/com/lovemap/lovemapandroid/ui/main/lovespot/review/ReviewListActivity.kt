@@ -20,6 +20,6 @@ class ReviewListActivity : AppCompatActivity() {
         reviewListFragment =
             supportFragmentManager.findFragmentById(R.id.reviewListFragment) as LoveSpotReviewListFragment
 
-        binding.loveSpotDetailsTitle.text = AppContext.INSTANCE.selectedLoveSpot?.name
+        binding.loveSpotTitle.text = AppContext.INSTANCE.selectedLoveSpot?.name
     }
 }

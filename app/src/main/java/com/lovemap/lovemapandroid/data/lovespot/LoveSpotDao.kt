@@ -11,6 +11,9 @@ interface LoveSpotDao {
     @Query("SELECT * FROM love_spot")
     fun getAll(): List<LoveSpot>
 
+    @Query("SELECT * FROM love_spot ORDER BY averageRating DESC")
+    fun getAllOrderedByRating(): List<LoveSpot>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg loveSpots: LoveSpot)
 

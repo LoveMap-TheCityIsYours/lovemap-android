@@ -6,6 +6,8 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,7 +24,9 @@ class LoveListFragment : Fragment() {
     private var isPartnerBased: Boolean = false
     private var isClickable: Boolean = true
 
+    private lateinit var progressBar: ProgressBar
     private lateinit var recycleView: RecyclerView
+    private lateinit var adapter: LoveRecyclerViewAdapter
 
     override fun onInflate(context: Context, attrs: AttributeSet, savedInstanceState: Bundle?) {
         super.onInflate(context, attrs, savedInstanceState)
@@ -37,28 +41,33 @@ class LoveListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        recycleView =
-            inflater.inflate(R.layout.fragment_love_list, container, false) as RecyclerView
-
+        val linearLayout =
+            inflater.inflate(R.layout.fragment_love_list, container, false) as LinearLayout
+        recycleView = linearLayout.findViewById(R.id.loveList)
+        progressBar = linearLayout.findViewById(R.id.loveListProgressBar)
         recycleView.isClickable = isClickable
-
-        with(recycleView) {
-            layoutManager = LinearLayoutManager(context)
-        }
-        return recycleView
+        recycleView.layoutManager = LinearLayoutManager(context)
+        adapter = LoveRecyclerViewAdapter(ArrayList(), isClickable)
+        recycleView.adapter = adapter
+        return linearLayout
     }
 
     override fun onResume() {
         super.onResume()
         MainScope().launch {
-            recycleView.adapter = if (isLoveSpotBased) {
-                LoveRecyclerViewAdapter(loveService.getLoveHolderListForSpot(), isClickable)
-            } else if (isPartnerBased) {
-                LoveRecyclerViewAdapter(loveService.getLoveHolderListForPartner(), isClickable)
-            } else {
-                LoveRecyclerViewAdapter(loveService.getLoveHolderList(), isClickable)
+            when {
+                isLoveSpotBased -> {
+                    adapter.updateData(loveService.getLoveHolderListForSpot())
+                }
+                isPartnerBased -> {
+                    adapter.updateData(loveService.getLoveHolderListForPartner())
+                }
+                else -> {
+                    adapter.updateData(loveService.getLoveHolderList())
+                }
             }
-            recycleView.adapter?.notifyDataSetChanged()
+            adapter.notifyDataSetChanged()
+            progressBar.visibility = View.GONE
         }
 
     }

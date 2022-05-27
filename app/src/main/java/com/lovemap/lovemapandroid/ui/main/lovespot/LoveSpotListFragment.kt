@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +20,9 @@ import kotlinx.coroutines.launch
 class LoveSpotListFragment : Fragment() {
     private val loveSpotService = AppContext.INSTANCE.loveSpotService
 
+    private lateinit var progressBar: ProgressBar
     private lateinit var recycleView: RecyclerView
+    private lateinit var adapter: LoveSpotRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,24 +32,23 @@ class LoveSpotListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        recycleView =
-            inflater.inflate(R.layout.fragment_lovespot_list, container, false) as RecyclerView
+        val linearLayout =
+            inflater.inflate(R.layout.fragment_lovespot_list, container, false) as LinearLayout
+        recycleView = linearLayout.findViewById(R.id.loveSpotList)
+        progressBar = linearLayout.findViewById(R.id.loveSpotListProgressBar)
         recycleView.isClickable = true
-        MainScope().launch {
-            with(recycleView) {
-                layoutManager = LinearLayoutManager(context)
-            }
-        }
-        return recycleView
+        adapter = LoveSpotRecyclerViewAdapter(ArrayList())
+        recycleView.layoutManager = LinearLayoutManager(context)
+        recycleView.adapter = adapter
+        return linearLayout
     }
 
     override fun onResume() {
         super.onResume()
         MainScope().launch {
-            with(recycleView) {
-                adapter = LoveSpotRecyclerViewAdapter(loveSpotService.getLoveHolderList())
-                adapter?.notifyDataSetChanged()
-            }
+            adapter.updateData(loveSpotService.getLoveHolderList())
+            adapter.notifyDataSetChanged()
+            progressBar.visibility = View.GONE
         }
     }
 

@@ -13,10 +13,15 @@ import com.lovemap.lovemapandroid.ui.data.LoveSpotHolder
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotDetailsUtils
 
 class LoveSpotRecyclerViewAdapter(
-    private val values: List<LoveSpotHolder>
+    private val values: MutableList<LoveSpotHolder>
 ) : RecyclerView.Adapter<LoveSpotRecyclerViewAdapter.ViewHolder>() {
 
     private val appContext = AppContext.INSTANCE
+
+    fun updateData(data: List<LoveSpotHolder>) {
+        values.clear()
+        values.addAll(data)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(

@@ -11,8 +11,8 @@
     <TextView
         style="?android:attr/weekSeparatorLineColor"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/separatorLine"
+        android:layout_height="2dp"
+        android:background="@color/myColorPrimary"
         android:gravity="center_horizontal" />
 
     <TextView
@@ -105,10 +105,10 @@
     <TextView
         style="?android:attr/weekSeparatorLineColor"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2dp"
         android:layout_marginTop="@dimen/standard_10"
         android:layout_marginBottom="@dimen/standard_10"
-        android:background="@color/separatorLine"
+        android:background="@color/myColorPrimary"
         android:gravity="center_horizontal" />
 
 </LinearLayout>

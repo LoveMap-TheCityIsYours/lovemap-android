@@ -10,34 +10,34 @@ class Toaster(
     private val looper: Looper,
     private val context: Context,
 ) {
+    private var lastShownTimestamp = System.currentTimeMillis()
 
     fun showToast(message: String) {
-        Handler(looper).post {
-            Toast.makeText(
-                context,
-                message,
-                Toast.LENGTH_LONG
-            ).show()
-        }
+        doShow(message)
     }
 
     fun showToast(resId: Int) {
-        Handler(looper).post {
-            Toast.makeText(
-                context,
-                context.getString(resId),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+        doShow(context.getString(resId))
     }
 
     fun showNoServerToast() {
-        Handler(looper).post {
-            Toast.makeText(
-                context,
-                context.getString(R.string.noServer),
-                Toast.LENGTH_SHORT
-            ).show()
+        doShow(context.getString(R.string.noServer))
+    }
+
+    private fun doShow(message: String) {
+        val currentTimeMillis = System.currentTimeMillis()
+        if (haveFiveSecondsPassed(currentTimeMillis)) {
+            lastShownTimestamp = currentTimeMillis
+            Handler(looper).post {
+                Toast.makeText(
+                    context,
+                    message,
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
     }
+
+    private fun haveFiveSecondsPassed(currentTimeMillis: Long) =
+        currentTimeMillis - lastShownTimestamp > 5000
 }

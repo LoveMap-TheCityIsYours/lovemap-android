@@ -9,14 +9,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.databinding.FragmentLoveItemBinding
 import com.lovemap.lovemapandroid.ui.data.LoveHolder
+import com.lovemap.lovemapandroid.ui.data.LoveSpotHolder
 import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
 
 class LoveRecyclerViewAdapter(
-    private val values: List<LoveHolder>,
+    private val values: MutableList<LoveHolder>,
     private val isClickable: Boolean
 ) : RecyclerView.Adapter<LoveRecyclerViewAdapter.ViewHolder>() {
 
     private val appContext = AppContext.INSTANCE
+
+    fun updateData(data: List<LoveHolder>) {
+        values.clear()
+        values.addAll(data)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(

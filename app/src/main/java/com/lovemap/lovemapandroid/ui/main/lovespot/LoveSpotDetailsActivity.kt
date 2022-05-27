@@ -13,6 +13,7 @@ import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.databinding.ActivityLoveSpotDetailsBinding
+import com.lovemap.lovemapandroid.ui.main.love.LoveListActivity
 import com.lovemap.lovemapandroid.ui.main.love.LoveListFragment
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.report.ReportLoveSpotActivity
@@ -53,6 +54,7 @@ LoveSpotDetailsActivity : AppCompatActivity() {
     private lateinit var spotDetailsReportButton: ExtendedFloatingActionButton
 
     private lateinit var detailsLoveListFragment: LoveListFragment
+    private lateinit var detailsSeeAllLovesButton: Button
     private lateinit var detailsReviewListFragment: LoveSpotReviewListFragment
 
     private var spotId: Long = 0
@@ -68,6 +70,9 @@ LoveSpotDetailsActivity : AppCompatActivity() {
             }
             addToWishlistFabOnDetails.setOnClickListener {
                 appContext.toaster.showToast(R.string.not_yet_implemented)
+            }
+            detailsSeeAllLovesButton.setOnClickListener {
+                startActivity(Intent(applicationContext, LoveListActivity::class.java))
             }
             detailsSeeAllReviewsButton.setOnClickListener {
                 startActivity(Intent(applicationContext, ReviewListActivity::class.java))
@@ -103,12 +108,13 @@ LoveSpotDetailsActivity : AppCompatActivity() {
         spotDetailsReportButton = binding.spotDetailsReportButton
         addToWishlistFabOnDetails = binding.addToWishlistFabOnDetails
         detailsSeeAllReviewsButton = binding.detailsSeeAllReviewsButton
+        detailsSeeAllLovesButton = binding.detailsSeeAllLovesButton
         detailsReviewLoveSpotFragment =
             supportFragmentManager.findFragmentById(R.id.detailsReviewLoveSpotFragment) as ReviewLoveSpotFragment
 
         detailsLoveListFragment =
             supportFragmentManager.findFragmentById(R.id.detailsLoveListFragment) as LoveListFragment
-        (detailsLoveListFragment.view as RecyclerView).isNestedScrollingEnabled = false
+        (detailsLoveListFragment.view?.findViewById(R.id.loveList) as RecyclerView).isNestedScrollingEnabled = false
 
         detailsReviewListFragment =
             supportFragmentManager.findFragmentById(R.id.detailsReviewListFragment) as LoveSpotReviewListFragment
@@ -126,7 +132,7 @@ LoveSpotDetailsActivity : AppCompatActivity() {
 
     private fun setDetails(loveSpot: LoveSpot?) {
         loveSpot?.let {
-            binding.loveSpotDetailsTitle.text = loveSpot.name
+            binding.loveSpotTitle.text = loveSpot.name
             spotDetailsDescription.text = loveSpot.description
             LoveSpotDetailsUtils.setRating(
                 loveSpot.averageRating,
