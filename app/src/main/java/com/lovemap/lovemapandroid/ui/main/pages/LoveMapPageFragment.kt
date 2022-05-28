@@ -169,11 +169,10 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
         viewPager2 = getViewPager2(thisView)
         val linearLayout = viewPager2.parent as ViewGroup
         val tabLayout = linearLayout.findViewById<TabLayout>(R.id.tab_layout)
-        if (appContext.selectedMarker != null && appContext.zoomOnNewLoveSpot == null) {
-            if (appContext.shouldMoveMapCamera) {
-                appContext.shouldMoveMapCamera = false
-                moveCameraTo(appContext.selectedMarker!!.position, googleMap)
-            }
+        setMyLocation(googleMap)
+        setMapBehavior(googleMap, tabLayout, thisView)
+        googleMap.setOnInfoWindowClickListener {
+            startActivity(Intent(requireContext(), LoveSpotDetailsActivity::class.java))
         }
         MainScope().launch {
             loveSpotInfoWindowAdapter = LoveSpotInfoWindowAdapter(
@@ -182,13 +181,11 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
             )
             googleMap.setInfoWindowAdapter(loveSpotInfoWindowAdapter)
             putLoveSpotsOrLoveMakings(googleMap)
+            appContext.zoomOnLoveSpot?.let {
+                moveCameraTo(LatLng(it.latitude, it.longitude), googleMap)
+                appContext.zoomOnLoveSpot = null
+            }
         }
-        setMyLocation(googleMap)
-        putMarkersOnMap(googleMap)
-        googleMap.setOnInfoWindowClickListener {
-            startActivity(Intent(requireContext(), LoveSpotDetailsActivity::class.java))
-        }
-        configureUserInputForViews(googleMap, viewPager2, tabLayout, thisView)
     }
 
     private fun getViewPager2(thisView: View): ViewPager2 {
@@ -206,27 +203,6 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
         if (locationEnabled) {
             googleMap.isMyLocationEnabled = true
             googleMap.uiSettings.isMyLocationButtonEnabled = true
-        }
-    }
-
-    private fun putMarkersOnMap(googleMap: GoogleMap) {
-        googleMap.setOnMarkerClickListener { marker ->
-            onMarkerClicked()
-            appContext.selectedMarker = marker
-            openMarkerFabMenu()
-            false
-        }
-        googleMap.setOnMapClickListener {
-            viewPager2.isUserInputEnabled = false
-            onMapClicked()
-            appContext.selectedMarker = null
-        }
-        googleMap.setOnCameraIdleListener {
-            if (cameraMoved) {
-                MainScope().launch {
-                    putLoveSpotsOrLoveMakings(googleMap)
-                }
-            }
         }
     }
 
@@ -257,12 +233,12 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
             loveSpotsInArea
                 .filter { loveSpot -> spotIdsWithLove.contains(loveSpot.id) }
                 .filter { isNotDrawnYet(it) }
-                .map { loveMakingToMarkerOptions(it, googleMap) }
+                .map { loveMakingToMarkerOptions(it) }
                 .forEach { googleMap.addMarker(it) }
         } else {
             loveSpotsInArea
                 .filter { isNotDrawnYet(it) }
-                .map { loveSpotToMarkerOptions(it, googleMap) }
+                .map { loveSpotToMarkerOptions(it) }
                 .forEach { googleMap.addMarker(it) }
         }
 
@@ -283,26 +259,24 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
         }
     }
 
-    private fun loveSpotToMarkerOptions(loveSpot: LoveSpot, googleMap: GoogleMap): MarkerOptions {
+    private fun loveSpotToMarkerOptions(loveSpot: LoveSpot): MarkerOptions {
         val icon = if (loveSpot.availability == ALL_DAY) {
             dayBitmap
         } else {
             nightBitmap
         }
-        return loveSpotToMarkerOptionsAndZoom(loveSpot, icon, googleMap)
+        return loveItemToMarkerOptions(loveSpot, icon)
     }
 
     private fun loveMakingToMarkerOptions(
-        loveSpot: LoveSpot,
-        googleMap: GoogleMap
+        loveSpot: LoveSpot
     ): MarkerOptions {
-        return loveSpotToMarkerOptionsAndZoom(loveSpot, loveBitmap, googleMap)
+        return loveItemToMarkerOptions(loveSpot, loveBitmap)
     }
 
-    private fun loveSpotToMarkerOptionsAndZoom(
+    private fun loveItemToMarkerOptions(
         loveSpot: LoveSpot,
-        icon: BitmapDescriptor,
-        googleMap: GoogleMap
+        icon: BitmapDescriptor
     ): MarkerOptions {
         val position = LatLng(loveSpot.latitude, loveSpot.longitude)
         val marker = MarkerOptions()
@@ -310,11 +284,6 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
             .position(position)
             .snippet(loveSpot.id.toString())
             .title(loveSpot.name)
-
-        if (appContext.zoomOnNewLoveSpot != null && appContext.zoomOnNewLoveSpot!!.id == loveSpot.id) {
-            appContext.zoomOnNewLoveSpot = null
-            moveCameraTo(position, googleMap)
-        }
         return marker
     }
 
@@ -339,12 +308,29 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun configureUserInputForViews(
+    private fun setMapBehavior(
         googleMap: GoogleMap,
-        viewPager2: ViewPager2,
         tabLayout: TabLayout,
         thisView: View
     ) {
+        googleMap.setOnMarkerClickListener { marker ->
+            onMarkerClicked()
+            appContext.selectedMarker = marker
+            openMarkerFabMenu()
+            false
+        }
+        googleMap.setOnMapClickListener {
+            viewPager2.isUserInputEnabled = false
+            onMapClicked()
+            appContext.selectedMarker = null
+        }
+        googleMap.setOnCameraIdleListener {
+            if (cameraMoved) {
+                MainScope().launch {
+                    putLoveSpotsOrLoveMakings(googleMap)
+                }
+            }
+        }
         googleMap.setOnCameraMoveListener {
             if (tabLayout.selectedTabPosition == 2) {
                 viewPager2.isUserInputEnabled = false
@@ -360,12 +346,8 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
                 viewPager2.isUserInputEnabled = true
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-            }
-
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
     }
 
@@ -463,7 +445,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
         googleMap.animateCamera(
             CameraUpdateFactory.newLatLngZoom(
                 position,
-                15f
+                14f
             )
         )
     }

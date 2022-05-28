@@ -98,6 +98,17 @@
                 android:text="@string/night_only"
                 android:textColor="@color/myColorOnBackground" />
 
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/spotDetailsShowOnMap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standard_16"
+                android:layout_gravity="center"
+                android:text="@string/show_on_map"
+                android:textSize="12sp"
+                app:iconGravity="start"
+                app:icon="@android:drawable/ic_dialog_map"/>
+
             <TextView
                 android:id="@+id/spotDetailsCustomAvailabilityText"
                 android:layout_width="wrap_content"
@@ -357,7 +368,7 @@
             android:layout_marginTop="@dimen/standard_100"
             android:text="@string/report_spot"
             android:textSize="12sp"
-            app:iconGravity="end"
+            app:iconGravity="start"
             app:icon="@drawable/ic_baseline_error_outline_24"/>
 
     </LinearLayout>

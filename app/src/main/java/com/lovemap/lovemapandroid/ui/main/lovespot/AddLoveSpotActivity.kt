@@ -202,7 +202,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
     private fun returnHome(loveSpot: LoveSpot) {
         appContext.toaster.showToast(R.string.love_spot_added)
         appContext.shouldCloseFabs = true
-        appContext.zoomOnNewLoveSpot = loveSpot
+        appContext.zoomOnLoveSpot = loveSpot
         onBackPressed()
     }
 

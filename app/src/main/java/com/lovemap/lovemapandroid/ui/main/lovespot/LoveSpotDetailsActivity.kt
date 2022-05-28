@@ -13,6 +13,7 @@ import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.databinding.ActivityLoveSpotDetailsBinding
+import com.lovemap.lovemapandroid.ui.main.MainActivity
 import com.lovemap.lovemapandroid.ui.main.love.LoveListActivity
 import com.lovemap.lovemapandroid.ui.main.love.LoveListFragment
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
@@ -52,6 +53,7 @@ LoveSpotDetailsActivity : AppCompatActivity() {
     private lateinit var haveNotMadeLoveText: TextView
 
     private lateinit var spotDetailsReportButton: ExtendedFloatingActionButton
+    private lateinit var spotDetailsShowOnMap: ExtendedFloatingActionButton
 
     private lateinit var detailsLoveListFragment: LoveListFragment
     private lateinit var detailsSeeAllLovesButton: Button
@@ -76,6 +78,13 @@ LoveSpotDetailsActivity : AppCompatActivity() {
             }
             detailsSeeAllReviewsButton.setOnClickListener {
                 startActivity(Intent(applicationContext, ReviewListActivity::class.java))
+            }
+            spotDetailsShowOnMap.setOnClickListener {
+                appContext.zoomOnLoveSpot = appContext.selectedLoveSpot
+                val intent = Intent(this, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+                finish()
             }
             setReviewRatingBar()
             setReviewSubmitButton()
@@ -109,6 +118,7 @@ LoveSpotDetailsActivity : AppCompatActivity() {
         addToWishlistFabOnDetails = binding.addToWishlistFabOnDetails
         detailsSeeAllReviewsButton = binding.detailsSeeAllReviewsButton
         detailsSeeAllLovesButton = binding.detailsSeeAllLovesButton
+        spotDetailsShowOnMap = binding.spotDetailsShowOnMap
         detailsReviewLoveSpotFragment =
             supportFragmentManager.findFragmentById(R.id.detailsReviewLoveSpotFragment) as ReviewLoveSpotFragment
 
@@ -125,8 +135,8 @@ LoveSpotDetailsActivity : AppCompatActivity() {
         MainScope().launch {
             appContext.selectedLoveSpot = loveSpotService.findLocally(spotId)
             setDetails(appContext.selectedLoveSpot)
-            val loveSpot = loveSpotService.refresh(spotId)
-            setDetails(loveSpot)
+            appContext.selectedLoveSpot = loveSpotService.refresh(spotId)
+            setDetails(appContext.selectedLoveSpot)
         }
     }
 

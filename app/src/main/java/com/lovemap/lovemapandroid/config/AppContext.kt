@@ -84,10 +84,7 @@ class AppContext : Application() {
     var selectedLoveSpotId: Long? = null
 
     @Volatile
-    var shouldMoveMapCamera: Boolean = false
-
-    @Volatile
-    var zoomOnNewLoveSpot: LoveSpot? = null
+    var zoomOnLoveSpot: LoveSpot? = null
 
     @Volatile
     var shouldClearMap: Boolean = false
