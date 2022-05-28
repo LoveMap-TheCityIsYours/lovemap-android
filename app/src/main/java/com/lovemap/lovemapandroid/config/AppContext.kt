@@ -21,7 +21,6 @@ import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReviewDao
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.data.partnership.PartnershipDao
 import com.lovemap.lovemapandroid.service.*
-import com.lovemap.lovemapandroid.ui.events.MainActivityEventListener
 import com.lovemap.lovemapandroid.ui.events.MapInfoWindowShownEvent
 import com.lovemap.lovemapandroid.ui.events.MapMarkerEventListener
 import kotlinx.coroutines.Dispatchers
@@ -56,7 +55,6 @@ class AppContext : Application() {
     lateinit var database: AppDatabase
 
     lateinit var mapMarkerEventListener: MapMarkerEventListener
-    lateinit var mainActivityEventListener: MainActivityEventListener
 
     @Volatile
     var userId: Long = 0

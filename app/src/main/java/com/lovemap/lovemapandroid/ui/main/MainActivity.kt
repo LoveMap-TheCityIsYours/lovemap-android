@@ -4,33 +4,22 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.databinding.ActivityMainBinding
-import com.lovemap.lovemapandroid.ui.events.MapMarkerEventListener
-import com.lovemap.lovemapandroid.ui.main.lovespot.AddLoveSpotActivity
 
-private const val MAP_PAGE = 2
+const val MAP_PAGE = 2
 
-class MainActivity : AppCompatActivity(), MapMarkerEventListener {
+class MainActivity : AppCompatActivity() {
 
     private val appContext = AppContext.INSTANCE
     private lateinit var viewPager2: ViewPager2
     private lateinit var binding: ActivityMainBinding
-
-    private lateinit var addLoveSpotFab: ExtendedFloatingActionButton
-    private lateinit var okFab: FloatingActionButton
-    private lateinit var cancelFab: FloatingActionButton
 
     private lateinit var tabLayout: TabLayout
     private lateinit var icons: Array<Drawable>
@@ -44,32 +33,10 @@ class MainActivity : AppCompatActivity(), MapMarkerEventListener {
             tab.icon = icons[position]
         }.attach()
 
-        addLoveSpotFab.setOnClickListener {
-            if (!appContext.areAddLoveSpotFabsOpen) {
-                openAddLoveSpotFabs()
-            } else {
-                closeAddLoveSpotFabs()
-            }
-        }
-        okFab.setOnClickListener {
-            startActivity(Intent(this, AddLoveSpotActivity::class.java))
-        }
-        cancelFab.setOnClickListener {
-            closeAddLoveSpotFabs()
-        }
-
         // Starter page is map for performance reasons
         viewPager2.post {
             viewPager2.setCurrentItem(MAP_PAGE, true)
         }
-
-        viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                if (position != MAP_PAGE) {
-                    closeAddLoveSpotFabs()
-                }
-            }
-        })
     }
 
     private fun initViews() {
@@ -79,74 +46,6 @@ class MainActivity : AppCompatActivity(), MapMarkerEventListener {
         viewPager2 = binding.viewPager
         viewPager2.adapter = ViewPagerAdapter(this)
         tabLayout = binding.tabLayout
-        addLoveSpotFab = binding.addLoveSpotFab
-        okFab = binding.okFab
-        cancelFab = binding.cancelFab
-    }
-
-    override fun onResume() {
-        super.onResume()
-        appContext.mapMarkerEventListener = this
-        if (appContext.shouldCloseFabs) {
-            appContext.shouldCloseFabs = false
-            closeAddLoveSpotFabs()
-        }
-    }
-
-    override fun onMarkerClicked() {
-        closeAddLoveSpotFabs()
-    }
-
-    override fun onMapClicked() {
-        closeAddLoveSpotFabs()
-    }
-
-    private fun openAddLoveSpotFabs() {
-        if (!appContext.areAddLoveSpotFabsOpen) {
-            appContext.mainActivityEventListener.onOpenAddLoveSpotFabs()
-            viewPager2.post {
-                viewPager2.setCurrentItem(MAP_PAGE, true)
-            }
-            okFab.visibility = View.VISIBLE
-            cancelFab.visibility = View.VISIBLE
-
-            okFab.animate().rotationBy(720f)
-                .translationX(-resources.getDimension(R.dimen.standard_150))
-            cancelFab.animate().rotationBy(720f)
-                .translationX(-resources.getDimension(R.dimen.standard_225))
-
-            appContext.selectedMarker?.hideInfoWindow()
-            appContext.selectedMarker = null
-
-            val crosshair: ImageView? = findViewById(R.id.centerCrosshair)
-            if (crosshair != null) {
-                crosshair.visibility = View.VISIBLE
-                val addLovespotText: TextView = findViewById(R.id.mapAddLovespotText)
-                addLovespotText.visibility = View.VISIBLE
-            }
-
-            appContext.areAddLoveSpotFabsOpen = true
-        }
-    }
-
-    private fun closeAddLoveSpotFabs() {
-        if (appContext.areAddLoveSpotFabsOpen) {
-            okFab.animate().rotationBy(720f).translationX(0f).withEndAction {
-                okFab.visibility = View.GONE
-            }
-            cancelFab.animate().rotationBy(720f).translationX(0f).withEndAction {
-                cancelFab.visibility = View.GONE
-            }
-
-            val crosshair: ImageView? = findViewById(R.id.centerCrosshair)
-            if (crosshair != null) {
-                crosshair.visibility = View.GONE
-                val addLovespotText: TextView = findViewById(R.id.mapAddLovespotText)
-                addLovespotText.visibility = View.GONE
-            }
-
-            appContext.areAddLoveSpotFabsOpen = false
-        }
     }
 
     private fun initIcons(): Array<Drawable> {
@@ -172,9 +71,9 @@ class MainActivity : AppCompatActivity(), MapMarkerEventListener {
 
     override fun onBackPressed() {
         if (appContext.areAddLoveSpotFabsOpen) {
-            closeAddLoveSpotFabs()
+            appContext.mapMarkerEventListener.onMapClicked()
         } else if (appContext.areMarkerFabsOpen) {
-            appContext.mainActivityEventListener.onOpenAddLoveSpotFabs()
+            appContext.mapMarkerEventListener.onMapClicked()
             appContext.selectedMarker?.hideInfoWindow()
             appContext.selectedMarker = null
         } else {

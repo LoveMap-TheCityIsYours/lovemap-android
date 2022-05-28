@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.ProgressBar
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import kotlinx.coroutines.MainScope
@@ -16,24 +18,32 @@ import kotlinx.coroutines.launch
 class LoveSpotReviewListFragment : Fragment() {
     private val reviewService = AppContext.INSTANCE.loveSpotReviewService
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private lateinit var progressBar: ProgressBar
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: LoveSpotReviewItemRecyclerViewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val recyclerView =
-            inflater.inflate(R.layout.fragment_review_list, container, false) as RecyclerView
-
+        val linearLayout =
+            inflater.inflate(R.layout.fragment_review_list, container, false) as LinearLayout
+        recyclerView = linearLayout.findViewById(R.id.reviewList) as RecyclerView
+        progressBar = linearLayout.findViewById(R.id.reviewListProgressBar)
+        adapter = LoveSpotReviewItemRecyclerViewAdapter(ArrayList())
         MainScope().launch {
-            with(recyclerView) {
-                layoutManager = LinearLayoutManager(context)
-                adapter = LoveSpotReviewItemRecyclerViewAdapter(reviewService.getReviewHoldersBySpot())
-            }
+            recyclerView.layoutManager = LinearLayoutManager(context)
+            recyclerView.adapter = adapter
         }
+        return linearLayout
+    }
 
-        return recyclerView
+    override fun onResume() {
+        super.onResume()
+        MainScope().launch {
+            adapter.updateData(reviewService.getReviewHoldersBySpot())
+            adapter.notifyDataSetChanged()
+            progressBar.visibility = View.GONE
+        }
     }
 }

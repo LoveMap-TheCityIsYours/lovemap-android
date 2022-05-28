@@ -33,8 +33,10 @@ import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.service.LoveService
 import com.lovemap.lovemapandroid.service.LoveSpotService
-import com.lovemap.lovemapandroid.ui.events.MainActivityEventListener
+import com.lovemap.lovemapandroid.ui.events.MapMarkerEventListener
+import com.lovemap.lovemapandroid.ui.main.MAP_PAGE
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
+import com.lovemap.lovemapandroid.ui.main.lovespot.AddLoveSpotActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.report.ReportLoveSpotActivity
 import com.lovemap.lovemapandroid.ui.main.pages.LoveMapPageFragment.MapMode.LOVE_MAKINGS
@@ -46,7 +48,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @SuppressLint("MissingPermission")
-class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventListener {
+class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListener {
+
     private val appContext = AppContext.INSTANCE
     private val loveSpotService: LoveSpotService = appContext.loveSpotService
     private val loveService: LoveService = appContext.loveService
@@ -72,6 +75,10 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
 
     private lateinit var changeMapModeFab: ExtendedFloatingActionButton
 
+    private lateinit var addLoveSpotFab: ExtendedFloatingActionButton
+    private lateinit var addSpotOkFab: FloatingActionButton
+    private lateinit var addSpotCancelFab: FloatingActionButton
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         askForLocationPermission()
@@ -93,6 +100,9 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
         reportSpotText = view.findViewById(R.id.spotReportText)
         reportLoveSpotFab = view.findViewById(R.id.reportLoveSpotFab)
         changeMapModeFab = view.findViewById(R.id.changeMapModeFab)
+        addLoveSpotFab = view.findViewById(R.id.addLoveSpotFab)
+        addSpotOkFab = view.findViewById(R.id.addSpotOkFab)
+        addSpotCancelFab = view.findViewById(R.id.addSpotCancelFab)
         setButtons()
         return view
     }
@@ -118,17 +128,31 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
             }
             mapFragment.getMapAsync(this)
         }
+        addLoveSpotFab.setOnClickListener {
+            if (!appContext.areAddLoveSpotFabsOpen) {
+                openAddLoveSpotFabs()
+            } else {
+                closeAddLoveSpotFabs()
+            }
+        }
+        addSpotOkFab.setOnClickListener {
+            startActivity(Intent(requireContext(), AddLoveSpotActivity::class.java))
+        }
+        addSpotCancelFab.setOnClickListener {
+            closeAddLoveSpotFabs()
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        appContext.mainActivityEventListener = this
         mapFragment.getMapAsync(this)
         viewPager2 = getViewPager2(requireView())
+        appContext.mapMarkerEventListener = this
         val crosshair: ImageView = viewPager2.findViewById(R.id.centerCrosshair)
         val addLovespotText: TextView = viewPager2.findViewById(R.id.mapAddLovespotText)
         if (appContext.shouldCloseFabs) {
-            closeMarkerFabMenu()
+            appContext.shouldCloseFabs = false
+            onMapClicked()
         }
         if (appContext.areAddLoveSpotFabsOpen) {
             crosshair.visibility = View.VISIBLE
@@ -187,16 +211,15 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
 
     private fun putMarkersOnMap(googleMap: GoogleMap) {
         googleMap.setOnMarkerClickListener { marker ->
-            appContext.mapMarkerEventListener.onMarkerClicked()
+            onMarkerClicked()
             appContext.selectedMarker = marker
             openMarkerFabMenu()
             false
         }
         googleMap.setOnMapClickListener {
             viewPager2.isUserInputEnabled = false
-            appContext.mapMarkerEventListener.onMapClicked()
+            onMapClicked()
             appContext.selectedMarker = null
-            closeMarkerFabMenu()
         }
         googleMap.setOnCameraIdleListener {
             if (cameraMoved) {
@@ -445,8 +468,63 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MainActivityEventLis
         )
     }
 
-    override fun onOpenAddLoveSpotFabs() {
+    override fun onMarkerClicked() {
+        closeAddLoveSpotFabs()
+    }
+
+    override fun onMapClicked() {
+        closeAddLoveSpotFabs()
         closeMarkerFabMenu()
+    }
+
+    private fun openAddLoveSpotFabs() {
+        if (!appContext.areAddLoveSpotFabsOpen) {
+            closeMarkerFabMenu()
+            viewPager2.post {
+                viewPager2.setCurrentItem(MAP_PAGE, true)
+            }
+            addSpotOkFab.visibility = View.VISIBLE
+            addSpotCancelFab.visibility = View.VISIBLE
+
+            addSpotOkFab.animate().rotationBy(720f)
+                .translationX(-resources.getDimension(R.dimen.standard_150))
+            addSpotCancelFab.animate().rotationBy(720f)
+                .translationX(-resources.getDimension(R.dimen.standard_225))
+
+            appContext.selectedMarker?.hideInfoWindow()
+            appContext.selectedMarker = null
+
+            val crosshair: ImageView? = requireActivity().findViewById(R.id.centerCrosshair)
+            if (crosshair != null) {
+                crosshair.visibility = View.VISIBLE
+                val addLovespotText: TextView =
+                    requireActivity().findViewById(R.id.mapAddLovespotText)
+                addLovespotText.visibility = View.VISIBLE
+            }
+
+            appContext.areAddLoveSpotFabsOpen = true
+        }
+    }
+
+    private fun closeAddLoveSpotFabs() {
+        if (appContext.areAddLoveSpotFabsOpen) {
+            addSpotOkFab.animate().rotationBy(720f).translationX(0f).withEndAction {
+                addSpotOkFab.visibility = View.GONE
+            }
+            addSpotCancelFab.animate().rotationBy(720f).translationX(0f).withEndAction {
+                addSpotCancelFab.visibility = View.GONE
+            }
+
+            val crosshair: ImageView? = requireActivity().findViewById(R.id.centerCrosshair)
+            if (crosshair != null) {
+                crosshair.visibility = View.GONE
+                val addLovespotText: TextView =
+                    requireActivity().findViewById(R.id.mapAddLovespotText)
+                addLovespotText.visibility = View.GONE
+            }
+
+            appContext.areAddLoveSpotFabsOpen = false
+        }
     }
 
     enum class MapMode {

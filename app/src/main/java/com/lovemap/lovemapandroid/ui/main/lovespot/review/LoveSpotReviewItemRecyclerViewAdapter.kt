@@ -6,12 +6,18 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.lovemap.lovemapandroid.databinding.FragmentReviewItemBinding
+import com.lovemap.lovemapandroid.ui.data.LoveHolder
 import com.lovemap.lovemapandroid.ui.data.ReviewHolder
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotDetailsUtils
 
 class LoveSpotReviewItemRecyclerViewAdapter(
-    private val values: List<ReviewHolder>
+    private val values: MutableList<ReviewHolder>
 ) : RecyclerView.Adapter<LoveSpotReviewItemRecyclerViewAdapter.ViewHolder>() {
+
+    fun updateData(data: List<ReviewHolder>) {
+        values.clear()
+        values.addAll(data)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(

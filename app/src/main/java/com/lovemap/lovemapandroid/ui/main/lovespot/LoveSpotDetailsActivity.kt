@@ -118,7 +118,7 @@ LoveSpotDetailsActivity : AppCompatActivity() {
 
         detailsReviewListFragment =
             supportFragmentManager.findFragmentById(R.id.detailsReviewListFragment) as LoveSpotReviewListFragment
-        (detailsReviewListFragment.view as RecyclerView).isNestedScrollingEnabled = false
+        (detailsReviewListFragment.view?.findViewById(R.id.reviewList) as RecyclerView).isNestedScrollingEnabled = false
     }
 
     private fun setDetails() {

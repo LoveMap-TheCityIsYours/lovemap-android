@@ -113,9 +113,11 @@ class LoveSpotReviewService(
         }
     }
 
-    suspend fun getReviewHoldersBySpot(): List<ReviewHolder> {
+    suspend fun getReviewHoldersBySpot(): MutableList<ReviewHolder> {
         return withContext(Dispatchers.IO) {
-            return@withContext getReviewsBySpot().map { ReviewHolder.of(it) }
+            return@withContext getReviewsBySpot()
+                .map { ReviewHolder.of(it) }
+                .toMutableList()
         }
     }
 }

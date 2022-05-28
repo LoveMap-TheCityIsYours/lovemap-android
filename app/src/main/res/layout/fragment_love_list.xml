@@ -11,7 +11,7 @@
         android:id="@+id/loveListProgressBar"
         style="?android:progressBarStyleLarge"
         android:indeterminateTint="@color/myColorPrimary"
-        android:layout_marginTop="@dimen/standard_225"
+        android:layout_marginTop="@dimen/standard_50"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
