@@ -475,6 +475,8 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
 
             appContext.selectedMarker?.hideInfoWindow()
             appContext.selectedMarker = null
+            appContext.selectedLoveSpot = null
+            appContext.selectedLoveSpotId = null
 
             val crosshair: ImageView? = requireActivity().findViewById(R.id.centerCrosshair)
             if (crosshair != null) {

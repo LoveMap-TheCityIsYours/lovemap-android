@@ -21,6 +21,7 @@ import com.lovemap.lovemapandroid.ui.main.lovespot.report.ReportLoveSpotActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.LoveSpotReviewListFragment
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewListActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewLoveSpotFragment
+import com.lovemap.lovemapandroid.ui.utils.IS_CLICKABLE
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotDetailsUtils
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -74,7 +75,9 @@ LoveSpotDetailsActivity : AppCompatActivity() {
                 appContext.toaster.showToast(R.string.not_yet_implemented)
             }
             detailsSeeAllLovesButton.setOnClickListener {
-                startActivity(Intent(applicationContext, LoveListActivity::class.java))
+                val intent = Intent(applicationContext, LoveListActivity::class.java)
+                intent.putExtra(IS_CLICKABLE, false)
+                startActivity(intent)
             }
             detailsSeeAllReviewsButton.setOnClickListener {
                 startActivity(Intent(applicationContext, ReviewListActivity::class.java))

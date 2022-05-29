@@ -23,6 +23,7 @@ class LoveListFragment : Fragment() {
     private var isLoveSpotBased: Boolean = false
     private var isPartnerBased: Boolean = false
     private var isClickable: Boolean = true
+    var isClickableOverride: Boolean? = null
 
     private lateinit var progressBar: ProgressBar
     private lateinit var recycleView: RecyclerView
@@ -45,11 +46,15 @@ class LoveListFragment : Fragment() {
             inflater.inflate(R.layout.fragment_love_list, container, false) as LinearLayout
         recycleView = linearLayout.findViewById(R.id.loveList)
         progressBar = linearLayout.findViewById(R.id.loveListProgressBar)
-        recycleView.isClickable = isClickable
         recycleView.layoutManager = LinearLayoutManager(context)
-        adapter = LoveRecyclerViewAdapter(ArrayList(), isClickable)
-        recycleView.adapter = adapter
         return linearLayout
+    }
+
+    override fun onStart() {
+        super.onStart()
+        recycleView.isClickable = isClickable()
+        adapter = LoveRecyclerViewAdapter(ArrayList(), isClickable())
+        recycleView.adapter = adapter
     }
 
     override fun onResume() {
@@ -69,6 +74,13 @@ class LoveListFragment : Fragment() {
             adapter.notifyDataSetChanged()
             progressBar.visibility = View.GONE
         }
+    }
 
+    private fun isClickable(): Boolean {
+        return if (isClickableOverride == null) {
+            isClickable
+        } else {
+            isClickableOverride!!
+        }
     }
 }

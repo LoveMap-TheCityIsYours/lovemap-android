@@ -8,6 +8,8 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.*
 
+val IS_CLICKABLE = "isClickable"
+
 val timeZone = TimeZone.getDefault()
 val dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
 

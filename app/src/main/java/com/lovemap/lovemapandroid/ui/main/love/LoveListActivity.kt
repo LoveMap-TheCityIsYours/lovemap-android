@@ -1,12 +1,11 @@
 package com.lovemap.lovemapandroid.ui.main.love
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.databinding.ActivityLoveListBinding
-import com.lovemap.lovemapandroid.databinding.ActivityReviewListBinding
-import com.lovemap.lovemapandroid.ui.main.lovespot.review.LoveSpotReviewListFragment
+import com.lovemap.lovemapandroid.ui.utils.IS_CLICKABLE
 
 class LoveListActivity : AppCompatActivity() {
 
@@ -21,6 +20,7 @@ class LoveListActivity : AppCompatActivity() {
         loveListFragment =
             supportFragmentManager.findFragmentById(R.id.loveListFragment) as LoveListFragment
 
+        loveListFragment.isClickableOverride = intent.getBooleanExtra(IS_CLICKABLE, true)
         binding.loveSpotTitle.text = AppContext.INSTANCE.selectedLoveSpot?.name
     }
 }
