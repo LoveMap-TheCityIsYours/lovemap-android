@@ -39,7 +39,7 @@ class ReviewLoveSpotFragment : Fragment() {
         setContent()
     }
 
-    fun setContent() {
+    private fun setContent() {
         MainScope().launch {
             appContext.selectedLoveSpotId?.let {
                 val review = loveSpotReviewService.findByLoverAndSpotId(it)
