@@ -5,6 +5,9 @@ plugins {
     id 'kotlin-kapt'
 }
 
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+
 android {
     compileSdk 32
 
@@ -30,7 +33,13 @@ android {
     }
 
     buildTypes {
+        debug {
+            resValue("string", "lovemap_client_id", localProperties['LOVEMAP_CLIENT_ID'])
+            resValue("string", "lovemap_client_secret", localProperties['LOVEMAP_CLIENT_SECRET'])
+        }
         release {
+            resValue("string", "lovemap_client_id", localProperties['LOVEMAP_CLIENT_ID'])
+            resValue("string", "lovemap_client_secret", localProperties['LOVEMAP_CLIENT_SECRET'])
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

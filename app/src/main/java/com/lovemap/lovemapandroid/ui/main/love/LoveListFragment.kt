@@ -46,15 +46,16 @@ class LoveListFragment : Fragment() {
             inflater.inflate(R.layout.fragment_love_list, container, false) as LinearLayout
         recycleView = linearLayout.findViewById(R.id.loveList)
         progressBar = linearLayout.findViewById(R.id.loveListProgressBar)
+        recycleView.isClickable = isClickable
+        adapter = LoveRecyclerViewAdapter(ArrayList(), isClickable)
+        recycleView.adapter = adapter
         recycleView.layoutManager = LinearLayoutManager(context)
         return linearLayout
     }
 
     override fun onStart() {
         super.onStart()
-        recycleView.isClickable = isClickable()
-        adapter = LoveRecyclerViewAdapter(ArrayList(), isClickable())
-        recycleView.adapter = adapter
+        adapter.isClickable = isClickable()
     }
 
     override fun onResume() {

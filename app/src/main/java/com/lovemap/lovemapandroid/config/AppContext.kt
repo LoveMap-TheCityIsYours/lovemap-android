@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.room.Room
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
+import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.admin.AdminApi
 import com.lovemap.lovemapandroid.api.authentication.AuthenticationApi
 import com.lovemap.lovemapandroid.api.love.LoveApi
@@ -214,14 +215,15 @@ class AppContext : Application() {
                         val jwt = runBlocking { metadataStore.getUser().jwt }
                         requestBuilder
                             .addHeader(AUTHORIZATION_HEADER, "Bearer $jwt")
+                            .addHeader("x-client-id", getString(R.string.lovemap_client_id))
+                            .addHeader("x-client-secret", getString(R.string.lovemap_client_secret))
                             .build()
                     } else {
                         requestBuilder.build()
                     }
                 }
                 chain.proceed(request)
-            }
-                .build()
+            }.build()
         } else {
             clientBuilder.build()
         }
@@ -229,8 +231,16 @@ class AppContext : Application() {
     }
 
     private fun httpClient(): OkHttpClient {
-        return getTimeoutClientBuilder()
-            .build()
+        return getTimeoutClientBuilder().addInterceptor { chain ->
+            val request = runBlocking {
+                chain.request()
+                    .newBuilder()
+                    .addHeader("x-client-id", getString(R.string.lovemap_client_id))
+                    .addHeader("x-client-secret", getString(R.string.lovemap_client_secret))
+                    .build()
+            }
+            chain.proceed(request)
+        }.build()
     }
 
     private fun getTimeoutClientBuilder() = OkHttpClient.Builder()

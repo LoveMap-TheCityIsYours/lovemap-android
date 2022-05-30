@@ -14,7 +14,7 @@ import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
 
 class LoveRecyclerViewAdapter(
     private val values: MutableList<LoveHolder>,
-    private val isClickable: Boolean
+    var isClickable: Boolean
 ) : RecyclerView.Adapter<LoveRecyclerViewAdapter.ViewHolder>() {
 
     private val appContext = AppContext.INSTANCE
