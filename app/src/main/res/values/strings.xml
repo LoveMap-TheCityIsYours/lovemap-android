@@ -168,5 +168,6 @@
     <string name="love_spot_not_available">Love Spot not available</string>
     <string name="loveSpotDeleted">Love Spot deleted</string>
     <string name="show_on_map">Show on map</string>
+    <string name="spotTooCloseToAnother"><![CDATA[LoveSpot too close to another. Min distance is > 20 meters.]]></string>
 
 </resources>

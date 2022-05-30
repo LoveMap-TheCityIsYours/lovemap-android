@@ -8,16 +8,21 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.love.CreateLoveRequest
+import com.lovemap.lovemapandroid.api.lovespot.Availability
 import com.lovemap.lovemapandroid.api.lovespot.CreateLoveSpotRequest
-import com.lovemap.lovemapandroid.api.lovespot.LoveSpotAvailabilityApiStatus.ALL_DAY
-import com.lovemap.lovemapandroid.api.lovespot.LoveSpotAvailabilityApiStatus.NIGHT_ONLY
+import com.lovemap.lovemapandroid.api.lovespot.Availability.ALL_DAY
+import com.lovemap.lovemapandroid.api.lovespot.Availability.NIGHT_ONLY
 import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.config.AppContext
+import com.lovemap.lovemapandroid.data.love.Love
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.databinding.ActivityAddLoveSpotBinding
+import com.lovemap.lovemapandroid.service.LoveService
+import com.lovemap.lovemapandroid.service.LoveSpotReviewService
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveFragment
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewLoveSpotFragment
 import com.lovemap.lovemapandroid.ui.utils.toApiString
+import com.lovemap.lovemapandroid.ui.utils.toFormattedString
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
@@ -39,6 +44,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
     private lateinit var recordLoveFragment: RecordLoveFragment
     private lateinit var addSpotSeparator1: TextView
     private lateinit var addSpotSeparator2: TextView
+    private lateinit var addSpotAvailability: Spinner
 
     private var availability = ALL_DAY
     private var name = ""
@@ -67,6 +73,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
         madeLoveCheckBox = binding.madeLoveCheckBox
         addSpotSeparator1 = binding.addSpotSeparator1
         addSpotSeparator2 = binding.addSpotSeparator2
+        addSpotAvailability = binding.addSpotAvailability
         reviewLoveSpotFragment =
             supportFragmentManager.findFragmentById(R.id.addSpotReviewLoveSpotFragment) as ReviewLoveSpotFragment
         recordLoveFragment =
@@ -79,6 +86,21 @@ class AddLoveSpotActivity : AppCompatActivity() {
             .hide(recordLoveFragment)
             .hide(reviewLoveSpotFragment)
             .commit()
+
+        restoreSavedLoveSpot()
+    }
+
+    private fun restoreSavedLoveSpot() {
+        loveSpotService.savedCreationState?.let {
+            addSpotName.setText(it.name)
+            addSpotDescription.setText(it.description)
+            addSpotAvailability.setSelection(availabilityToPosition(it.availability), true)
+        }
+        loveSpotService.savedCreationState = null
+        loveService.savedCreationState?.let {
+            madeLoveCheckBox.isChecked = true
+            showFragments()
+        }
     }
 
     private fun setMadeLoveCheckBox() {
@@ -106,9 +128,29 @@ class AddLoveSpotActivity : AppCompatActivity() {
                 android.R.anim.slide_out_right
             )
             .show(recordLoveFragment)
+            .runOnCommit { restoreSavedLoveAndReview() }
             .commit()
         addSpotSeparator1.visibility = View.VISIBLE
         addSpotSeparator2.visibility = View.VISIBLE
+    }
+
+    private fun restoreSavedLoveAndReview() {
+        loveService.savedCreationState?.let {
+            recordLoveFragment.addPrivateNote.text = it.note
+            recordLoveFragment.recordLoveSelectPartnerDropdown.setSelection(
+                it.partnerSelection,
+                true
+            )
+            recordLoveFragment.recordLoveHappenedAt.text = it.happenedAt.toFormattedString()
+        }
+        loveService.savedCreationState = null
+
+        loveSpotReviewService.savedCreationState?.let {
+            reviewLoveSpotFragment.reviewText.setText(it.reviewText)
+            reviewLoveSpotFragment.spotReviewRating.rating = it.rating
+            reviewLoveSpotFragment.spotRiskDropdown.setSelection(it.riskSelection)
+        }
+        loveSpotReviewService.savedCreationState = null
     }
 
     private fun hideFragments() {
@@ -147,55 +189,88 @@ class AddLoveSpotActivity : AppCompatActivity() {
         addSpotSubmit.setOnClickListener {
             if (addSpotSubmit.isEnabled) {
                 MainScope().launch {
-                    val loveSpot = loveSpotService.create(
-                        CreateLoveSpotRequest(
-                            name,
-                            appContext.mapCameraTarget.longitude,
-                            appContext.mapCameraTarget.latitude,
-                            description,
-                            null,
-                            availability
-                        ), this@AddLoveSpotActivity
-                    )
+                    backupLoveAndReview()
+                    val loveSpot = createLoveSpot()
                     if (loveSpot != null) {
                         if (madeLoveCheckBox.isChecked) {
-                            val reviewText =
-                                findViewById<EditText>(R.id.addReviewText).text.toString()
-                            val riskLevel =
-                                findViewById<Spinner>(R.id.spotRiskDropdown).selectedItemPosition + 1
-                            val loveRequest = CreateLoveRequest(
-                                loveSpot.name,
-                                loveSpot.id,
-                                appContext.userId,
-                                recordLoveFragment.selectedTime.toApiString(),
-                                recordLoveFragment.selectedPartner(),
-                                recordLoveFragment.addPrivateNote.text.toString()
-                            )
-                            returnHome(loveSpot)
-                            val love = loveService.create(
-                                loveRequest
-                            )
-                            love?.let {
-                                val reviewedSpot = loveSpotReviewService.submitReview(
-                                    LoveSpotReviewRequest(
-                                        love.id,
-                                        appContext.userId,
-                                        loveSpot.id,
-                                        reviewText,
-                                        rating,
-                                        riskLevel
-                                    )
-                                )
-                                reviewedSpot?.let {
-                                    loveSpotService.update(reviewedSpot)
-                                }
-                            }
+                            val love = createLove(loveSpot)
+                            submitReview(love, loveSpot)
                         } else {
                             returnHome(loveSpot)
                         }
                     }
                 }
             }
+        }
+    }
+
+    private suspend fun createLoveSpot(): LoveSpot? {
+        val loveSpot = loveSpotService.create(
+            CreateLoveSpotRequest(
+                name,
+                appContext.mapCameraTarget.longitude,
+                appContext.mapCameraTarget.latitude,
+                description,
+                null,
+                availability
+            ), this@AddLoveSpotActivity
+        )
+        return loveSpot
+    }
+
+    private suspend fun createLove(loveSpot: LoveSpot): Love? {
+        val loveRequest = CreateLoveRequest(
+            name,
+            loveSpot.id,
+            appContext.userId,
+            recordLoveFragment.selectedTime.toApiString(),
+            recordLoveFragment.selectedPartner(),
+            recordLoveFragment.addPrivateNote.text.toString()
+        )
+        returnHome(loveSpot)
+        val love = loveService.create(
+            loveRequest
+        )
+        return love
+    }
+
+    private suspend fun submitReview(
+        love: Love?,
+        loveSpot: LoveSpot
+    ) {
+        love?.let {
+            val reviewText =
+                findViewById<EditText>(R.id.addReviewText).text.toString()
+            val riskLevel =
+                findViewById<Spinner>(R.id.spotRiskDropdown).selectedItemPosition + 1
+            val reviewedSpot = loveSpotReviewService.submitReview(
+                LoveSpotReviewRequest(
+                    love.id,
+                    appContext.userId,
+                    loveSpot.id,
+                    reviewText,
+                    rating,
+                    riskLevel
+                )
+            )
+            reviewedSpot?.let {
+                loveSpotService.update(reviewedSpot)
+            }
+        }
+    }
+
+    private fun backupLoveAndReview() {
+        if (madeLoveCheckBox.isChecked) {
+            loveService.savedCreationState = LoveService.SavedCreationState(
+                name,
+                recordLoveFragment.recordLoveSelectPartnerDropdown.selectedItemPosition,
+                recordLoveFragment.selectedTime
+            )
+            loveSpotReviewService.savedCreationState = LoveSpotReviewService.SavedCreationState(
+                reviewLoveSpotFragment.reviewText.text.toString(),
+                reviewLoveSpotFragment.spotReviewRating.rating,
+                reviewLoveSpotFragment.spotRiskDropdown.selectedItemPosition
+            )
         }
     }
 
@@ -249,15 +324,25 @@ class AddLoveSpotActivity : AppCompatActivity() {
                     p2: Int,
                     p3: Long
                 ) {
-                    availability = if (adapterView?.selectedItemPosition == 0) {
-                        ALL_DAY
-                    } else {
-                        NIGHT_ONLY
-                    }
+                    availability = positionToAvailability(adapterView?.selectedItemPosition ?: 0)
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
+    }
+
+    private fun positionToAvailability(position: Int) =
+        if (position == 0) {
+            ALL_DAY
+        } else {
+            NIGHT_ONLY
+        }
+
+    private fun availabilityToPosition(availability: Availability): Int {
+        return when (availability) {
+            ALL_DAY -> 0
+            NIGHT_ONLY -> 1
+        }
     }
 
     private fun isSubmitReady(): Boolean {

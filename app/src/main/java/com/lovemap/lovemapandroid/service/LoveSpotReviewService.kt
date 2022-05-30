@@ -19,6 +19,16 @@ class LoveSpotReviewService(
     private val metadataStore: MetadataStore,
     private val toaster: Toaster,
 ) {
+
+    @Volatile
+    var savedCreationState: SavedCreationState? = null
+
+    class SavedCreationState(
+        val reviewText: String,
+        val rating: Float,
+        val riskSelection: Int
+    )
+
     suspend fun submitReview(request: LoveSpotReviewRequest): LoveSpot? {
         return withContext(Dispatchers.IO) {
             val call = loveSpotReviewApi.submitReview(request)
@@ -29,6 +39,7 @@ class LoveSpotReviewService(
                 return@withContext null
             }
             if (response.isSuccessful) {
+                savedCreationState = null
                 val loveSpot = response.body()
                 try {
                     val reviewsCall = loveSpotReviewApi.getReviewsByLover(request.reviewerId)

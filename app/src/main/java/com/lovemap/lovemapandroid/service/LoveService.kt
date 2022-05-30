@@ -11,8 +11,7 @@ import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.ui.data.LoveHolder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.util.*
-import kotlin.collections.ArrayList
+import java.time.Instant
 
 class LoveService(
     private val loveApi: LoveApi,
@@ -27,6 +26,15 @@ class LoveService(
     @Volatile
     private var lovesQueried = false
 
+    @Volatile
+    var savedCreationState: SavedCreationState? = null
+
+    class SavedCreationState(
+        val note: String,
+        val partnerSelection: Int,
+        val happenedAt: Instant
+    )
+
     suspend fun list(): List<Love> {
         return withContext(Dispatchers.IO) {
             val localLoves = loveDao.getAll()
@@ -37,7 +45,7 @@ class LoveService(
                     call.execute()
                 } catch (e: Exception) {
                     lovesQueried = false
-                    toaster.showNoServerToast()
+//                    toaster.showNoServerToast()
                     return@withContext localLoves
                 }
                 if (response.isSuccessful) {
@@ -50,7 +58,7 @@ class LoveService(
                     serverLoves
                 } else {
                     lovesQueried = false
-                    toaster.showNoServerToast()
+//                    toaster.showNoServerToast()
                     localLoves
                 }
             } else {
@@ -69,6 +77,7 @@ class LoveService(
                 return@withContext null
             }
             if (response.isSuccessful) {
+                savedCreationState = null
                 val love = response.body()!!
                 loveDao.insert(love)
                 love

@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.lovemap.lovemapandroid.R
+import com.lovemap.lovemapandroid.api.ErrorMessage
+import com.lovemap.lovemapandroid.api.getErrorMessages
 import com.lovemap.lovemapandroid.api.lovespot.CreateLoveSpotRequest
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotApi
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotRisks
@@ -26,6 +28,9 @@ class LoveSpotService(
 ) {
     private val fullyQueriedAreas = ArrayList<LatLngBounds>()
     private var risksQueried = false
+
+    @Volatile
+    var savedCreationState: CreateLoveSpotRequest? = null
 
     suspend fun findLocally(id: Long): LoveSpot? {
         return withContext(Dispatchers.IO) {
@@ -70,6 +75,7 @@ class LoveSpotService(
 
     suspend fun create(request: CreateLoveSpotRequest, activity: Activity): LoveSpot? {
         return withContext(Dispatchers.IO) {
+            savedCreationState = request
             val call = loveSpotApi.create(request)
             // TODO: show or not???
 //            val loadingBarShower = LoadingBarShower(activity).show()
@@ -82,6 +88,7 @@ class LoveSpotService(
                 return@withContext null
             }
             if (response.isSuccessful) {
+                savedCreationState = null
                 loadingBarShower.onResponse()
                 val loveSpot = response.body()!!
                 loveSpotDao.insert(loveSpot)
@@ -89,6 +96,8 @@ class LoveSpotService(
                 loveSpot
             } else {
                 loadingBarShower.onResponse()
+                val errorMessage: ErrorMessage = response.getErrorMessages()[0]
+                toaster.showToast(errorMessage.translatedString(AppContext.INSTANCE.applicationContext))
                 toaster.showNoServerToast()
                 null
             }
@@ -113,7 +122,7 @@ class LoveSpotService(
             val response = try {
                 call.execute()
             } catch (e: Exception) {
-                toaster.showNoServerToast()
+//                toaster.showNoServerToast()
                 return@withContext localSpots
             }
             if (response.isSuccessful) {
@@ -129,7 +138,7 @@ class LoveSpotService(
                 // TODO: optimize a lot
                 serverSpots
             } else {
-                toaster.showNoServerToast()
+//                toaster.showNoServerToast()
                 localSpots
             }
         }
@@ -154,11 +163,11 @@ class LoveSpotService(
                         metadataStore.saveRisks(ranks)
                     } else {
                         response
-                        toaster.showNoServerToast()
+//                        toaster.showNoServerToast()
                         localRisks
                     }
                 } catch (e: Exception) {
-                    toaster.showNoServerToast()
+//                    toaster.showNoServerToast()
                     localRisks
                 }
             }

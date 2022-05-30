@@ -2,7 +2,7 @@ package com.lovemap.lovemapandroid.api.lovespot
 
 import java.time.LocalTime
 
-enum class LoveSpotAvailabilityApiStatus {
+enum class Availability {
     ALL_DAY, NIGHT_ONLY
 }
 
@@ -12,7 +12,7 @@ data class CreateLoveSpotRequest(
     val latitude: Double,
     val description: String,
     var customAvailability: Pair<LocalTime, LocalTime>?,
-    var availability: LoveSpotAvailabilityApiStatus
+    var availability: Availability
 )
 
 data class LoveSpotSearchRequest(

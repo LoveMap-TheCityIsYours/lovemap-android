@@ -56,6 +56,7 @@ private val errorCodeMessageMap = HashMap<ErrorCode, Int>().apply {
     put(InvalidCredentialsPassword, R.string.invalidPassword)
     put(BadRequest, R.string.somethingWentWrong)
     put(UNDEFINED, R.string.somethingWentWrong)
+    put(SpotTooCloseToAnother, R.string.spotTooCloseToAnother)
 }
 
 enum class ErrorCode {
@@ -79,6 +80,7 @@ enum class ErrorCode {
     PartnershipRerequestTimeNotPassed,
     PartnershipAlreadyRequested,
     InvalidOperationOnYourself,
+    SpotTooCloseToAnother,
 
     UNDEFINED
 }

@@ -5,10 +5,9 @@ import android.view.View
 import android.widget.RatingBar
 import android.widget.TextView
 import com.lovemap.lovemapandroid.R
-import com.lovemap.lovemapandroid.api.lovespot.LoveSpotAvailabilityApiStatus
+import com.lovemap.lovemapandroid.api.lovespot.Availability
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
-import com.lovemap.lovemapandroid.service.LoveSpotService
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
@@ -22,12 +21,12 @@ object LoveSpotDetailsUtils {
     }
 
     fun setAvailability(
-        availability: LoveSpotAvailabilityApiStatus,
+        availability: Availability,
         context: Context,
         availabilityView: TextView
     ) {
         availabilityView.text =
-            if (availability == LoveSpotAvailabilityApiStatus.ALL_DAY) {
+            if (availability == Availability.ALL_DAY) {
                 context.getString(R.string.available_all_day)
             } else {
                 context.getString(R.string.available_night_only)

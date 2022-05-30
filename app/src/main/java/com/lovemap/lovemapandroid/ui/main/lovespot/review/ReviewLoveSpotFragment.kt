@@ -19,9 +19,9 @@ class ReviewLoveSpotFragment : Fragment() {
     private val appContext = AppContext.INSTANCE
     private val loveSpotReviewService = appContext.loveSpotReviewService
 
-    private lateinit var spotRiskDropdown: Spinner
-    private lateinit var spotReviewRating: RatingBar
-    private lateinit var reviewText: EditText
+    lateinit var spotRiskDropdown: Spinner
+    lateinit var spotReviewRating: RatingBar
+    lateinit var reviewText: EditText
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
