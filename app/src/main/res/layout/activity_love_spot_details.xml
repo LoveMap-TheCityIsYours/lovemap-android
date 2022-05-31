@@ -134,8 +134,16 @@
             style="?android:attr/weekSeparatorLineColor"
             android:layout_width="match_parent"
             android:layout_height="5dp"
-            android:layout_marginTop="@dimen/standard_50"
-            android:layout_marginBottom="@dimen/standard_75"
+            android:layout_marginTop="@dimen/standard_8"
+            android:background="@color/separatorLine"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            style="?android:attr/weekSeparatorLineColor"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_marginTop="@dimen/standard_100"
+            android:layout_marginBottom="@dimen/standard_8"
             android:background="@color/separatorLine"
             android:gravity="center_horizontal" />
 
@@ -259,7 +267,15 @@
             android:layout_width="match_parent"
             android:layout_height="5dp"
             android:layout_marginTop="@dimen/standard_8"
-            android:layout_marginBottom="@dimen/standard_75"
+            android:layout_marginBottom="@dimen/standard_100"
+            android:background="@color/separatorLine"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            style="?android:attr/weekSeparatorLineColor"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_marginBottom="@dimen/standard_8"
             android:background="@color/separatorLine"
             android:gravity="center_horizontal" />
 
@@ -289,8 +305,17 @@
             style="?android:attr/weekSeparatorLineColor"
             android:layout_width="match_parent"
             android:layout_height="5dp"
-            android:layout_marginTop="@dimen/standard_50"
-            android:layout_marginBottom="@dimen/standard_75"
+            android:layout_marginTop="@dimen/standard_8"
+            android:layout_marginBottom="@dimen/standard_100"
+            android:background="@color/separatorLine"
+            android:gravity="center_horizontal" />
+
+
+        <TextView
+            style="?android:attr/weekSeparatorLineColor"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_marginBottom="@dimen/standard_8"
             android:background="@color/separatorLine"
             android:gravity="center_horizontal" />
 
@@ -352,10 +377,8 @@
         <TextView
             style="?android:attr/weekSeparatorLineColor"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="@dimen/standard_10"
-
-            android:layout_marginBottom="@dimen/standard_10"
+            android:layout_height="5dp"
+            android:layout_marginTop="@dimen/standard_8"
             android:background="@color/separatorLine"
             android:gravity="center_horizontal" />
 

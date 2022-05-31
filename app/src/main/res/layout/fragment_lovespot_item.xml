@@ -6,6 +6,9 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/standard_8"
     android:layout_marginEnd="@dimen/standard_8"
+    android:layout_marginBottom="@dimen/standard_10"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     android:orientation="vertical">
 
     <TextView
@@ -108,7 +111,6 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_marginTop="@dimen/standard_10"
-        android:layout_marginBottom="@dimen/standard_10"
         android:background="@color/myColorPrimary"
         android:gravity="center_horizontal" />
 
