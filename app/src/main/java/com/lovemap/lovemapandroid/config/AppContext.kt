@@ -24,6 +24,9 @@ import com.lovemap.lovemapandroid.data.partnership.PartnershipDao
 import com.lovemap.lovemapandroid.service.*
 import com.lovemap.lovemapandroid.ui.events.MapInfoWindowShownEvent
 import com.lovemap.lovemapandroid.ui.events.MapMarkerEventListener
+import com.lovemap.lovemapandroid.utils.AUTHORIZATION_HEADER
+import com.lovemap.lovemapandroid.utils.X_CLIENT_ID_HEADER
+import com.lovemap.lovemapandroid.utils.X_CLIENT_SECRET_HEADER
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -215,8 +218,8 @@ class AppContext : Application() {
                         val jwt = runBlocking { metadataStore.getUser().jwt }
                         requestBuilder
                             .addHeader(AUTHORIZATION_HEADER, "Bearer $jwt")
-                            .addHeader("x-client-id", getString(R.string.lovemap_client_id))
-                            .addHeader("x-client-secret", getString(R.string.lovemap_client_secret))
+                            .addHeader(X_CLIENT_ID_HEADER, getString(R.string.lovemap_client_id))
+                            .addHeader(X_CLIENT_SECRET_HEADER, getString(R.string.lovemap_client_secret))
                             .build()
                     } else {
                         requestBuilder.build()
@@ -235,8 +238,8 @@ class AppContext : Application() {
             val request = runBlocking {
                 chain.request()
                     .newBuilder()
-                    .addHeader("x-client-id", getString(R.string.lovemap_client_id))
-                    .addHeader("x-client-secret", getString(R.string.lovemap_client_secret))
+                    .addHeader(X_CLIENT_ID_HEADER, getString(R.string.lovemap_client_id))
+                    .addHeader(X_CLIENT_SECRET_HEADER, getString(R.string.lovemap_client_secret))
                     .build()
             }
             chain.proceed(request)

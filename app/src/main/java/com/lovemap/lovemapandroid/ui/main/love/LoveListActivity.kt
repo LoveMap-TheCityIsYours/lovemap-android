@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.databinding.ActivityLoveListBinding
-import com.lovemap.lovemapandroid.ui.utils.IS_CLICKABLE
+import com.lovemap.lovemapandroid.utils.IS_CLICKABLE
 
 class LoveListActivity : AppCompatActivity() {
 

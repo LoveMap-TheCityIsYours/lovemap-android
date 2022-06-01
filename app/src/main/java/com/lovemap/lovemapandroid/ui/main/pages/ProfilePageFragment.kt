@@ -17,8 +17,6 @@ import com.lovemap.lovemapandroid.ui.login.LoginActivity
 import com.lovemap.lovemapandroid.ui.relations.ViewOtherLoverActivity
 import com.lovemap.lovemapandroid.ui.utils.I18nUtils
 import com.lovemap.lovemapandroid.ui.utils.ProfileUtils
-import com.lovemap.lovemapandroid.ui.utils.isPartner
-import com.lovemap.lovemapandroid.ui.utils.partnersFromRelations
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking

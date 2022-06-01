@@ -1,4 +1,4 @@
-package com.lovemap.lovemapandroid.ui.utils
+package com.lovemap.lovemapandroid.utils
 
 import com.lovemap.lovemapandroid.api.lover.LoverViewDto
 import com.lovemap.lovemapandroid.api.relation.RelationStatus
@@ -8,7 +8,14 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.*
 
-val IS_CLICKABLE = "isClickable"
+const val AUTHORIZATION_HEADER = "Authorization"
+const val X_CLIENT_ID_HEADER = "x-client-id"
+const val X_CLIENT_SECRET_HEADER = "x-client-secret"
+
+const val LINK_PREFIX_API_CALL = "https://api.lovemap.app/lover?uuid="
+const val LINK_PREFIX_VISIBLE = "https://api.lovemap.app/join-us/lover?uuid="
+
+const val IS_CLICKABLE = "isClickable"
 
 val timeZone = TimeZone.getDefault()
 val dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)

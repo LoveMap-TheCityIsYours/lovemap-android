@@ -4,7 +4,7 @@ import com.lovemap.lovemapandroid.api.relation.RelationStatus
 import com.lovemap.lovemapandroid.data.love.Love
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReview
-import com.lovemap.lovemapandroid.ui.utils.instantOfApiString
+import com.lovemap.lovemapandroid.utils.instantOfApiString
 import java.time.Instant
 
 data class LoverDto(

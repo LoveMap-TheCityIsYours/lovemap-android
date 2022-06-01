@@ -21,8 +21,8 @@ import com.lovemap.lovemapandroid.ui.main.lovespot.report.ReportLoveSpotActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.LoveSpotReviewListFragment
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewListActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewLoveSpotFragment
-import com.lovemap.lovemapandroid.ui.utils.IS_CLICKABLE
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotDetailsUtils
+import com.lovemap.lovemapandroid.utils.IS_CLICKABLE
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 

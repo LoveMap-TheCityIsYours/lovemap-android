@@ -5,8 +5,8 @@ import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lover.LoverViewDto
 import com.lovemap.lovemapandroid.data.love.Love
 import com.lovemap.lovemapandroid.service.LoverService
-import com.lovemap.lovemapandroid.ui.utils.instantOfApiString
-import com.lovemap.lovemapandroid.ui.utils.toFormattedString
+import com.lovemap.lovemapandroid.utils.instantOfApiString
+import com.lovemap.lovemapandroid.utils.toFormattedString
 
 data class LoveHolder(
     val id: Long,

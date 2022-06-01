@@ -42,7 +42,7 @@ import com.lovemap.lovemapandroid.ui.main.lovespot.report.ReportLoveSpotActivity
 import com.lovemap.lovemapandroid.ui.main.pages.LoveMapPageFragment.MapMode.LOVE_MAKINGS
 import com.lovemap.lovemapandroid.ui.main.pages.LoveMapPageFragment.MapMode.LOVE_SPOTS
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotInfoWindowAdapter
-import com.lovemap.lovemapandroid.ui.utils.pixelToDp
+import com.lovemap.lovemapandroid.utils.pixelToDp
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

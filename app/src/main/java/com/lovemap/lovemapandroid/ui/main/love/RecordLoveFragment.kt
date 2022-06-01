@@ -12,16 +12,14 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
-import com.lovemap.lovemapandroid.ui.utils.partnersFromRelations
-import com.lovemap.lovemapandroid.ui.utils.timeZone
-import com.lovemap.lovemapandroid.ui.utils.toFormattedString
+import com.lovemap.lovemapandroid.utils.partnersFromRelations
+import com.lovemap.lovemapandroid.utils.timeZone
+import com.lovemap.lovemapandroid.utils.toFormattedString
 import com.noowenz.customdatetimepicker.CustomDateTimePicker
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import java.util.*
 
 class RecordLoveFragment : Fragment(), CustomDateTimePicker.ICustomDateTimeListener {

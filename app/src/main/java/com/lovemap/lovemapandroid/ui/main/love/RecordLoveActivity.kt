@@ -12,12 +12,11 @@ import com.lovemap.lovemapandroid.api.love.UpdateLoveRequest
 import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.love.Love
-import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.databinding.ActivityRecordLoveBinding
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewLoveSpotFragment
-import com.lovemap.lovemapandroid.ui.utils.instantOfApiString
-import com.lovemap.lovemapandroid.ui.utils.toApiString
-import com.lovemap.lovemapandroid.ui.utils.toFormattedString
+import com.lovemap.lovemapandroid.utils.instantOfApiString
+import com.lovemap.lovemapandroid.utils.toApiString
+import com.lovemap.lovemapandroid.utils.toFormattedString
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 

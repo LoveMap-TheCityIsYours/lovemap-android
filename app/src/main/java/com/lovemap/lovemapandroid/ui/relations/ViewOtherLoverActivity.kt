@@ -17,14 +17,14 @@ import com.lovemap.lovemapandroid.api.partnership.PartnershipStatus.PARTNERSHIP_
 import com.lovemap.lovemapandroid.api.partnership.RespondPartnershipRequest
 import com.lovemap.lovemapandroid.api.relation.RelationStatus
 import com.lovemap.lovemapandroid.config.AppContext
-import com.lovemap.lovemapandroid.config.LINK_PREFIX_API_CALL
-import com.lovemap.lovemapandroid.config.LINK_PREFIX_VISIBLE
 import com.lovemap.lovemapandroid.data.partnership.Partnership
 import com.lovemap.lovemapandroid.databinding.ActivityViewOtherLoverBinding
 import com.lovemap.lovemapandroid.ui.main.love.LoveListFragment
 import com.lovemap.lovemapandroid.ui.relations.ViewOtherLoverActivity.RelationState.*
 import com.lovemap.lovemapandroid.ui.utils.I18nUtils
 import com.lovemap.lovemapandroid.ui.utils.ProfileUtils
+import com.lovemap.lovemapandroid.utils.LINK_PREFIX_API_CALL
+import com.lovemap.lovemapandroid.utils.LINK_PREFIX_VISIBLE
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 

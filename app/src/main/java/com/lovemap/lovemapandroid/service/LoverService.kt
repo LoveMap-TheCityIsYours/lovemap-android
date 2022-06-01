@@ -2,11 +2,11 @@ package com.lovemap.lovemapandroid.service
 
 import com.lovemap.lovemapandroid.api.getErrorMessages
 import com.lovemap.lovemapandroid.api.lover.*
-import com.lovemap.lovemapandroid.config.LINK_PREFIX_API_CALL
 import com.lovemap.lovemapandroid.data.love.LoveDao
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpotDao
 import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReviewDao
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
+import com.lovemap.lovemapandroid.utils.LINK_PREFIX_API_CALL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

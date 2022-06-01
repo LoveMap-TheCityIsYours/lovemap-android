@@ -9,9 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.love.CreateLoveRequest
 import com.lovemap.lovemapandroid.api.lovespot.Availability
-import com.lovemap.lovemapandroid.api.lovespot.CreateLoveSpotRequest
 import com.lovemap.lovemapandroid.api.lovespot.Availability.ALL_DAY
 import com.lovemap.lovemapandroid.api.lovespot.Availability.NIGHT_ONLY
+import com.lovemap.lovemapandroid.api.lovespot.CreateLoveSpotRequest
 import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.love.Love
@@ -21,8 +21,8 @@ import com.lovemap.lovemapandroid.service.LoveService
 import com.lovemap.lovemapandroid.service.LoveSpotReviewService
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveFragment
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewLoveSpotFragment
-import com.lovemap.lovemapandroid.ui.utils.toApiString
-import com.lovemap.lovemapandroid.ui.utils.toFormattedString
+import com.lovemap.lovemapandroid.utils.toApiString
+import com.lovemap.lovemapandroid.utils.toFormattedString
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
