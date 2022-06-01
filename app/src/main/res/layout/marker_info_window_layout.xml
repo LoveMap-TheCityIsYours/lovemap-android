@@ -46,6 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
+        android:text="@string/risk_unknown"
         android:layout_marginStart="@dimen/standard_16"
         android:textColor="@color/myColorOnBackground" />
 

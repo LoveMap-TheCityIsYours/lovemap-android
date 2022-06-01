@@ -1,10 +1,7 @@
 package com.lovemap.lovemapandroid.ui.main.love
 
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.RatingBar
-import android.widget.Spinner
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.love.CreateLoveRequest
@@ -31,6 +28,7 @@ class RecordLoveActivity : AppCompatActivity() {
     private var editedLove: Love? = null
     private lateinit var binding: ActivityRecordLoveBinding
     private lateinit var recordLoveSubmit: Button
+    private lateinit var recordLoveMakingTitle: TextView
     private lateinit var reviewLoveSpotFragment: ReviewLoveSpotFragment
     private lateinit var recordLoveFragment: RecordLoveFragment
 
@@ -53,32 +51,20 @@ class RecordLoveActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.recordLoveRecordLoveFragment) as RecordLoveFragment
 
         recordLoveSubmit = binding.recordLoveSubmit
+        recordLoveMakingTitle = binding.recordLoveMakingTitle
 
         binding.addLoveCancel.setOnClickListener {
             onBackPressed()
         }
 
-        findViewById<RatingBar>(R.id.marker_review_rating_bar).setOnRatingBarChangeListener { ratingBar, ratingValue, _ ->
-            rating = ratingValue.toInt()
-            recordLoveSubmit.isEnabled = rating != 0
-        }
+        findViewById<RatingBar>(R.id.marker_review_rating_bar)
+            .setOnRatingBarChangeListener { _, ratingValue, _ ->
+                rating = ratingValue.toInt()
+                recordLoveSubmit.isEnabled = rating != 0
+            }
 
         initReviewFragment()
-
-        if (editMode) {
-            recordLoveSubmit.isEnabled = true
-            MainScope().launch {
-                editedLove = loveService.getLocally(editedLoveId)
-                editedLove?.let {
-                    val happenedAt = instantOfApiString(it.happenedAt)
-                    recordLoveFragment.selectedTime = happenedAt
-                    recordLoveFragment.recordLoveHappenedAt.text =
-                        happenedAt.toFormattedString()
-                    recordLoveFragment.recordLoveSelectPartnerDropdown.setSelection(0, true)
-                    recordLoveFragment.addPrivateNote.text = it.note
-                }
-            }
-        }
+        initViewsIfEditMode()
     }
 
     private fun initReviewFragment() {
@@ -97,6 +83,28 @@ class RecordLoveActivity : AppCompatActivity() {
                         .beginTransaction()
                         .show(reviewLoveSpotFragment)
                         .commit()
+                }
+            }
+        }
+    }
+
+    private fun initViewsIfEditMode() {
+        if (editMode) {
+            recordLoveMakingTitle.text = getString(R.string.editLoveMakingTitle)
+            recordLoveSubmit.isEnabled = true
+            MainScope().launch {
+                editedLove = loveService.getLocally(editedLoveId)
+                editedLove?.let {
+                    if(loveService.isPartnerInLove(it)) {
+                        recordLoveFragment.recordLoveSelectPartnerDropdown.isEnabled = false
+                    } else {
+                        recordLoveFragment.recordLoveSelectPartnerDropdown.setSelection(0, true)
+                    }
+                    val happenedAt = instantOfApiString(it.happenedAt)
+                    recordLoveFragment.selectedTime = happenedAt
+                    recordLoveFragment.recordLoveHappenedAt.text =
+                        happenedAt.toFormattedString()
+                    recordLoveFragment.addPrivateNote.text = it.note
                 }
             }
         }

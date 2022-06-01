@@ -5,6 +5,8 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import com.lovemap.lovemapandroid.R
+import com.lovemap.lovemapandroid.api.getErrorMessages
+import retrofit2.Response
 
 class Toaster(
     private val looper: Looper,
@@ -18,6 +20,10 @@ class Toaster(
 
     fun showToast(resId: Int) {
         doShow(context.getString(resId))
+    }
+
+    fun showResponseError(response: Response<out Any>) {
+        doShow(response.getErrorMessages()[0].translatedString(context))
     }
 
     fun showNoServerToast() {

@@ -89,7 +89,7 @@
     <string name="love_spot_added">Love Spot added</string>
     <string name="report_spot">Report Spot</string>
     <string name="to_wishlist">To Wishlist</string>
-    <string name="record_my_love">Record My Lovemaking</string>
+    <string name="recordLoveMakingTitle">Record Love-Making</string>
     <string name="availability">Availability:</string>
     <string name="add_private_note">Private note about your experience trying this Love Spot</string>
     <string name="add_review_text">Public review of this Love Spot</string>
@@ -175,5 +175,7 @@
     <string name="delete">Delete</string>
     <string name="love_making_deleted">LoveMaking deleted</string>
     <string name="love_making_updated">LoveMaking updated</string>
+    <string name="editLoveMakingTitle">Edit Love-Making</string>
+    <string name="partnershipNotFound">No Partnership between you and the user</string>
 
 </resources>

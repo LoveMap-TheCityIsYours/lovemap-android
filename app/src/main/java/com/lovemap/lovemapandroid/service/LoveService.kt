@@ -91,24 +91,33 @@ class LoveService(
 
     suspend fun update(id: Long, request: UpdateLoveRequest): Love? {
         return withContext(Dispatchers.IO) {
-            val call = loveApi.update(id, request)
-            val response = try {
-                call.execute()
-            } catch (e: Exception) {
-                toaster.showToast(R.string.love_spot_not_available)
-                return@withContext null
-            }
-            if (response.isSuccessful) {
-                val love = response.body()!!
-                loveDao.insert(love)
-                toaster.showToast(R.string.love_making_updated)
-                love
-            } else {
-                toaster.showToast(R.string.love_spot_not_available)
-                null
+            val localLove = loveDao.loadSingle(id)
+            localLove?.let {
+                if (isPartnerInLove(it)) {
+                    request.loverPartnerId = it.loverPartnerId
+                }
+                val call = loveApi.update(id, request)
+                val response = try {
+                    call.execute()
+                } catch (e: Exception) {
+                    toaster.showToast(R.string.love_spot_not_available)
+                    return@withContext null
+                }
+                if (response.isSuccessful) {
+                    val love = response.body()!!
+                    loveDao.insert(love)
+                    toaster.showToast(R.string.love_making_updated)
+                    love
+                } else {
+                    toaster.showResponseError(response)
+                    null
+                }
             }
         }
     }
+
+    suspend fun isPartnerInLove(it: Love) =
+        it.loverPartnerId == metadataStore.getUser().id
 
     suspend fun delete(id: Long): Love? {
         return withContext(Dispatchers.IO) {
