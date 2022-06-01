@@ -18,5 +18,5 @@ interface LoveSpotApi {
     fun getRisks(): Call<LoveSpotRisks>
 
     @PUT("/lovespots/{loveSpotId}")
-    fun updateLoveSpot(@Path("loveSpotId") loveSpotId: Long, @Body request: UpdateLoveSpotRequest): Call<LoveSpot>
+    fun update(@Path("loveSpotId") loveSpotId: Long, @Body request: UpdateLoveSpotRequest): Call<LoveSpot>
 }

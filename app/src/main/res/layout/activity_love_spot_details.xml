@@ -244,7 +244,7 @@
                         android:background="@drawable/rounded_corner"
                         android:paddingStart="5dp"
                         android:paddingEnd="5dp"
-                        android:text="@string/add_love"
+                        android:text="@string/make_love"
                         android:textColor="@color/myColorOnSecondary"
                         android:textSize="10sp"
                         tools:ignore="SmallSp" />
@@ -380,16 +380,29 @@
             android:layout_width="match_parent"
             android:layout_height="5dp"
             android:layout_marginTop="@dimen/standard_8"
+            android:layout_marginBottom="@dimen/standard_100"
             android:background="@color/separatorLine"
             android:gravity="center_horizontal" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/spotDetailsEditButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/standard_100"
+            android:layout_marginBottom="@dimen/standard_10"
+            android:text="@string/edit_spot"
+            android:textSize="12sp"
+            app:iconGravity="end"
+            android:visibility="gone"
+            app:icon="@drawable/ic_baseline_edit_24"/>
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/spotDetailsReportButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/standard_8"
-            android:layout_marginTop="@dimen/standard_100"
+            android:layout_marginTop="@dimen/standard_10"
             android:text="@string/report_spot"
             android:textSize="12sp"
             app:iconGravity="start"

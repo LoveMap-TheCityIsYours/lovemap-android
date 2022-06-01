@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 class ReportLoveSpotActivity : AppCompatActivity() {
 
     private val appContext = AppContext.INSTANCE
+    private val loveSpotService = appContext.loveSpotService
     private val loveSpotReportService = appContext.loveSpotReportService
 
     private lateinit var binding: ActivityReportLoveSpotBinding
@@ -33,8 +34,11 @@ class ReportLoveSpotActivity : AppCompatActivity() {
         reportLoveSpotName = binding.reportLoveSpotName
         reportSpotSubmit = binding.reportSpotSubmit
 
-        appContext.selectedLoveSpot?.let {
-            reportLoveSpotName.text = appContext.selectedLoveSpot!!.name
+        appContext.selectedLoveSpotId?.let {
+            MainScope().launch {
+                appContext.selectedLoveSpot = loveSpotService.findLocally(it)
+                reportLoveSpotName.text = appContext.selectedLoveSpot!!.name
+            }
         }
 
         addReportText.addTextChangedListener(object : TextWatcher {
@@ -57,7 +61,7 @@ class ReportLoveSpotActivity : AppCompatActivity() {
                     loveSpotReportService.submitReport(
                         LoveSpotReportRequest(
                             appContext.userId,
-                            appContext.selectedLoveSpot!!.id,
+                            appContext.selectedLoveSpotId!!,
                             addReportText.text.toString()
                         )
                     )

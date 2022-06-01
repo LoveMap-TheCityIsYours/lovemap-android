@@ -13,8 +13,16 @@
         android:id="@+id/recordLoveMakingTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/standard_16"
         android:text="@string/recordLoveMakingTitle" />
+
+    <TextView
+        android:id="@+id/recordLoveSpotName"
+        style="@style/TextAppearance.Material3.DisplayMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/report_love_spot_name_placeholder"
+        android:textAlignment="center" />
 
         <LinearLayout
             android:layout_width="match_parent"

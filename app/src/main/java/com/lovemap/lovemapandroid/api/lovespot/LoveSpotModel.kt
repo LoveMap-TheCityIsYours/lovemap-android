@@ -34,6 +34,6 @@ data class LoveSpotRisks(val levels: Int, val riskList: List<Risk>) {
 data class UpdateLoveSpotRequest(
     val name: String? = null,
     val description: String? = null,
-    var customAvailability: Pair<LocalTime, LocalTime>? = null,
-    var availability: Availability? = null
+    var availability: Availability,
+    var customAvailability: Pair<LocalTime, LocalTime>? = null
 )

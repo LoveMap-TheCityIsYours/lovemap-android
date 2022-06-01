@@ -1,5 +1,6 @@
 package com.lovemap.lovemapandroid.utils
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.lovemap.lovemapandroid.api.lover.LoverViewDto
 import com.lovemap.lovemapandroid.api.relation.RelationStatus
 import com.lovemap.lovemapandroid.config.AppContext
@@ -16,6 +17,10 @@ const val LINK_PREFIX_API_CALL = "https://api.lovemap.app/lover?uuid="
 const val LINK_PREFIX_VISIBLE = "https://api.lovemap.app/join-us/lover?uuid="
 
 const val IS_CLICKABLE = "isClickable"
+
+const val ROLE_ADMIN = "ROLE_ADMIN"
+
+val objectMapper = jacksonObjectMapper()
 
 val timeZone = TimeZone.getDefault()
 val dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
@@ -46,3 +51,7 @@ fun instantOfApiString(instantString: String): Instant {
 }
 
 fun dpToPixel(dp: Float): Float = dp * AppContext.INSTANCE.displayDensity
+
+fun canEditLoveSpot(addedBy: Long) =
+    AppContext.INSTANCE.userId == addedBy || AppContext.INSTANCE.isAdmin
+

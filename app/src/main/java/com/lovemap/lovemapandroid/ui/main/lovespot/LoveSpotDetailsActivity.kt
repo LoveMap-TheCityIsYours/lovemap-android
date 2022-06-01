@@ -23,6 +23,7 @@ import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewListActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewLoveSpotFragment
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotDetailsUtils
 import com.lovemap.lovemapandroid.utils.IS_CLICKABLE
+import com.lovemap.lovemapandroid.utils.canEditLoveSpot
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
@@ -49,12 +50,13 @@ LoveSpotDetailsActivity : AppCompatActivity() {
     private lateinit var reviewSpotCancel: Button
     private lateinit var detailsSeeAllReviewsButton: Button
 
-    private lateinit var addToWishlistFabOnDetails: FloatingActionButton
+    private lateinit var detailsAddToWishlistButton: FloatingActionButton
     private lateinit var makeLoveFabOnDetails: FloatingActionButton
     private lateinit var haveNotMadeLoveText: TextView
 
     private lateinit var spotDetailsReportButton: ExtendedFloatingActionButton
-    private lateinit var spotDetailsShowOnMap: ExtendedFloatingActionButton
+    private lateinit var spotDetailsShowOnMapButton: ExtendedFloatingActionButton
+    private lateinit var spotDetailsEditButton: ExtendedFloatingActionButton
 
     private lateinit var detailsLoveListFragment: LoveListFragment
     private lateinit var detailsSeeAllLovesButton: Button
@@ -71,7 +73,12 @@ LoveSpotDetailsActivity : AppCompatActivity() {
             spotDetailsReportButton.setOnClickListener {
                 startActivity(Intent(applicationContext, ReportLoveSpotActivity::class.java))
             }
-            addToWishlistFabOnDetails.setOnClickListener {
+            spotDetailsEditButton.setOnClickListener {
+                val intent = Intent(this, AddLoveSpotActivity::class.java)
+                intent.putExtra(AddLoveSpotActivity.EDIT, spotId)
+                startActivity(intent)
+            }
+            detailsAddToWishlistButton.setOnClickListener {
                 appContext.toaster.showToast(R.string.not_yet_implemented)
             }
             detailsSeeAllLovesButton.setOnClickListener {
@@ -82,13 +89,14 @@ LoveSpotDetailsActivity : AppCompatActivity() {
             detailsSeeAllReviewsButton.setOnClickListener {
                 startActivity(Intent(applicationContext, ReviewListActivity::class.java))
             }
-            spotDetailsShowOnMap.setOnClickListener {
+            spotDetailsShowOnMapButton.setOnClickListener {
                 appContext.zoomOnLoveSpot = appContext.selectedLoveSpot
                 val intent = Intent(this, MainActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
                 finish()
             }
+
             setReviewRatingBar()
             setReviewSubmitButton()
             setCancelButton()
@@ -118,10 +126,11 @@ LoveSpotDetailsActivity : AppCompatActivity() {
         detailsReviewButtons = binding.detailsReviewButtons
         makeLoveFabOnDetails = binding.makeLoveFabOnDetails
         spotDetailsReportButton = binding.spotDetailsReportButton
-        addToWishlistFabOnDetails = binding.addToWishlistFabOnDetails
+        detailsAddToWishlistButton = binding.addToWishlistFabOnDetails
         detailsSeeAllReviewsButton = binding.detailsSeeAllReviewsButton
         detailsSeeAllLovesButton = binding.detailsSeeAllLovesButton
-        spotDetailsShowOnMap = binding.spotDetailsShowOnMap
+        spotDetailsEditButton = binding.spotDetailsEditButton
+        spotDetailsShowOnMapButton = binding.spotDetailsShowOnMap
         detailsReviewLoveSpotFragment =
             supportFragmentManager.findFragmentById(R.id.detailsReviewLoveSpotFragment) as ReviewLoveSpotFragment
 
@@ -166,6 +175,9 @@ LoveSpotDetailsActivity : AppCompatActivity() {
                 spotDetailsCustomAvailabilityText,
                 spotDetailsCustomAvailability
             )
+            if (canEditLoveSpot(loveSpot.addedBy)) {
+                spotDetailsEditButton.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -186,7 +198,7 @@ LoveSpotDetailsActivity : AppCompatActivity() {
                             )
                         )
                         reviewedSpot?.let {
-                            loveSpotService.update(reviewedSpot)
+                            loveSpotService.insertIntoDb(reviewedSpot)
                         }
 
                         appContext.toaster.showToast(R.string.love_spot_reviewed)

@@ -64,6 +64,9 @@ class AppContext : Application() {
     var userId: Long = 0
 
     @Volatile
+    var isAdmin: Boolean = false
+
+    @Volatile
     var otherLoverId: Long = 0
 
     @Volatile
@@ -110,7 +113,7 @@ class AppContext : Application() {
             applicationContext,
             AppDatabase::class.java,
             "database"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
         EventBus.getDefault().register(this)
         runBlocking {
             initClients()
@@ -193,10 +196,12 @@ class AppContext : Application() {
             metadataStore,
             toaster
         )
-        userId = if (metadataStore.isLoggedIn()) {
-            metadataStore.getUser().id
+        if (metadataStore.isLoggedIn()) {
+            val user = metadataStore.getUser()
+            userId = user.id
+            isAdmin = metadataStore.isAdmin(user)
         } else {
-            0
+            userId = 0
         }
         if (userId != 0L) {
             loverService.getRanks()

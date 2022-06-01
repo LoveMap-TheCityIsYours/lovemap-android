@@ -21,6 +21,7 @@ data class LoveSpot(
     @ColumnInfo var availability: Availability,
     @ColumnInfo var averageDanger: Double?,
     @ColumnInfo var numberOfRatings: Int,
+    @ColumnInfo var addedBy: Long,
 ) {
     fun readCustomAvailability(): Pair<LocalTime, LocalTime>? {
         customAvailability?.let {

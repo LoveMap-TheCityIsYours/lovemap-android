@@ -15,6 +15,7 @@ data class LoveSpotHolder(
     var availability: Availability,
     var averageDanger: Double?,
     var numberOfRatings: Int,
+    var addedBy: Long,
 ) : Comparable<LoveSpotHolder> {
     companion object {
         fun of(loveSpot: LoveSpot): LoveSpotHolder {
@@ -30,6 +31,7 @@ data class LoveSpotHolder(
                 availability = loveSpot.availability,
                 averageRating = loveSpot.averageRating,
                 numberOfRatings = loveSpot.numberOfRatings,
+                addedBy = loveSpot.addedBy
             )
         }
     }

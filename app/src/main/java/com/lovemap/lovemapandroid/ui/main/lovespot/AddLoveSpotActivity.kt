@@ -12,6 +12,7 @@ import com.lovemap.lovemapandroid.api.lovespot.Availability
 import com.lovemap.lovemapandroid.api.lovespot.Availability.ALL_DAY
 import com.lovemap.lovemapandroid.api.lovespot.Availability.NIGHT_ONLY
 import com.lovemap.lovemapandroid.api.lovespot.CreateLoveSpotRequest
+import com.lovemap.lovemapandroid.api.lovespot.UpdateLoveSpotRequest
 import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.love.Love
@@ -19,6 +20,7 @@ import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.databinding.ActivityAddLoveSpotBinding
 import com.lovemap.lovemapandroid.service.LoveService
 import com.lovemap.lovemapandroid.service.LoveSpotReviewService
+import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveFragment
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewLoveSpotFragment
 import com.lovemap.lovemapandroid.utils.toApiString
@@ -35,6 +37,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
     private val loveSpotReviewService = appContext.loveSpotReviewService
 
     private lateinit var binding: ActivityAddLoveSpotBinding
+    private lateinit var addSpotTitle: TextView
     private lateinit var addSpotName: EditText
     private lateinit var addSpotDescription: EditText
     private lateinit var addSpotSubmit: Button
@@ -51,8 +54,14 @@ class AddLoveSpotActivity : AppCompatActivity() {
     private var description = ""
     private var rating = 0
 
+    private var editMode: Boolean = false
+    private var editedLoveSpotId: Long = 0
+    private var editedLoveSpot: LoveSpot? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        editedLoveSpotId = intent.getLongExtra(RecordLoveActivity.EDIT, 0)
+        editMode = editedLoveSpotId != 0L
         initViews()
         setMadeLoveCheckBox()
         setReviewRatingBar()
@@ -66,6 +75,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
     private fun initViews() {
         binding = ActivityAddLoveSpotBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        addSpotTitle = binding.addSpotTitle
         addSpotCancel = binding.addSpotCancel
         addSpotName = binding.addSpotName
         addSpotDescription = binding.addSpotDescription
@@ -87,7 +97,28 @@ class AddLoveSpotActivity : AppCompatActivity() {
             .hide(reviewLoveSpotFragment)
             .commit()
 
-        restoreSavedLoveSpot()
+        if (editMode) {
+            initViewsIfEditMode()
+        } else {
+            restoreSavedLoveSpot()
+        }
+    }
+
+    private fun initViewsIfEditMode() {
+        addSpotSubmit.isEnabled = true
+        madeLoveCheckBox.isEnabled = false
+        addSpotTitle.text = getString(R.string.editLoveSpotTitle)
+        MainScope().launch {
+            editedLoveSpot = loveSpotService.findLocally(editedLoveSpotId)
+            editedLoveSpot?.let {
+                name = it.name
+                addSpotName.setText(it.name)
+                description = it.description
+                addSpotDescription.setText(it.description)
+                availability = it.availability
+                addSpotAvailability.setSelection(availabilityToPosition(it.availability))
+            }
+        }
     }
 
     private fun restoreSavedLoveSpot() {
@@ -187,19 +218,43 @@ class AddLoveSpotActivity : AppCompatActivity() {
 
     private fun setSubmitButton() {
         addSpotSubmit.setOnClickListener {
-            if (addSpotSubmit.isEnabled) {
-                MainScope().launch {
-                    backupLoveAndReview()
-                    val loveSpot = createLoveSpot()
-                    if (loveSpot != null) {
-                        if (madeLoveCheckBox.isChecked) {
-                            val love = createLove(loveSpot)
-                            submitReview(love, loveSpot)
-                        } else {
-                            returnHome(loveSpot)
-                        }
-                    }
+            MainScope().launch {
+                if (!editMode) {
+                    createSpotAndOthers()
+                } else {
+                    updateLoveSpot()
                 }
+            }
+        }
+    }
+
+    private suspend fun createSpotAndOthers() {
+        if (addSpotSubmit.isEnabled) {
+            backupLoveAndReview()
+            val loveSpot = createLoveSpot()
+            if (loveSpot != null) {
+                if (madeLoveCheckBox.isChecked) {
+                    val love = createLove(loveSpot)
+                    submitReview(love, loveSpot)
+                } else {
+                    returnHome(loveSpot)
+                }
+            }
+        }
+    }
+
+    private suspend fun updateLoveSpot() {
+        editedLoveSpot?.let {
+            val loveSpot = loveSpotService.update(
+                it.id,
+                UpdateLoveSpotRequest(
+                    name = name,
+                    description = description,
+                    availability = availability
+                )
+            )
+            if (loveSpot != null) {
+                returnHome(loveSpot)
             }
         }
     }
@@ -254,7 +309,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
                 )
             )
             reviewedSpot?.let {
-                loveSpotService.update(reviewedSpot)
+                loveSpotService.insertIntoDb(reviewedSpot)
             }
         }
     }
@@ -353,4 +408,8 @@ class AddLoveSpotActivity : AppCompatActivity() {
     private fun descriptionValid() = addSpotDescription.text.toString().length >= 3
     private fun nameValid() = addSpotName.text.toString().length >= 3
     private fun ratingValid() = rating != 0
+
+    companion object {
+        const val EDIT = "edit"
+    }
 }

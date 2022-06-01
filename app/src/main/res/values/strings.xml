@@ -23,7 +23,7 @@
     <!-- Main activity strings -->
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
-    <string name="add_love">Make Love</string>
+    <string name="make_love">Make Love</string>
 
     <!-- Profile fragment -->
     <string name="logout">logout</string>
@@ -177,5 +177,8 @@
     <string name="love_making_updated">LoveMaking updated</string>
     <string name="editLoveMakingTitle">Edit Love-Making</string>
     <string name="partnershipNotFound">No Partnership between you and the user</string>
+    <string name="editLoveSpotTitle">Edit Love Spot</string>
+    <string name="love_spot_updated">Love Spot updated</string>
+    <string name="edit_spot">Edit Spot</string>
 
 </resources>

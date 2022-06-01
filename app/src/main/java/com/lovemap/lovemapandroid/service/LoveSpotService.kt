@@ -1,16 +1,12 @@
 package com.lovemap.lovemapandroid.service
 
 import android.app.Activity
-import androidx.lifecycle.LiveData
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.ErrorMessage
 import com.lovemap.lovemapandroid.api.getErrorMessages
-import com.lovemap.lovemapandroid.api.lovespot.CreateLoveSpotRequest
-import com.lovemap.lovemapandroid.api.lovespot.LoveSpotApi
-import com.lovemap.lovemapandroid.api.lovespot.LoveSpotRisks
-import com.lovemap.lovemapandroid.api.lovespot.LoveSpotSearchRequest
+import com.lovemap.lovemapandroid.api.lovespot.*
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpotDao
@@ -99,6 +95,27 @@ class LoveSpotService(
                 val errorMessage: ErrorMessage = response.getErrorMessages()[0]
                 toaster.showToast(errorMessage.translatedString(AppContext.INSTANCE.applicationContext))
                 toaster.showNoServerToast()
+                null
+            }
+        }
+    }
+
+    suspend fun update(id: Long, request: UpdateLoveSpotRequest): LoveSpot? {
+        return withContext(Dispatchers.IO) {
+            val call = loveSpotApi.update(id, request)
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
+                toaster.showToast(R.string.love_spot_not_available)
+                return@withContext null
+            }
+            if (response.isSuccessful) {
+                val love = response.body()!!
+                loveSpotDao.insert(love)
+                toaster.showToast(R.string.love_spot_updated)
+                love
+            } else {
+                toaster.showResponseError(response)
                 null
             }
         }
@@ -195,7 +212,7 @@ class LoveSpotService(
                     it.contains(LatLng(request.latTo, request.longFrom))
         }
 
-    suspend fun update(loveSpot: LoveSpot) {
+    suspend fun insertIntoDb(loveSpot: LoveSpot) {
         return withContext(Dispatchers.IO) {
             loveSpotDao.insert(loveSpot)
         }

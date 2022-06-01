@@ -71,21 +71,6 @@ class LoveListFragment : Fragment() {
         }
     }
 
-    private suspend fun updateData() {
-        when {
-            isLoveSpotBased -> {
-                adapter.updateData(loveService.getLoveHolderListForSpot())
-            }
-            isPartnerBased -> {
-                adapter.updateData(loveService.getLoveHolderListForPartner())
-            }
-            else -> {
-                adapter.updateData(loveService.getLoveHolderList())
-            }
-        }
-        adapter.notifyDataSetChanged()
-    }
-
     override fun onContextItemSelected(item: MenuItem): Boolean {
         val position = try {
             adapter.position
@@ -107,6 +92,21 @@ class LoveListFragment : Fragment() {
             }
         }
         return super.onContextItemSelected(item)
+    }
+
+    private suspend fun updateData() {
+        when {
+            isLoveSpotBased -> {
+                adapter.updateData(loveService.getLoveHolderListForSpot())
+            }
+            isPartnerBased -> {
+                adapter.updateData(loveService.getLoveHolderListForPartner())
+            }
+            else -> {
+                adapter.updateData(loveService.getLoveHolderList())
+            }
+        }
+        adapter.notifyDataSetChanged()
     }
 
     private fun isClickable(): Boolean {

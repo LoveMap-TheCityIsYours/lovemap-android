@@ -29,6 +29,7 @@ class RecordLoveActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRecordLoveBinding
     private lateinit var recordLoveSubmit: Button
     private lateinit var recordLoveMakingTitle: TextView
+    private lateinit var recordLoveSpotName: TextView
     private lateinit var reviewLoveSpotFragment: ReviewLoveSpotFragment
     private lateinit var recordLoveFragment: RecordLoveFragment
 
@@ -50,8 +51,14 @@ class RecordLoveActivity : AppCompatActivity() {
         recordLoveFragment =
             supportFragmentManager.findFragmentById(R.id.recordLoveRecordLoveFragment) as RecordLoveFragment
 
+        supportFragmentManager
+            .beginTransaction()
+            .hide(reviewLoveSpotFragment)
+            .commit()
+
         recordLoveSubmit = binding.recordLoveSubmit
         recordLoveMakingTitle = binding.recordLoveMakingTitle
+        recordLoveSpotName = binding.recordLoveSpotName
 
         binding.addLoveCancel.setOnClickListener {
             onBackPressed()
@@ -63,20 +70,21 @@ class RecordLoveActivity : AppCompatActivity() {
                 recordLoveSubmit.isEnabled = rating != 0
             }
 
-        initReviewFragment()
-        initViewsIfEditMode()
+        if (editMode) {
+            initViewsIfEditMode()
+        } else {
+            initViewsIfCreateMode()
+        }
     }
 
-    private fun initReviewFragment() {
-        supportFragmentManager
-            .beginTransaction()
-            .hide(reviewLoveSpotFragment)
-            .commit()
-
+    private fun initViewsIfCreateMode() {
         appContext.selectedLoveSpotId?.let {
             val spotId = appContext.selectedLoveSpotId!!
             MainScope().launch {
-                if (loveSpotReviewService.hasReviewedAlready(spotId) || editMode) {
+                appContext.selectedLoveSpot =
+                    loveSpotService.findLocally(appContext.selectedLoveSpotId!!)
+                recordLoveSpotName.text = appContext.selectedLoveSpot!!.name
+                if (loveSpotReviewService.hasReviewedAlready(spotId)) {
                     recordLoveSubmit.isEnabled = true
                 } else {
                     supportFragmentManager
@@ -89,23 +97,22 @@ class RecordLoveActivity : AppCompatActivity() {
     }
 
     private fun initViewsIfEditMode() {
-        if (editMode) {
-            recordLoveMakingTitle.text = getString(R.string.editLoveMakingTitle)
-            recordLoveSubmit.isEnabled = true
-            MainScope().launch {
-                editedLove = loveService.getLocally(editedLoveId)
-                editedLove?.let {
-                    if(loveService.isPartnerInLove(it)) {
-                        recordLoveFragment.recordLoveSelectPartnerDropdown.isEnabled = false
-                    } else {
-                        recordLoveFragment.recordLoveSelectPartnerDropdown.setSelection(0, true)
-                    }
-                    val happenedAt = instantOfApiString(it.happenedAt)
-                    recordLoveFragment.selectedTime = happenedAt
-                    recordLoveFragment.recordLoveHappenedAt.text =
-                        happenedAt.toFormattedString()
-                    recordLoveFragment.addPrivateNote.text = it.note
+        recordLoveMakingTitle.text = getString(R.string.editLoveMakingTitle)
+        recordLoveSubmit.isEnabled = true
+        MainScope().launch {
+            editedLove = loveService.getLocally(editedLoveId)
+            editedLove?.let {
+                recordLoveSpotName.text = it.name
+                if (loveService.isPartnerInLove(it)) {
+                    recordLoveFragment.recordLoveSelectPartnerDropdown.isEnabled = false
+                } else {
+                    recordLoveFragment.recordLoveSelectPartnerDropdown.setSelection(0, true)
                 }
+                val happenedAt = instantOfApiString(it.happenedAt)
+                recordLoveFragment.selectedTime = happenedAt
+                recordLoveFragment.recordLoveHappenedAt.text =
+                    happenedAt.toFormattedString()
+                recordLoveFragment.addPrivateNote.text = it.note
             }
         }
     }
@@ -115,14 +122,7 @@ class RecordLoveActivity : AppCompatActivity() {
             if (recordLoveSubmit.isEnabled) {
                 MainScope().launch {
                     if (!editMode) {
-                        appContext.selectedLoveSpotId?.let {
-                            val spotId = it
-                            val love = createLove(spotId)
-                            if (love != null) {
-                                submitReview(spotId, love)
-                                goBack()
-                            }
-                        }
+                        createLoveAndReview()
                     } else {
                         val love = updateLove()
                         if (love != null) {
@@ -130,6 +130,17 @@ class RecordLoveActivity : AppCompatActivity() {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private suspend fun createLoveAndReview() {
+        appContext.selectedLoveSpotId?.let {
+            val spotId = it
+            val love = createLove(spotId)
+            if (love != null) {
+                submitReview(spotId, love)
+                goBack()
             }
         }
     }
@@ -182,7 +193,7 @@ class RecordLoveActivity : AppCompatActivity() {
                 )
             )
             reviewedSpot?.let {
-                loveSpotService.update(reviewedSpot)
+                loveSpotService.insertIntoDb(reviewedSpot)
             }
         }
     }

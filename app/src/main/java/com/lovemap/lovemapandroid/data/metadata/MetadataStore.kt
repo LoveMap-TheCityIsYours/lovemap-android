@@ -1,18 +1,23 @@
 package com.lovemap.lovemapandroid.data.metadata
 
 import android.content.Context
+import android.util.Base64
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.fasterxml.jackson.databind.JsonNode
 import com.google.gson.GsonBuilder
 import com.lovemap.lovemapandroid.api.lover.LoverRanks
 import com.lovemap.lovemapandroid.api.lover.LoverRelationsDto
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotRisks
 import com.lovemap.lovemapandroid.config.AppContext
+import com.lovemap.lovemapandroid.utils.ROLE_ADMIN
+import com.lovemap.lovemapandroid.utils.objectMapper
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import java.nio.charset.StandardCharsets
 
 class MetadataStore(private val context: Context) {
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "MetadataStore")
@@ -44,6 +49,13 @@ class MetadataStore(private val context: Context) {
         return context.dataStore.data.map { dataStore ->
             gson.fromJson(dataStore[userKey], LoggedInUser::class.java)
         }.first()
+    }
+
+    fun isAdmin(user: LoggedInUser): Boolean {
+        val base64Payload = user.jwt.substringBeforeLast(".").substringAfter(".")
+        val payloadBytes = Base64.decode(base64Payload, Base64.DEFAULT)
+        val payloadJson: JsonNode = objectMapper.readTree(String(payloadBytes, StandardCharsets.UTF_8))
+        return payloadJson["roles"].textValue().contains(ROLE_ADMIN)
     }
 
     suspend fun saveLover(lover: LoverRelationsDto): LoverRelationsDto {
