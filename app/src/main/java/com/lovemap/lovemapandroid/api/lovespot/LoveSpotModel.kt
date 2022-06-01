@@ -30,3 +30,10 @@ data class LoveSpotRisks(val levels: Int, val riskList: List<Risk>) {
         val nameHU: String
     )
 }
+
+data class UpdateLoveSpotRequest(
+    val name: String? = null,
+    val description: String? = null,
+    var customAvailability: Pair<LocalTime, LocalTime>? = null,
+    var availability: Availability? = null
+)

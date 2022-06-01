@@ -9,6 +9,7 @@ import com.lovemap.lovemapandroid.ui.utils.instantOfApiString
 import com.lovemap.lovemapandroid.ui.utils.toFormattedString
 
 data class LoveHolder(
+    val id: Long,
     val loveSpotId: Long,
     val name: String,
     val partner: String,
@@ -29,6 +30,7 @@ data class LoveHolder(
                 loverService.getOtherById(partnerId)
             }
             return LoveHolder(
+                id = love.id,
                 loveSpotId = love.loveSpotId,
                 name = love.name,
                 partner = partner?.userName ?: context.getString(R.string.not_app_user),

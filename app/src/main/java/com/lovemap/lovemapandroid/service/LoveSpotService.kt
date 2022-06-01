@@ -206,8 +206,6 @@ class LoveSpotService(
             loveSpotDao.loadSingle(loveSpotId)?.let {
                 loveSpotDao.delete(it)
                 AppContext.INSTANCE.shouldClearMap = true
-                // TODO: optimize a lot
-//                initLoveSpotHolderList()
             }
         }
     }

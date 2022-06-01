@@ -169,5 +169,11 @@
     <string name="loveSpotDeleted">Love Spot deleted</string>
     <string name="show_on_map">Show on map</string>
     <string name="spotTooCloseToAnother"><![CDATA[LoveSpot too close to another. Min distance is > 20 meters.]]></string>
+    <string name="invalidLoveSpotName">Name must be between 3 and 50 characters</string>
+    <string name="invalidLoveSpotDescription">Description must be between 5 and 250 characters</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="love_making_deleted">LoveMaking deleted</string>
+    <string name="love_making_updated">LoveMaking updated</string>
 
 </resources>

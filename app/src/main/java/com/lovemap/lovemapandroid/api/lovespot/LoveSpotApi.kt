@@ -2,10 +2,7 @@ package com.lovemap.lovemapandroid.api.lovespot
 
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface LoveSpotApi {
     @POST("/lovespots")
@@ -19,4 +16,7 @@ interface LoveSpotApi {
 
     @GET("/lovespots/risks")
     fun getRisks(): Call<LoveSpotRisks>
+
+    @PUT("/lovespots/{loveSpotId}")
+    fun updateLoveSpot(@Path("loveSpotId") loveSpotId: Long, @Body request: UpdateLoveSpotRequest): Call<LoveSpot>
 }

@@ -189,7 +189,6 @@ class ProfilePageFragment : Fragment() {
                     Intent.EXTRA_TEXT,
                     link.text.toString() + "\n\n" + getString(R.string.share_subject)
                 )
-
                 type = "text/plain"
             }
             val shareIntent =

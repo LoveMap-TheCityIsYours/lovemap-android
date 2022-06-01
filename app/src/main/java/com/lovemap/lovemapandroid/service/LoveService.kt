@@ -4,6 +4,7 @@ import android.content.Context
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.love.CreateLoveRequest
 import com.lovemap.lovemapandroid.api.love.LoveApi
+import com.lovemap.lovemapandroid.api.love.UpdateLoveRequest
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.love.Love
 import com.lovemap.lovemapandroid.data.love.LoveDao
@@ -40,7 +41,7 @@ class LoveService(
             val localLoves = loveDao.getAll()
             if (!lovesQueried) {
                 lovesQueried = true
-                val call = loveApi.list(metadataStore.getUser().id)
+                val call = loveApi.listByLover(metadataStore.getUser().id)
                 val response = try {
                     call.execute()
                 } catch (e: Exception) {
@@ -80,6 +81,48 @@ class LoveService(
                 savedCreationState = null
                 val love = response.body()!!
                 loveDao.insert(love)
+                love
+            } else {
+                toaster.showToast(R.string.love_spot_not_available)
+                null
+            }
+        }
+    }
+
+    suspend fun update(id: Long, request: UpdateLoveRequest): Love? {
+        return withContext(Dispatchers.IO) {
+            val call = loveApi.update(id, request)
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
+                toaster.showToast(R.string.love_spot_not_available)
+                return@withContext null
+            }
+            if (response.isSuccessful) {
+                val love = response.body()!!
+                loveDao.insert(love)
+                toaster.showToast(R.string.love_making_updated)
+                love
+            } else {
+                toaster.showToast(R.string.love_spot_not_available)
+                null
+            }
+        }
+    }
+
+    suspend fun delete(id: Long): Love? {
+        return withContext(Dispatchers.IO) {
+            val call = loveApi.delete(id)
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
+                toaster.showToast(R.string.love_spot_not_available)
+                return@withContext null
+            }
+            if (response.isSuccessful) {
+                val love = response.body()!!
+                loveDao.delete(love)
+                toaster.showToast(R.string.love_making_deleted)
                 love
             } else {
                 toaster.showToast(R.string.love_spot_not_available)
@@ -133,5 +176,11 @@ class LoveService(
         return getLoveHolderList()
             .filter { it.partnerId == AppContext.INSTANCE.otherLoverId }
             .toMutableList()
+    }
+
+    suspend fun getLocally(id: Long): Love? {
+        return withContext(Dispatchers.IO) {
+            return@withContext loveDao.loadSingle(id)
+        }
     }
 }

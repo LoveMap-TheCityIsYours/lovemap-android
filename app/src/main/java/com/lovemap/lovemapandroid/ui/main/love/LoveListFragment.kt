@@ -1,9 +1,11 @@
 package com.lovemap.lovemapandroid.ui.main.love
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -13,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
+import com.lovemap.lovemapandroid.ui.main.love.LoveRecyclerViewAdapter.Companion.DELETE_LOVE_MENU_ID
+import com.lovemap.lovemapandroid.ui.main.love.LoveRecyclerViewAdapter.Companion.EDIT_LOVE_MENU_ID
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
@@ -50,6 +54,7 @@ class LoveListFragment : Fragment() {
         adapter = LoveRecyclerViewAdapter(ArrayList(), isClickable)
         recycleView.adapter = adapter
         recycleView.layoutManager = LinearLayoutManager(context)
+        registerForContextMenu(recycleView)
         return linearLayout
     }
 
@@ -61,20 +66,47 @@ class LoveListFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         MainScope().launch {
-            when {
-                isLoveSpotBased -> {
-                    adapter.updateData(loveService.getLoveHolderListForSpot())
-                }
-                isPartnerBased -> {
-                    adapter.updateData(loveService.getLoveHolderListForPartner())
-                }
-                else -> {
-                    adapter.updateData(loveService.getLoveHolderList())
-                }
-            }
-            adapter.notifyDataSetChanged()
+            updateData()
             progressBar.visibility = View.GONE
         }
+    }
+
+    private suspend fun updateData() {
+        when {
+            isLoveSpotBased -> {
+                adapter.updateData(loveService.getLoveHolderListForSpot())
+            }
+            isPartnerBased -> {
+                adapter.updateData(loveService.getLoveHolderListForPartner())
+            }
+            else -> {
+                adapter.updateData(loveService.getLoveHolderList())
+            }
+        }
+        adapter.notifyDataSetChanged()
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        val position = try {
+            adapter.position
+        } catch (e: Exception) {
+            return super.onContextItemSelected(item)
+        }
+        val loveHolder = adapter.values[position]
+        when (item.itemId) {
+            EDIT_LOVE_MENU_ID -> {
+                val intent = Intent(requireContext(), RecordLoveActivity::class.java)
+                intent.putExtra(RecordLoveActivity.EDIT, loveHolder.id)
+                startActivity(intent)
+            }
+            DELETE_LOVE_MENU_ID -> {
+                MainScope().launch {
+                    loveService.delete(loveHolder.id)
+                    updateData()
+                }
+            }
+        }
+        return super.onContextItemSelected(item)
     }
 
     private fun isClickable(): Boolean {
