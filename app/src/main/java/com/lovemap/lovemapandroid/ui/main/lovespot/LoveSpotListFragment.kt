@@ -88,7 +88,7 @@ class LoveSpotListFragment : Fragment() {
     }
 
     private suspend fun updateData() {
-        adapter.updateData(loveSpotService.getLoveHolderList())
+        adapter.updateData(loveSpotService.getLoveSpotHolderList())
         adapter.notifyDataSetChanged()
     }
 }

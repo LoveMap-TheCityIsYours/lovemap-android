@@ -55,11 +55,11 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     private val loveService: LoveService = appContext.loveService
     private var cameraMoved = false
     private var locationEnabled = false
+    private var localSpotsDrawn = false
     private var mapMode = LOVE_SPOTS
-    private var mapModeChanged = false
     private val drawnSpots = HashSet<Long>()
 
-    private lateinit var viewPager2: ViewPager2
+    private var viewPager2: ViewPager2? = null
     private lateinit var loveSpotInfoWindowAdapter: LoveSpotInfoWindowAdapter
     private lateinit var mapFragment: SupportMapFragment
     private lateinit var dayBitmap: BitmapDescriptor
@@ -118,7 +118,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
             startActivity(Intent(requireContext(), RecordLoveActivity::class.java))
         }
         changeMapModeFab.setOnClickListener {
-            mapModeChanged = true
+            appContext.shouldClearMap = true
             mapMode = if (mapMode == LOVE_SPOTS) {
                 appContext.toaster.showToast(R.string.showing_love_makings)
                 LOVE_MAKINGS
@@ -148,18 +148,20 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
         mapFragment.getMapAsync(this)
         viewPager2 = getViewPager2(requireView())
         appContext.mapMarkerEventListener = this
-        val crosshair: ImageView = viewPager2.findViewById(R.id.centerCrosshair)
-        val addLovespotText: TextView = viewPager2.findViewById(R.id.mapAddLovespotText)
-        if (appContext.shouldCloseFabs) {
-            appContext.shouldCloseFabs = false
-            onMapClicked()
-        }
-        if (appContext.areAddLoveSpotFabsOpen) {
-            crosshair.visibility = View.VISIBLE
-            addLovespotText.visibility = View.VISIBLE
-        } else {
-            crosshair.visibility = View.GONE
-            addLovespotText.visibility = View.GONE
+        viewPager2?.let {
+            val crosshair: ImageView = it.findViewById(R.id.centerCrosshair)
+            val addLovespotText: TextView = it.findViewById(R.id.mapAddLovespotText)
+            if (appContext.shouldCloseFabs) {
+                appContext.shouldCloseFabs = false
+                onMapClicked()
+            }
+            if (appContext.areAddLoveSpotFabsOpen) {
+                crosshair.visibility = View.VISIBLE
+                addLovespotText.visibility = View.VISIBLE
+            } else {
+                crosshair.visibility = View.GONE
+                addLovespotText.visibility = View.GONE
+            }
         }
     }
 
@@ -167,28 +169,37 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     override fun onMapReady(googleMap: GoogleMap) {
         val thisView = requireView()
         viewPager2 = getViewPager2(thisView)
-        val linearLayout = viewPager2.parent as ViewGroup
-        val tabLayout = linearLayout.findViewById<TabLayout>(R.id.tab_layout)
-        setMyLocation(googleMap)
-        setMapBehavior(googleMap, tabLayout, thisView)
-        googleMap.setOnInfoWindowClickListener {
-            startActivity(Intent(requireContext(), LoveSpotDetailsActivity::class.java))
-        }
-        MainScope().launch {
-            loveSpotInfoWindowAdapter = LoveSpotInfoWindowAdapter(
-                loveSpotService,
-                requireActivity(),
-            )
-            googleMap.setInfoWindowAdapter(loveSpotInfoWindowAdapter)
-            putLoveSpotsOrLoveMakings(googleMap)
-            appContext.zoomOnLoveSpot?.let {
-                moveCameraTo(LatLng(it.latitude, it.longitude), googleMap)
-                appContext.zoomOnLoveSpot = null
+        viewPager2?.let { vp2 ->
+            val linearLayout = vp2.parent as ViewGroup
+            val tabLayout = linearLayout.findViewById<TabLayout>(R.id.tab_layout)
+            setMyLocation(googleMap)
+            setMapBehavior(googleMap, tabLayout, thisView)
+            googleMap.setOnInfoWindowClickListener {
+                startActivity(Intent(requireContext(), LoveSpotDetailsActivity::class.java))
+            }
+            MainScope().launch {
+                loveSpotInfoWindowAdapter = LoveSpotInfoWindowAdapter(
+                    loveSpotService,
+                    requireActivity(),
+                )
+                googleMap.setInfoWindowAdapter(loveSpotInfoWindowAdapter)
+                if (appContext.shouldClearMap) {
+                    googleMap.clear()
+                    drawnSpots.clear()
+                    appContext.shouldClearMap = false
+                    localSpotsDrawn = false
+                }
+                putMarkersFromLocalDb(googleMap)
+                putMarkersBasedOnCamera(googleMap)
+                appContext.zoomOnLoveSpot?.let {
+                    moveCameraTo(LatLng(it.latitude, it.longitude), googleMap)
+                    appContext.zoomOnLoveSpot = null
+                }
             }
         }
     }
 
-    private fun getViewPager2(thisView: View): ViewPager2 {
+    private fun getViewPager2(thisView: View): ViewPager2? {
         var view = thisView.parent
         while (view !is ViewPager2 && view != null) {
             if (view.parent == null) {
@@ -196,7 +207,11 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
             }
             view = view.parent
         }
-        return view as ViewPager2
+        return if (view is ViewPager2) {
+            view
+        } else {
+            null
+        }
     }
 
     private fun setMyLocation(googleMap: GoogleMap) {
@@ -206,27 +221,37 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
         }
     }
 
-    private suspend fun putLoveSpotsOrLoveMakings(
+    private suspend fun putMarkersFromLocalDb(googleMap: GoogleMap) {
+        if (!localSpotsDrawn) {
+            localSpotsDrawn = true
+            val localSpots = loveSpotService.listSpotsLocally()
+            putLoveSpotListOnMap(localSpots, googleMap)
+        }
+    }
+
+    private suspend fun putMarkersBasedOnCamera(
         googleMap: GoogleMap
     ) {
         appContext.mapCameraTarget = googleMap.cameraPosition.target
-
-        if (mapModeChanged) {
-            googleMap.clear()
-            drawnSpots.clear()
-            mapModeChanged = false
-        }
-
-        if (appContext.shouldClearMap) {
-            googleMap.clear()
-            drawnSpots.clear()
-            appContext.shouldClearMap = false
-        }
 
         val visibleRegion = googleMap.projection.visibleRegion
         val loveSpotsInArea = loveSpotService
             .search(visibleRegion.latLngBounds)
 
+        putLoveSpotListOnMap(loveSpotsInArea, googleMap)
+
+        if (appContext.selectedMarker != null) {
+            appContext.selectedMarker!!.showInfoWindow()
+            openMarkerFabMenu()
+        } else {
+            closeMarkerFabMenu()
+        }
+    }
+
+    private suspend fun putLoveSpotListOnMap(
+        loveSpotsInArea: List<LoveSpot>,
+        googleMap: GoogleMap
+    ) {
         if (mapMode == LOVE_MAKINGS) {
             val loves = loveService.list()
             val spotIdsWithLove = loves.map { it.loveSpotId }.toHashSet()
@@ -240,13 +265,6 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
                 .filter { isNotDrawnYet(it) }
                 .map { loveSpotToMarkerOptions(it) }
                 .forEach { googleMap.addMarker(it) }
-        }
-
-        if (appContext.selectedMarker != null) {
-            appContext.selectedMarker!!.showInfoWindow()
-            openMarkerFabMenu()
-        } else {
-            closeMarkerFabMenu()
         }
     }
 
@@ -320,30 +338,30 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
             false
         }
         googleMap.setOnMapClickListener {
-            viewPager2.isUserInputEnabled = false
+            viewPager2?.isUserInputEnabled = false
             onMapClicked()
             appContext.selectedMarker = null
         }
         googleMap.setOnCameraIdleListener {
             if (cameraMoved) {
                 MainScope().launch {
-                    putLoveSpotsOrLoveMakings(googleMap)
+                    putMarkersBasedOnCamera(googleMap)
                 }
             }
         }
         googleMap.setOnCameraMoveListener {
             if (tabLayout.selectedTabPosition == 2) {
-                viewPager2.isUserInputEnabled = false
+                viewPager2?.isUserInputEnabled = false
             }
             cameraMoved = true
         }
         thisView.setOnTouchListener { _, _ ->
-            viewPager2.isUserInputEnabled = true
+            viewPager2?.isUserInputEnabled = true
             true
         }
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                viewPager2.isUserInputEnabled = true
+                viewPager2?.isUserInputEnabled = true
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
@@ -462,8 +480,8 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     private fun openAddLoveSpotFabs() {
         if (!appContext.areAddLoveSpotFabsOpen) {
             closeMarkerFabMenu()
-            viewPager2.post {
-                viewPager2.setCurrentItem(MAP_PAGE, true)
+            viewPager2?.post {
+                viewPager2?.setCurrentItem(MAP_PAGE, true)
             }
             addSpotOkFab.visibility = View.VISIBLE
             addSpotCancelFab.visibility = View.VISIBLE

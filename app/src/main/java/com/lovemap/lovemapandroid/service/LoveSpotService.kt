@@ -1,6 +1,5 @@
 package com.lovemap.lovemapandroid.service
 
-import android.app.Activity
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.lovemap.lovemapandroid.R
@@ -12,8 +11,9 @@ import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpotDao
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.ui.data.LoveSpotHolder
-import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
 class LoveSpotService(
@@ -40,7 +40,7 @@ class LoveSpotService(
         }
     }
 
-    suspend fun getLoveHolderList(): MutableList<LoveSpotHolder> {
+    suspend fun getLoveSpotHolderList(): MutableList<LoveSpotHolder> {
         return withContext(Dispatchers.IO) {
             val loveSpots = loveSpotDao.getAllOrderedByRating()
             loveSpots.map { loveSpot -> LoveSpotHolder.of(loveSpot) }
@@ -69,29 +69,23 @@ class LoveSpotService(
         }
     }
 
-    suspend fun create(request: CreateLoveSpotRequest, activity: Activity): LoveSpot? {
+    suspend fun create(request: CreateLoveSpotRequest): LoveSpot? {
         return withContext(Dispatchers.IO) {
             savedCreationState = request
             val call = loveSpotApi.create(request)
-            // TODO: show or not???
-//            val loadingBarShower = LoadingBarShower(activity).show()
-            val loadingBarShower = LoadingBarShower(activity)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
-                loadingBarShower.onResponse()
                 toaster.showNoServerToast()
                 return@withContext null
             }
             if (response.isSuccessful) {
                 savedCreationState = null
-                loadingBarShower.onResponse()
                 val loveSpot = response.body()!!
                 loveSpotDao.insert(loveSpot)
                 // TODO: optimize a lot
                 loveSpot
             } else {
-                loadingBarShower.onResponse()
                 val errorMessage: ErrorMessage = response.getErrorMessages()[0]
                 toaster.showToast(errorMessage.translatedString(AppContext.INSTANCE.applicationContext))
                 toaster.showNoServerToast()

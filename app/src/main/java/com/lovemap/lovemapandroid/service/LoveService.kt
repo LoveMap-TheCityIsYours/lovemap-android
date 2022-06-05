@@ -17,7 +17,6 @@ import java.time.Instant
 class LoveService(
     private val loveApi: LoveApi,
     private val loveDao: LoveDao,
-    private val loverService: LoverService,
     private val metadataStore: MetadataStore,
     private val context: Context,
     private val toaster: Toaster,
@@ -166,7 +165,7 @@ class LoveService(
     suspend fun getLoveHolderList(): MutableList<LoveHolder> {
         return withContext(Dispatchers.IO) {
             val loves = loveDao.getAllOrderedByDate()
-            loves.map { love -> LoveHolder.of(love, loverService, context) }
+            loves.map { love -> LoveHolder.of(love, context) }
                 .toMutableList()
         }
     }
@@ -174,7 +173,7 @@ class LoveService(
     suspend fun getLoveHolderListForSpot(): MutableList<LoveHolder> {
         AppContext.INSTANCE.selectedLoveSpotId?.let {
             return getLovesForSpot(AppContext.INSTANCE.selectedLoveSpotId!!)
-                .map { love -> LoveHolder.of(love, loverService, context) }
+                .map { love -> LoveHolder.of(love, context) }
                 .sortedByDescending { it.happenedAtLong }
                 .toMutableList()
         }

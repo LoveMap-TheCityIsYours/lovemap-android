@@ -23,6 +23,7 @@ import com.lovemap.lovemapandroid.service.LoveSpotReviewService
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveFragment
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewLoveSpotFragment
+import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
 import com.lovemap.lovemapandroid.utils.toApiString
 import com.lovemap.lovemapandroid.utils.toFormattedString
 import kotlinx.coroutines.MainScope
@@ -172,6 +173,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
                 it.partnerSelection,
                 true
             )
+            recordLoveFragment.selectedTime = it.happenedAt
             recordLoveFragment.recordLoveHappenedAt.text = it.happenedAt.toFormattedString()
         }
         loveService.savedCreationState = null
@@ -230,21 +232,24 @@ class AddLoveSpotActivity : AppCompatActivity() {
 
     private suspend fun createSpotAndOthers() {
         if (addSpotSubmit.isEnabled) {
+            val loadingBarShower = LoadingBarShower(this).show()
             backupLoveAndReview()
             val loveSpot = createLoveSpot()
             if (loveSpot != null) {
                 if (madeLoveCheckBox.isChecked) {
                     val love = createLove(loveSpot)
                     submitReview(love, loveSpot)
-                } else {
-                    returnHome(loveSpot)
+                    goBack(loveSpot, loadingBarShower)
                 }
+            } else {
+                loadingBarShower.onResponse()
             }
         }
     }
 
     private suspend fun updateLoveSpot() {
         editedLoveSpot?.let {
+            val loadingBarShower = LoadingBarShower(this).show()
             val loveSpot = loveSpotService.update(
                 it.id,
                 UpdateLoveSpotRequest(
@@ -254,13 +259,15 @@ class AddLoveSpotActivity : AppCompatActivity() {
                 )
             )
             if (loveSpot != null) {
-                returnHome(loveSpot)
+                goBack(loveSpot, loadingBarShower)
+            } else {
+                loadingBarShower.onResponse()
             }
         }
     }
 
     private suspend fun createLoveSpot(): LoveSpot? {
-        val loveSpot = loveSpotService.create(
+        return loveSpotService.create(
             CreateLoveSpotRequest(
                 name,
                 appContext.mapCameraTarget.longitude,
@@ -268,9 +275,8 @@ class AddLoveSpotActivity : AppCompatActivity() {
                 description,
                 null,
                 availability
-            ), this@AddLoveSpotActivity
+            )
         )
-        return loveSpot
     }
 
     private suspend fun createLove(loveSpot: LoveSpot): Love? {
@@ -282,11 +288,9 @@ class AddLoveSpotActivity : AppCompatActivity() {
             recordLoveFragment.selectedPartner(),
             recordLoveFragment.addPrivateNote.text.toString()
         )
-        returnHome(loveSpot)
-        val love = loveService.create(
+        return loveService.create(
             loveRequest
         )
-        return love
     }
 
     private suspend fun submitReview(
@@ -329,10 +333,11 @@ class AddLoveSpotActivity : AppCompatActivity() {
         }
     }
 
-    private fun returnHome(loveSpot: LoveSpot) {
+    private fun goBack(loveSpot: LoveSpot, loadingBarShower: LoadingBarShower) {
         appContext.toaster.showToast(R.string.love_spot_added)
         appContext.shouldCloseFabs = true
         appContext.zoomOnLoveSpot = loveSpot
+        loadingBarShower.onResponse()
         onBackPressed()
     }
 

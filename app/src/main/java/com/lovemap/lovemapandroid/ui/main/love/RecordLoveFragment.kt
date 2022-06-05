@@ -25,7 +25,7 @@ import java.util.*
 class RecordLoveFragment : Fragment(), CustomDateTimePicker.ICustomDateTimeListener {
 
     private val appContext = AppContext.INSTANCE
-    private val loverService =appContext.loverService
+    private val loverService = appContext.loverService
 
     lateinit var datePicker: CustomDateTimePicker
     lateinit var recordLoveHappenedAt: TextView
@@ -114,6 +114,6 @@ class RecordLoveFragment : Fragment(), CustomDateTimePicker.ICustomDateTimeListe
         val zonedDateTime =
             ZonedDateTime.of(year, monthNumber + 1, day, hour24, min, sec, 0, timeZone.toZoneId())
         selectedTime = zonedDateTime.toInstant()
-        recordLoveHappenedAt.text =  selectedTime.toFormattedString()
+        recordLoveHappenedAt.text = selectedTime.toFormattedString()
     }
 }

@@ -13,6 +13,7 @@ data class Love(
     @ColumnInfo var loverId: Long,
     @ColumnInfo var happenedAt: String,
     @ColumnInfo var loverPartnerId: Long? = null,
+    @ColumnInfo val partnerName: String? = null,
     @ColumnInfo var note: String? = null
 ) {
     fun getPartnerId(): Long? {

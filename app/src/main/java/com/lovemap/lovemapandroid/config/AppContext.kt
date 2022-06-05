@@ -27,9 +27,7 @@ import com.lovemap.lovemapandroid.ui.events.MapMarkerEventListener
 import com.lovemap.lovemapandroid.utils.AUTHORIZATION_HEADER
 import com.lovemap.lovemapandroid.utils.X_CLIENT_ID_HEADER
 import com.lovemap.lovemapandroid.utils.X_CLIENT_SECRET_HEADER
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -115,19 +113,19 @@ class AppContext : Application() {
             "database"
         ).fallbackToDestructiveMigration().build()
         EventBus.getDefault().register(this)
-        runBlocking {
+        val retrofit = Retrofit.Builder()
+            .client(httpClient())
+            .baseUrl(API_ENDPOINT)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        authenticationService = AuthenticationService(
+            retrofit.create(AuthenticationApi::class.java),
+            metadataStore,
+            toaster,
+            applicationContext
+        )
+        MainScope().launch {
             initClients()
-            val retrofit = Retrofit.Builder()
-                .client(httpClient())
-                .baseUrl(API_ENDPOINT)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-            authenticationService = AuthenticationService(
-                retrofit.create(AuthenticationApi::class.java),
-                metadataStore,
-                toaster,
-                applicationContext
-            )
         }
     }
 
@@ -164,7 +162,6 @@ class AppContext : Application() {
         loveService = LoveService(
             loveApi = authorizingRetrofit.create(LoveApi::class.java),
             loveDao = loveDao,
-            loverService = loverService,
             metadataStore = metadataStore,
             context = applicationContext,
             toaster = toaster,
@@ -203,12 +200,13 @@ class AppContext : Application() {
         } else {
             userId = 0
         }
-        if (userId != 0L) {
-            loverService.getRanks()
-            loveSpotRisks = loveSpotService.getRisks()
-//           TODO: for speeding up start, remove these 2 lines:
-            loveService.list()
-            loveSpotReviewService.getReviewsByLover()
+        withContext(Dispatchers.IO) {
+            if (userId != 0L) {
+                loverService.getRanks()
+                loveSpotRisks = loveSpotService.getRisks()
+                loveService.list()
+                loveSpotReviewService.getReviewsByLover()
+            }
         }
     }
 
@@ -224,7 +222,10 @@ class AppContext : Application() {
                         requestBuilder
                             .addHeader(AUTHORIZATION_HEADER, "Bearer $jwt")
                             .addHeader(X_CLIENT_ID_HEADER, getString(R.string.lovemap_client_id))
-                            .addHeader(X_CLIENT_SECRET_HEADER, getString(R.string.lovemap_client_secret))
+                            .addHeader(
+                                X_CLIENT_SECRET_HEADER,
+                                getString(R.string.lovemap_client_secret)
+                            )
                             .build()
                     } else {
                         requestBuilder.build()
