@@ -16,6 +16,7 @@ class LoveSpotReportService
     private val adminApi: AdminApi,
     private val loveSpotService: LoveSpotService,
     private val loverService: LoverService,
+    private val loveService: LoveService,
     private val metadataStore: MetadataStore,
     private val toaster: Toaster,
 ) {
@@ -42,6 +43,7 @@ class LoveSpotReportService
                 val loveSpot = response.body()
                 toaster.showToast(R.string.loveSpotDeleted)
                 loveSpotService.deleteLocally(loveSpotId)
+                loveService.deleteLocallyBySpotId(loveSpotId)
                 loveSpot
             } else {
                 toaster.showNoServerToast()

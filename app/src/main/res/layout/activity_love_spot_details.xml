@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:scrollbarFadeDuration="0"
+    android:scrollbarAlwaysDrawVerticalTrack="true"
     tools:context=".ui.main.lovespot.LoveSpotDetailsActivity">
 
     <LinearLayout

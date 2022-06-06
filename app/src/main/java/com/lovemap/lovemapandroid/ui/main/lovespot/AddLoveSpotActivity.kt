@@ -239,8 +239,8 @@ class AddLoveSpotActivity : AppCompatActivity() {
                 if (madeLoveCheckBox.isChecked) {
                     val love = createLove(loveSpot)
                     submitReview(love, loveSpot)
-                    goBack(loveSpot, loadingBarShower)
                 }
+                goBack(loveSpot, loadingBarShower)
             } else {
                 loadingBarShower.onResponse()
             }

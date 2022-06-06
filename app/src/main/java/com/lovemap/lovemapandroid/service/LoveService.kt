@@ -191,4 +191,11 @@ class LoveService(
             return@withContext loveDao.loadSingle(id)
         }
     }
+
+    suspend fun deleteLocallyBySpotId(loveSpotId: Long) {
+        return withContext(Dispatchers.IO) {
+            val loves = loveDao.findBySpotId(loveSpotId)
+            loveDao.delete(*loves.toTypedArray())
+        }
+    }
 }

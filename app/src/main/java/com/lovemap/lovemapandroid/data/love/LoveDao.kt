@@ -25,4 +25,7 @@ interface LoveDao {
 
     @Query("SELECT * FROM love WHERE loverPartnerId = :partnerId AND loveSpotId = :spotId")
     fun findByPartnerAndSpotId(partnerId: Long, spotId: Long): List<Love>
+
+    @Query("SELECT * FROM love WHERE loveSpotId = :spotId")
+    fun findBySpotId(spotId: Long): List<Love>
 }

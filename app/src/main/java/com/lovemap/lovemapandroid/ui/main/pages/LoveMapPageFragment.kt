@@ -225,7 +225,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
         if (!localSpotsDrawn) {
             localSpotsDrawn = true
             val localSpots = loveSpotService.listSpotsLocally()
-            putLoveSpotListOnMap(localSpots, googleMap)
+            putLoveSpotListOnMap(localSpots, googleMap, false)
         }
     }
 
@@ -250,27 +250,30 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
 
     private suspend fun putLoveSpotListOnMap(
         loveSpotsInArea: List<LoveSpot>,
-        googleMap: GoogleMap
+        googleMap: GoogleMap,
+        includeInDrawnCache: Boolean = true,
     ) {
         if (mapMode == LOVE_MAKINGS) {
             val loves = loveService.list()
             val spotIdsWithLove = loves.map { it.loveSpotId }.toHashSet()
             loveSpotsInArea
                 .filter { loveSpot -> spotIdsWithLove.contains(loveSpot.id) }
-                .filter { isNotDrawnYet(it) }
+                .filter { isNotDrawnYet(it, includeInDrawnCache) }
                 .map { loveMakingToMarkerOptions(it) }
                 .forEach { googleMap.addMarker(it) }
         } else {
             loveSpotsInArea
-                .filter { isNotDrawnYet(it) }
+                .filter { isNotDrawnYet(it, includeInDrawnCache) }
                 .map { loveSpotToMarkerOptions(it) }
                 .forEach { googleMap.addMarker(it) }
         }
     }
 
-    private fun isNotDrawnYet(it: LoveSpot): Boolean {
+    private fun isNotDrawnYet(it: LoveSpot, includeInDrawnCache: Boolean): Boolean {
         return if (!drawnSpots.contains(it.id)) {
-            drawnSpots.add(it.id)
+            if (includeInDrawnCache) {
+                drawnSpots.add(it.id)
+            }
             true
         } else {
             false

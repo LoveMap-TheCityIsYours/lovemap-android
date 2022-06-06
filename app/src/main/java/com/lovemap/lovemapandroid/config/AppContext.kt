@@ -184,6 +184,7 @@ class AppContext : Application() {
             adminApi = authorizingRetrofit.create(AdminApi::class.java),
             loveSpotService = loveSpotService,
             loverService = loverService,
+            loveService = loveService,
             metadataStore = metadataStore,
             toaster = toaster,
         )
