@@ -98,13 +98,14 @@
 
     <TextView
         android:id="@+id/loveSpotItemDescription"
+        style="@style/TextAppearance.Material3.LabelLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textAlignment="center"
+        android:maxLines="4"
+        android:autoLink="web"
         android:text=" - "
-        style="@style/TextAppearance.Material3.LabelLarge"
-        />
+        android:textAlignment="center" />
 
     <TextView
         style="?android:attr/weekSeparatorLineColor"
