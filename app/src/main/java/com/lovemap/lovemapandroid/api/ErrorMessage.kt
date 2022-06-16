@@ -60,6 +60,10 @@ private val errorCodeMessageMap = HashMap<ErrorCode, Int>().apply {
     put(InvalidLoveSpotName, R.string.invalidLoveSpotName)
     put(InvalidLoveSpotDescription, R.string.invalidLoveSpotDescription)
     put(PartnershipNotFound, R.string.partnershipNotFound)
+    put(InvalidPwResetCode, R.string.invalidPwResetCode)
+    put(PwResetBackoffNotPassed, R.string.pwResetBackoffNotPassed)
+    put(WrongPwResetCode, R.string.wrongPwResetCode)
+    put(PwResetCodeTimedOut, R.string.pwResetCodeTimedOut)
 }
 
 enum class ErrorCode {
@@ -86,6 +90,10 @@ enum class ErrorCode {
     SpotTooCloseToAnother,
     InvalidLoveSpotName,
     InvalidLoveSpotDescription,
+    InvalidPwResetCode,
+    PwResetBackoffNotPassed,
+    WrongPwResetCode,
+    PwResetCodeTimedOut,
 
     UNDEFINED
 }

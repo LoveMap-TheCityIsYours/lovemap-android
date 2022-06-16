@@ -22,7 +22,6 @@ import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.databinding.ActivityLoginBinding
 import com.lovemap.lovemapandroid.ui.main.MainActivity
-import com.lovemap.lovemapandroid.ui.register.RegisterActivity
 import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -61,6 +60,7 @@ class LoginActivity : AppCompatActivity() {
         val password = binding.password
         val login = binding.login
         val register = binding.register
+        val resetPassword = binding.resetPassword
         val loading = binding.loading
 
         loginViewModel =
@@ -120,21 +120,18 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
             }
         }
+
+        resetPassword.setOnClickListener {
+            startActivity(Intent(this, PasswordResetActivity::class.java))
+        }
     }
 
     fun login(email: String, password: String) {
         MainScope().launch {
             val loadingBarShower = LoadingBarShower(this@LoginActivity).show()
-            val loggedInUser = authenticationService.login(email, password)
+            val loggedInUser = authenticationService.login(email.trim(), password)
             if (loggedInUser != null) {
-                Handler(Looper.getMainLooper()).post {
-                    val toast = Toast.makeText(
-                        applicationContext,
-                        getString(R.string.welcome_back) + "${loggedInUser.userName}!",
-                        Toast.LENGTH_SHORT
-                    )
-                    toast.show()
-                }
+                appContext.toaster.showToast(getString(R.string.welcome_back) + "${loggedInUser.userName}!")
                 startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             }
             loadingBarShower.onResponse()

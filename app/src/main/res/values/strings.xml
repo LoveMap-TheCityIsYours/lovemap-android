@@ -181,5 +181,17 @@
     <string name="love_spot_updated">Love Spot updated</string>
     <string name="edit_spot">Edit Spot</string>
     <string name="max_level_reached">MAXED OUT (✿ ♡‿♡)</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="request_code">Request Reset Code</string>
+    <string name="prompt_reset_code">Reset Code</string>
+    <string name="prompt_new_password">New Password</string>
+    <string name="prompt_new_password_again">New Password Again</string>
+    <string name="reset_code_explanation">Type your email, then press the \'Request Reset Code\' button.\n\nA Reset Code will be sent to your email address, that you have to copy to the \'Reset Code\' input box. Check your spam folder if you cannot find the email.\n\nThen specify your new password and press the \'Change Password\' button.</string>
+    <string name="action_change_password">Change Password</string>
+    <string name="invalidPwResetCode">Password Reset Code is 8 characters long.</string>
+    <string name="pwResetBackoffNotPassed">15 minutes must pass before new Reset Code requested.</string>
+    <string name="wrongPwResetCode">Wrong Password Reset Code</string>
+    <string name="pwResetCodeTimedOut">Request new Password Reset Code!</string>
+    <string name="reset_code_requested">Reset Code has been sent to your email address.</string>
 
 </resources>

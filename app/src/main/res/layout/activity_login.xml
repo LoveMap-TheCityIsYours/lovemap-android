@@ -1,46 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    tools:context=".ui.login.LoginActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        tools:context=".ui.login.LoginActivity">
+        android:paddingBottom="@dimen/activity_vertical_margin">
 
         <ImageView
             android:id="@+id/logo"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="fill_parent"
             android:layout_height="250dp"
-            android:src="@drawable/transparent_logo" />
+            android:src="@drawable/transparent_logo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/email"
+            android:layout_width="match_parent"
             android:layout_height="65dp"
-            android:layout_width = "match_parent"
             android:layout_marginTop="50dp"
+            android:autofillHints="yes"
             android:hint="@string/prompt_email"
             android:inputType="textEmailAddress"
             android:selectAllOnFocus="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.781"
-            app:layout_constraintTop_toBottomOf="@+id/logo"
-            android:autofillHints="yes" />
+            app:layout_constraintTop_toBottomOf="@+id/logo" />
 
         <EditText
             android:id="@+id/password"
+            android:layout_width="match_parent"
             android:layout_height="65dp"
-            android:layout_width = "match_parent"
             android:layout_marginTop="28dp"
+            android:autofillHints="yes"
             android:hint="@string/prompt_password"
             android:imeActionLabel="@string/action_sign_in"
             android:imeOptions="actionDone"
@@ -48,41 +49,57 @@
             android:selectAllOnFocus="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/email"
-            android:autofillHints="yes" />
+            app:layout_constraintTop_toBottomOf="@+id/email" />
 
         <Button
             android:id="@+id/login"
-            android:textColor="@color/myColorOnPrimary"
-            android:backgroundTint="@color/myColorPrimary"
             android:layout_width="165dp"
             android:layout_height="60dp"
             android:layout_gravity="start"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="64dp"
+            android:backgroundTint="@color/myColorPrimary"
             android:enabled="false"
             android:text="@string/action_sign_in"
+            android:textColor="@color/myColorOnPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/password"
-            app:layout_constraintVertical_bias="0.2" />
+            app:layout_constraintVertical_bias="0.1" />
 
         <Button
             android:id="@+id/register"
-            android:textColor="@color/myColorOnPrimary"
-            android:backgroundTint="@color/myColorPrimary"
             android:layout_width="165dp"
-            android:layout_height="88dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="64dp"
+            android:backgroundTint="@color/myColorPrimary"
             android:enabled="true"
             android:text="@string/register"
+            android:textColor="@color/myColorOnPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/login"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/resetPassword"
+            android:layout_width="165dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="64dp"
+            android:backgroundTint="@color/myColorPrimary"
+            android:enabled="true"
+            android:text="@string/reset_password"
+            android:textColor="@color/myColorOnPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/register"
             app:layout_constraintVertical_bias="0.0" />
 
         <ProgressBar

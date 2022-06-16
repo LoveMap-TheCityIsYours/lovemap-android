@@ -13,4 +13,10 @@ interface AuthenticationApi {
 
     @POST("/authentication/login")
     fun login(@Body request: LoginLoverRequest): Call<LoverRelationsDto>
+
+    @POST("/authentication/request-password-reset")
+    fun requestPasswordReset(@Body request: ResetPasswordRequest): Call<ResetPasswordResponse>
+
+    @POST("/authentication/new-password")
+    fun newPassword(@Body request: NewPasswordRequest): Call<LoverRelationsDto>
 }
