@@ -120,10 +120,12 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
         changeMapModeFab.setOnClickListener {
             appContext.shouldClearMap = true
             mapMode = if (mapMode == LOVE_SPOTS) {
-                appContext.toaster.showToast(R.string.showing_love_makings)
+                appContext.toaster.showToast(R.string.showing_your_love_makings)
+                changeMapModeFab.setText(R.string.show_love_spots)
                 LOVE_MAKINGS
             } else {
                 appContext.toaster.showToast(R.string.showing_love_spots)
+                changeMapModeFab.setText(R.string.show_lovemakings)
                 LOVE_SPOTS
             }
             mapFragment.getMapAsync(this)

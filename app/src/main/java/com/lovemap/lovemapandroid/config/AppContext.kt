@@ -102,6 +102,18 @@ class AppContext : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        initInstance()
+        MainScope().launch {
+            runBlocking {
+                initClients()
+            }
+            withContext(Dispatchers.IO) {
+                fetchUserData()
+            }
+        }
+    }
+
+    private fun initInstance() {
         INSTANCE = this
         displayDensity = applicationContext.resources.displayMetrics.density
         toaster = Toaster(applicationContext.mainLooper, applicationContext)
@@ -124,9 +136,10 @@ class AppContext : Application() {
             toaster,
             applicationContext
         )
-        MainScope().launch {
-            initClients()
-        }
+        loveDao = database.loveDao()
+        loveSpotDao = database.loveSpotDao()
+        loveSpotReviewDao = database.loveSpotReviewDao()
+        partnershipDao = database.partnershipDao()
     }
 
     override fun onTerminate() {
@@ -147,10 +160,6 @@ class AppContext : Application() {
             .baseUrl(API_ENDPOINT)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        loveDao = database.loveDao()
-        loveSpotDao = database.loveSpotDao()
-        loveSpotReviewDao = database.loveSpotReviewDao()
-        partnershipDao = database.partnershipDao()
         loverService = LoverService(
             authorizingRetrofit.create(LoverApi::class.java),
             loveDao,
@@ -201,13 +210,14 @@ class AppContext : Application() {
         } else {
             userId = 0
         }
-        withContext(Dispatchers.IO) {
-            if (userId != 0L) {
-                loverService.getRanks()
-                loveSpotRisks = loveSpotService.getRisks()
-                loveService.list()
-                loveSpotReviewService.getReviewsByLover()
-            }
+    }
+
+    private suspend fun fetchUserData() {
+        if (userId != 0L) {
+            loverService.getRanks()
+            loveSpotRisks = loveSpotService.getRisks()
+            loveService.list()
+            loveSpotReviewService.getReviewsByLover()
         }
     }
 
@@ -264,7 +274,12 @@ class AppContext : Application() {
     }
 
     suspend fun onLogin() {
-        initClients()
+        runBlocking {
+            initClients()
+        }
+        withContext(Dispatchers.IO) {
+            fetchUserData()
+        }
     }
 
     suspend fun deleteAllData() {

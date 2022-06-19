@@ -114,15 +114,17 @@ class ProfilePageFragment : Fragment() {
             userNameView.text = user.userName
             val lover = loverService.getMyself()
             lover?.let {
-                ProfileUtils.setRanks(
-                    lover.points,
-                    currentRank,
-                    pointsToNextLevel,
-                    profileProgressBar
-                )
-                setTexts(lover)
-                setPartnerships()
-                setLinkSharing(lover)
+                if (isAdded && !isDetached) {
+                    ProfileUtils.setRanks(
+                        lover.points,
+                        currentRank,
+                        pointsToNextLevel,
+                        profileProgressBar
+                    )
+                    setTexts(lover)
+                    setPartnerships()
+                    setLinkSharing(lover)
+                }
             }
             profileSwipeRefreshLayout.isRefreshing = false
         }

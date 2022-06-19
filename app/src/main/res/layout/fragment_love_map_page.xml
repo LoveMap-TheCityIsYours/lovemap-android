@@ -148,7 +148,7 @@
         android:layout_gravity="bottom|start"
         android:layout_marginStart="@dimen/standard_8"
         android:layout_marginBottom="90dp"
-        android:text="@string/switch_map_mode"
+        android:text="@string/show_lovemakings"
         android:textSize="12sp"
         android:textColor="@color/myColorOnPrimary"
         android:backgroundTint="@color/myColorPrimary"
