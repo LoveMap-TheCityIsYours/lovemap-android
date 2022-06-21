@@ -43,6 +43,7 @@ LoveSpotDetailsActivity : AppCompatActivity() {
     private lateinit var spotDetailsDescription: TextView
     private lateinit var spotDetailsCustomAvailabilityText: TextView
     private lateinit var spotDetailsCustomAvailability: TextView
+    private lateinit var loveSpotDetailsTypeImage: ImageView
 
     private lateinit var detailsReviewLoveSpotFragment: ReviewLoveSpotFragment
     private lateinit var haveNotMadeLoveReviewText: TextView
@@ -119,6 +120,7 @@ LoveSpotDetailsActivity : AppCompatActivity() {
         spotDetailsRating = binding.spotDetailsRating
         spotDetailsRisk = binding.spotDetailsRisk
         spotDetailsAvailability = binding.spotDetailsAvailability
+        loveSpotDetailsTypeImage = binding.loveSpotDetailsTypeImage
         spotDetailsType = binding.spotDetailsType
         spotDetailsDescription = binding.spotDetailsDescription
         spotDetailsCustomAvailabilityText = binding.spotDetailsCustomAvailabilityText
@@ -180,6 +182,10 @@ LoveSpotDetailsActivity : AppCompatActivity() {
                 loveSpot,
                 spotDetailsCustomAvailabilityText,
                 spotDetailsCustomAvailability
+            )
+            LoveSpotUtils.setTypeImage(
+                loveSpot.type,
+                loveSpotDetailsTypeImage
             )
             if (canEditLoveSpot(loveSpot.addedBy)) {
                 spotDetailsEditButton.visibility = View.VISIBLE

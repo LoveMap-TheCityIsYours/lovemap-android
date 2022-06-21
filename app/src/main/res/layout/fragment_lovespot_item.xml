@@ -30,91 +30,125 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/TextAppearance.Material3.LabelMedium"
-            android:text="@string/rating"/>
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            />
 
-        <RatingBar
-            android:id="@+id/loveSpotItemRating"
-            style="?android:attr/ratingBarStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/loveSpotItemTypeImage"
+            android:layout_weight="0"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
-            android:layout_marginStart="@dimen/standard_8"
-            android:isIndicator="true"
-            android:numStars="5" />
+            android:src="@drawable/ic_public_space_3" />
 
-    </LinearLayout>
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <TextView
+        <LinearLayout
+            android:layout_weight="8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/TextAppearance.Material3.LabelMedium"
-            android:text="@string/type"/>
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/love_spot_item_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/standard_8"
-            android:text=" - "
-            style="@style/TextAppearance.Material3.LabelLarge" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-    </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextAppearance.Material3.LabelMedium"
+                    android:text="@string/rating"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
+                <RatingBar
+                    android:id="@+id/loveSpotItemRating"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/standard_8"
+                    android:isIndicator="true"
+                    android:numStars="5" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/TextAppearance.Material3.LabelMedium"
-            android:text="@string/availability"/>
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/love_spot_item_availability"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/standard_8"
-            android:text=" - "
-            style="@style/TextAppearance.Material3.LabelLarge" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-    </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextAppearance.Material3.LabelMedium"
+                    android:text="@string/type"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/love_spot_item_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/standard_8"
+                    android:text="Public Space"
+                    style="@style/TextAppearance.Material3.LabelLarge" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            style="@style/TextAppearance.Material3.LabelMedium"
-            android:text="@string/risk"/>
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/loveSpotItemRisk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/standard_8"
-            android:text=" - "
-            style="@style/TextAppearance.Material3.LabelLarge" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextAppearance.Material3.LabelMedium"
+                    android:text="@string/availability"/>
+
+                <TextView
+                    android:id="@+id/love_spot_item_availability"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/standard_8"
+                    android:text="All day"
+                    style="@style/TextAppearance.Material3.LabelLarge" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    style="@style/TextAppearance.Material3.LabelMedium"
+                    android:text="@string/risk"/>
+
+                <TextView
+                    android:id="@+id/loveSpotItemRisk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/standard_8"
+                    android:text="Very risky"
+                    style="@style/TextAppearance.Material3.LabelLarge" />
+
+            </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -124,7 +158,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:maxLines="4"
+        android:maxLines="3"
         android:autoLink="web"
         android:text=" - "
         android:textAlignment="center" />
@@ -136,5 +170,6 @@
         android:layout_marginTop="@dimen/standard_10"
         android:background="@color/myColorPrimary"
         android:gravity="center_horizontal" />
+
 
 </LinearLayout>

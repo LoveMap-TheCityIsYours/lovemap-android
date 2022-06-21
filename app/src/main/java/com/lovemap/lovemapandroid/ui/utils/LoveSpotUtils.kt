@@ -2,6 +2,7 @@ package com.lovemap.lovemapandroid.ui.utils
 
 import android.content.Context
 import android.view.View
+import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import com.lovemap.lovemapandroid.R
@@ -130,6 +131,17 @@ object LoveSpotUtils {
             Type.SEX_BOOTH -> 3
             Type.NIGHT_CLUB -> 4
             Type.OTHER_VENUE -> 5
+        }
+    }
+
+    fun setTypeImage(type: Type, imageView: ImageView) {
+        when (type) {
+            Type.PUBLIC_SPACE -> imageView.setImageResource(R.drawable.ic_public_space_3)
+            Type.SWINGER_CLUB -> imageView.setImageResource(R.drawable.ic_swinger_club_2)
+            Type.CRUISING_SPOT -> imageView.setImageResource(R.drawable.ic_cruising_spot_1)
+            Type.SEX_BOOTH -> imageView.setImageResource(R.drawable.ic_sex_booth_1)
+            Type.NIGHT_CLUB -> imageView.setImageResource(R.drawable.ic_night_club_2)
+            Type.OTHER_VENUE -> imageView.setImageResource(R.drawable.ic_other_venue_1)
         }
     }
 }

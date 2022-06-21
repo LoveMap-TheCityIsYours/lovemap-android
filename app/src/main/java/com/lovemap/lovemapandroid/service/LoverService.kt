@@ -39,7 +39,7 @@ class LoverService(
                 val result: LoverRelationsDto = response.body()!!
                 metadataStore.saveLover(result)
             } else {
-                toaster.showNoServerToast()
+                toaster.showResponseError(response)
                 localLover
             }
         }

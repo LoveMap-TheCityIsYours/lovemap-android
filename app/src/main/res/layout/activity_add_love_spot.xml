@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/add_spot_description"
                 android:inputType="textMultiLine"
-                android:maxLines="5"
+                android:maxLines="10"
                 android:minLines="2" />
 
             <TextView

@@ -2,6 +2,7 @@ package com.lovemap.lovemapandroid.ui.utils
 
 import android.app.Activity
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
@@ -48,6 +49,10 @@ class LoveSpotInfoWindowAdapter(
                     loveSpot,
                     view.findViewById(R.id.marker_custom_availability_text),
                     view.findViewById(R.id.marker_custom_availability)
+                )
+                LoveSpotUtils.setTypeImage(
+                    loveSpot.type,
+                    view.findViewById(R.id.markerTypeImage)
                 )
             }
         }

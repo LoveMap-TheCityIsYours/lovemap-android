@@ -63,9 +63,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="@dimen/standard_16"
+                android:layout_marginBottom="@dimen/standard_8"
                 android:text=" - "
                 android:textColor="@color/myColorOnBackground" />
+
+            <ImageView
+                android:id="@+id/loveSpotDetailsTypeImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/standard_16"
+                android:src="@drawable/ic_public_space_3" />
 
             <TextView
                 android:layout_width="wrap_content"

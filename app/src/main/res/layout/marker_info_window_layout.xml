@@ -62,8 +62,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
-        android:text="@string/risk_unknown"
         android:layout_marginStart="@dimen/standard_16"
+        android:text="@string/risk_unknown"
         android:textColor="@color/myColorOnBackground" />
 
     <TextView
@@ -94,9 +94,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
+        android:autoLink="web"
         android:layout_marginStart="@dimen/standard_16"
         android:maxWidth="@dimen/standard_225"
-        android:maxLines="5"
+        android:maxLines="3"
         android:textColor="@color/myColorOnBackground" />
 
     <TextView
@@ -115,5 +116,14 @@
         android:layout_marginStart="@dimen/standard_16"
         android:maxWidth="@dimen/standard_75"
         android:textColor="@color/myColorOnBackground" />
+
+    <ImageView
+        android:id="@+id/markerTypeImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/standard_16"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_public_space_3" />
 
 </LinearLayout>

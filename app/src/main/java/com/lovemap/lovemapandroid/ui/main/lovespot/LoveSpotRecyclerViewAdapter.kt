@@ -2,6 +2,7 @@ package com.lovemap.lovemapandroid.ui.main.lovespot
 
 import android.content.Intent
 import android.view.*
+import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -61,6 +62,10 @@ class LoveSpotRecyclerViewAdapter(
             loveSpot.type,
             holder.loveSpotItemType
         )
+        LoveSpotUtils.setTypeImage(
+            loveSpot.type,
+            holder.loveSpotItemTypeImage
+        )
         holder.itemView.setOnLongClickListener {
             this.position = holder.absoluteAdapterPosition
             false
@@ -79,6 +84,7 @@ class LoveSpotRecyclerViewAdapter(
         val loveSpotItemType: TextView = binding.loveSpotItemType
         val loveSpotItemRisk: TextView = binding.loveSpotItemRisk
         val loveSpotItemDescription: TextView = binding.loveSpotItemDescription
+        val loveSpotItemTypeImage: ImageView = binding.loveSpotItemTypeImage
         lateinit var loveSpotItem: LoveSpotHolder
 
         init {
