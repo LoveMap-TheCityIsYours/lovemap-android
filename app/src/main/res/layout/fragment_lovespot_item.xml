@@ -61,10 +61,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.Material3.LabelMedium"
+            android:text="@string/type"/>
+
+        <TextView
+            android:id="@+id/love_spot_item_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_8"
+            android:text=" - "
+            style="@style/TextAppearance.Material3.LabelLarge" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.Material3.LabelMedium"
             android:text="@string/availability"/>
 
         <TextView
-            android:id="@+id/lostSpotItemAvailability"
+            android:id="@+id/love_spot_item_availability"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standard_8"

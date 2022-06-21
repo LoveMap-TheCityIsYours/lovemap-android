@@ -2,6 +2,7 @@ package com.lovemap.lovemapandroid.ui.main.love
 
 import android.content.Intent
 import android.view.*
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.lovemap.lovemapandroid.R
@@ -43,7 +44,12 @@ class LoveRecyclerViewAdapter(
         val love = values[position]
         holder.loveItemName.text = love.name
         holder.loveItemPartner.text = love.partner
-        holder.loveItemNote.text = love.note
+        if (love.note.isBlank()) {
+            holder.loveItemNoteView.visibility = View.GONE
+        } else {
+            holder.loveItemNoteView.visibility = View.VISIBLE
+            holder.loveItemNote.text = love.note
+        }
         holder.loveItemHappenedAt.text = love.happenedAt
         holder.loveItem = love
         holder.itemView.setOnLongClickListener {
@@ -55,9 +61,11 @@ class LoveRecyclerViewAdapter(
     override fun getItemCount(): Int = values.size
 
     inner class ViewHolder(binding: FragmentLoveItemBinding) :
-        RecyclerView.ViewHolder(binding.root), View.OnClickListener, View.OnCreateContextMenuListener {
+        RecyclerView.ViewHolder(binding.root), View.OnClickListener,
+        View.OnCreateContextMenuListener {
         val loveItemName: TextView = binding.loveItemName
         val loveItemPartner: TextView = binding.loveItemPartner
+        val loveItemNoteView: LinearLayout = binding.loveItemNoteView
         val loveItemNote: TextView = binding.loveItemNote
         val loveItemHappenedAt: TextView = binding.loveItemHappenedAt
         lateinit var loveItem: LoveHolder

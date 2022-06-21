@@ -195,5 +195,13 @@
     <string name="reset_code_requested">Reset Code has been sent to your email address.</string>
     <string name="show_lovemakings">Show Love-makings</string>
     <string name="show_love_spots">Show Love Spots</string>
+    <string name="type">Type:</string>
+    <string name="type_public_space">Public Space</string>
+    <string name="type_swinger_club">Swinger Club</string>
+    <string name="type_cruising_spot">Cruising Spot</string>
+    <string name="type_sex_booth">Sex Booth</string>
+    <string name="type_night_club">Night Club</string>
+    <string name="type_other_venue">Other Venue</string>
+    <string name="note">Note:</string>
 
 </resources>

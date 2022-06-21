@@ -8,10 +8,9 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.love.CreateLoveRequest
-import com.lovemap.lovemapandroid.api.lovespot.Availability
 import com.lovemap.lovemapandroid.api.lovespot.Availability.ALL_DAY
-import com.lovemap.lovemapandroid.api.lovespot.Availability.NIGHT_ONLY
 import com.lovemap.lovemapandroid.api.lovespot.CreateLoveSpotRequest
+import com.lovemap.lovemapandroid.api.lovespot.Type
 import com.lovemap.lovemapandroid.api.lovespot.UpdateLoveSpotRequest
 import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.config.AppContext
@@ -24,6 +23,10 @@ import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveFragment
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewLoveSpotFragment
 import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
+import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils.availabilityToPosition
+import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils.positionToAvailability
+import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils.positionToType
+import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils.typeToPosition
 import com.lovemap.lovemapandroid.utils.toApiString
 import com.lovemap.lovemapandroid.utils.toFormattedString
 import kotlinx.coroutines.MainScope
@@ -49,8 +52,10 @@ class AddLoveSpotActivity : AppCompatActivity() {
     private lateinit var addSpotSeparator1: TextView
     private lateinit var addSpotSeparator2: TextView
     private lateinit var addSpotAvailability: Spinner
+    private lateinit var addSpotType: Spinner
 
     private var availability = ALL_DAY
+    private var type = Type.PUBLIC_SPACE
     private var name = ""
     private var description = ""
     private var rating = 0
@@ -71,6 +76,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
         setNameText()
         setDescriptionText()
         setAvailabilitySpinner()
+        setTypeSpinner()
     }
 
     private fun initViews() {
@@ -85,6 +91,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
         addSpotSeparator1 = binding.addSpotSeparator1
         addSpotSeparator2 = binding.addSpotSeparator2
         addSpotAvailability = binding.addSpotAvailability
+        addSpotType = binding.addSpotType
         reviewLoveSpotFragment =
             supportFragmentManager.findFragmentById(R.id.addSpotReviewLoveSpotFragment) as ReviewLoveSpotFragment
         recordLoveFragment =
@@ -111,28 +118,39 @@ class AddLoveSpotActivity : AppCompatActivity() {
         addSpotTitle.text = getString(R.string.editLoveSpotTitle)
         MainScope().launch {
             editedLoveSpot = loveSpotService.findLocally(editedLoveSpotId)
-            editedLoveSpot?.let {
-                name = it.name
-                addSpotName.setText(it.name)
-                description = it.description
-                addSpotDescription.setText(it.description)
-                availability = it.availability
-                addSpotAvailability.setSelection(availabilityToPosition(it.availability))
-            }
+            editedLoveSpot?.let { restoreLoveSpot(it) }
         }
     }
 
+    private fun restoreLoveSpot(loveSpot: LoveSpot) {
+        name = loveSpot.name
+        addSpotName.setText(loveSpot.name)
+        description = loveSpot.description
+        addSpotDescription.setText(loveSpot.description)
+        availability = loveSpot.availability
+        addSpotAvailability.setSelection(availabilityToPosition(loveSpot.availability))
+        type = loveSpot.type
+        addSpotType.setSelection(typeToPosition(loveSpot.type))
+    }
+
     private fun restoreSavedLoveSpot() {
-        loveSpotService.savedCreationState?.let {
-            addSpotName.setText(it.name)
-            addSpotDescription.setText(it.description)
-            addSpotAvailability.setSelection(availabilityToPosition(it.availability), true)
-        }
+        loveSpotService.savedCreationState?.let { restoreLoveSpot(it) }
         loveSpotService.savedCreationState = null
         loveService.savedCreationState?.let {
             madeLoveCheckBox.isChecked = true
             showFragments()
         }
+    }
+
+    private fun restoreLoveSpot(it: CreateLoveSpotRequest) {
+        name = it.name
+        addSpotName.setText(it.name)
+        description = it.description
+        addSpotDescription.setText(it.description)
+        availability = it.availability
+        addSpotAvailability.setSelection(availabilityToPosition(it.availability), true)
+        type = it.type
+        addSpotType.setSelection(typeToPosition(it.type), true)
     }
 
     private fun setMadeLoveCheckBox() {
@@ -255,7 +273,8 @@ class AddLoveSpotActivity : AppCompatActivity() {
                 UpdateLoveSpotRequest(
                     name = name,
                     description = description,
-                    availability = availability
+                    availability = availability,
+                    type = type,
                 )
             )
             if (loveSpot != null) {
@@ -274,7 +293,8 @@ class AddLoveSpotActivity : AppCompatActivity() {
                 appContext.mapCameraTarget.latitude,
                 description,
                 null,
-                availability
+                availability,
+                type
             )
         )
     }
@@ -391,18 +411,20 @@ class AddLoveSpotActivity : AppCompatActivity() {
             }
     }
 
-    private fun positionToAvailability(position: Int) =
-        if (position == 0) {
-            ALL_DAY
-        } else {
-            NIGHT_ONLY
-        }
+    private fun setTypeSpinner() {
+        binding.addSpotType.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    adapterView: AdapterView<*>?,
+                    p1: View?,
+                    p2: Int,
+                    p3: Long
+                ) {
+                    type = positionToType(adapterView?.selectedItemPosition ?: 0)
+                }
 
-    private fun availabilityToPosition(availability: Availability): Int {
-        return when (availability) {
-            ALL_DAY -> 0
-            NIGHT_ONLY -> 1
-        }
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
+            }
     }
 
     private fun isSubmitReady(): Boolean {

@@ -6,9 +6,8 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.lovemap.lovemapandroid.databinding.FragmentReviewItemBinding
-import com.lovemap.lovemapandroid.ui.data.LoveHolder
 import com.lovemap.lovemapandroid.ui.data.ReviewHolder
-import com.lovemap.lovemapandroid.ui.utils.LoveSpotDetailsUtils
+import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
 
 class LoveSpotReviewItemRecyclerViewAdapter(
     private val values: MutableList<ReviewHolder>
@@ -32,11 +31,11 @@ class LoveSpotReviewItemRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val review = values[position]
         holder.spotReviewText.text = review.reviewText
-        LoveSpotDetailsUtils.setRating(
+        LoveSpotUtils.setRating(
             review.reviewStars.toDouble(),
             holder.rating
         )
-        LoveSpotDetailsUtils.setRisk(
+        LoveSpotUtils.setRisk(
             review.riskLevel.toDouble(),
             holder.spotReviewRisk
         )

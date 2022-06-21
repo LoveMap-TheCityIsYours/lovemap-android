@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.lovemap.lovemapandroid.api.lovespot.Availability
+import com.lovemap.lovemapandroid.api.lovespot.Type
 import java.time.LocalTime
 
 @Entity(tableName = "love_spot")
@@ -22,6 +23,7 @@ data class LoveSpot(
     @ColumnInfo var averageDanger: Double?,
     @ColumnInfo var numberOfRatings: Int,
     @ColumnInfo var addedBy: Long,
+    @ColumnInfo var type: Type = Type.PUBLIC_SPACE,
 ) {
     fun readCustomAvailability(): Pair<LocalTime, LocalTime>? {
         customAvailability?.let {

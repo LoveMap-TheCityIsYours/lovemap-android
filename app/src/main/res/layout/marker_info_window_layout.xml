@@ -38,6 +38,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
+        android:text="@string/type"
+        android:textColor="@color/gray" />
+
+    <TextView
+        android:id="@+id/marker_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginStart="@dimen/standard_16"
+        android:text=" - "
+        android:textColor="@color/myColorOnBackground" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
         android:text="@string/risk"
         android:textColor="@color/gray" />
 
@@ -63,7 +79,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginStart="@dimen/standard_16"
-        android:text="@string/night_only"
+        android:text=" - "
         android:textColor="@color/myColorOnBackground" />
 
     <TextView

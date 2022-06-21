@@ -21,7 +21,7 @@ import com.lovemap.lovemapandroid.ui.main.lovespot.report.ReportLoveSpotActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.LoveSpotReviewListFragment
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewListActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewLoveSpotFragment
-import com.lovemap.lovemapandroid.ui.utils.LoveSpotDetailsUtils
+import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
 import com.lovemap.lovemapandroid.utils.IS_CLICKABLE
 import com.lovemap.lovemapandroid.utils.canEditLoveSpot
 import kotlinx.coroutines.MainScope
@@ -39,6 +39,7 @@ LoveSpotDetailsActivity : AppCompatActivity() {
     private lateinit var spotDetailsRating: RatingBar
     private lateinit var spotDetailsRisk: TextView
     private lateinit var spotDetailsAvailability: TextView
+    private lateinit var spotDetailsType: TextView
     private lateinit var spotDetailsDescription: TextView
     private lateinit var spotDetailsCustomAvailabilityText: TextView
     private lateinit var spotDetailsCustomAvailability: TextView
@@ -118,6 +119,7 @@ LoveSpotDetailsActivity : AppCompatActivity() {
         spotDetailsRating = binding.spotDetailsRating
         spotDetailsRisk = binding.spotDetailsRisk
         spotDetailsAvailability = binding.spotDetailsAvailability
+        spotDetailsType = binding.spotDetailsType
         spotDetailsDescription = binding.spotDetailsDescription
         spotDetailsCustomAvailabilityText = binding.spotDetailsCustomAvailabilityText
         spotDetailsCustomAvailability = binding.spotDetailsCustomAvailability
@@ -136,11 +138,13 @@ LoveSpotDetailsActivity : AppCompatActivity() {
 
         detailsLoveListFragment =
             supportFragmentManager.findFragmentById(R.id.detailsLoveListFragment) as LoveListFragment
-        (detailsLoveListFragment.view?.findViewById(R.id.loveList) as RecyclerView).isNestedScrollingEnabled = false
+        (detailsLoveListFragment.view?.findViewById(R.id.loveList) as RecyclerView).isNestedScrollingEnabled =
+            false
 
         detailsReviewListFragment =
             supportFragmentManager.findFragmentById(R.id.detailsReviewListFragment) as LoveSpotReviewListFragment
-        (detailsReviewListFragment.view?.findViewById(R.id.reviewList) as RecyclerView).isNestedScrollingEnabled = false
+        (detailsReviewListFragment.view?.findViewById(R.id.reviewList) as RecyclerView).isNestedScrollingEnabled =
+            false
     }
 
     private fun setDetails() {
@@ -156,22 +160,24 @@ LoveSpotDetailsActivity : AppCompatActivity() {
         loveSpot?.let {
             binding.loveSpotTitle.text = loveSpot.name
             spotDetailsDescription.text = loveSpot.description
-            LoveSpotDetailsUtils.setRating(
+            LoveSpotUtils.setRating(
                 loveSpot.averageRating,
                 spotDetailsRating
             )
-            LoveSpotDetailsUtils.setAvailability(
+            LoveSpotUtils.setAvailability(
                 loveSpot.availability,
-                applicationContext,
                 spotDetailsAvailability
             )
-            LoveSpotDetailsUtils.setRisk(
+            LoveSpotUtils.setType(
+                loveSpot.type,
+                spotDetailsType
+            )
+            LoveSpotUtils.setRisk(
                 loveSpot.averageDanger,
                 spotDetailsRisk
             )
-            LoveSpotDetailsUtils.setCustomAvailability(
+            LoveSpotUtils.setCustomAvailability(
                 loveSpot,
-                applicationContext,
                 spotDetailsCustomAvailabilityText,
                 spotDetailsCustomAvailability
             )

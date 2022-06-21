@@ -15,6 +15,15 @@
         <item>Night only</item>
     </string-array>
 
+    <string-array name="type_list">
+        <item>Public Space</item>
+        <item>Swinger Club</item>
+        <item>Cruising Spot</item>
+        <item>Sex Booth</item>
+        <item>Night Club</item>
+        <item>Other Venue</item>
+    </string-array>
+
     <string-array name="spot_risk_levels">
         <item>Safe</item>
         <item>Little risky</item>

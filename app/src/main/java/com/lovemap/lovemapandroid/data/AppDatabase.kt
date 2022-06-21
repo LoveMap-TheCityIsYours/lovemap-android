@@ -13,7 +13,7 @@ import com.lovemap.lovemapandroid.data.partnership.PartnershipDao
 
 @Database(
     entities = [Love::class, LoveSpot::class, LoveSpotReview::class, Partnership::class],
-    version = 7
+    version = 8
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun loveDao(): LoveDao

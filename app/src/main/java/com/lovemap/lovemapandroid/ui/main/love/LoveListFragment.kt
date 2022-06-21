@@ -22,7 +22,6 @@ import kotlinx.coroutines.launch
 
 
 class LoveListFragment : Fragment() {
-
     private val loveService = AppContext.INSTANCE.loveService
     private var isLoveSpotBased: Boolean = false
     private var isPartnerBased: Boolean = false
@@ -78,14 +77,14 @@ class LoveListFragment : Fragment() {
             return super.onContextItemSelected(item)
         }
         val loveHolder = adapter.values[position]
-        when (item.itemId) {
-            EDIT_LOVE_MENU_ID -> {
-                val intent = Intent(requireContext(), RecordLoveActivity::class.java)
-                intent.putExtra(RecordLoveActivity.EDIT, loveHolder.id)
-                startActivity(intent)
-            }
-            DELETE_LOVE_MENU_ID -> {
-                MainScope().launch {
+        MainScope().launch {
+            when (item.itemId) {
+                EDIT_LOVE_MENU_ID -> {
+                    val intent = Intent(requireContext(), RecordLoveActivity::class.java)
+                    intent.putExtra(RecordLoveActivity.EDIT, loveHolder.id)
+                    startActivity(intent)
+                }
+                DELETE_LOVE_MENU_ID -> {
                     loveService.delete(loveHolder.id)
                     updateData()
                 }

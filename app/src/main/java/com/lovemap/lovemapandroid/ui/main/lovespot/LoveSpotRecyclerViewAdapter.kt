@@ -9,7 +9,7 @@ import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.databinding.FragmentLovespotItemBinding
 import com.lovemap.lovemapandroid.ui.data.LoveSpotHolder
-import com.lovemap.lovemapandroid.ui.utils.LoveSpotDetailsUtils
+import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
 import com.lovemap.lovemapandroid.utils.canEditLoveSpot
 
 class LoveSpotRecyclerViewAdapter(
@@ -45,18 +45,21 @@ class LoveSpotRecyclerViewAdapter(
         holder.loveSpotItem = loveSpot
         holder.loveSpotItemName.text = loveSpot.name
         holder.loveSpotItemDescription.text = loveSpot.description
-        LoveSpotDetailsUtils.setRating(
+        LoveSpotUtils.setRating(
             loveSpot.averageRating,
             holder.loveSpotItemRating
         )
-        LoveSpotDetailsUtils.setAvailability(
+        LoveSpotUtils.setAvailability(
             loveSpot.availability,
-            AppContext.INSTANCE.applicationContext,
-            holder.lostSpotItemAvailability
+            holder.loveSpotItemAvailability
         )
-        LoveSpotDetailsUtils.setRisk(
+        LoveSpotUtils.setRisk(
             loveSpot.averageDanger,
             holder.loveSpotItemRisk
+        )
+        LoveSpotUtils.setType(
+            loveSpot.type,
+            holder.loveSpotItemType
         )
         holder.itemView.setOnLongClickListener {
             this.position = holder.absoluteAdapterPosition
@@ -72,7 +75,8 @@ class LoveSpotRecyclerViewAdapter(
 
         val loveSpotItemName: TextView = binding.loveSpotItemName
         val loveSpotItemRating: RatingBar = binding.loveSpotItemRating
-        val lostSpotItemAvailability: TextView = binding.lostSpotItemAvailability
+        val loveSpotItemAvailability: TextView = binding.loveSpotItemAvailability
+        val loveSpotItemType: TextView = binding.loveSpotItemType
         val loveSpotItemRisk: TextView = binding.loveSpotItemRisk
         val loveSpotItemDescription: TextView = binding.loveSpotItemDescription
         lateinit var loveSpotItem: LoveSpotHolder

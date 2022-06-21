@@ -54,6 +54,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:text="@string/type"
+                android:textColor="@color/gray" />
+
+            <TextView
+                android:id="@+id/spotDetailsType"
+                style="@style/TextAppearance.Material3.HeadlineSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/standard_16"
+                android:text=" - "
+                android:textColor="@color/myColorOnBackground" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:text="@string/marker_description"
                 android:textColor="@color/gray" />
 
@@ -98,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="@dimen/standard_16"
-                android:text="@string/night_only"
+                android:text=" - "
                 android:textColor="@color/myColorOnBackground" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

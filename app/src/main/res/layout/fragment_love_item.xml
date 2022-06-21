@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/loveItemView"
-    android:clickable="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/standard_8"
     android:layout_marginEnd="@dimen/standard_8"
     android:layout_marginBottom="@dimen/standard_10"
+    android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
     android:orientation="vertical">
@@ -20,12 +20,12 @@
 
     <TextView
         android:id="@+id/loveItemName"
+        style="@style/TextAppearance.Material3.TitleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textAlignment="center"
-        style="@style/TextAppearance.Material3.TitleLarge"
-        android:text=" - " />
+        android:text=" - "
+        android:textAlignment="center" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,40 +34,54 @@
         android:orientation="horizontal">
 
         <TextView
+            style="@style/TextAppearance.Material3.LabelMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/TextAppearance.Material3.LabelMedium"
-            android:text="@string/partner_colon"/>
+            android:text="@string/partner_colon" />
 
         <TextView
             android:id="@+id/loveItemPartner"
+            style="@style/TextAppearance.Material3.LabelLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standard_8"
-            android:text=" - "
-            style="@style/TextAppearance.Material3.LabelLarge" />
+            android:text=" - " />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/loveItemNote"
-        android:autoLink="web"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/loveItemNoteView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textAlignment="center"
-        android:text=" - "
-        style="@style/TextAppearance.Material3.LabelLarge"
-        />
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/TextAppearance.Material3.LabelMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/note" />
+
+        <TextView
+            android:id="@+id/loveItemNote"
+            style="@style/TextAppearance.Material3.LabelLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:autoLink="web"
+            android:text=" - "
+            android:textAlignment="center" />
+
+    </LinearLayout>
 
 
     <TextView
         android:id="@+id/loveItemHappenedAt"
-        android:layout_gravity="center"
+        style="@style/TextAppearance.Material3.LabelMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" - "
-        style="@style/TextAppearance.Material3.LabelMedium" />
+        android:layout_gravity="center"
+        android:text=" - " />
 
     <TextView
         style="?android:attr/weekSeparatorLineColor"

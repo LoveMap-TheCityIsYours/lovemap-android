@@ -28,22 +28,24 @@ class LoveSpotInfoWindowAdapter(
             EventBus.getDefault().post(MapInfoWindowShownEvent(marker, loveSpot))
             if (loveSpot != null) {
                 setTexts(view, loveSpot)
-                LoveSpotDetailsUtils.setRating(
+                LoveSpotUtils.setRating(
                     loveSpot.averageRating,
                     view.findViewById(R.id.marker_review_rating_bar)
                 )
-                LoveSpotDetailsUtils.setAvailability(
+                LoveSpotUtils.setAvailability(
                     loveSpot.availability,
-                    activity,
                     view.findViewById(R.id.marker_availability)
                 )
-                LoveSpotDetailsUtils.setRisk(
+                LoveSpotUtils.setType(
+                    loveSpot.type,
+                    view.findViewById(R.id.marker_type)
+                )
+                LoveSpotUtils.setRisk(
                     loveSpot.averageDanger,
                     view.findViewById(R.id.marker_risk)
                 )
-                LoveSpotDetailsUtils.setCustomAvailability(
+                LoveSpotUtils.setCustomAvailability(
                     loveSpot,
-                    activity,
                     view.findViewById(R.id.marker_custom_availability_text),
                     view.findViewById(R.id.marker_custom_availability)
                 )
