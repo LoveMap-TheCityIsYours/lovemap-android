@@ -45,11 +45,6 @@ class LoveSpotInfoWindowAdapter(
                     loveSpot.averageDanger,
                     view.findViewById(R.id.marker_risk)
                 )
-                LoveSpotUtils.setCustomAvailability(
-                    loveSpot,
-                    view.findViewById(R.id.marker_custom_availability_text),
-                    view.findViewById(R.id.marker_custom_availability)
-                )
                 LoveSpotUtils.setTypeImage(
                     loveSpot.type,
                     view.findViewById(R.id.markerTypeImage)

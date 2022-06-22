@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:minWidth="@dimen/standard_200"
     android:background="@color/background_color"
-    android:gravity="center"
     android:orientation="vertical"
     android:padding="@dimen/standard_8">
 
@@ -11,76 +11,111 @@
         android:id="@+id/marker_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginBottom="@dimen/standard_8"
         android:text="@string/title"
         android:textColor="@color/myColorOnBackground"
         android:textSize="16sp" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:text="@string/marker_rating"
-        android:textColor="@color/gray" />
+        android:orientation="horizontal">
 
-    <RatingBar
-        android:id="@+id/marker_review_rating_bar"
-        style="?android:attr/ratingBarStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_marginStart="@dimen/standard_16"
-        android:isIndicator="true"
-        android:numStars="5"
-        android:stepSize="0.1" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:text="@string/type"
-        android:textColor="@color/gray" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/marker_rating"
+                android:textColor="@color/gray" />
 
-    <TextView
-        android:id="@+id/marker_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_marginStart="@dimen/standard_16"
-        android:text=" - "
-        android:textColor="@color/myColorOnBackground" />
+            <RatingBar
+                android:id="@+id/marker_review_rating_bar"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/standard_16"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:stepSize="0.1" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:text="@string/risk"
-        android:textColor="@color/gray" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/type"
+                android:textColor="@color/gray" />
 
-    <TextView
-        android:id="@+id/marker_risk"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_marginStart="@dimen/standard_16"
-        android:text="@string/risk_unknown"
-        android:textColor="@color/myColorOnBackground" />
+            <TextView
+                android:id="@+id/marker_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/standard_16"
+                android:text=" - "
+                android:textColor="@color/myColorOnBackground" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:text="@string/marker_availability"
-        android:textColor="@color/gray" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/risk"
+                android:textColor="@color/gray" />
 
-    <TextView
-        android:id="@+id/marker_availability"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_marginStart="@dimen/standard_16"
-        android:text=" - "
-        android:textColor="@color/myColorOnBackground" />
+            <TextView
+                android:id="@+id/marker_risk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/standard_16"
+                android:text="@string/risk_unknown"
+                android:textColor="@color/myColorOnBackground" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/marker_availability"
+                android:textColor="@color/gray" />
+
+            <TextView
+                android:id="@+id/marker_availability"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/standard_16"
+                android:text=" - "
+                android:textColor="@color/myColorOnBackground" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/markerTypeImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_public_space_3" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -94,36 +129,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
+        android:layout_marginStart="@dimen/standard_16"
         android:autoLink="web"
-        android:layout_marginStart="@dimen/standard_16"
-        android:maxWidth="@dimen/standard_225"
-        android:maxLines="3"
+        android:maxWidth="@dimen/standard_200"
+        android:maxLines="2"
+        android:text=" - "
         android:textColor="@color/myColorOnBackground" />
-
-    <TextView
-        android:id="@+id/marker_custom_availability_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:text="@string/marker_custom_availability"
-        android:textColor="@color/gray" />
-
-    <TextView
-        android:id="@+id/marker_custom_availability"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_marginStart="@dimen/standard_16"
-        android:maxWidth="@dimen/standard_75"
-        android:textColor="@color/myColorOnBackground" />
-
-    <ImageView
-        android:id="@+id/markerTypeImage"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/standard_16"
-        android:scaleType="centerInside"
-        android:src="@drawable/ic_public_space_3" />
 
 </LinearLayout>

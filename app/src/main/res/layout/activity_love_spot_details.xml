@@ -69,8 +69,8 @@
 
             <ImageView
                 android:id="@+id/loveSpotDetailsTypeImage"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="@dimen/standard_16"
                 android:src="@drawable/ic_public_space_3" />
