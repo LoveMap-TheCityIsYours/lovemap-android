@@ -1,10 +1,13 @@
 package com.lovemap.lovemapandroid.ui.main.lovespot
 
+import android.content.Context
 import android.os.Bundle
+import android.util.AttributeSet
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.lovemap.lovemapandroid.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -21,6 +24,16 @@ class LoveSpotWidgetFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var widgetType: WidgetType
+
+
+    override fun onInflate(context: Context, attrs: AttributeSet, savedInstanceState: Bundle?) {
+        super.onInflate(context, attrs, savedInstanceState)
+        val attributes = requireActivity().obtainStyledAttributes(attrs, R.styleable.LoveSpotWidget)
+        val widgetTypeAttribute: String = attributes.getString(R.styleable.LoveSpotWidget_spot_widget_type) ?: "BEST"
+        widgetType = WidgetType.valueOf(widgetTypeAttribute)
+        attributes.recycle()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +47,18 @@ class LoveSpotWidgetFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_love_spot_widget, container, false)
+        val view = inflater.inflate(R.layout.fragment_love_spot_widget, container, false)
+        val loveSpotWidgetTitle: TextView = view.findViewById(R.id.loveSpotWidgetTitle)
+        loveSpotWidgetTitle.text = when (widgetType) {
+            WidgetType.BEST -> getString(R.string.best_love_spots_nearby)
+            WidgetType.RECENTLY_ACTIVE -> getString(R.string.hot_love_spots_nearby)
+            WidgetType.CLOSEST -> getString(R.string.closest_love_spots_nearby)
+        }
+        return view
+    }
+
+    enum class WidgetType {
+        BEST, RECENTLY_ACTIVE, CLOSEST
     }
 
     companion object {
@@ -57,4 +80,5 @@ class LoveSpotWidgetFragment : Fragment() {
                 }
             }
     }
+
 }

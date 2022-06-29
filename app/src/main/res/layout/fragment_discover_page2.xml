@@ -31,7 +31,7 @@
             <fragment
                 android:id="@+id/topSpotsWidget"
                 android:name="com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotWidgetFragment"
-                app:spot_widget_type="TOP"
+                app:spot_widget_type="BEST"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standard_32"/>
@@ -39,7 +39,7 @@
             <fragment
                 android:id="@+id/hotSpotsWidget"
                 android:name="com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotWidgetFragment"
-                app:spot_widget_type="HOT"
+                app:spot_widget_type="RECENTLY_ACTIVE"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standard_32"/>

@@ -6,6 +6,6 @@
         <attr name="is_clickable" format="boolean" default="true"/>
     </declare-styleable>
     <declare-styleable name="LoveSpotWidget">
-        <attr name="spot_widget_type" format="string" default="TOP"/>
+        <attr name="spot_widget_type" format="string" default="BEST"/>
     </declare-styleable>
 </resources>
