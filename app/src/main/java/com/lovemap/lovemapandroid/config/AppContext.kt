@@ -102,11 +102,11 @@ class AppContext : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        initInstance()
+        runBlocking {
+            initInstance()
+            initClients()
+        }
         MainScope().launch {
-            runBlocking {
-                initClients()
-            }
             withContext(Dispatchers.IO) {
                 fetchUserData()
             }
