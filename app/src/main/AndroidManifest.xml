@@ -23,7 +23,7 @@
             android:name=".ui.login.PasswordResetActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.main.love.LoveListActivity"
+            android:name=".ui.main.love.list.LoveListActivity"
             android:exported="false" />
         <activity
             android:name=".ui.main.lovespot.review.ReviewListActivity"

@@ -1,4 +1,4 @@
-package com.lovemap.lovemapandroid.ui.main.lovespot
+package com.lovemap.lovemapandroid.ui.main.lovespot.list
 
 import android.content.Intent
 import android.view.*
@@ -10,6 +10,7 @@ import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.databinding.FragmentLovespotItemBinding
 import com.lovemap.lovemapandroid.ui.data.LoveSpotHolder
+import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
 import com.lovemap.lovemapandroid.utils.canEditLoveSpot
 
@@ -36,7 +37,7 @@ class LoveSpotRecyclerViewAdapter(
         )
     }
 
-    override fun onViewRecycled(holder: LoveSpotRecyclerViewAdapter.ViewHolder) {
+    override fun onViewRecycled(holder: ViewHolder) {
         holder.itemView.setOnLongClickListener(null)
         super.onViewRecycled(holder)
     }

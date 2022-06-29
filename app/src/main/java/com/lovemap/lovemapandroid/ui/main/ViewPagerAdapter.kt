@@ -4,10 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.lovemap.lovemapandroid.ui.main.pages.DiscoverPageFragment
-import com.lovemap.lovemapandroid.ui.main.pages.LoveMapPageFragment
-import com.lovemap.lovemapandroid.ui.main.pages.LovesPageFragment
-import com.lovemap.lovemapandroid.ui.main.pages.ProfilePageFragment
+import com.lovemap.lovemapandroid.ui.main.pages.*
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -16,19 +13,17 @@ import com.lovemap.lovemapandroid.ui.main.pages.ProfilePageFragment
 class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
 
     override fun getItemCount(): Int {
-        return 4
+        return 5
     }
 
     override fun createFragment(position: Int): Fragment {
-        if (position == 0) {
-            return LovesPageFragment()
-        } else if (position == 1) {
-            return DiscoverPageFragment()
-        } else if (position == 2) {
-            return LoveMapPageFragment()
-        } else if (position == 3) {
-            return ProfilePageFragment()
+        return when (position) {
+            0 -> LovesPageFragment()
+            1 -> DiscoverPageFragment()
+            2 -> LoveMapPageFragment()
+            3 -> ProfilePageFragment()
+            4 -> DiscoverPageFragment2()
+            else -> throw IllegalArgumentException("Position $position is impossible.")
         }
-        throw IllegalArgumentException("Position $position is impossible.")
     }
 }

@@ -18,7 +18,7 @@ tools:context="com.lovemap.lovemapandroid.ui.main.pages.DiscoverPageFragment">
 
 <fragment
     android:id="@+id/fragmentDiscoverLoveSpotList"
-    android:name="com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotListFragment"
+    android:name="com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotListFragment"
     android:layout_marginBottom="@dimen/standard_75"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" />

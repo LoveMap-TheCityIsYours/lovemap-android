@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.main.lovespot.LoveSpotWidgetFragment">
+
+    <TextView
+        style="?android:attr/weekSeparatorLineColor"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_marginTop="@dimen/standard_8"
+        android:layout_marginBottom="@dimen/standard_8"
+        android:background="@color/separatorLine"
+        android:gravity="center_horizontal" />
+
+    <TextView
+        android:id="@+id/loveSpotWidgetTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextAppearance.Material3.TitleLarge"
+        android:layout_gravity="center"
+        android:textColor="@color/myColorPrimary"
+        android:text="Hot Spots Near You"
+        android:layout_marginBottom="@dimen/standard_8" />
+
+    <fragment
+        android:id="@+id/lovesSpotWidgetItem1"
+        android:name="com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotWidgetItemFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/standard_8" />
+
+    <fragment
+        android:id="@+id/lovesSpotWidgetItem2"
+        android:name="com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotWidgetItemFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/standard_8"/>
+
+    <fragment
+        android:id="@+id/lovesSpotWidgetItem3"
+        android:name="com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotWidgetItemFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/standard_8"/>
+
+    <Button
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+        android:textColor="@color/myColorOnSecondary"
+        style="@style/Widget.MaterialComponents.FloatingActionButton"
+        android:text="@string/more_button"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/standard_8"
+        />
+
+    <TextView
+        style="?android:attr/weekSeparatorLineColor"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/separatorLine"
+        android:gravity="center_horizontal" />
+
+</LinearLayout>

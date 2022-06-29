@@ -1,4 +1,4 @@
-package com.lovemap.lovemapandroid.ui.main.lovespot
+package com.lovemap.lovemapandroid.ui.main.lovespot.list
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,10 +14,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
-import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotRecyclerViewAdapter.Companion.EDIT_LOVE_SPOT_MENU_ID
-import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotRecyclerViewAdapter.Companion.MAKE_LOVE_LOVE_SPOT_MENU_ID
-import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotRecyclerViewAdapter.Companion.REPORT_LOVE_SPOT_MENU_ID
-import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotRecyclerViewAdapter.Companion.WISHLIST_LOVE_SPOT_MENU_ID
+import com.lovemap.lovemapandroid.ui.main.lovespot.AddLoveSpotActivity
+import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotRecyclerViewAdapter.Companion.EDIT_LOVE_SPOT_MENU_ID
+import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotRecyclerViewAdapter.Companion.MAKE_LOVE_LOVE_SPOT_MENU_ID
+import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotRecyclerViewAdapter.Companion.REPORT_LOVE_SPOT_MENU_ID
+import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotRecyclerViewAdapter.Companion.WISHLIST_LOVE_SPOT_MENU_ID
 import com.lovemap.lovemapandroid.ui.main.lovespot.report.ReportLoveSpotActivity
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -39,7 +40,7 @@ class LoveSpotListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val linearLayout =
-            inflater.inflate(R.layout.fragment_lovespot_list, container, false) as LinearLayout
+            inflater.inflate(R.layout.fragment_love_spot_list, container, false) as LinearLayout
         recycleView = linearLayout.findViewById(R.id.loveSpotList)
         progressBar = linearLayout.findViewById(R.id.loveSpotListProgressBar)
         recycleView.isClickable = true

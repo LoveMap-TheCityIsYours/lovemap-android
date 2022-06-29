@@ -19,7 +19,7 @@ import com.lovemap.lovemapandroid.api.relation.RelationStatus
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.partnership.Partnership
 import com.lovemap.lovemapandroid.databinding.ActivityViewOtherLoverBinding
-import com.lovemap.lovemapandroid.ui.main.love.LoveListFragment
+import com.lovemap.lovemapandroid.ui.main.love.list.LoveListFragment
 import com.lovemap.lovemapandroid.ui.relations.ViewOtherLoverActivity.RelationState.*
 import com.lovemap.lovemapandroid.ui.utils.I18nUtils
 import com.lovemap.lovemapandroid.ui.utils.ProfileUtils

@@ -66,6 +66,10 @@ class MainActivity : AppCompatActivity() {
                 applicationContext,
                 R.drawable.ic_baseline_person_24
             )!!,
+            AppCompatResources.getDrawable(
+                applicationContext,
+                R.drawable.ic_baseline_search_24
+            )!!,
         )
     }
 
