@@ -30,7 +30,7 @@ class LoveSpotWidgetFragment : Fragment() {
     override fun onInflate(context: Context, attrs: AttributeSet, savedInstanceState: Bundle?) {
         super.onInflate(context, attrs, savedInstanceState)
         val attributes = requireActivity().obtainStyledAttributes(attrs, R.styleable.LoveSpotWidget)
-        val widgetTypeAttribute: String = attributes.getString(R.styleable.LoveSpotWidget_spot_widget_type) ?: "BEST"
+        val widgetTypeAttribute: String = attributes.getString(R.styleable.LoveSpotWidget_spot_widget_type) ?: "TOP_RATED"
         widgetType = WidgetType.valueOf(widgetTypeAttribute)
         attributes.recycle()
     }
@@ -50,15 +50,16 @@ class LoveSpotWidgetFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_love_spot_widget, container, false)
         val loveSpotWidgetTitle: TextView = view.findViewById(R.id.loveSpotWidgetTitle)
         loveSpotWidgetTitle.text = when (widgetType) {
-            WidgetType.BEST -> getString(R.string.best_love_spots_nearby)
-            WidgetType.RECENTLY_ACTIVE -> getString(R.string.hot_love_spots_nearby)
-            WidgetType.CLOSEST -> getString(R.string.closest_love_spots_nearby)
+            WidgetType.POPULAR -> getString(R.string.popular_love_spots)
+            WidgetType.TOP_RATED -> getString(R.string.top_rated_love_spots)
+            WidgetType.RECENTLY_ACTIVE -> getString(R.string.recently_active_love_spots)
+            WidgetType.CLOSEST -> getString(R.string.closest_love_spots)
         }
         return view
     }
 
     enum class WidgetType {
-        BEST, RECENTLY_ACTIVE, CLOSEST
+        POPULAR, TOP_RATED, RECENTLY_ACTIVE, CLOSEST
     }
 
     companion object {

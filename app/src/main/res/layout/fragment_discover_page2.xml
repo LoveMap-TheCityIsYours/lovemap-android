@@ -29,20 +29,28 @@
                 android:text="@string/discover_love_spots" />
 
             <fragment
-                android:id="@+id/topSpotsWidget"
+                android:id="@+id/popularSpotsWidget"
                 android:name="com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotWidgetFragment"
-                app:spot_widget_type="BEST"
+                app:spot_widget_type="POPULAR"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standard_32"/>
 
             <fragment
-                android:id="@+id/hotSpotsWidget"
+                android:id="@+id/topRatedSpotsWidget"
                 android:name="com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotWidgetFragment"
-                app:spot_widget_type="RECENTLY_ACTIVE"
+                app:spot_widget_type="TOP_RATED"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standard_32"/>
+
+            <fragment
+                android:id="@+id/recentlyActiveSpotsWidget"
+                android:name="com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotWidgetFragment"
+                app:spot_widget_type="RECENTLY_ACTIVE"
+                android:layout_marginBottom="@dimen/standard_32"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <fragment
                 android:id="@+id/closestSpotsWidget"

@@ -207,8 +207,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search_button">Search</string>
     <string name="more_button">More</string>
-    <string name="best_love_spots_nearby">Best Love Spots Nearby</string>
-    <string name="hot_love_spots_nearby">Active Love Spots Nearby</string>
-    <string name="closest_love_spots_nearby">Closest Love Spots</string>
+    <string name="popular_love_spots">Popular Spots</string>
+    <string name="top_rated_love_spots">Top Rated Spots</string>
+    <string name="recently_active_love_spots">Recently Active Spots</string>
+    <string name="closest_love_spots">Closest Spots</string>
 
 </resources>

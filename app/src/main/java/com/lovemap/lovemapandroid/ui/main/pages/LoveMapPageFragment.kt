@@ -238,7 +238,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
 
         val visibleRegion = googleMap.projection.visibleRegion
         val loveSpotsInArea = loveSpotService
-            .search(visibleRegion.latLngBounds)
+            .list(visibleRegion.latLngBounds)
 
         putLoveSpotListOnMap(loveSpotsInArea, googleMap)
 
