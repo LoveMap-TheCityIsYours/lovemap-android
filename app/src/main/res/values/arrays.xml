@@ -30,4 +30,18 @@
         <item>Very risky</item>
     </string-array>
 
+    <string-array name="ordering_list">
+        <item>Popular</item>
+        <item>Top Rated</item>
+        <item>Recently Active</item>
+        <item>Closest</item>
+    </string-array>
+
+    <string-array name="distance_units">
+        <item>meters</item>
+<!--        <item>kilometers</item>-->
+<!--        <item>feet</item>-->
+<!--        <item>miles</item>-->
+    </string-array>
+
 </resources>

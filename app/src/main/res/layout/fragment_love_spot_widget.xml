@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.main.lovespot.LoveSpotWidgetFragment">
+    tools:context=".ui.main.lovespot.widget.LoveSpotWidgetFragment">
 
     <TextView
         style="?android:attr/weekSeparatorLineColor"
@@ -22,33 +22,26 @@
         style="@style/TextAppearance.Material3.TitleLarge"
         android:layout_gravity="center"
         android:textColor="@color/myColorPrimary"
-        android:text="Hot Spots Near You"
+        android:text=" Spots "
         android:layout_marginBottom="@dimen/standard_8" />
 
     <fragment
         android:id="@+id/lovesSpotWidgetItem1"
-        android:name="com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotWidgetItemFragment"
+        android:name="com.lovemap.lovemapandroid.ui.main.lovespot.widget.LoveSpotWidgetItemFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/standard_8" />
 
     <fragment
         android:id="@+id/lovesSpotWidgetItem2"
-        android:name="com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotWidgetItemFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/standard_8"/>
-
-    <fragment
-        android:id="@+id/lovesSpotWidgetItem3"
-        android:name="com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotWidgetItemFragment"
+        android:name="com.lovemap.lovemapandroid.ui.main.lovespot.widget.LoveSpotWidgetItemFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/standard_8"/>
 
     <Button
+        android:id="@+id/loveSpotWidgetMoreButton"
         android:layout_width="wrap_content"
-
         android:layout_height="wrap_content"
         android:textColor="@color/myColorOnSecondary"
         style="@style/Widget.MaterialComponents.FloatingActionButton"

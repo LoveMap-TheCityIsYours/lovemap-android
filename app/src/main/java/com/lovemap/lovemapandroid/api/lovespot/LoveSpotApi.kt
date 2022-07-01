@@ -14,10 +14,10 @@ interface LoveSpotApi {
     @POST("/lovespots/list")
     fun list(@Body request: LoveSpotListRequest): Call<List<LoveSpot>>
 
-    @POST("/lovespots/advancedSearch")
+    @POST("/lovespots/advancedList")
     fun search(
-        @Query("searchResultOrdering") searchResultOrdering: SearchResultOrdering,
-        @Query("searchLocation") searchLocation: SearchLocation,
+        @Query("listOrdering") listOrdering: ListOrdering,
+        @Query("listLocation") listLocation: ListLocation,
         @Body request: LoveSpotSearchRequest
     ): Call<List<LoveSpot>>
 

@@ -1,6 +1,6 @@
 package com.lovemap.lovemapandroid.config
 
-import android.app.Application
+import androidx.multidex.MultiDexApplication
 import androidx.room.Room
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
@@ -36,7 +36,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-class AppContext : Application() {
+class AppContext : MultiDexApplication() {
     lateinit var mapCameraTarget: LatLng
     lateinit var toaster: Toaster
 

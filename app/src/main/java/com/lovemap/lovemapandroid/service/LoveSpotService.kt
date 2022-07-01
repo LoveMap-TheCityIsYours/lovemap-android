@@ -153,8 +153,8 @@ class LoveSpotService(
     }
 
     suspend fun search(
-        ordering: SearchResultOrdering,
-        location: SearchLocation,
+        ordering: ListOrdering,
+        location: ListLocation,
         request: LoveSpotSearchRequest
     ): List<LoveSpot> {
         return withContext(Dispatchers.IO) {

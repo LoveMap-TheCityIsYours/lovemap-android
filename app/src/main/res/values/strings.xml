@@ -211,5 +211,13 @@
     <string name="top_rated_love_spots">Top Rated Spots</string>
     <string name="recently_active_love_spots">Recently Active Spots</string>
     <string name="closest_love_spots">Closest Spots</string>
+    <string name="ordering_button_text">Ordering:</string>
+    <string name="location_button_text">Location:</string>
+    <string name="select_location_filter">Select Location Filter...</string>
+    <string name="country_filter">Country Filter</string>
+    <string name="city_filter">City Filter</string>
+    <string name="nearby_filter">Nearby Filter</string>
+    <string name="within">Within</string>
+    <string name="around_me">around me.</string>
 
 </resources>

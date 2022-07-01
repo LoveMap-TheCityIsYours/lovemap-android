@@ -37,15 +37,15 @@ data class LoveSpotSearchRequest(
     val limit: Int,
     val lat: Double? = null,
     val long: Double? = null,
-    val distance: Int? = null,
+    val distanceInMeters: Int? = null,
     val locationName: String? = null,
 )
 
-enum class SearchResultOrdering {
+enum class ListOrdering {
     CLOSEST, TOP_RATED, RECENTLY_ACTIVE, POPULAR
 }
 
-enum class SearchLocation {
+enum class ListLocation {
     COORDINATE, CITY, COUNTRY
 }
 

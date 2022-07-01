@@ -1,14 +1,17 @@
-package com.lovemap.lovemapandroid.ui.main.lovespot
+package com.lovemap.lovemapandroid.ui.main.lovespot.widget
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.AttributeSet
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import com.lovemap.lovemapandroid.R
+import com.lovemap.lovemapandroid.ui.main.lovespot.list.advanced.AdvancedLoveSpotListActivity
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -30,7 +33,8 @@ class LoveSpotWidgetFragment : Fragment() {
     override fun onInflate(context: Context, attrs: AttributeSet, savedInstanceState: Bundle?) {
         super.onInflate(context, attrs, savedInstanceState)
         val attributes = requireActivity().obtainStyledAttributes(attrs, R.styleable.LoveSpotWidget)
-        val widgetTypeAttribute: String = attributes.getString(R.styleable.LoveSpotWidget_spot_widget_type) ?: "TOP_RATED"
+        val widgetTypeAttribute: String =
+            attributes.getString(R.styleable.LoveSpotWidget_spot_widget_type) ?: "TOP_RATED"
         widgetType = WidgetType.valueOf(widgetTypeAttribute)
         attributes.recycle()
     }
@@ -54,6 +58,10 @@ class LoveSpotWidgetFragment : Fragment() {
             WidgetType.TOP_RATED -> getString(R.string.top_rated_love_spots)
             WidgetType.RECENTLY_ACTIVE -> getString(R.string.recently_active_love_spots)
             WidgetType.CLOSEST -> getString(R.string.closest_love_spots)
+        }
+        val loveSpotWidgetMoreButton: Button = view.findViewById(R.id.loveSpotWidgetMoreButton)
+        loveSpotWidgetMoreButton.setOnClickListener {
+            startActivity(Intent(requireContext(), AdvancedLoveSpotListActivity::class.java))
         }
         return view
     }

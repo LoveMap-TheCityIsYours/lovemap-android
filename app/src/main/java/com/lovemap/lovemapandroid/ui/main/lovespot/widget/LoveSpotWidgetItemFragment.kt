@@ -1,4 +1,4 @@
-package com.lovemap.lovemapandroid.ui.main.lovespot
+package com.lovemap.lovemapandroid.ui.main.lovespot.widget
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

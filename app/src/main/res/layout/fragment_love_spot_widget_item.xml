@@ -10,7 +10,7 @@
     android:layout_marginBottom="@dimen/standard_10"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    tools:context=".ui.main.lovespot.LoveSpotWidgetItemFragment"
+    tools:context=".ui.main.lovespot.widget.LoveSpotWidgetItemFragment"
     android:orientation="vertical">
 
     <TextView
