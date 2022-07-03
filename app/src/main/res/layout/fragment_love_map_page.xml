@@ -50,8 +50,10 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@id/centerCrosshair"
                 android:layout_centerInParent="true"
+                android:textSize="20sp"
+                android:padding="@dimen/standard_8"
                 android:layout_marginBottom="@dimen/standard_100"
-                android:background="@color/myColorSecondary"
+                android:background="@drawable/rounded_corner"
                 android:textColor="@color/myColorOnSecondary"
                 android:text="@string/new_lovespot"
                 android:visibility="gone" />

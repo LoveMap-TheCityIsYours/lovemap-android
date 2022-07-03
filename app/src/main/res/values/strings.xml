@@ -219,5 +219,12 @@
     <string name="nearby_filter">Nearby Filter</string>
     <string name="within">Within</string>
     <string name="around_me">around me.</string>
+    <string name="type_filter_all">All</string>
+    <string name="type_filter_public_space">Public Space</string>
+    <string name="type_filter_swinger_club">Swinger Club</string>
+    <string name="type_filter_cruising_spot">Cruising Spot</string>
+    <string name="type_filter_sex_booth">Sex Booth</string>
+    <string name="type_filter_night_club">Night Club</string>
+    <string name="type_filter_other_venue">Other Venue</string>
 
 </resources>

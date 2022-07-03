@@ -6,7 +6,7 @@ enum class Availability {
     ALL_DAY, NIGHT_ONLY
 }
 
-enum class Type {
+enum class LoveSpotType {
     PUBLIC_SPACE,
     SWINGER_CLUB,
     CRUISING_SPOT,
@@ -22,7 +22,7 @@ data class CreateLoveSpotRequest(
     val description: String,
     val customAvailability: Pair<LocalTime, LocalTime>?,
     val availability: Availability,
-    val type: Type = Type.PUBLIC_SPACE,
+    val type: LoveSpotType = LoveSpotType.PUBLIC_SPACE,
 )
 
 data class LoveSpotListRequest(
@@ -61,6 +61,6 @@ data class UpdateLoveSpotRequest(
     val name: String? = null,
     val description: String? = null,
     val availability: Availability,
-    val type: Type,
+    val type: LoveSpotType,
     val customAvailability: Pair<LocalTime, LocalTime>? = null
 )

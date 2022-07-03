@@ -1,7 +1,7 @@
 package com.lovemap.lovemapandroid.ui.data
 
 import com.lovemap.lovemapandroid.api.lovespot.Availability
-import com.lovemap.lovemapandroid.api.lovespot.Type
+import com.lovemap.lovemapandroid.api.lovespot.LoveSpotType
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 
 data class LoveSpotHolder(
@@ -14,7 +14,7 @@ data class LoveSpotHolder(
     var numberOfReports: Int,
     var customAvailability: String?,
     var availability: Availability,
-    var type: Type,
+    var type: LoveSpotType,
     var averageDanger: Double?,
     var numberOfRatings: Int,
     var addedBy: Long,

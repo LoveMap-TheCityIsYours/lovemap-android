@@ -10,7 +10,7 @@ import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.love.CreateLoveRequest
 import com.lovemap.lovemapandroid.api.lovespot.Availability.ALL_DAY
 import com.lovemap.lovemapandroid.api.lovespot.CreateLoveSpotRequest
-import com.lovemap.lovemapandroid.api.lovespot.Type
+import com.lovemap.lovemapandroid.api.lovespot.LoveSpotType
 import com.lovemap.lovemapandroid.api.lovespot.UpdateLoveSpotRequest
 import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.config.AppContext
@@ -55,7 +55,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
     private lateinit var addSpotType: Spinner
 
     private var availability = ALL_DAY
-    private var type = Type.PUBLIC_SPACE
+    private var type = LoveSpotType.PUBLIC_SPACE
     private var name = ""
     private var description = ""
     private var rating = 0

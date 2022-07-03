@@ -44,8 +44,6 @@
         android:layout_gravity="center"
         android:layout_marginStart="@dimen/standard_8"
         android:layout_marginEnd="@dimen/standard_8"
-        android:layout_marginBottom="@dimen/standard_8"
-
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -126,7 +124,7 @@
             android:layout_marginEnd="@dimen/standard_8"
             android:gravity="center"
             android:text="@string/country_filter"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:icon="@drawable/ic_country4"
             app:iconGravity="textStart" />
 
@@ -153,7 +151,7 @@
             android:layout_marginBottom="@dimen/standard_8"
             android:gravity="center"
             android:text="@string/city_filter"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:icon="@drawable/ic_city4"
             app:iconGravity="textStart" />
 
@@ -178,7 +176,7 @@
             android:layout_marginEnd="@dimen/standard_8"
             android:gravity="center"
             android:text="@string/nearby_filter"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:icon="@drawable/ic_baseline_my_location_24"
             app:iconGravity="textStart" />
 
@@ -239,6 +237,100 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/typeFilterScrollView"
+        android:animateLayoutChanges="true"
+        android:layout_marginBottom="@dimen/standard_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/typeFilterAll"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginStart="@dimen/standard_8"
+                android:layout_marginEnd="@dimen/standard_8"
+                android:textColor="@color/myColorOnSecondary"
+                android:textAllCaps="false"
+                android:background="@drawable/label_filter_on"
+                app:backgroundTint="@null"
+                android:text="@string/type_filter_all" />
+
+            <Button
+                android:id="@+id/typeFilterPublicSpace"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginEnd="@dimen/standard_8"
+                android:textColor="@color/myColorOnSecondary"
+                android:textAllCaps="false"
+                android:background="@drawable/label_filter_off"
+                app:backgroundTint="@null"
+                android:text="@string/type_filter_public_space" />
+
+            <Button
+                android:id="@+id/typeFilterSwingerClub"
+                android:animateLayoutChanges="true"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginEnd="@dimen/standard_8"
+                android:textColor="@color/myColorOnSecondary"
+                android:textAllCaps="false"
+                android:background="@drawable/label_filter_off"
+                app:backgroundTint="@null"
+                android:text="@string/type_filter_swinger_club" />
+
+            <Button
+                android:id="@+id/typeFilterCruisingSpot"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginEnd="@dimen/standard_8"
+                android:textColor="@color/myColorOnSecondary"
+                android:textAllCaps="false"
+                android:background="@drawable/label_filter_off"
+                app:backgroundTint="@null"
+                android:text="@string/type_filter_cruising_spot" />
+
+            <Button
+                android:id="@+id/typeFilterSexBooth"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginEnd="@dimen/standard_8"
+                android:textColor="@color/myColorOnSecondary"
+                android:textAllCaps="false"
+                android:background="@drawable/label_filter_off"
+                app:backgroundTint="@null"
+                android:text="@string/type_filter_sex_booth" />
+
+            <Button
+                android:id="@+id/typeFilterNightClub"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginEnd="@dimen/standard_8"
+                android:textColor="@color/myColorOnSecondary"
+                android:textAllCaps="false"
+                android:background="@drawable/label_filter_off"
+                app:backgroundTint="@null"
+                android:text="@string/type_filter_night_club" />
+
+            <Button
+                android:id="@+id/typeFilterOtherVenue"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginEnd="@dimen/standard_8"
+                android:textColor="@color/myColorOnSecondary"
+                android:textAllCaps="false"
+                android:background="@drawable/label_filter_off"
+                app:backgroundTint="@null"
+                android:text="@string/type_filter_other_venue" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
 
     <TextView
         style="?android:attr/weekSeparatorLineColor"

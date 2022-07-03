@@ -1,13 +1,12 @@
 package com.lovemap.lovemapandroid.ui.utils
 
-import android.content.Context
 import android.view.View
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.Availability
-import com.lovemap.lovemapandroid.api.lovespot.Type
+import com.lovemap.lovemapandroid.api.lovespot.LoveSpotType
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import kotlinx.coroutines.MainScope
@@ -36,17 +35,17 @@ object LoveSpotUtils {
     }
 
     fun setType(
-        type: Type,
+        type: LoveSpotType,
         typeView: TextView
     ) {
         val context = AppContext.INSTANCE.applicationContext
         typeView.text = when (type) {
-                Type.PUBLIC_SPACE -> context.getString(R.string.type_public_space)
-                Type.SWINGER_CLUB -> context.getString(R.string.type_swinger_club)
-                Type.CRUISING_SPOT -> context.getString(R.string.type_cruising_spot)
-                Type.SEX_BOOTH -> context.getString(R.string.type_sex_booth)
-                Type.NIGHT_CLUB -> context.getString(R.string.type_night_club)
-                Type.OTHER_VENUE -> context.getString(R.string.type_other_venue)
+                LoveSpotType.PUBLIC_SPACE -> context.getString(R.string.type_public_space)
+                LoveSpotType.SWINGER_CLUB -> context.getString(R.string.type_swinger_club)
+                LoveSpotType.CRUISING_SPOT -> context.getString(R.string.type_cruising_spot)
+                LoveSpotType.SEX_BOOTH -> context.getString(R.string.type_sex_booth)
+                LoveSpotType.NIGHT_CLUB -> context.getString(R.string.type_night_club)
+                LoveSpotType.OTHER_VENUE -> context.getString(R.string.type_other_venue)
             }
     }
 
@@ -115,33 +114,33 @@ object LoveSpotUtils {
 
     fun positionToType(position: Int) =
         when (position) {
-            0 -> Type.PUBLIC_SPACE
-            1 -> Type.SWINGER_CLUB
-            2 -> Type.CRUISING_SPOT
-            3 -> Type.SEX_BOOTH
-            4 -> Type.NIGHT_CLUB
-            else -> Type.OTHER_VENUE
+            0 -> LoveSpotType.PUBLIC_SPACE
+            1 -> LoveSpotType.SWINGER_CLUB
+            2 -> LoveSpotType.CRUISING_SPOT
+            3 -> LoveSpotType.SEX_BOOTH
+            4 -> LoveSpotType.NIGHT_CLUB
+            else -> LoveSpotType.OTHER_VENUE
         }
 
-    fun typeToPosition(type: Type): Int {
+    fun typeToPosition(type: LoveSpotType): Int {
         return when (type) {
-            Type.PUBLIC_SPACE -> 0
-            Type.SWINGER_CLUB -> 1
-            Type.CRUISING_SPOT -> 2
-            Type.SEX_BOOTH -> 3
-            Type.NIGHT_CLUB -> 4
-            Type.OTHER_VENUE -> 5
+            LoveSpotType.PUBLIC_SPACE -> 0
+            LoveSpotType.SWINGER_CLUB -> 1
+            LoveSpotType.CRUISING_SPOT -> 2
+            LoveSpotType.SEX_BOOTH -> 3
+            LoveSpotType.NIGHT_CLUB -> 4
+            LoveSpotType.OTHER_VENUE -> 5
         }
     }
 
-    fun setTypeImage(type: Type, imageView: ImageView) {
+    fun setTypeImage(type: LoveSpotType, imageView: ImageView) {
         when (type) {
-            Type.PUBLIC_SPACE -> imageView.setImageResource(R.drawable.ic_public_space_3)
-            Type.SWINGER_CLUB -> imageView.setImageResource(R.drawable.ic_swinger_club_2)
-            Type.CRUISING_SPOT -> imageView.setImageResource(R.drawable.ic_cruising_spot_1)
-            Type.SEX_BOOTH -> imageView.setImageResource(R.drawable.ic_sex_booth_1)
-            Type.NIGHT_CLUB -> imageView.setImageResource(R.drawable.ic_night_club_2)
-            Type.OTHER_VENUE -> imageView.setImageResource(R.drawable.ic_other_venue_1)
+            LoveSpotType.PUBLIC_SPACE -> imageView.setImageResource(R.drawable.ic_public_space_3)
+            LoveSpotType.SWINGER_CLUB -> imageView.setImageResource(R.drawable.ic_swinger_club_2)
+            LoveSpotType.CRUISING_SPOT -> imageView.setImageResource(R.drawable.ic_cruising_spot_1)
+            LoveSpotType.SEX_BOOTH -> imageView.setImageResource(R.drawable.ic_sex_booth_1)
+            LoveSpotType.NIGHT_CLUB -> imageView.setImageResource(R.drawable.ic_night_club_2)
+            LoveSpotType.OTHER_VENUE -> imageView.setImageResource(R.drawable.ic_other_venue_1)
         }
     }
 }
