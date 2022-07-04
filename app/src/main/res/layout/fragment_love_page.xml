@@ -21,7 +21,6 @@
     <fragment
         android:id="@+id/fragmentLovesLoveList"
         android:name="com.lovemap.lovemapandroid.ui.main.love.list.LoveListFragment"
-        android:layout_marginBottom="@dimen/standard_75"
         app:love_spot_based="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

@@ -1,14 +1,11 @@
 package com.lovemap.lovemapandroid.ui.main.lovespot.list.advanced
 
-import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.Button
 import android.widget.HorizontalScrollView
-import androidx.appcompat.content.res.AppCompatResources
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotType
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotType.*
-import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.ui.main.lovespot.list.advanced.AdvSpotListFilterState.isAllFilterOn
 import com.lovemap.lovemapandroid.ui.main.lovespot.list.advanced.AdvSpotListFilterState.isTypeFilterOn
 import com.lovemap.lovemapandroid.ui.main.lovespot.list.advanced.AdvSpotListFilterState.setAllFilterOff
@@ -26,10 +23,6 @@ class AdvSpotListTypeFilterLogic(
     private val typeFilterNightClub: Button,
     private val typeFilterOtherVenue: Button,
 ) {
-    private val filterOnBackground =
-        AppCompatResources.getDrawable(AppContext.INSTANCE, R.drawable.label_filter_on)
-    private val filterOffBackground =
-        AppCompatResources.getDrawable(AppContext.INSTANCE, R.drawable.label_filter_off)
     private val filterOnResource = R.drawable.label_filter_on
     private val filterOffResource = R.drawable.label_filter_off
 

@@ -2,27 +2,25 @@ package com.lovemap.lovemapandroid.ui.main
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.lovemap.lovemapandroid.ui.main.pages.*
+import com.lovemap.lovemapandroid.ui.main.pages.DiscoverPageFragment2
+import com.lovemap.lovemapandroid.ui.main.pages.LoveMapPageFragment
+import com.lovemap.lovemapandroid.ui.main.pages.LovesPageFragment
+import com.lovemap.lovemapandroid.ui.main.pages.ProfilePageFragment
 
-/**
- * A [FragmentPagerAdapter] that returns a fragment corresponding to
- * one of the sections/tabs/pages.
- */
-class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
+class MainViewPagerAdapter(fragmentActivity: FragmentActivity) :
+    FragmentStateAdapter(fragmentActivity) {
 
     override fun getItemCount(): Int {
-        return 5
+        return 4
     }
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> LovesPageFragment()
-            1 -> DiscoverPageFragment()
+            1 -> DiscoverPageFragment2()
             2 -> LoveMapPageFragment()
             3 -> ProfilePageFragment()
-            4 -> DiscoverPageFragment2()
             else -> throw IllegalArgumentException("Position $position is impossible.")
         }
     }

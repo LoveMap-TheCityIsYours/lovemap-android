@@ -14,7 +14,6 @@
     <color name="buttonBackground">#3700B3</color>
     <color name="separatorLine">#D1BCFF</color>
 
-    <!-- # because register button is fuckling with us -->
     <color name="myAppBar">#000000</color>
 
 
@@ -29,7 +28,8 @@
     <color name="myColorOnSecondary">@color/black</color>
 
     <color name="myCardColor">#1A1049</color>
-
     <color name="myColorOnBackground">#FFFFFF</color>
+
+    <color name="tabSelectedIconColor">#E5C0FA</color>
 
 </resources>

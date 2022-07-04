@@ -2,10 +2,17 @@ package com.lovemap.lovemapandroid.ui.main
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.BlendMode
+import android.graphics.BlendModeColorFilter
+import android.graphics.ColorFilter
+import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.BlendModeColorFilterCompat
+import androidx.core.graphics.BlendModeCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -13,14 +20,15 @@ import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.databinding.ActivityMainBinding
 
+
 const val MAP_PAGE = 2
 
 class MainActivity : AppCompatActivity() {
 
     private val appContext = AppContext.INSTANCE
-    private lateinit var viewPager2: ViewPager2
     private lateinit var binding: ActivityMainBinding
 
+    private lateinit var viewPager2: ViewPager2
     private lateinit var tabLayout: TabLayout
     private lateinit var icons: Array<Drawable>
 
@@ -37,6 +45,25 @@ class MainActivity : AppCompatActivity() {
         viewPager2.post {
             viewPager2.setCurrentItem(MAP_PAGE, true)
         }
+
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                val tabIconColor =
+                    ContextCompat.getColor(applicationContext, R.color.tabSelectedIconColor)
+                val colorFilter =
+                    BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                        tabIconColor,
+                        BlendModeCompat.SRC_IN
+                    )
+                tab.icon?.colorFilter = colorFilter
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+                tab.icon?.clearColorFilter()
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
     }
 
     private fun initViews() {
@@ -44,7 +71,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         icons = initIcons()
         viewPager2 = binding.viewPager
-        viewPager2.adapter = ViewPagerAdapter(this)
+        viewPager2.adapter = MainViewPagerAdapter(this)
         tabLayout = binding.tabLayout
     }
 
@@ -65,10 +92,6 @@ class MainActivity : AppCompatActivity() {
             AppCompatResources.getDrawable(
                 applicationContext,
                 R.drawable.ic_baseline_person_24
-            )!!,
-            AppCompatResources.getDrawable(
-                applicationContext,
-                R.drawable.ic_baseline_search_24
             )!!,
         )
     }
