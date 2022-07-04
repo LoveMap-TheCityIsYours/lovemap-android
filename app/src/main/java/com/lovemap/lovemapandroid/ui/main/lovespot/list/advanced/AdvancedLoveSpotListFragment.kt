@@ -8,6 +8,12 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import com.lovemap.lovemapandroid.R
+import com.lovemap.lovemapandroid.ui.events.LoveSpotListFiltersChanged
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class AdvancedLoveSpotListFragment : Fragment() {
 
@@ -49,8 +55,20 @@ class AdvancedLoveSpotListFragment : Fragment() {
             typeFilterNightClub = view.findViewById(R.id.typeFilterNightClub),
             typeFilterOtherVenue = view.findViewById(R.id.typeFilterOtherVenue),
         )
+
+        EventBus.getDefault().register(this)
         
         return view
+    }
+
+    override fun onDestroyView() {
+        EventBus.getDefault().unregister(this)
+        super.onDestroyView()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onLoveSpotListFiltersChanged(event: LoveSpotListFiltersChanged) {
+        (view as LinearLayout).layoutTransition.disableTransitionType(LayoutTransition.CHANGING)
     }
 
 }

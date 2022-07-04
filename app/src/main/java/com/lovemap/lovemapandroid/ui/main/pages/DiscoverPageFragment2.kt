@@ -10,6 +10,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.ui.events.LoveSpotWidgetMoreClicked
+import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotListFilterState
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -49,7 +50,7 @@ class DiscoverPageFragment2 : Fragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onLoveSpotWidgetMoreClicked(event: LoveSpotWidgetMoreClicked) {
-        // TODO: set ordering from event.ordering
+        LoveSpotListFilterState.listOrdering = event.ordering
         viewPager2.post {
             viewPager2.setCurrentItem(SEARCH_PAGE, true)
         }

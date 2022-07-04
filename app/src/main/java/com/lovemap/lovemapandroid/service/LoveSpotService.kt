@@ -48,6 +48,18 @@ class LoveSpotService(
         }
     }
 
+    suspend fun getLoveSpotHolderList(
+        listOrdering: ListOrdering,
+        listLocation: ListLocation,
+        loveSpotSearchRequest: LoveSpotSearchRequest
+    ): MutableList<LoveSpotHolder> {
+        return withContext(Dispatchers.IO) {
+            val loveSpots = search(listOrdering, listLocation, loveSpotSearchRequest)
+            loveSpots.map { loveSpot -> LoveSpotHolder.of(loveSpot) }
+                .toMutableList()
+        }
+    }
+
     suspend fun refresh(id: Long): LoveSpot? {
         return withContext(Dispatchers.IO) {
             val localSpot = loveSpotDao.loadSingle(id)

@@ -7,3 +7,5 @@ import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 data class MapInfoWindowShownEvent(val marker: Marker, val loveSpot: LoveSpot?)
 
 data class LoveSpotWidgetMoreClicked(val ordering: ListOrdering)
+
+class LoveSpotListFiltersChanged

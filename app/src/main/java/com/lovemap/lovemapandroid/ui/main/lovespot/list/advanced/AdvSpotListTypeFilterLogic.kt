@@ -6,12 +6,7 @@ import android.widget.HorizontalScrollView
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotType
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotType.*
-import com.lovemap.lovemapandroid.ui.main.lovespot.list.advanced.AdvSpotListFilterState.isAllFilterOn
-import com.lovemap.lovemapandroid.ui.main.lovespot.list.advanced.AdvSpotListFilterState.isTypeFilterOn
-import com.lovemap.lovemapandroid.ui.main.lovespot.list.advanced.AdvSpotListFilterState.setAllFilterOff
-import com.lovemap.lovemapandroid.ui.main.lovespot.list.advanced.AdvSpotListFilterState.setAllFilterOn
-import com.lovemap.lovemapandroid.ui.main.lovespot.list.advanced.AdvSpotListFilterState.setTypeFilterOff
-import com.lovemap.lovemapandroid.ui.main.lovespot.list.advanced.AdvSpotListFilterState.setTypeFilterOn
+import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotListFilterState
 
 class AdvSpotListTypeFilterLogic(
     private val typeFilterScrollView: HorizontalScrollView,
@@ -44,16 +39,16 @@ class AdvSpotListTypeFilterLogic(
         buttonToTypeMap[typeFilterNightClub] = NIGHT_CLUB
         buttonToTypeMap[typeFilterOtherVenue] = OTHER_VENUE
 
-        if (isAllFilterOn()) {
+        if (LoveSpotListFilterState.isAllFilterOn()) {
             allButtonClicked()
         } else {
             updateBackground(typeFilterAll, filterOffResource)
             typeToButtonMap.keys.forEach {
-                if (isTypeFilterOn(it)) {
-                    setTypeFilterOn(it)
+                if (LoveSpotListFilterState.isTypeFilterOn(it)) {
+                    LoveSpotListFilterState.setTypeFilterOn(it)
                     updateBackground(typeToButtonMap[it]!!, filterOnResource)
                 } else {
-                    setTypeFilterOff(it)
+                    LoveSpotListFilterState.setTypeFilterOff(it)
                     updateBackground(typeToButtonMap[it]!!, filterOffResource)
                 }
             }
@@ -71,19 +66,37 @@ class AdvSpotListTypeFilterLogic(
 
     private fun typeButtonClicked(button: Button) {
         buttonToTypeMap[button]?.let {
-            if (isAllFilterOn()) {
+            if (LoveSpotListFilterState.isAllFilterOn()) {
                 turnAllFilterOff(button, it)
-            } else if (isTypeFilterOn(it)) {
-                setTypeFilterOff(it)
-                updateBackground(button, filterOffResource)
+            } else if (LoveSpotListFilterState.isTypeFilterOn(it)) {
+                turnTypeFilterOff(it, button)
             } else {
-                setTypeFilterOn(it)
-                if (isAllFilterOn()) {
-                    allButtonClicked()
-                } else {
-                    updateBackground(button, filterOnResource)
-                }
+                turnTypeFilterOn(it, button)
             }
+        }
+    }
+
+    private fun turnTypeFilterOff(
+        it: LoveSpotType,
+        button: Button
+    ) {
+        LoveSpotListFilterState.setTypeFilterOff(it)
+        if (LoveSpotListFilterState.getSelectedTypes().isEmpty()) {
+            allButtonClicked()
+        } else {
+            updateBackground(button, filterOffResource)
+        }
+    }
+
+    private fun turnTypeFilterOn(
+        it: LoveSpotType,
+        button: Button
+    ) {
+        LoveSpotListFilterState.setTypeFilterOn(it)
+        if (LoveSpotListFilterState.isAllFilterOn()) {
+            allButtonClicked()
+        } else {
+            updateBackground(button, filterOnResource)
         }
     }
 
@@ -93,34 +106,34 @@ class AdvSpotListTypeFilterLogic(
     }
 
     private fun allButtonClicked() {
-        setAllFilterOn()
+        LoveSpotListFilterState.setAllFilterOn()
         updateBackground(typeFilterAll, filterOnResource)
         buttonToTypeMap.keys.forEach { updateBackground(it, filterOffResource) }
         typeFilterScrollView.fullScroll(View.FOCUS_LEFT)
     }
 
     private fun turnAllFilterOff(button: Button, loveSpotType: LoveSpotType) {
-        setAllFilterOff(loveSpotType)
+        LoveSpotListFilterState.setAllFilterOff(loveSpotType)
         updateBackground(button, filterOnResource)
         updateBackground(typeFilterAll, filterOffResource)
     }
 
     fun getOnButtons(): List<Button> {
-        return if (isAllFilterOn()) {
+        return if (LoveSpotListFilterState.isAllFilterOn()) {
             listOf(typeFilterAll)
         } else {
             typeToButtonMap
-                .filter { isTypeFilterOn(it.key) }
+                .filter { LoveSpotListFilterState.isTypeFilterOn(it.key) }
                 .map { it.value }
         }
     }
 
     fun getOffButtons(): List<Button> {
-        return if (isAllFilterOn()) {
+        return if (LoveSpotListFilterState.isAllFilterOn()) {
             typeToButtonMap.map { it.value }
         } else {
             typeToButtonMap
-                .filter { !isTypeFilterOn(it.key) }
+                .filter { !LoveSpotListFilterState.isTypeFilterOn(it.key) }
                 .map { it.value }
         }
     }

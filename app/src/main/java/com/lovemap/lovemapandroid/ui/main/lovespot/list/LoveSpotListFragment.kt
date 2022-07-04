@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
+import com.lovemap.lovemapandroid.ui.events.LoveSpotListFiltersChanged
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.AddLoveSpotActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotRecyclerViewAdapter.Companion.EDIT_LOVE_SPOT_MENU_ID
@@ -22,6 +23,9 @@ import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotRecyclerViewAdap
 import com.lovemap.lovemapandroid.ui.main.lovespot.report.ReportLoveSpotActivity
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class LoveSpotListFragment : Fragment() {
     private val appContext = AppContext.INSTANCE
@@ -33,6 +37,7 @@ class LoveSpotListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        EventBus.getDefault().register(this)
     }
 
     override fun onCreateView(
@@ -89,7 +94,28 @@ class LoveSpotListFragment : Fragment() {
     }
 
     private suspend fun updateData() {
-        adapter.updateData(loveSpotService.getLoveSpotHolderList())
+        val loveSpots = loveSpotService.getLoveSpotHolderList(
+            listOrdering = LoveSpotListFilterState.listOrdering,
+            listLocation = LoveSpotListFilterState.listLocation,
+            loveSpotSearchRequest = LoveSpotListFilterState.createSearchRequest()
+        )
+        adapter.updateData(loveSpots)
         adapter.notifyDataSetChanged()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onLoveSpotListFiltersChanged(event: LoveSpotListFiltersChanged) {
+        MainScope().launch {
+            recycleView.visibility = View.GONE
+            progressBar.visibility = View.VISIBLE
+            updateData()
+            progressBar.visibility = View.GONE
+            recycleView.visibility = View.VISIBLE
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
     }
 }

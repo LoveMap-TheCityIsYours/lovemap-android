@@ -10,10 +10,9 @@
     <ProgressBar
         android:id="@+id/loveSpotListProgressBar"
         style="?android:progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/standard_50"
         android:indeterminateTint="@color/myColorPrimary" />
 
     <androidx.recyclerview.widget.RecyclerView

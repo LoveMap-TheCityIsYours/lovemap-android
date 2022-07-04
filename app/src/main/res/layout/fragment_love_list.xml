@@ -11,9 +11,8 @@
         android:id="@+id/loveListProgressBar"
         style="?android:progressBarStyleLarge"
         android:indeterminateTint="@color/myColorPrimary"
-        android:layout_marginTop="@dimen/standard_50"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center" />
 
     <androidx.recyclerview.widget.RecyclerView

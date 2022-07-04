@@ -39,6 +39,7 @@ data class LoveSpotSearchRequest(
     val long: Double? = null,
     val distanceInMeters: Int? = null,
     val locationName: String? = null,
+    val typeFilter: List<LoveSpotType> = LoveSpotType.values().toList()
 )
 
 enum class ListOrdering {
