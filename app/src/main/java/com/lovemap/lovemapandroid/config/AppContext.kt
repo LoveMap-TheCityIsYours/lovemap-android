@@ -22,6 +22,7 @@ import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReviewDao
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.data.partnership.PartnershipDao
 import com.lovemap.lovemapandroid.service.*
+import com.lovemap.lovemapandroid.ui.events.LocationUpdated
 import com.lovemap.lovemapandroid.ui.events.MapInfoWindowShownEvent
 import com.lovemap.lovemapandroid.ui.events.MapMarkerEventListener
 import com.lovemap.lovemapandroid.utils.AUTHORIZATION_HEADER
@@ -57,6 +58,14 @@ class AppContext : MultiDexApplication() {
     lateinit var database: AppDatabase
 
     lateinit var mapMarkerEventListener: MapMarkerEventListener
+
+    var lastLocation: com.javadocmd.simplelatlng.LatLng? = null
+        set(value) {
+            field = value
+            if (value != null) {
+                EventBus.getDefault().post(LocationUpdated(value))
+            }
+        }
 
     @Volatile
     var userId: Long = 0

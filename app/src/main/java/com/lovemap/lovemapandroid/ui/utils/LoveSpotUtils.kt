@@ -143,5 +143,14 @@ object LoveSpotUtils {
             LoveSpotType.OTHER_VENUE -> imageView.setImageResource(R.drawable.ic_other_venue_1)
         }
     }
+
+    fun setDistance(distanceKm: Double?, loveSpotItemDistance: TextView) {
+        distanceKm ?.let {
+            loveSpotItemDistance.visibility = View.VISIBLE
+            loveSpotItemDistance.text = String.format("%.1f", it) + " km"
+        } ?: run {
+            loveSpotItemDistance.visibility = View.GONE
+        }
+    }
 }
 

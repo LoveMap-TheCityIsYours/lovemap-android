@@ -12,6 +12,7 @@ import com.lovemap.lovemapandroid.data.lovespot.LoveSpotDao
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.ui.data.LoveSpotHolder
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import kotlin.math.max
 import kotlin.math.min
@@ -55,6 +56,7 @@ class LoveSpotService(
     ): MutableList<LoveSpotHolder> {
         return withContext(Dispatchers.IO) {
             val loveSpots = search(listOrdering, listLocation, loveSpotSearchRequest)
+            delay(200)
             loveSpots.map { loveSpot -> LoveSpotHolder.of(loveSpot) }
                 .toMutableList()
         }

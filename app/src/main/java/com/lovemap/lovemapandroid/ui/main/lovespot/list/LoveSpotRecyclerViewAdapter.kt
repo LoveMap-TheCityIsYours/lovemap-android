@@ -67,6 +67,10 @@ class LoveSpotRecyclerViewAdapter(
             loveSpot.type,
             holder.loveSpotItemTypeImage
         )
+        LoveSpotUtils.setDistance(
+            loveSpot.distanceKm,
+            holder.loveSpotItemDistance
+        )
         holder.itemView.setOnLongClickListener {
             this.position = holder.absoluteAdapterPosition
             false
@@ -84,6 +88,7 @@ class LoveSpotRecyclerViewAdapter(
         val loveSpotItemAvailability: TextView = binding.loveSpotItemAvailability
         val loveSpotItemType: TextView = binding.loveSpotItemType
         val loveSpotItemRisk: TextView = binding.loveSpotItemRisk
+        val loveSpotItemDistance: TextView = binding.loveSpotItemDistance
         val loveSpotItemDescription: TextView = binding.loveSpotItemDescription
         val loveSpotItemTypeImage: ImageView = binding.loveSpotItemTypeImage
         lateinit var loveSpotItem: LoveSpotHolder

@@ -56,6 +56,7 @@
 
         <LinearLayout
             android:layout_weight="8"
+            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -150,7 +151,28 @@
                     style="@style/TextAppearance.Material3.LabelLarge" />
 
             </LinearLayout>
+
         </LinearLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            />
+
+        <TextView
+            android:id="@+id/spotWidgetItemDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_gravity="center"
+            android:text="15 km"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            />
 
     </LinearLayout>
     <TextView

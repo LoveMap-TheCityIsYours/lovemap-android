@@ -11,6 +11,9 @@ import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.location.CurrentLocationRequest
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.ui.events.LoveSpotListFiltersChanged
@@ -109,8 +112,8 @@ class LoveSpotListFragment : Fragment() {
             recycleView.visibility = View.GONE
             progressBar.visibility = View.VISIBLE
             updateData()
-            progressBar.visibility = View.GONE
             recycleView.visibility = View.VISIBLE
+            progressBar.visibility = View.GONE
         }
     }
 
