@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import com.lovemap.lovemapandroid.R
+import com.lovemap.lovemapandroid.config.AppContext
 
 class AdvancedLoveSpotListFragment : Fragment() {
 

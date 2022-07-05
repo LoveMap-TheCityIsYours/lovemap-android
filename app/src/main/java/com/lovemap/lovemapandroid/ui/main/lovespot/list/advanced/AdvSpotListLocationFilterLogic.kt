@@ -1,10 +1,14 @@
 package com.lovemap.lovemapandroid.ui.main.lovespot.list.advanced
 
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.LinearLayout
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.lovemap.lovemapandroid.config.AppContext
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 class AdvSpotListLocationFilterLogic
     (
@@ -17,6 +21,9 @@ class AdvSpotListLocationFilterLogic
     private val nearbyFilterButton: ExtendedFloatingActionButton,
     private val nearbyFilterViewGroup: LinearLayout
 ) {
+    private val appContext = AppContext.INSTANCE
+    private val geoLocationService = appContext.geoLocationService
+
     private var locationConfigOpen = false
     private var countryFilterOpen = false
     private var cityFilterOpen = false
@@ -27,6 +34,23 @@ class AdvSpotListLocationFilterLogic
         setCountryFilterButton()
         setCityFilterButton()
         setNearbyFilterButton()
+
+        MainScope().launch {
+            countryAutocompleteText.setAdapter(
+                ArrayAdapter(
+                    countryAutocompleteText.context,
+                    android.R.layout.simple_dropdown_item_1line,
+                    geoLocationService.getCountriesLocally().toTypedArray()
+                )
+            )
+            cityAutocompleteText.setAdapter(
+                ArrayAdapter(
+                    countryAutocompleteText.context,
+                    android.R.layout.simple_dropdown_item_1line,
+                    geoLocationService.getCitiesLocally().toTypedArray()
+                )
+            )
+        }
     }
 
     private fun setLocationSelectorButton() {

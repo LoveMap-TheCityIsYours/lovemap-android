@@ -7,6 +7,8 @@ import com.google.android.gms.maps.model.Marker
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.admin.AdminApi
 import com.lovemap.lovemapandroid.api.authentication.AuthenticationApi
+import com.lovemap.lovemapandroid.api.geolocation.GeoLocationApi
+import com.lovemap.lovemapandroid.api.geolocation.GeoLocationService
 import com.lovemap.lovemapandroid.api.love.LoveApi
 import com.lovemap.lovemapandroid.api.lover.LoverApi
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotApi
@@ -48,6 +50,7 @@ class AppContext : MultiDexApplication() {
     lateinit var loveSpotReviewService: LoveSpotReviewService
     lateinit var loveSpotReportService: LoveSpotReportService
     lateinit var partnershipService: PartnershipService
+    lateinit var geoLocationService: GeoLocationService
 
     lateinit var loveDao: LoveDao
     lateinit var loveSpotDao: LoveSpotDao
@@ -170,12 +173,12 @@ class AppContext : MultiDexApplication() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         loverService = LoverService(
-            authorizingRetrofit.create(LoverApi::class.java),
-            loveDao,
-            loveSpotDao,
-            loveSpotReviewDao,
-            metadataStore,
-            toaster
+            loverApi = authorizingRetrofit.create(LoverApi::class.java),
+            loveDao = loveDao,
+            loveSpotDao = loveSpotDao,
+            loveSpotReviewDao = loveSpotReviewDao,
+            metadataStore = metadataStore,
+            toaster = toaster
         )
         loveService = LoveService(
             loveApi = authorizingRetrofit.create(LoveApi::class.java),
@@ -185,10 +188,10 @@ class AppContext : MultiDexApplication() {
             toaster = toaster,
         )
         loveSpotService = LoveSpotService(
-            authorizingRetrofit.create(LoveSpotApi::class.java),
-            loveSpotDao,
-            metadataStore,
-            toaster,
+            loveSpotApi = authorizingRetrofit.create(LoveSpotApi::class.java),
+            loveSpotDao = loveSpotDao,
+            metadataStore = metadataStore,
+            toaster = toaster,
         )
         loveSpotReviewService = LoveSpotReviewService(
             loveSpotReviewApi = authorizingRetrofit.create(LoveSpotReviewApi::class.java),
@@ -207,10 +210,15 @@ class AppContext : MultiDexApplication() {
             toaster = toaster,
         )
         partnershipService = PartnershipService(
-            authorizingRetrofit.create(PartnershipApi::class.java),
-            partnershipDao,
-            metadataStore,
-            toaster
+            partnershipApi = authorizingRetrofit.create(PartnershipApi::class.java),
+            partnershipDao = partnershipDao,
+            metadataStore = metadataStore,
+            toaster = toaster
+        )
+        geoLocationService = GeoLocationService(
+            geoLocationApi = authorizingRetrofit.create(GeoLocationApi::class.java),
+            metadataStore = metadataStore,
+            toaster = toaster
         )
         if (metadataStore.isLoggedIn()) {
             val user = metadataStore.getUser()
@@ -227,6 +235,7 @@ class AppContext : MultiDexApplication() {
             loveSpotRisks = loveSpotService.getRisks()
             loveService.list()
             loveSpotReviewService.getReviewsByLover()
+            geoLocationService.getCities()
         }
     }
 

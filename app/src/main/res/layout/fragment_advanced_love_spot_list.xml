@@ -135,6 +135,8 @@
             android:layout_marginStart="@dimen/standard_8"
             android:layout_marginEnd="@dimen/standard_8"
             android:animateLayoutChanges="true"
+            android:textColor="@color/myColorOnPrimary"
+            android:textColorHint="@color/myColorOnPrimary"
             android:text=""
             android:visibility="gone" />
 
@@ -163,6 +165,8 @@
             android:layout_marginEnd="@dimen/standard_8"
             android:layout_marginBottom="@dimen/standard_8"
             android:animateLayoutChanges="true"
+            android:textColor="@color/myColorOnPrimary"
+            android:textColorHint="@color/myColorOnPrimary"
             android:text=""
             android:visibility="gone" />
 
