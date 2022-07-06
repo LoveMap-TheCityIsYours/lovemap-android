@@ -228,5 +228,6 @@
     <string name="type_filter_other_venue">Other Venue</string>
     <string name="recommendations_title">Recommendations</string>
     <string name="search_title">Search</string>
+    <string name="go_button_text">Go</string>
 
 </resources>

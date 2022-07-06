@@ -52,11 +52,12 @@ class LoveSpotService(
     suspend fun getLoveSpotHolderList(
         listOrdering: ListOrdering,
         listLocation: ListLocation,
-        loveSpotSearchRequest: LoveSpotSearchRequest
+        loveSpotSearchRequest: LoveSpotSearchRequest,
+        delay: Long = 200,
     ): MutableList<LoveSpotHolder> {
         return withContext(Dispatchers.IO) {
             val loveSpots = search(listOrdering, listLocation, loveSpotSearchRequest)
-            delay(200)
+            delay(delay)
             loveSpots.map { loveSpot -> LoveSpotHolder.of(loveSpot) }
                 .toMutableList()
         }

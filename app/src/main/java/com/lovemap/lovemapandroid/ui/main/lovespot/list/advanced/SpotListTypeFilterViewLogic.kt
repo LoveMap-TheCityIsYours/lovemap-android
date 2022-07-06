@@ -8,15 +8,15 @@ import com.lovemap.lovemapandroid.api.lovespot.LoveSpotType
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotType.*
 import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotListFilterState
 
-class AdvSpotListTypeFilterLogic(
+class SpotListTypeFilterViewLogic(
     private val typeFilterScrollView: HorizontalScrollView,
     private val typeFilterAll: Button,
-    private val typeFilterPublicSpace: Button,
-    private val typeFilterSwingerClub: Button,
-    private val typeFilterCruisingSpot: Button,
-    private val typeFilterSexBooth: Button,
-    private val typeFilterNightClub: Button,
-    private val typeFilterOtherVenue: Button,
+    typeFilterPublicSpace: Button,
+    typeFilterSwingerClub: Button,
+    typeFilterCruisingSpot: Button,
+    typeFilterSexBooth: Button,
+    typeFilterNightClub: Button,
+    typeFilterOtherVenue: Button,
 ) {
     private val filterOnResource = R.drawable.label_filter_on
     private val filterOffResource = R.drawable.label_filter_off

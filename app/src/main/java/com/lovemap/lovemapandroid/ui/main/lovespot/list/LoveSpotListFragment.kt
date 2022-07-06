@@ -11,10 +11,10 @@ import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.location.CurrentLocationRequest
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import com.lovemap.lovemapandroid.R
+import com.lovemap.lovemapandroid.api.lovespot.ListLocation
+import com.lovemap.lovemapandroid.api.lovespot.ListOrdering
+import com.lovemap.lovemapandroid.api.lovespot.LoveSpotSearchRequest
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.ui.events.LoveSpotListFiltersChanged
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
@@ -61,7 +61,11 @@ class LoveSpotListFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         MainScope().launch {
-            updateData()
+            updateData(
+                LoveSpotListFilterState.createSearchRequest(),
+                LoveSpotListFilterState.listOrdering,
+                LoveSpotListFilterState.listLocation
+            )
             progressBar.visibility = View.GONE
         }
     }
@@ -96,22 +100,26 @@ class LoveSpotListFragment : Fragment() {
         return super.onContextItemSelected(item)
     }
 
-    private suspend fun updateData() {
-        val loveSpots = loveSpotService.getLoveSpotHolderList(
-            listOrdering = LoveSpotListFilterState.listOrdering,
-            listLocation = LoveSpotListFilterState.listLocation,
-            loveSpotSearchRequest = LoveSpotListFilterState.createSearchRequest()
-        )
-        adapter.updateData(loveSpots)
-        adapter.notifyDataSetChanged()
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onLoveSpotListFiltersChanged(event: LoveSpotListFiltersChanged) {
+        updateData(event.request, event.listOrdering, event.listLocation)
+    }
+
+    private fun updateData(
+        request: LoveSpotSearchRequest,
+        listOrdering: ListOrdering,
+        listLocation: ListLocation
+    ) {
         MainScope().launch {
             recycleView.visibility = View.GONE
             progressBar.visibility = View.VISIBLE
-            updateData()
+            val loveSpots = loveSpotService.getLoveSpotHolderList(
+                listOrdering = listOrdering,
+                listLocation = listLocation,
+                loveSpotSearchRequest = request
+            )
+            adapter.updateData(loveSpots)
+            adapter.notifyDataSetChanged()
             recycleView.visibility = View.VISIBLE
             progressBar.visibility = View.GONE
         }

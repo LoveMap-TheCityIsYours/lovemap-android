@@ -8,12 +8,13 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import com.lovemap.lovemapandroid.R
-import com.lovemap.lovemapandroid.config.AppContext
 
 class AdvancedLoveSpotListFragment : Fragment() {
 
-    lateinit var locationFilterLogic: AdvSpotListLocationFilterLogic
-    lateinit var typeFilterLogic: AdvSpotListTypeFilterLogic
+    lateinit var locationFilterViewLogic: SpotListLocationFilterViewLogic
+    lateinit var typeFilterViewLogic: SpotListTypeFilterViewLogic
+    lateinit var countryFilterViewLogic: SpotListCountryFilterViewLogic
+    lateinit var cityFilterViewLogic: SpotListCityFilterViewLogic
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,23 +25,40 @@ class AdvancedLoveSpotListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_advanced_love_spot_list, container, false) as LinearLayout
+        val view = inflater.inflate(
+            R.layout.fragment_advanced_love_spot_list,
+            container,
+            false
+        ) as LinearLayout
 
         val layoutTransition: LayoutTransition = view.layoutTransition
         layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
 
-        locationFilterLogic = AdvSpotListLocationFilterLogic(
+        locationFilterViewLogic = SpotListLocationFilterViewLogic(
             locationSelectorButton = view.findViewById(R.id.locationSelectorButton),
             locationConfigurationView = view.findViewById(R.id.locationConfigurationView),
             countryFilterButton = view.findViewById(R.id.countryFilterButton),
-            countryAutocompleteText = view.findViewById(R.id.countryAutocompleteText),
+            countryFilterViewGroup = view.findViewById(R.id.countryFilterViewGroup),
             cityFilterButton = view.findViewById(R.id.cityFilterButton),
-            cityAutocompleteText = view.findViewById(R.id.cityAutocompleteText),
+            cityFilterViewGroup = view.findViewById(R.id.cityFilterViewGroup),
             nearbyFilterButton = view.findViewById(R.id.nearbyFilterButton),
-            nearbyFilterViewGroup = view.findViewById(R.id.nearbyFilterViewGroup)
+            nearbyFilterViewGroup = view.findViewById(R.id.nearbyFilterViewGroup),
+            nearbyGoButton = view.findViewById(R.id.nearbyGoButton)
         )
 
-        typeFilterLogic = AdvSpotListTypeFilterLogic(
+        countryFilterViewLogic = SpotListCountryFilterViewLogic(
+            countryAutocompleteText = view.findViewById(R.id.countryAutocompleteText),
+            countryGoButton = view.findViewById(R.id.countryGoButton),
+            locationFilterViewLogic = locationFilterViewLogic
+        )
+
+        cityFilterViewLogic = SpotListCityFilterViewLogic(
+            cityAutocompleteText = view.findViewById(R.id.cityAutocompleteText),
+            cityGoButton = view.findViewById(R.id.cityGoButton),
+            locationFilterViewLogic = locationFilterViewLogic
+        )
+
+        typeFilterViewLogic = SpotListTypeFilterViewLogic(
             typeFilterScrollView = view.findViewById(R.id.typeFilterScrollView),
             typeFilterAll = view.findViewById(R.id.typeFilterAll),
             typeFilterPublicSpace = view.findViewById(R.id.typeFilterPublicSpace),

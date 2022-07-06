@@ -1,29 +1,21 @@
 package com.lovemap.lovemapandroid.ui.main.lovespot.list.advanced
 
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.LinearLayout
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.lovemap.lovemapandroid.config.AppContext
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
 
-class AdvSpotListLocationFilterLogic
-    (
+class SpotListLocationFilterViewLogic(
     private val locationSelectorButton: Button,
     private val locationConfigurationView: LinearLayout,
     private val countryFilterButton: ExtendedFloatingActionButton,
-    private val countryAutocompleteText: AutoCompleteTextView,
+    private val countryFilterViewGroup: LinearLayout,
     private val cityFilterButton: ExtendedFloatingActionButton,
-    private val cityAutocompleteText: AutoCompleteTextView,
+    private val cityFilterViewGroup: LinearLayout,
     private val nearbyFilterButton: ExtendedFloatingActionButton,
-    private val nearbyFilterViewGroup: LinearLayout
+    private val nearbyFilterViewGroup: LinearLayout,
+    private val nearbyGoButton: Button
 ) {
-    private val appContext = AppContext.INSTANCE
-    private val geoLocationService = appContext.geoLocationService
-
     private var locationConfigOpen = false
     private var countryFilterOpen = false
     private var cityFilterOpen = false
@@ -34,26 +26,9 @@ class AdvSpotListLocationFilterLogic
         setCountryFilterButton()
         setCityFilterButton()
         setNearbyFilterButton()
-
-        MainScope().launch {
-            countryAutocompleteText.setAdapter(
-                ArrayAdapter(
-                    countryAutocompleteText.context,
-                    android.R.layout.simple_dropdown_item_1line,
-                    geoLocationService.getCountriesLocally().toTypedArray()
-                )
-            )
-            cityAutocompleteText.setAdapter(
-                ArrayAdapter(
-                    countryAutocompleteText.context,
-                    android.R.layout.simple_dropdown_item_1line,
-                    geoLocationService.getCitiesLocally().toTypedArray()
-                )
-            )
-        }
     }
 
-    private fun setLocationSelectorButton() {
+    fun setLocationSelectorButton() {
         locationSelectorButton.setOnClickListener {
             if (!locationConfigOpen) {
                 openLocationConfig()
@@ -63,12 +38,12 @@ class AdvSpotListLocationFilterLogic
         }
     }
 
-    private fun openLocationConfig() {
+    fun openLocationConfig() {
         locationConfigOpen = true
         locationConfigurationView.visibility = View.VISIBLE
     }
 
-    private fun closeLocationConfig() {
+    fun closeLocationConfig() {
         locationConfigOpen = false
         locationConfigurationView.visibility = View.GONE
         closeCountryFilter()
@@ -77,7 +52,7 @@ class AdvSpotListLocationFilterLogic
     }
 
 
-    private fun setCountryFilterButton() {
+    fun setCountryFilterButton() {
         countryFilterButton.setOnClickListener {
             if (!countryFilterOpen) {
                 openCountryFilter()
@@ -87,20 +62,20 @@ class AdvSpotListLocationFilterLogic
         }
     }
 
-    private fun openCountryFilter() {
+    fun openCountryFilter() {
         closeCityFilter()
         closeNearbyFilter()
         countryFilterOpen = true
-        countryAutocompleteText.visibility = View.VISIBLE
+        countryFilterViewGroup.visibility = View.VISIBLE
     }
 
-    private fun closeCountryFilter() {
+    fun closeCountryFilter() {
         countryFilterOpen = false
-        countryAutocompleteText.visibility = View.GONE
+        countryFilterViewGroup.visibility = View.GONE
     }
 
 
-    private fun setCityFilterButton() {
+    fun setCityFilterButton() {
         cityFilterButton.setOnClickListener {
             if (!cityFilterOpen) {
                 openCityFilter()
@@ -110,20 +85,20 @@ class AdvSpotListLocationFilterLogic
         }
     }
 
-    private fun openCityFilter() {
+    fun openCityFilter() {
         closeCountryFilter()
         closeNearbyFilter()
         cityFilterOpen = true
-        cityAutocompleteText.visibility = View.VISIBLE
+        cityFilterViewGroup.visibility = View.VISIBLE
     }
 
-    private fun closeCityFilter() {
+    fun closeCityFilter() {
         cityFilterOpen = false
-        cityAutocompleteText.visibility = View.GONE
+        cityFilterViewGroup.visibility = View.GONE
     }
 
 
-    private fun setNearbyFilterButton() {
+    fun setNearbyFilterButton() {
         nearbyFilterButton.setOnClickListener {
             if (!nearbyFilterOpen) {
                 openNearbyFilter()
@@ -133,14 +108,14 @@ class AdvSpotListLocationFilterLogic
         }
     }
 
-    private fun openNearbyFilter() {
+    fun openNearbyFilter() {
         closeCountryFilter()
         closeCityFilter()
         nearbyFilterOpen = true
         nearbyFilterViewGroup.visibility = View.VISIBLE
     }
 
-    private fun closeNearbyFilter() {
+    fun closeNearbyFilter() {
         nearbyFilterOpen = false
         nearbyFilterViewGroup.visibility = View.GONE
     }
