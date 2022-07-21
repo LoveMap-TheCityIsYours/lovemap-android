@@ -38,6 +38,10 @@ class SpotListLocationFilterViewLogic(
         }
     }
 
+    fun updateSearchButtonText(text: String) {
+        locationSelectorButton.text = text
+    }
+
     fun openLocationConfig() {
         locationConfigOpen = true
         locationConfigurationView.visibility = View.VISIBLE

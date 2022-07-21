@@ -83,7 +83,9 @@
                 android:id="@+id/locationSelectorButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:autoSizeTextType="uniform"
                 android:maxWidth="@dimen/standard_225"
+                android:maxLines="2"
                 android:text="Nearby: 5000 meters" />
         </LinearLayout>
     </LinearLayout>
@@ -130,8 +132,8 @@
             android:id="@+id/countryFilterViewGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/standard_16"
             android:layout_marginStart="@dimen/standard_16"
+            android:layout_marginTop="@dimen/standard_16"
             android:layout_marginEnd="@dimen/standard_16"
             android:animateLayoutChanges="true"
             android:orientation="horizontal"
@@ -143,6 +145,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:animateLayoutChanges="true"
+                android:completionThreshold="1"
                 android:imeOptions="actionDone"
                 android:maxLines="1"
                 android:singleLine="true"
@@ -178,8 +181,8 @@
             android:id="@+id/cityFilterViewGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/standard_8"
             android:layout_marginStart="@dimen/standard_16"
+            android:layout_marginTop="@dimen/standard_8"
             android:layout_marginEnd="@dimen/standard_16"
             android:layout_marginBottom="@dimen/standard_8"
             android:animateLayoutChanges="true"
@@ -192,6 +195,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:animateLayoutChanges="true"
+                android:completionThreshold="1"
                 android:imeOptions="actionDone"
                 android:maxLines="1"
                 android:singleLine="true"
@@ -292,9 +296,9 @@
             android:id="@+id/typeFilterScrollView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
             android:paddingTop="@dimen/standard_8"
-            android:paddingBottom="@dimen/standard_8"
-            android:animateLayoutChanges="true">
+            android:paddingBottom="@dimen/standard_8">
 
             <LinearLayout
                 android:layout_width="wrap_content"

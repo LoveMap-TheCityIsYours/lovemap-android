@@ -229,5 +229,7 @@
     <string name="recommendations_title">Recommendations</string>
     <string name="search_title">Search</string>
     <string name="go_button_text">Go</string>
+    <string name="city_search_button_text">"City: "</string>
+    <string name="country_search_button_text">"Country: "</string>
 
 </resources>
