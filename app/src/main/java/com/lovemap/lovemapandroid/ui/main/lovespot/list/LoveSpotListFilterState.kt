@@ -12,6 +12,7 @@ import org.greenrobot.eventbus.EventBus
 object LoveSpotListFilterState {
     private const val defaultLimit = 20
     private val appContext = AppContext.INSTANCE
+    var initialized = false
 
     var listOrdering = ListOrdering.POPULAR
         set(value) {
@@ -67,11 +68,13 @@ object LoveSpotListFilterState {
     }
 
     private fun sendChangeEvent() {
-        EventBus.getDefault().post(LoveSpotListFiltersChanged(
-            request = createSearchRequest(),
-            listOrdering = listOrdering,
-            listLocation = listLocation
-        ))
+        if (initialized) {
+            EventBus.getDefault().post(LoveSpotListFiltersChanged(
+                request = createSearchRequest(),
+                listOrdering = listOrdering,
+                listLocation = listLocation
+            ))
+        }
     }
 
     fun createSearchRequest(): LoveSpotSearchRequest {

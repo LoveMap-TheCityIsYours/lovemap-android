@@ -1,11 +1,16 @@
 package com.lovemap.lovemapandroid.ui.main.lovespot.list.advanced
 
 import android.view.View
+import android.widget.AdapterView
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.Spinner
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotListFilterState
+import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
 
 class SpotListLocationFilterViewLogic(
+    private val spotOrderingSpinner: Spinner,
     private val locationSelectorButton: Button,
     private val locationConfigurationView: LinearLayout,
     private val countryFilterButton: ExtendedFloatingActionButton,
@@ -22,13 +27,28 @@ class SpotListLocationFilterViewLogic(
     private var nearbyFilterOpen = false
 
     init {
+        spotOrderingSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                LoveSpotListFilterState.listOrdering = LoveSpotUtils.positionToOrdering(position)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                LoveSpotListFilterState.listOrdering = LoveSpotUtils.positionToOrdering(0)
+            }
+        }
+
         setLocationSelectorButton()
         setCountryFilterButton()
         setCityFilterButton()
         setNearbyFilterButton()
     }
 
-    fun setLocationSelectorButton() {
+    private fun setLocationSelectorButton() {
         locationSelectorButton.setOnClickListener {
             if (!locationConfigOpen) {
                 openLocationConfig()
@@ -42,7 +62,7 @@ class SpotListLocationFilterViewLogic(
         locationSelectorButton.text = text
     }
 
-    fun openLocationConfig() {
+    private fun openLocationConfig() {
         locationConfigOpen = true
         locationConfigurationView.visibility = View.VISIBLE
     }
@@ -56,7 +76,7 @@ class SpotListLocationFilterViewLogic(
     }
 
 
-    fun setCountryFilterButton() {
+    private fun setCountryFilterButton() {
         countryFilterButton.setOnClickListener {
             if (!countryFilterOpen) {
                 openCountryFilter()
@@ -66,20 +86,20 @@ class SpotListLocationFilterViewLogic(
         }
     }
 
-    fun openCountryFilter() {
+    private fun openCountryFilter() {
         closeCityFilter()
         closeNearbyFilter()
         countryFilterOpen = true
         countryFilterViewGroup.visibility = View.VISIBLE
     }
 
-    fun closeCountryFilter() {
+    private fun closeCountryFilter() {
         countryFilterOpen = false
         countryFilterViewGroup.visibility = View.GONE
     }
 
 
-    fun setCityFilterButton() {
+    private fun setCityFilterButton() {
         cityFilterButton.setOnClickListener {
             if (!cityFilterOpen) {
                 openCityFilter()
@@ -89,20 +109,20 @@ class SpotListLocationFilterViewLogic(
         }
     }
 
-    fun openCityFilter() {
+    private fun openCityFilter() {
         closeCountryFilter()
         closeNearbyFilter()
         cityFilterOpen = true
         cityFilterViewGroup.visibility = View.VISIBLE
     }
 
-    fun closeCityFilter() {
+    private fun closeCityFilter() {
         cityFilterOpen = false
         cityFilterViewGroup.visibility = View.GONE
     }
 
 
-    fun setNearbyFilterButton() {
+    private fun setNearbyFilterButton() {
         nearbyFilterButton.setOnClickListener {
             if (!nearbyFilterOpen) {
                 openNearbyFilter()
@@ -112,14 +132,14 @@ class SpotListLocationFilterViewLogic(
         }
     }
 
-    fun openNearbyFilter() {
+    private fun openNearbyFilter() {
         closeCountryFilter()
         closeCityFilter()
         nearbyFilterOpen = true
         nearbyFilterViewGroup.visibility = View.VISIBLE
     }
 
-    fun closeNearbyFilter() {
+    private fun closeNearbyFilter() {
         nearbyFilterOpen = false
         nearbyFilterViewGroup.visibility = View.GONE
     }

@@ -25,7 +25,6 @@ class SpotListCityFilterViewLogic(
         cityAutocompleteText.setOnTouchListener { _, _ ->
             cityAutocompleteText.showDropDown()
             cityAutocompleteText.requestFocus()
-//            cityAutocompleteText.setSelection(0, cityAutocompleteText.text.length)
             false
         }
 

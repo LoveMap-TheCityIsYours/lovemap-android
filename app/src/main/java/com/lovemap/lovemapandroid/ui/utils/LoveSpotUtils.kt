@@ -6,6 +6,7 @@ import android.widget.RatingBar
 import android.widget.TextView
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.Availability
+import com.lovemap.lovemapandroid.api.lovespot.ListOrdering
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotType
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
@@ -40,13 +41,13 @@ object LoveSpotUtils {
     ) {
         val context = AppContext.INSTANCE.applicationContext
         typeView.text = when (type) {
-                LoveSpotType.PUBLIC_SPACE -> context.getString(R.string.type_public_space)
-                LoveSpotType.SWINGER_CLUB -> context.getString(R.string.type_swinger_club)
-                LoveSpotType.CRUISING_SPOT -> context.getString(R.string.type_cruising_spot)
-                LoveSpotType.SEX_BOOTH -> context.getString(R.string.type_sex_booth)
-                LoveSpotType.NIGHT_CLUB -> context.getString(R.string.type_night_club)
-                LoveSpotType.OTHER_VENUE -> context.getString(R.string.type_other_venue)
-            }
+            LoveSpotType.PUBLIC_SPACE -> context.getString(R.string.type_public_space)
+            LoveSpotType.SWINGER_CLUB -> context.getString(R.string.type_swinger_club)
+            LoveSpotType.CRUISING_SPOT -> context.getString(R.string.type_cruising_spot)
+            LoveSpotType.SEX_BOOTH -> context.getString(R.string.type_sex_booth)
+            LoveSpotType.NIGHT_CLUB -> context.getString(R.string.type_night_club)
+            LoveSpotType.OTHER_VENUE -> context.getString(R.string.type_other_venue)
+        }
     }
 
     fun setRisk(
@@ -112,25 +113,36 @@ object LoveSpotUtils {
         }
     }
 
-    fun positionToType(position: Int) =
-        when (position) {
-            0 -> LoveSpotType.PUBLIC_SPACE
-            1 -> LoveSpotType.SWINGER_CLUB
-            2 -> LoveSpotType.CRUISING_SPOT
-            3 -> LoveSpotType.SEX_BOOTH
-            4 -> LoveSpotType.NIGHT_CLUB
-            else -> LoveSpotType.OTHER_VENUE
-        }
+    fun positionToType(position: Int): LoveSpotType = when (position) {
+        0 -> LoveSpotType.PUBLIC_SPACE
+        1 -> LoveSpotType.SWINGER_CLUB
+        2 -> LoveSpotType.CRUISING_SPOT
+        3 -> LoveSpotType.SEX_BOOTH
+        4 -> LoveSpotType.NIGHT_CLUB
+        else -> LoveSpotType.OTHER_VENUE
+    }
 
-    fun typeToPosition(type: LoveSpotType): Int {
-        return when (type) {
-            LoveSpotType.PUBLIC_SPACE -> 0
-            LoveSpotType.SWINGER_CLUB -> 1
-            LoveSpotType.CRUISING_SPOT -> 2
-            LoveSpotType.SEX_BOOTH -> 3
-            LoveSpotType.NIGHT_CLUB -> 4
-            LoveSpotType.OTHER_VENUE -> 5
-        }
+    fun typeToPosition(type: LoveSpotType): Int = when (type) {
+        LoveSpotType.PUBLIC_SPACE -> 0
+        LoveSpotType.SWINGER_CLUB -> 1
+        LoveSpotType.CRUISING_SPOT -> 2
+        LoveSpotType.SEX_BOOTH -> 3
+        LoveSpotType.NIGHT_CLUB -> 4
+        LoveSpotType.OTHER_VENUE -> 5
+    }
+
+    fun positionToOrdering(position: Int): ListOrdering = when (position) {
+        0 -> ListOrdering.POPULAR
+        1 -> ListOrdering.TOP_RATED
+        2 -> ListOrdering.RECENTLY_ACTIVE
+        else -> ListOrdering.CLOSEST
+    }
+
+    fun orderingToPosition(ordering: ListOrdering): Int = when (ordering) {
+        ListOrdering.POPULAR -> 0
+        ListOrdering.TOP_RATED -> 1
+        ListOrdering.RECENTLY_ACTIVE -> 2
+        ListOrdering.CLOSEST -> 3
     }
 
     fun setTypeImage(type: LoveSpotType, imageView: ImageView) {
@@ -145,7 +157,7 @@ object LoveSpotUtils {
     }
 
     fun setDistance(distanceKm: Double?, loveSpotItemDistance: TextView) {
-        distanceKm ?.let {
+        distanceKm?.let {
             loveSpotItemDistance.visibility = View.VISIBLE
             loveSpotItemDistance.text = String.format("%.1f", it) + " km"
         } ?: run {

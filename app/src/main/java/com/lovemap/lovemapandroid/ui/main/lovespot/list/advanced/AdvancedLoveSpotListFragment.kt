@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import com.lovemap.lovemapandroid.R
+import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotListFilterState
 
 class AdvancedLoveSpotListFragment : Fragment() {
 
@@ -37,6 +38,7 @@ class AdvancedLoveSpotListFragment : Fragment() {
         layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
 
         locationFilterViewLogic = SpotListLocationFilterViewLogic(
+            spotOrderingSpinner = view.findViewById(R.id.spotOrderingSpinner),
             locationSelectorButton = view.findViewById(R.id.locationSelectorButton),
             locationConfigurationView = view.findViewById(R.id.locationConfigurationView),
             countryFilterButton = view.findViewById(R.id.countryFilterButton),
@@ -70,6 +72,8 @@ class AdvancedLoveSpotListFragment : Fragment() {
             typeFilterNightClub = view.findViewById(R.id.typeFilterNightClub),
             typeFilterOtherVenue = view.findViewById(R.id.typeFilterOtherVenue),
         )
+
+        LoveSpotListFilterState.initialized = true
 
         return view
     }
