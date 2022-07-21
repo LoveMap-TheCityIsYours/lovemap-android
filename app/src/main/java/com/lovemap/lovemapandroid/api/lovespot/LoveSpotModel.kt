@@ -6,7 +6,7 @@ enum class Availability {
     ALL_DAY, NIGHT_ONLY
 }
 
-enum class Type {
+enum class LoveSpotType {
     PUBLIC_SPACE,
     SWINGER_CLUB,
     CRUISING_SPOT,
@@ -22,16 +22,33 @@ data class CreateLoveSpotRequest(
     val description: String,
     val customAvailability: Pair<LocalTime, LocalTime>?,
     val availability: Availability,
-    val type: Type = Type.PUBLIC_SPACE,
+    val type: LoveSpotType = LoveSpotType.PUBLIC_SPACE,
 )
 
-data class LoveSpotSearchRequest(
+data class LoveSpotListRequest(
     val latFrom: Double,
     val longFrom: Double,
     val latTo: Double,
     val longTo: Double,
     val limit: Int
 )
+
+data class LoveSpotSearchRequest(
+    val limit: Int,
+    val lat: Double? = null,
+    val long: Double? = null,
+    val distanceInMeters: Int? = null,
+    val locationName: String? = null,
+    val typeFilter: List<LoveSpotType> = LoveSpotType.values().toList()
+)
+
+enum class ListOrdering {
+    CLOSEST, TOP_RATED, RECENTLY_ACTIVE, POPULAR
+}
+
+enum class ListLocation {
+    COORDINATE, CITY, COUNTRY
+}
 
 data class LoveSpotRisks(val levels: Int, val riskList: List<Risk>) {
     data class Risk(
@@ -45,6 +62,6 @@ data class UpdateLoveSpotRequest(
     val name: String? = null,
     val description: String? = null,
     val availability: Availability,
-    val type: Type,
+    val type: LoveSpotType,
     val customAvailability: Pair<LocalTime, LocalTime>? = null
 )

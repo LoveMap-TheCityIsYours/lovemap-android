@@ -1,4 +1,4 @@
-package com.lovemap.lovemapandroid.ui.main.love
+package com.lovemap.lovemapandroid.ui.main.love.list
 
 import android.content.Context
 import android.content.Intent
@@ -15,8 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
-import com.lovemap.lovemapandroid.ui.main.love.LoveRecyclerViewAdapter.Companion.DELETE_LOVE_MENU_ID
-import com.lovemap.lovemapandroid.ui.main.love.LoveRecyclerViewAdapter.Companion.EDIT_LOVE_MENU_ID
+import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
+import com.lovemap.lovemapandroid.ui.main.love.list.LoveRecyclerViewAdapter.Companion.DELETE_LOVE_MENU_ID
+import com.lovemap.lovemapandroid.ui.main.love.list.LoveRecyclerViewAdapter.Companion.EDIT_LOVE_MENU_ID
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
@@ -34,10 +35,10 @@ class LoveListFragment : Fragment() {
 
     override fun onInflate(context: Context, attrs: AttributeSet, savedInstanceState: Bundle?) {
         super.onInflate(context, attrs, savedInstanceState)
-        val attributes = requireActivity().obtainStyledAttributes(attrs, R.styleable.ListFragment)
-        isLoveSpotBased = attributes.getBoolean(R.styleable.ListFragment_love_spot_based, false)
-        isPartnerBased = attributes.getBoolean(R.styleable.ListFragment_partner_based, false)
-        isClickable = attributes.getBoolean(R.styleable.ListFragment_is_clickable, true)
+        val attributes = requireActivity().obtainStyledAttributes(attrs, R.styleable.LoveListFragment)
+        isLoveSpotBased = attributes.getBoolean(R.styleable.LoveListFragment_love_spot_based, false)
+        isPartnerBased = attributes.getBoolean(R.styleable.LoveListFragment_partner_based, false)
+        isClickable = attributes.getBoolean(R.styleable.LoveListFragment_is_clickable, true)
         attributes.recycle()
     }
 

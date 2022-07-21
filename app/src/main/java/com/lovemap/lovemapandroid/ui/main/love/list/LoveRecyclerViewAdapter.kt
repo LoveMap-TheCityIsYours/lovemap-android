@@ -1,4 +1,4 @@
-package com.lovemap.lovemapandroid.ui.main.love
+package com.lovemap.lovemapandroid.ui.main.love.list
 
 import android.content.Intent
 import android.view.*

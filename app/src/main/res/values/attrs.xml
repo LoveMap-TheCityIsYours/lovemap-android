@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="ListFragment">
+    <declare-styleable name="LoveListFragment">
         <attr name="love_spot_based" format="boolean" default="false"/>
         <attr name="partner_based" format="boolean" default="false"/>
         <attr name="is_clickable" format="boolean" default="true"/>
+    </declare-styleable>
+    <declare-styleable name="LoveSpotWidget">
+        <attr name="spot_widget_type" format="string" default="TOP_RATED"/>
     </declare-styleable>
 </resources>

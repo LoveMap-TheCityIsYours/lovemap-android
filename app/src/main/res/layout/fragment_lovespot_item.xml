@@ -54,6 +54,7 @@
 
         <LinearLayout
             android:layout_weight="8"
+            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -150,6 +151,26 @@
             </LinearLayout>
         </LinearLayout>
 
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            />
+
+        <TextView
+            android:id="@+id/loveSpotItemDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_gravity="center"
+            android:text="15 km"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            />
+
     </LinearLayout>
 
     <TextView
@@ -158,7 +179,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:maxLines="3"
+        android:maxLines="2"
         android:autoLink="web"
         android:text=" - "
         android:textAlignment="center" />

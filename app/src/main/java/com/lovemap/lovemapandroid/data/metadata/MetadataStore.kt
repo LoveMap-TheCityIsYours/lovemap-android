@@ -9,6 +9,8 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.fasterxml.jackson.databind.JsonNode
 import com.google.gson.GsonBuilder
+import com.lovemap.lovemapandroid.api.geolocation.Cities
+import com.lovemap.lovemapandroid.api.geolocation.Countries
 import com.lovemap.lovemapandroid.api.lover.LoverRanks
 import com.lovemap.lovemapandroid.api.lover.LoverRelationsDto
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotRisks
@@ -27,6 +29,8 @@ class MetadataStore(private val context: Context) {
     private val loverKeyName = "lover"
     private val riskKeyName = "risks"
     private val ranksKeyName = "ranks"
+    private val citiesKeyName = "cities"
+    private val countriesKeyName = "countries"
 
     suspend fun login(user: LoggedInUser): LoggedInUser {
         val userKey = stringPreferencesKey(userKeyName)
@@ -54,7 +58,8 @@ class MetadataStore(private val context: Context) {
     fun isAdmin(user: LoggedInUser): Boolean {
         val base64Payload = user.jwt.substringBeforeLast(".").substringAfter(".")
         val payloadBytes = Base64.decode(base64Payload, Base64.DEFAULT)
-        val payloadJson: JsonNode = objectMapper.readTree(String(payloadBytes, StandardCharsets.UTF_8))
+        val payloadJson: JsonNode =
+            objectMapper.readTree(String(payloadBytes, StandardCharsets.UTF_8))
         return payloadJson["roles"].textValue().contains(ROLE_ADMIN)
     }
 
@@ -121,6 +126,50 @@ class MetadataStore(private val context: Context) {
         val ranksKey = stringPreferencesKey(ranksKeyName)
         return context.dataStore.data.map { dataStore ->
             dataStore[ranksKey] != null
+        }.first()
+    }
+
+    suspend fun saveCities(cities: Cities): Cities {
+        val citiesKey = stringPreferencesKey(citiesKeyName)
+        context.dataStore.edit { dataStore ->
+            dataStore[citiesKey] = gson.toJson(cities)
+        }
+        return cities
+    }
+
+    suspend fun getCities(): Cities {
+        val citiesKey = stringPreferencesKey(citiesKeyName)
+        return context.dataStore.data.map { dataStore ->
+            gson.fromJson(dataStore[citiesKey], Cities::class.java)
+        }.first()
+    }
+
+    suspend fun isCitiesStored(): Boolean {
+        val citiesKey = stringPreferencesKey(citiesKeyName)
+        return context.dataStore.data.map { dataStore ->
+            dataStore[citiesKey] != null
+        }.first()
+    }
+
+    suspend fun saveCountries(countries: Countries): Countries {
+        val countriesKey = stringPreferencesKey(countriesKeyName)
+        context.dataStore.edit { dataStore ->
+            dataStore[countriesKey] = gson.toJson(countries)
+        }
+        return countries
+    }
+
+    suspend fun getCountries(): Countries {
+        val countriesKey = stringPreferencesKey(countriesKeyName)
+        return context.dataStore.data.map { dataStore ->
+            gson.fromJson(dataStore[countriesKey], Countries::class.java)
+        }.first()
+    }
+
+    suspend fun isCountriesStored(): Boolean {
+        val countriesKey = stringPreferencesKey(countriesKeyName)
+        return context.dataStore.data.map { dataStore ->
+            dataStore[countriesKey] != null
         }.first()
     }
 

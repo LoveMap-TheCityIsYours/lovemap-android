@@ -17,13 +17,10 @@
         android:theme="@style/Theme.Lovemapandroid"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".PasswordResetActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.login.PasswordResetActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.main.love.LoveListActivity"
+            android:name=".ui.main.love.list.LoveListActivity"
             android:exported="false" />
         <activity
             android:name=".ui.main.lovespot.review.ReviewListActivity"

@@ -22,7 +22,7 @@ interface LoveSpotDao {
                 "longitude >= :longFrom AND longitude <= :longTo AND " +
                 "latitude >= :latFrom AND latitude <= :latTo"
     )
-    fun search(
+    fun list(
         longFrom: Double,
         longTo: Double,
         latFrom: Double,

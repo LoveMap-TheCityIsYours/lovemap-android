@@ -1,4 +1,4 @@
-package com.lovemap.lovemapandroid.ui.main.lovespot
+package com.lovemap.lovemapandroid.ui.main.lovespot.list
 
 import android.content.Intent
 import android.view.*
@@ -10,6 +10,7 @@ import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.databinding.FragmentLovespotItemBinding
 import com.lovemap.lovemapandroid.ui.data.LoveSpotHolder
+import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
 import com.lovemap.lovemapandroid.utils.canEditLoveSpot
 
@@ -36,7 +37,7 @@ class LoveSpotRecyclerViewAdapter(
         )
     }
 
-    override fun onViewRecycled(holder: LoveSpotRecyclerViewAdapter.ViewHolder) {
+    override fun onViewRecycled(holder: ViewHolder) {
         holder.itemView.setOnLongClickListener(null)
         super.onViewRecycled(holder)
     }
@@ -66,6 +67,10 @@ class LoveSpotRecyclerViewAdapter(
             loveSpot.type,
             holder.loveSpotItemTypeImage
         )
+        LoveSpotUtils.setDistance(
+            loveSpot.distanceKm,
+            holder.loveSpotItemDistance
+        )
         holder.itemView.setOnLongClickListener {
             this.position = holder.absoluteAdapterPosition
             false
@@ -83,6 +88,7 @@ class LoveSpotRecyclerViewAdapter(
         val loveSpotItemAvailability: TextView = binding.loveSpotItemAvailability
         val loveSpotItemType: TextView = binding.loveSpotItemType
         val loveSpotItemRisk: TextView = binding.loveSpotItemRisk
+        val loveSpotItemDistance: TextView = binding.loveSpotItemDistance
         val loveSpotItemDescription: TextView = binding.loveSpotItemDescription
         val loveSpotItemTypeImage: ImageView = binding.loveSpotItemTypeImage
         lateinit var loveSpotItem: LoveSpotHolder

@@ -1,12 +1,14 @@
 package com.lovemap.lovemapandroid.config
 
-import android.app.Application
+import androidx.multidex.MultiDexApplication
 import androidx.room.Room
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.admin.AdminApi
 import com.lovemap.lovemapandroid.api.authentication.AuthenticationApi
+import com.lovemap.lovemapandroid.api.geolocation.GeoLocationApi
+import com.lovemap.lovemapandroid.api.geolocation.GeoLocationService
 import com.lovemap.lovemapandroid.api.love.LoveApi
 import com.lovemap.lovemapandroid.api.lover.LoverApi
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotApi
@@ -22,6 +24,7 @@ import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReviewDao
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.data.partnership.PartnershipDao
 import com.lovemap.lovemapandroid.service.*
+import com.lovemap.lovemapandroid.ui.events.LocationUpdated
 import com.lovemap.lovemapandroid.ui.events.MapInfoWindowShownEvent
 import com.lovemap.lovemapandroid.ui.events.MapMarkerEventListener
 import com.lovemap.lovemapandroid.utils.AUTHORIZATION_HEADER
@@ -36,7 +39,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-class AppContext : Application() {
+class AppContext : MultiDexApplication() {
     lateinit var mapCameraTarget: LatLng
     lateinit var toaster: Toaster
 
@@ -47,6 +50,7 @@ class AppContext : Application() {
     lateinit var loveSpotReviewService: LoveSpotReviewService
     lateinit var loveSpotReportService: LoveSpotReportService
     lateinit var partnershipService: PartnershipService
+    lateinit var geoLocationService: GeoLocationService
 
     lateinit var loveDao: LoveDao
     lateinit var loveSpotDao: LoveSpotDao
@@ -57,6 +61,14 @@ class AppContext : Application() {
     lateinit var database: AppDatabase
 
     lateinit var mapMarkerEventListener: MapMarkerEventListener
+
+    var lastLocation: com.javadocmd.simplelatlng.LatLng? = null
+        set(value) {
+            field = value
+            if (value != null) {
+                EventBus.getDefault().post(LocationUpdated(value))
+            }
+        }
 
     @Volatile
     var userId: Long = 0
@@ -161,12 +173,12 @@ class AppContext : Application() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         loverService = LoverService(
-            authorizingRetrofit.create(LoverApi::class.java),
-            loveDao,
-            loveSpotDao,
-            loveSpotReviewDao,
-            metadataStore,
-            toaster
+            loverApi = authorizingRetrofit.create(LoverApi::class.java),
+            loveDao = loveDao,
+            loveSpotDao = loveSpotDao,
+            loveSpotReviewDao = loveSpotReviewDao,
+            metadataStore = metadataStore,
+            toaster = toaster
         )
         loveService = LoveService(
             loveApi = authorizingRetrofit.create(LoveApi::class.java),
@@ -176,10 +188,10 @@ class AppContext : Application() {
             toaster = toaster,
         )
         loveSpotService = LoveSpotService(
-            authorizingRetrofit.create(LoveSpotApi::class.java),
-            loveSpotDao,
-            metadataStore,
-            toaster,
+            loveSpotApi = authorizingRetrofit.create(LoveSpotApi::class.java),
+            loveSpotDao = loveSpotDao,
+            metadataStore = metadataStore,
+            toaster = toaster,
         )
         loveSpotReviewService = LoveSpotReviewService(
             loveSpotReviewApi = authorizingRetrofit.create(LoveSpotReviewApi::class.java),
@@ -198,10 +210,15 @@ class AppContext : Application() {
             toaster = toaster,
         )
         partnershipService = PartnershipService(
-            authorizingRetrofit.create(PartnershipApi::class.java),
-            partnershipDao,
-            metadataStore,
-            toaster
+            partnershipApi = authorizingRetrofit.create(PartnershipApi::class.java),
+            partnershipDao = partnershipDao,
+            metadataStore = metadataStore,
+            toaster = toaster
+        )
+        geoLocationService = GeoLocationService(
+            geoLocationApi = authorizingRetrofit.create(GeoLocationApi::class.java),
+            metadataStore = metadataStore,
+            toaster = toaster
         )
         if (metadataStore.isLoggedIn()) {
             val user = metadataStore.getUser()
@@ -218,6 +235,7 @@ class AppContext : Application() {
             loveSpotRisks = loveSpotService.getRisks()
             loveService.list()
             loveSpotReviewService.getReviewsByLover()
+            geoLocationService.getCities()
         }
     }
 
