@@ -37,7 +37,7 @@ class GeoLocationService(
 
     suspend fun getCitiesLocally(): Set<String> = withContext(Dispatchers.IO) {
         if (metadataStore.isCitiesStored()) {
-            metadataStore.getCities().cities.map { "${it.city}, ${it.country}" }.toSet()
+            metadataStore.getCities().cities.map { "${it.city}, ${it.country}" }.toSortedSet()
         } else {
             emptySet()
         }
@@ -45,7 +45,7 @@ class GeoLocationService(
 
     suspend fun getCountriesLocally(): Set<String> = withContext(Dispatchers.IO) {
         if (metadataStore.isCountriesStored()) {
-            metadataStore.getCountries().countries
+            metadataStore.getCountries().countries.toSortedSet()
         } else {
             emptySet()
         }

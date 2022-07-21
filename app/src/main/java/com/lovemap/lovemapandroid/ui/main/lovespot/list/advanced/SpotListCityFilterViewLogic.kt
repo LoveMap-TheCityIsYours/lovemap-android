@@ -30,7 +30,8 @@ class SpotListCityFilterViewLogic(
         cityGoButton.setOnClickListener {
             if (cityAutocompleteText.text.isNotEmpty()) {
                 LoveSpotListFilterState.listLocation = ListLocation.CITY
-                LoveSpotListFilterState.locationName = cityAutocompleteText.text.toString()
+                LoveSpotListFilterState.locationName =
+                    cityAutocompleteText.text.toString().substringBefore(",").trim()
                 locationFilterViewLogic.closeLocationConfig()
             }
         }
