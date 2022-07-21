@@ -62,6 +62,7 @@ class SpotListTypeFilterViewLogic(
                 typeButtonClicked(button)
             }
         }
+
     }
 
     private fun typeButtonClicked(button: Button) {

@@ -59,7 +59,7 @@ object LoveSpotListFilterState {
     fun setAllFilterOff(loveSpotType: LoveSpotType) {
         selectedTypes.clear()
         selectedTypes.add(loveSpotType)
-
+        sendChangeEvent()
     }
 
     fun isAllFilterOn(): Boolean {

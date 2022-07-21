@@ -1,6 +1,7 @@
 package com.lovemap.lovemapandroid.ui.main.lovespot.list.advanced
 
 import android.animation.LayoutTransition
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,7 @@ class AdvancedLoveSpotListFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
