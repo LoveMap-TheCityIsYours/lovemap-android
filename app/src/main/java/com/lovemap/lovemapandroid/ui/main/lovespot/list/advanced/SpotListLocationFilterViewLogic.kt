@@ -19,7 +19,6 @@ class SpotListLocationFilterViewLogic(
     private val cityFilterViewGroup: LinearLayout,
     private val nearbyFilterButton: ExtendedFloatingActionButton,
     private val nearbyFilterViewGroup: LinearLayout,
-    private val nearbyGoButton: Button
 ) {
     private var locationConfigOpen = false
     private var countryFilterOpen = false
@@ -142,5 +141,9 @@ class SpotListLocationFilterViewLogic(
     private fun closeNearbyFilter() {
         nearbyFilterOpen = false
         nearbyFilterViewGroup.visibility = View.GONE
+    }
+
+    fun initSearchButton() {
+        // TODO: set button text based on LoveSpotListFilterState
     }
 }

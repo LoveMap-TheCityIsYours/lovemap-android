@@ -8,7 +8,7 @@ import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.admin.AdminApi
 import com.lovemap.lovemapandroid.api.authentication.AuthenticationApi
 import com.lovemap.lovemapandroid.api.geolocation.GeoLocationApi
-import com.lovemap.lovemapandroid.api.geolocation.GeoLocationService
+import com.lovemap.lovemapandroid.service.GeoLocationService
 import com.lovemap.lovemapandroid.api.love.LoveApi
 import com.lovemap.lovemapandroid.api.lover.LoverApi
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotApi
@@ -187,9 +187,15 @@ class AppContext : MultiDexApplication() {
             context = applicationContext,
             toaster = toaster,
         )
+        geoLocationService = GeoLocationService(
+            geoLocationApi = authorizingRetrofit.create(GeoLocationApi::class.java),
+            metadataStore = metadataStore,
+            toaster = toaster
+        )
         loveSpotService = LoveSpotService(
             loveSpotApi = authorizingRetrofit.create(LoveSpotApi::class.java),
             loveSpotDao = loveSpotDao,
+            geoLocationService = geoLocationService,
             metadataStore = metadataStore,
             toaster = toaster,
         )
@@ -212,11 +218,6 @@ class AppContext : MultiDexApplication() {
         partnershipService = PartnershipService(
             partnershipApi = authorizingRetrofit.create(PartnershipApi::class.java),
             partnershipDao = partnershipDao,
-            metadataStore = metadataStore,
-            toaster = toaster
-        )
-        geoLocationService = GeoLocationService(
-            geoLocationApi = authorizingRetrofit.create(GeoLocationApi::class.java),
             metadataStore = metadataStore,
             toaster = toaster
         )

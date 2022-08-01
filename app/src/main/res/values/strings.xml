@@ -85,7 +85,7 @@
     <string name="submit">Submit</string>
     <string name="cancel">Cancel</string>
     <string name="invalid_spot_name">Name must be at least 3 chars long</string>
-    <string name="invalid_spot_description">Description must be at least 3 chars long</string>
+    <string name="invalid_spot_description">Description must be at least 5 chars long</string>
     <string name="love_spot_added">Love Spot added</string>
     <string name="report_spot">Report Spot</string>
     <string name="to_wishlist">To Wishlist</string>
@@ -203,7 +203,6 @@
     <string name="type_night_club">Night Club</string>
     <string name="type_other_venue">Other Venue</string>
     <string name="note">Note:</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search_button">Search</string>
     <string name="more_button">More</string>
@@ -231,5 +230,7 @@
     <string name="go_button_text">Go</string>
     <string name="city_search_button_text">"City: "</string>
     <string name="country_search_button_text">"Country: "</string>
+    <string name="nearby_search_button_text">"Nearby: "</string>
+    <string name="meters">meters</string>
 
 </resources>

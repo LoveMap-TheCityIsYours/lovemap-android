@@ -28,8 +28,13 @@ object LoveSpotListFilterState {
             sendChangeEvent()
         }
 
+    var distanceInMeters: Int = 5000
+        set(value) {
+            field = value
+            sendChangeEvent()
+        }
+
     private var currentLocation: LatLng? = null
-    private var distanceInMeters: Int = 500
     private val selectedTypes = HashSet<LoveSpotType>(LoveSpotType.values().size)
 
     init {

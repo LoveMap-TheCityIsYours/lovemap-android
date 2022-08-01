@@ -250,6 +250,7 @@
                     android:textColor="@color/myColorOnBackground" />
 
                 <EditText
+                    android:id="@+id/nearbyFilterEditText"
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -258,6 +259,7 @@
                     android:minWidth="@dimen/standard_80" />
 
                 <Spinner
+                    android:id="@+id/nearbyFilterSpinner"
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -275,6 +277,7 @@
             </LinearLayout>
 
             <com.google.android.material.slider.Slider
+                android:id="@+id/nearbyFilterSlider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standard_16"

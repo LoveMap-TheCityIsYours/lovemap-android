@@ -9,8 +9,11 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lovemap.lovemapandroid.R
+import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.ui.events.LoveSpotWidgetMoreClicked
 import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotListFilterState
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -25,6 +28,9 @@ class DiscoverPageFragment2 : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         EventBus.getDefault().register(this)
+        MainScope().launch {
+            AppContext.INSTANCE.geoLocationService.getCities()
+        }
     }
 
     override fun onCreateView(

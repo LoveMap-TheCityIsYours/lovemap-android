@@ -432,7 +432,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
                 ((madeLoveCheckBox.isChecked && ratingValid()) || !madeLoveCheckBox.isChecked)
     }
 
-    private fun descriptionValid() = addSpotDescription.text.toString().length >= 3
+    private fun descriptionValid() = addSpotDescription.text.toString().length >= 5
     private fun nameValid() = addSpotName.text.toString().length >= 3
     private fun ratingValid() = rating != 0
 

@@ -1,7 +1,9 @@
-package com.lovemap.lovemapandroid.api.geolocation
+package com.lovemap.lovemapandroid.service
 
+import com.lovemap.lovemapandroid.api.geolocation.Cities
+import com.lovemap.lovemapandroid.api.geolocation.Countries
+import com.lovemap.lovemapandroid.api.geolocation.GeoLocationApi
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
-import com.lovemap.lovemapandroid.service.Toaster
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

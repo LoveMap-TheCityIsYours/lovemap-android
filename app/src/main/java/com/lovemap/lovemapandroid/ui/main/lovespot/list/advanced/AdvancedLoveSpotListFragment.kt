@@ -17,6 +17,7 @@ class AdvancedLoveSpotListFragment : Fragment() {
     lateinit var typeFilterViewLogic: SpotListTypeFilterViewLogic
     lateinit var countryFilterViewLogic: SpotListCountryFilterViewLogic
     lateinit var cityFilterViewLogic: SpotListCityFilterViewLogic
+    lateinit var spotListNearbyFilterViewLogic: SpotListNearbyFilterViewLogic
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,8 +47,7 @@ class AdvancedLoveSpotListFragment : Fragment() {
             cityFilterButton = view.findViewById(R.id.cityFilterButton),
             cityFilterViewGroup = view.findViewById(R.id.cityFilterViewGroup),
             nearbyFilterButton = view.findViewById(R.id.nearbyFilterButton),
-            nearbyFilterViewGroup = view.findViewById(R.id.nearbyFilterViewGroup),
-            nearbyGoButton = view.findViewById(R.id.nearbyGoButton)
+            nearbyFilterViewGroup = view.findViewById(R.id.nearbyFilterViewGroup)
         )
 
         countryFilterViewLogic = SpotListCountryFilterViewLogic(
@@ -72,6 +72,15 @@ class AdvancedLoveSpotListFragment : Fragment() {
             typeFilterNightClub = view.findViewById(R.id.typeFilterNightClub),
             typeFilterOtherVenue = view.findViewById(R.id.typeFilterOtherVenue),
         )
+
+        spotListNearbyFilterViewLogic = SpotListNearbyFilterViewLogic(
+            nearbyFilterEditText = view.findViewById(R.id.nearbyFilterEditText),
+            nearbyFilterSlider = view.findViewById(R.id.nearbyFilterSlider),
+            nearbyGoButton = view.findViewById(R.id.nearbyGoButton),
+            locationFilterViewLogic = locationFilterViewLogic
+        )
+
+        locationFilterViewLogic.initSearchButton()
 
         LoveSpotListFilterState.initialized = true
 

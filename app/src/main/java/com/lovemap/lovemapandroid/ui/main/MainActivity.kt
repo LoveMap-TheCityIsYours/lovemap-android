@@ -2,10 +2,6 @@ package com.lovemap.lovemapandroid.ui.main
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.BlendMode
-import android.graphics.BlendModeColorFilter
-import android.graphics.ColorFilter
-import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -42,9 +38,7 @@ class MainActivity : AppCompatActivity() {
         }.attach()
 
         // Starter page is map for performance reasons
-        viewPager2.post {
-            viewPager2.setCurrentItem(MAP_PAGE, true)
-        }
+        goToMapPage()
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
@@ -97,6 +91,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        if (isMapPageOpen()) {
+            closeMapElements()
+        } else if (isDiscoverPageOpen()) {
+            navigateDiscoverPage()
+        } else {
+            goToMapPage()
+        }
+    }
+
+    private fun isMapPageOpen() = tabLayout.selectedTabPosition == 2
+
+    private fun closeMapElements() {
         if (appContext.areAddLoveSpotFabsOpen) {
             appContext.mapMarkerEventListener.onMapClicked()
         } else if (appContext.areMarkerFabsOpen) {
@@ -108,6 +114,26 @@ class MainActivity : AppCompatActivity() {
             exit.addCategory(Intent.CATEGORY_HOME)
             exit.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(exit)
+        }
+    }
+
+    private fun isDiscoverPageOpen() = tabLayout.selectedTabPosition == 1
+
+    private fun navigateDiscoverPage() {
+        val discoverTabLayout: TabLayout = findViewById(R.id.discoverTabLayout)
+        val discoverViewPager: ViewPager2 = findViewById(R.id.discoverViewPager)
+        if (discoverTabLayout.selectedTabPosition == 1) {
+            discoverViewPager.post {
+                discoverViewPager.setCurrentItem(0, true)
+            }
+        } else {
+            goToMapPage()
+        }
+    }
+
+    private fun goToMapPage() {
+        viewPager2.post {
+            viewPager2.setCurrentItem(MAP_PAGE, true)
         }
     }
 }

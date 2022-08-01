@@ -20,6 +20,7 @@ import kotlin.math.min
 class LoveSpotService(
     private val loveSpotApi: LoveSpotApi,
     private val loveSpotDao: LoveSpotDao,
+    private val geoLocationService: GeoLocationService,
     private val metadataStore: MetadataStore,
     private val toaster: Toaster,
 ) {
@@ -95,10 +96,10 @@ class LoveSpotService(
                 return@withContext null
             }
             if (response.isSuccessful) {
+                geoLocationService.getCities()
                 savedCreationState = null
                 val loveSpot = response.body()!!
                 loveSpotDao.insert(loveSpot)
-                // TODO: optimize a lot
                 loveSpot
             } else {
                 val errorMessage: ErrorMessage = response.getErrorMessages()[0]
