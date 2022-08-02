@@ -1,10 +1,12 @@
 package com.lovemap.lovemapandroid.ui.main.lovespot.widget
 
+import android.Manifest
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.RecommendationsRequest
 import com.lovemap.lovemapandroid.config.AppContext
@@ -33,8 +35,8 @@ class LoveSpotRecommendationPageFragment : Fragment() {
     fun onLocationUpdated(event: LocationUpdated) {
         val currentTimeMillis = System.currentTimeMillis()
         if (oneMinutePassedSinceLastUpdate(currentTimeMillis)) {
-            getRecommendations()
             lastUpdateWithLocation = currentTimeMillis
+            getRecommendations()
         }
     }
 
@@ -46,8 +48,23 @@ class LoveSpotRecommendationPageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        getRecommendations()
-        return inflater.inflate(R.layout.fragment_love_spot_recommendation_page, container, false)
+        val view = inflater.inflate(R.layout.fragment_love_spot_recommendation_page, container, false)
+
+        registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            when {
+                permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+                }
+                else -> {
+                    // No location access granted.
+                    getRecommendations()
+                }
+            }
+        }
+
+
+        return view
     }
 
     private fun getRecommendations() {

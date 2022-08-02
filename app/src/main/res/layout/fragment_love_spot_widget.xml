@@ -25,19 +25,37 @@
         android:text=" Spots "
         android:layout_marginBottom="@dimen/standard_8" />
 
+    <ProgressBar
+        android:id="@+id/loveSpotWidgetProgressBar"
+        style="?android:progressBarStyleLarge"
+        android:indeterminateTint="@color/myColorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="center" />
+
     <fragment
-        android:id="@+id/lovesSpotWidgetItem1"
+        android:id="@+id/loveSpotWidgetItem1"
         android:name="com.lovemap.lovemapandroid.ui.main.lovespot.widget.LoveSpotWidgetItemFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/standard_8" />
 
     <fragment
-        android:id="@+id/lovesSpotWidgetItem2"
+        android:id="@+id/loveSpotWidgetItem2"
         android:name="com.lovemap.lovemapandroid.ui.main.lovespot.widget.LoveSpotWidgetItemFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/standard_8"/>
+
+    <TextView
+        android:id="@+id/loveSpotWidgetNoResultsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:textSize="18sp"
+        android:text="@string/no_results_in_your_area"
+        android:layout_marginBottom="@dimen/standard_8" />
 
     <Button
         android:id="@+id/loveSpotWidgetMoreButton"

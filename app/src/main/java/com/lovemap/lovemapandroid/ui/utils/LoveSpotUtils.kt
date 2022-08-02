@@ -4,6 +4,9 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import com.javadocmd.simplelatlng.LatLng
+import com.javadocmd.simplelatlng.LatLngTool
+import com.javadocmd.simplelatlng.util.LengthUnit
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.Availability
 import com.lovemap.lovemapandroid.api.lovespot.ListOrdering
@@ -158,14 +161,31 @@ object LoveSpotUtils {
 
     fun setDistance(distanceKm: Double?, loveSpotItemDistance: TextView) {
         distanceKm?.let {
-            loveSpotItemDistance.visibility = View.VISIBLE
-            if (it < 1.0) {
-                loveSpotItemDistance.text = (it * 1000).toInt().toString() + " m"
-            } else {
-                loveSpotItemDistance.text = String.format("%.1f", it) + " km"
-            }
+            setDistanceText(loveSpotItemDistance, it)
         } ?: run {
             loveSpotItemDistance.visibility = View.GONE
+        }
+    }
+
+    fun setDistance(loveSpot: LoveSpot, loveSpotItemDistance: TextView) {
+        if (AppContext.INSTANCE.lastLocation != null) {
+            val distanceKm = LatLngTool.distance(
+                AppContext.INSTANCE.lastLocation,
+                LatLng(loveSpot.latitude, loveSpot.longitude),
+                LengthUnit.KILOMETER
+            )
+            setDistanceText(loveSpotItemDistance, distanceKm)
+        } else {
+            loveSpotItemDistance.visibility = View.GONE
+        }
+    }
+
+    private fun setDistanceText(loveSpotItemDistance: TextView, distanceKm: Double) {
+        loveSpotItemDistance.visibility = View.VISIBLE
+        if (distanceKm < 1.0) {
+            loveSpotItemDistance.text = (distanceKm * 1000).toInt().toString() + " m"
+        } else {
+            loveSpotItemDistance.text = String.format("%.1f", distanceKm) + " km"
         }
     }
 }

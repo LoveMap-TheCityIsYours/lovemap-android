@@ -406,6 +406,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     }
 
     private fun requestLocationUpdates() {
+        appContext.locationEnabled = true
         val locationRequest = LocationRequest.create()
             .setInterval(60 * 1000)
             .setPriority(Priority.PRIORITY_BALANCED_POWER_ACCURACY)

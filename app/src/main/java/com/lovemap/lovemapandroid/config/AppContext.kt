@@ -115,6 +115,9 @@ class AppContext : MultiDexApplication() {
     @Volatile
     var loveSpotRisks: LoveSpotRisks? = null
 
+    @Volatile
+    var locationEnabled: Boolean = false
+
     lateinit var country: String
 
     private lateinit var gsonConverterFactory: GsonConverterFactory

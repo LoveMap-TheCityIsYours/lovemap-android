@@ -233,5 +233,6 @@
     <string name="nearby_search_button_text">"Nearby: "</string>
     <string name="meters">meters</string>
     <string name="invalidLimit">Allowed \'limit\' value is between 1 and 100</string>
+    <string name="no_results_in_your_area">No results in your area.</string>
 
 </resources>
