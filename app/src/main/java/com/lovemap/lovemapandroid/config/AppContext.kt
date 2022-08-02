@@ -1,5 +1,7 @@
 package com.lovemap.lovemapandroid.config
 
+import android.content.Context
+import android.telephony.TelephonyManager
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.multidex.MultiDexApplication
@@ -10,7 +12,6 @@ import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.admin.AdminApi
 import com.lovemap.lovemapandroid.api.authentication.AuthenticationApi
 import com.lovemap.lovemapandroid.api.geolocation.GeoLocationApi
-import com.lovemap.lovemapandroid.service.GeoLocationService
 import com.lovemap.lovemapandroid.api.love.LoveApi
 import com.lovemap.lovemapandroid.api.lover.LoverApi
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotApi
@@ -29,6 +30,7 @@ import com.lovemap.lovemapandroid.service.*
 import com.lovemap.lovemapandroid.ui.events.LocationUpdated
 import com.lovemap.lovemapandroid.ui.events.MapInfoWindowShownEvent
 import com.lovemap.lovemapandroid.ui.events.MapMarkerEventListener
+import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotListFilterState
 import com.lovemap.lovemapandroid.utils.AUTHORIZATION_HEADER
 import com.lovemap.lovemapandroid.utils.X_CLIENT_ID_HEADER
 import com.lovemap.lovemapandroid.utils.X_CLIENT_SECRET_HEADER
@@ -39,7 +41,9 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.*
 import java.util.concurrent.TimeUnit
+
 
 class AppContext : MultiDexApplication() {
     lateinit var mapCameraTarget: LatLng
@@ -111,6 +115,8 @@ class AppContext : MultiDexApplication() {
     @Volatile
     var loveSpotRisks: LoveSpotRisks? = null
 
+    lateinit var country: String
+
     private lateinit var gsonConverterFactory: GsonConverterFactory
     private lateinit var authorizingRetrofit: Retrofit
 
@@ -126,6 +132,14 @@ class AppContext : MultiDexApplication() {
                 fetchUserData()
             }
         }
+        initCountry()
+    }
+
+    private fun initCountry() {
+        val telephonyManager = getSystemService(TELEPHONY_SERVICE) as TelephonyManager
+        val countryCode: String = telephonyManager.networkCountryIso
+        country = Locale("EN", countryCode).displayCountry
+        LoveSpotListFilterState.locationName = country
     }
 
     private fun initInstance() {

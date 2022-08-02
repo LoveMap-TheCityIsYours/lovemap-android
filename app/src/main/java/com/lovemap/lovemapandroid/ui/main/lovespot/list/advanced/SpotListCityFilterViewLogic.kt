@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
-import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.ListLocation
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotListFilterState
@@ -43,6 +42,7 @@ class SpotListCityFilterViewLogic(
                 LoveSpotListFilterState.listLocation = ListLocation.CITY
                 val cityName = cityAutocompleteText.text.toString().substringBefore(",").trim()
                 LoveSpotListFilterState.locationName = cityName
+                LoveSpotListFilterState.sendFiltersChangedEvent()
                 locationFilterViewLogic.updateSearchButtonText(ListLocation.CITY)
                 locationFilterViewLogic.closeLocationConfig()
                 hideKeyboard(cityAutocompleteText)

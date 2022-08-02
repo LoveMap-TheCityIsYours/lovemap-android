@@ -14,25 +14,10 @@ object LoveSpotListFilterState {
     private val appContext = AppContext.INSTANCE
     var initialized = false
 
+    var listLocation = ListLocation.COUNTRY
     var listOrdering = ListOrdering.TOP_RATED
-        set(value) {
-            field = value
-            sendChangeEvent()
-        }
-
-    var listLocation = ListLocation.COORDINATE
-
-    var locationName: String? = "Hungary"
-        set(value) {
-            field = value
-            sendChangeEvent()
-        }
-
     var distanceInMeters: Int = 5000
-        set(value) {
-            field = value
-            sendChangeEvent()
-        }
+    var locationName: String? = "Hungary"
 
     private var currentLocation: LatLng? = null
     private val selectedTypes = HashSet<LoveSpotType>(LoveSpotType.values().size)
@@ -43,13 +28,13 @@ object LoveSpotListFilterState {
 
     fun setTypeFilterOn(loveSpotType: LoveSpotType) {
         selectedTypes.add(loveSpotType)
-        sendChangeEvent()
+        sendFiltersChangedEvent()
     }
 
     fun setTypeFilterOff(loveSpotType: LoveSpotType) {
         selectedTypes.remove(loveSpotType)
         if (selectedTypes.isNotEmpty()) {
-            sendChangeEvent()
+            sendFiltersChangedEvent()
         }
     }
 
@@ -59,20 +44,20 @@ object LoveSpotListFilterState {
 
     fun setAllFilterOn() {
         selectedTypes.addAll(LoveSpotType.values())
-        sendChangeEvent()
+        sendFiltersChangedEvent()
     }
 
     fun setAllFilterOff(loveSpotType: LoveSpotType) {
         selectedTypes.clear()
         selectedTypes.add(loveSpotType)
-        sendChangeEvent()
+        sendFiltersChangedEvent()
     }
 
     fun isAllFilterOn(): Boolean {
         return selectedTypes.size == LoveSpotType.values().size
     }
 
-    private fun sendChangeEvent() {
+    fun sendFiltersChangedEvent() {
         if (initialized) {
             EventBus.getDefault().post(LoveSpotListFiltersChanged(
                 request = createSearchRequest(),
@@ -86,8 +71,8 @@ object LoveSpotListFilterState {
         currentLocation = appContext.lastLocation
         return LoveSpotSearchRequest(
             limit = defaultLimit,
-            lat = currentLocation?.latitude,
-            long = currentLocation?.longitude,
+            latitude = currentLocation?.latitude,
+            longitude = currentLocation?.longitude,
             distanceInMeters = distanceInMeters,
             locationName = locationName,
             typeFilter = getSelectedTypes()

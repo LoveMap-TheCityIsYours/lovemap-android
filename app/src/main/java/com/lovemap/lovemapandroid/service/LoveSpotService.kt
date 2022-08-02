@@ -258,4 +258,27 @@ class LoveSpotService(
             }
         }
     }
+
+    suspend fun getRecommendations(request: RecommendationsRequest): RecommendationsResponse {
+        return withContext(Dispatchers.IO) {
+            val call = loveSpotApi.recommendations(request)
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
+                toaster.showNoServerToast()
+                return@withContext RecommendationsResponse.empty()
+            }
+            if (response.isSuccessful) {
+                val result = response.body()!!
+                loveSpotDao.insert(*result.topRatedSpots.toTypedArray())
+                loveSpotDao.insert(*result.closestSpots.toTypedArray())
+                loveSpotDao.insert(*result.recentlyActiveSpots.toTypedArray())
+                loveSpotDao.insert(*result.popularSpots.toTypedArray())
+                result
+            } else {
+                toaster.showResponseError(response)
+                RecommendationsResponse.empty()
+            }
+        }
+    }
 }

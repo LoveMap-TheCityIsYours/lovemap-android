@@ -29,4 +29,7 @@ interface LoveSpotApi {
         @Path("loveSpotId") loveSpotId: Long,
         @Body request: UpdateLoveSpotRequest
     ): Call<LoveSpot>
+
+    @POST("/lovespots/recommendations")
+    fun recommendations(@Body request: RecommendationsRequest): Call<RecommendationsResponse>
 }

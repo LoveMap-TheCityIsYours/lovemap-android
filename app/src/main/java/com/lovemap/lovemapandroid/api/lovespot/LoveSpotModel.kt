@@ -1,5 +1,6 @@
 package com.lovemap.lovemapandroid.api.lovespot
 
+import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import java.time.LocalTime
 
 enum class Availability {
@@ -35,8 +36,8 @@ data class LoveSpotListRequest(
 
 data class LoveSpotSearchRequest(
     val limit: Int,
-    val lat: Double? = null,
-    val long: Double? = null,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
     val distanceInMeters: Int? = null,
     val locationName: String? = null,
     val typeFilter: List<LoveSpotType> = LoveSpotType.values().toList()
@@ -65,3 +66,28 @@ data class UpdateLoveSpotRequest(
     val type: LoveSpotType,
     val customAvailability: Pair<LocalTime, LocalTime>? = null
 )
+
+data class RecommendationsRequest(
+    val longitude: Double?,
+    val latitude: Double?,
+    val country: String,
+    val typeFilter: List<LoveSpotType> = LoveSpotType.values().toList()
+)
+
+data class RecommendationsResponse(
+    val topRatedSpots: List<LoveSpot>,
+    val closestSpots: List<LoveSpot>,
+    val recentlyActiveSpots: List<LoveSpot>,
+    val popularSpots: List<LoveSpot>
+) {
+    companion object {
+        fun empty(): RecommendationsResponse {
+            return RecommendationsResponse(
+                topRatedSpots = emptyList(),
+                closestSpots = emptyList(),
+                recentlyActiveSpots = emptyList(),
+                popularSpots = emptyList()
+            )
+        }
+    }
+}

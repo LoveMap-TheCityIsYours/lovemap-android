@@ -283,7 +283,7 @@
                 android:layout_marginStart="@dimen/standard_16"
                 android:layout_marginEnd="@dimen/standard_16"
                 android:stepSize="100"
-                android:valueFrom="100"
+                android:valueFrom="0"
                 android:valueTo="10000" />
 
         </LinearLayout>

@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotListFilterState
+import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
 
 class AdvancedLoveSpotListFragment : Fragment() {
 
@@ -83,5 +84,10 @@ class AdvancedLoveSpotListFragment : Fragment() {
         LoveSpotListFilterState.initialized = true
 
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        locationFilterViewLogic.updateDropdownAndButton()
     }
 }

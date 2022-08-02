@@ -9,6 +9,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lovemap.lovemapandroid.R
+import com.lovemap.lovemapandroid.api.lovespot.ListLocation
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.ui.events.LoveSpotWidgetMoreClicked
 import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotListFilterState
@@ -25,11 +26,13 @@ class DiscoverPageFragment2 : Fragment() {
     private lateinit var viewPager2: ViewPager2
     private lateinit var tabLayout: TabLayout
 
+    private val appContext = AppContext.INSTANCE
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         EventBus.getDefault().register(this)
         MainScope().launch {
-            AppContext.INSTANCE.geoLocationService.getCities()
+            appContext.geoLocationService.getCities()
         }
     }
 
@@ -57,6 +60,9 @@ class DiscoverPageFragment2 : Fragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onLoveSpotWidgetMoreClicked(event: LoveSpotWidgetMoreClicked) {
         LoveSpotListFilterState.listOrdering = event.ordering
+        LoveSpotListFilterState.listLocation = ListLocation.COUNTRY
+        LoveSpotListFilterState.locationName = appContext.country
+        LoveSpotListFilterState.sendFiltersChangedEvent()
         viewPager2.post {
             viewPager2.setCurrentItem(SEARCH_PAGE, true)
         }

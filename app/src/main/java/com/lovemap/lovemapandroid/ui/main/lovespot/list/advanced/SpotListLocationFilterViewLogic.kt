@@ -53,6 +53,11 @@ class SpotListLocationFilterViewLogic(
         }
     }
 
+    fun updateDropdownAndButton() {
+        spotOrderingSpinner.setSelection(LoveSpotUtils.orderingToPosition(LoveSpotListFilterState.listOrdering))
+        updateSearchButtonText(LoveSpotListFilterState.listLocation)
+    }
+
     private fun setOrderingSpinner() {
         spotOrderingSpinner.setSelection(LoveSpotUtils.orderingToPosition(LoveSpotListFilterState.listOrdering))
         spotOrderingSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -63,10 +68,12 @@ class SpotListLocationFilterViewLogic(
                 id: Long
             ) {
                 LoveSpotListFilterState.listOrdering = LoveSpotUtils.positionToOrdering(position)
+                LoveSpotListFilterState.sendFiltersChangedEvent()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 LoveSpotListFilterState.listOrdering = LoveSpotUtils.positionToOrdering(0)
+                LoveSpotListFilterState.sendFiltersChangedEvent()
             }
         }
     }
@@ -86,6 +93,7 @@ class SpotListLocationFilterViewLogic(
         locationConfigurationView.visibility = View.VISIBLE
     }
 
+
     fun closeLocationConfig() {
         locationConfigOpen = false
         locationConfigurationView.visibility = View.GONE
@@ -93,7 +101,6 @@ class SpotListLocationFilterViewLogic(
         closeCityFilter()
         closeNearbyFilter()
     }
-
 
     private fun setCountryFilterButton() {
         countryFilterButton.setOnClickListener {
@@ -112,11 +119,11 @@ class SpotListLocationFilterViewLogic(
         countryFilterViewGroup.visibility = View.VISIBLE
     }
 
+
     private fun closeCountryFilter() {
         countryFilterOpen = false
         countryFilterViewGroup.visibility = View.GONE
     }
-
 
     private fun setCityFilterButton() {
         cityFilterButton.setOnClickListener {
@@ -135,11 +142,11 @@ class SpotListLocationFilterViewLogic(
         cityFilterViewGroup.visibility = View.VISIBLE
     }
 
+
     private fun closeCityFilter() {
         cityFilterOpen = false
         cityFilterViewGroup.visibility = View.GONE
     }
-
 
     private fun setNearbyFilterButton() {
         nearbyFilterButton.setOnClickListener {

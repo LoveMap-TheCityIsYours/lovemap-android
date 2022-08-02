@@ -8,6 +8,9 @@ import com.lovemap.lovemapandroid.api.lovespot.ListLocation
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotListFilterState
 import com.lovemap.lovemapandroid.ui.utils.hideKeyboard
+import kotlin.math.ceil
+import kotlin.math.max
+import kotlin.math.min
 
 class SpotListNearbyFilterViewLogic(
     private val nearbyFilterEditText: EditText,
@@ -17,6 +20,7 @@ class SpotListNearbyFilterViewLogic(
 ) {
     private val appContext = AppContext.INSTANCE
     private val maxMeters: Float = 10000f
+    private val minMeters: Float = 0f
     private var currentDistance = LoveSpotListFilterState.distanceInMeters
 
     init {
@@ -33,13 +37,7 @@ class SpotListNearbyFilterViewLogic(
         nearbyFilterEditText.doOnTextChanged { text, start, before, count ->
             text?.toString()?.let { stringText ->
                 if (stringText.isNotEmpty()) {
-                    var floatValue = stringText.toFloat()
-                    floatValue = if (floatValue > maxMeters) {
-                        nearbyFilterEditText.setText(maxMeters.toInt().toString())
-                        maxMeters
-                    } else {
-                        floatValue
-                    }
+                    val floatValue = getFloatValue(stringText)
                     nearbyFilterSlider.value = floatValue
                     currentDistance = floatValue.toInt()
                 }
@@ -49,9 +47,24 @@ class SpotListNearbyFilterViewLogic(
         nearbyGoButton.setOnClickListener {
             LoveSpotListFilterState.listLocation = ListLocation.COORDINATE
             LoveSpotListFilterState.distanceInMeters = currentDistance
+            LoveSpotListFilterState.sendFiltersChangedEvent()
             locationFilterViewLogic.updateSearchButtonText(ListLocation.COORDINATE)
             locationFilterViewLogic.closeLocationConfig()
             hideKeyboard(nearbyFilterEditText)
         }
+    }
+
+    private fun getFloatValue(stringText: String): Float {
+        val originalValue = stringText.toFloat()
+
+        var floatValue = min(originalValue, maxMeters)
+        floatValue = max(floatValue, minMeters)
+        floatValue = ceil(floatValue / 100).toInt() * 100.toFloat()
+
+        if (originalValue < minMeters || originalValue > maxMeters) {
+            nearbyFilterEditText.setText(floatValue.toInt().toString())
+        }
+
+        return floatValue
     }
 }
