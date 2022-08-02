@@ -232,5 +232,6 @@
     <string name="country_search_button_text">"Country: "</string>
     <string name="nearby_search_button_text">"Nearby: "</string>
     <string name="meters">meters</string>
+    <string name="invalidLimit">Allowed \'limit\' value is between 1 and 100</string>
 
 </resources>

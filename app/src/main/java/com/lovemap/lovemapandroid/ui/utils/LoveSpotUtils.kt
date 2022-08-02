@@ -159,7 +159,11 @@ object LoveSpotUtils {
     fun setDistance(distanceKm: Double?, loveSpotItemDistance: TextView) {
         distanceKm?.let {
             loveSpotItemDistance.visibility = View.VISIBLE
-            loveSpotItemDistance.text = String.format("%.1f", it) + " km"
+            if (it < 1.0) {
+                loveSpotItemDistance.text = (it * 1000).toInt().toString() + " m"
+            } else {
+                loveSpotItemDistance.text = String.format("%.1f", it) + " km"
+            }
         } ?: run {
             loveSpotItemDistance.visibility = View.GONE
         }

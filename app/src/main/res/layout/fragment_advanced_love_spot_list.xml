@@ -282,8 +282,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standard_16"
                 android:layout_marginEnd="@dimen/standard_16"
-                android:stepSize="1"
-                android:valueFrom="1"
+                android:stepSize="100"
+                android:valueFrom="100"
                 android:valueTo="10000" />
 
         </LinearLayout>

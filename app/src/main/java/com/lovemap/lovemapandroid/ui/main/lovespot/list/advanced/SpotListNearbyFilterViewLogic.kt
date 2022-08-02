@@ -4,7 +4,6 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.core.widget.doOnTextChanged
 import com.google.android.material.slider.Slider
-import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.ListLocation
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotListFilterState
@@ -50,11 +49,7 @@ class SpotListNearbyFilterViewLogic(
         nearbyGoButton.setOnClickListener {
             LoveSpotListFilterState.listLocation = ListLocation.COORDINATE
             LoveSpotListFilterState.distanceInMeters = currentDistance
-            locationFilterViewLogic.updateSearchButtonText(
-                appContext.getString(R.string.nearby_search_button_text)
-                        + LoveSpotListFilterState.distanceInMeters
-                        + " " + appContext.getString(R.string.meters)
-            )
+            locationFilterViewLogic.updateSearchButtonText(ListLocation.COORDINATE)
             locationFilterViewLogic.closeLocationConfig()
             hideKeyboard(nearbyFilterEditText)
         }

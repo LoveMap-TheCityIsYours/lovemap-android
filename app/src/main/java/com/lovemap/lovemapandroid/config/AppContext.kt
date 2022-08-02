@@ -1,5 +1,7 @@
 package com.lovemap.lovemapandroid.config
 
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.multidex.MultiDexApplication
 import androidx.room.Room
 import com.google.android.gms.maps.model.LatLng
@@ -114,6 +116,7 @@ class AppContext : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
+        AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
         runBlocking {
             initInstance()
             initClients()

@@ -43,9 +43,7 @@ class SpotListCountryFilterViewLogic(
                 LoveSpotListFilterState.listLocation = ListLocation.COUNTRY
                 val countryName = countryAutocompleteText.text.toString().trim()
                 LoveSpotListFilterState.locationName = countryName
-                locationFilterViewLogic.updateSearchButtonText(
-                    appContext.getString(R.string.country_search_button_text) + countryName
-                )
+                locationFilterViewLogic.updateSearchButtonText(ListLocation.COUNTRY)
                 locationFilterViewLogic.closeLocationConfig()
                 hideKeyboard(countryAutocompleteText)
             }

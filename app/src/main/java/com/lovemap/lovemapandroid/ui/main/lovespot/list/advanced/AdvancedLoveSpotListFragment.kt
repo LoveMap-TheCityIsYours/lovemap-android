@@ -80,8 +80,6 @@ class AdvancedLoveSpotListFragment : Fragment() {
             locationFilterViewLogic = locationFilterViewLogic
         )
 
-        locationFilterViewLogic.initSearchButton()
-
         LoveSpotListFilterState.initialized = true
 
         return view

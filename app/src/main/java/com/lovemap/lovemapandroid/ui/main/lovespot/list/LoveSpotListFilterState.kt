@@ -10,7 +10,7 @@ import com.lovemap.lovemapandroid.ui.events.LoveSpotListFiltersChanged
 import org.greenrobot.eventbus.EventBus
 
 object LoveSpotListFilterState {
-    private const val defaultLimit = 20
+    private const val defaultLimit = 100
     private val appContext = AppContext.INSTANCE
     var initialized = false
 

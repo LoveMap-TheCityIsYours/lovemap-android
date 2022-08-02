@@ -6,6 +6,9 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.Spinner
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.lovemap.lovemapandroid.R
+import com.lovemap.lovemapandroid.api.lovespot.ListLocation
+import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotListFilterState
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
 
@@ -20,12 +23,37 @@ class SpotListLocationFilterViewLogic(
     private val nearbyFilterButton: ExtendedFloatingActionButton,
     private val nearbyFilterViewGroup: LinearLayout,
 ) {
+    private val appContext = AppContext.INSTANCE
     private var locationConfigOpen = false
     private var countryFilterOpen = false
     private var cityFilterOpen = false
     private var nearbyFilterOpen = false
 
     init {
+        setOrderingSpinner()
+        setLocationSelectorButton()
+        setCountryFilterButton()
+        setCityFilterButton()
+        setNearbyFilterButton()
+        updateSearchButtonText(LoveSpotListFilterState.listLocation)
+    }
+
+    fun updateSearchButtonText(listLocation: ListLocation) {
+        locationSelectorButton.text = when (listLocation) {
+            ListLocation.COORDINATE -> {
+                appContext.getString(R.string.nearby_search_button_text) +
+                        LoveSpotListFilterState.distanceInMeters + " " + appContext.getString(R.string.meters)
+            }
+            ListLocation.CITY -> {
+                appContext.getString(R.string.city_search_button_text) + LoveSpotListFilterState.locationName
+            }
+            ListLocation.COUNTRY -> {
+                appContext.getString(R.string.country_search_button_text) + LoveSpotListFilterState.locationName
+            }
+        }
+    }
+
+    private fun setOrderingSpinner() {
         spotOrderingSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -40,11 +68,6 @@ class SpotListLocationFilterViewLogic(
                 LoveSpotListFilterState.listOrdering = LoveSpotUtils.positionToOrdering(0)
             }
         }
-
-        setLocationSelectorButton()
-        setCountryFilterButton()
-        setCityFilterButton()
-        setNearbyFilterButton()
     }
 
     private fun setLocationSelectorButton() {
@@ -55,10 +78,6 @@ class SpotListLocationFilterViewLogic(
                 closeLocationConfig()
             }
         }
-    }
-
-    fun updateSearchButtonText(text: String) {
-        locationSelectorButton.text = text
     }
 
     private fun openLocationConfig() {
@@ -141,9 +160,5 @@ class SpotListLocationFilterViewLogic(
     private fun closeNearbyFilter() {
         nearbyFilterOpen = false
         nearbyFilterViewGroup.visibility = View.GONE
-    }
-
-    fun initSearchButton() {
-        // TODO: set button text based on LoveSpotListFilterState
     }
 }

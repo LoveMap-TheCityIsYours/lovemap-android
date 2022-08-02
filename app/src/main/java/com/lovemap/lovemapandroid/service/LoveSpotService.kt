@@ -57,7 +57,7 @@ class LoveSpotService(
         delay: Long = 200,
     ): MutableList<LoveSpotHolder> {
         return withContext(Dispatchers.IO) {
-            val loveSpots = search(listOrdering, listLocation, loveSpotSearchRequest)
+            val loveSpots = advancedList(listOrdering, listLocation, loveSpotSearchRequest)
             delay(delay)
             loveSpots.map { loveSpot -> LoveSpotHolder.of(loveSpot) }
                 .toMutableList()
@@ -168,7 +168,7 @@ class LoveSpotService(
         }
     }
 
-    suspend fun search(
+    private suspend fun advancedList(
         ordering: ListOrdering,
         location: ListLocation,
         request: LoveSpotSearchRequest
