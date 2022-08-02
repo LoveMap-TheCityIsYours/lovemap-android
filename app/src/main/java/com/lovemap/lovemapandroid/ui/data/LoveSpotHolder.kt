@@ -1,7 +1,11 @@
 package com.lovemap.lovemapandroid.ui.data
 
+import com.javadocmd.simplelatlng.LatLng
+import com.javadocmd.simplelatlng.LatLngTool
+import com.javadocmd.simplelatlng.util.LengthUnit
 import com.lovemap.lovemapandroid.api.lovespot.Availability
-import com.lovemap.lovemapandroid.api.lovespot.Type
+import com.lovemap.lovemapandroid.api.lovespot.LoveSpotType
+import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 
 data class LoveSpotHolder(
@@ -14,15 +18,16 @@ data class LoveSpotHolder(
     var numberOfReports: Int,
     var customAvailability: String?,
     var availability: Availability,
-    var type: Type,
+    var type: LoveSpotType,
     var averageDanger: Double?,
     var numberOfRatings: Int,
     var addedBy: Long,
+    var distanceKm: Double? = null,
 ) : Comparable<LoveSpotHolder> {
     companion object {
         fun of(loveSpot: LoveSpot): LoveSpotHolder {
             return LoveSpotHolder(
-                id= loveSpot.id,
+                id = loveSpot.id,
                 name = loveSpot.name,
                 longitude = loveSpot.longitude,
                 latitude = loveSpot.latitude,
@@ -34,7 +39,14 @@ data class LoveSpotHolder(
                 type = loveSpot.type,
                 averageRating = loveSpot.averageRating,
                 numberOfRatings = loveSpot.numberOfRatings,
-                addedBy = loveSpot.addedBy
+                addedBy = loveSpot.addedBy,
+                distanceKm = AppContext.INSTANCE.lastLocation?.let {
+                    LatLngTool.distance(
+                        it,
+                        LatLng(loveSpot.latitude, loveSpot.longitude),
+                        LengthUnit.KILOMETER
+                    )
+                }
             )
         }
     }

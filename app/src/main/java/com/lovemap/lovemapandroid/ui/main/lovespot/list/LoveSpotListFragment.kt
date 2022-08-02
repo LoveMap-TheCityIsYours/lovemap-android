@@ -1,4 +1,4 @@
-package com.lovemap.lovemapandroid.ui.main.lovespot
+package com.lovemap.lovemapandroid.ui.main.lovespot.list
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,15 +12,23 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lovemap.lovemapandroid.R
+import com.lovemap.lovemapandroid.api.lovespot.ListLocation
+import com.lovemap.lovemapandroid.api.lovespot.ListOrdering
+import com.lovemap.lovemapandroid.api.lovespot.LoveSpotSearchRequest
 import com.lovemap.lovemapandroid.config.AppContext
+import com.lovemap.lovemapandroid.ui.events.LoveSpotListFiltersChanged
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
-import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotRecyclerViewAdapter.Companion.EDIT_LOVE_SPOT_MENU_ID
-import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotRecyclerViewAdapter.Companion.MAKE_LOVE_LOVE_SPOT_MENU_ID
-import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotRecyclerViewAdapter.Companion.REPORT_LOVE_SPOT_MENU_ID
-import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotRecyclerViewAdapter.Companion.WISHLIST_LOVE_SPOT_MENU_ID
+import com.lovemap.lovemapandroid.ui.main.lovespot.AddLoveSpotActivity
+import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotRecyclerViewAdapter.Companion.EDIT_LOVE_SPOT_MENU_ID
+import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotRecyclerViewAdapter.Companion.MAKE_LOVE_LOVE_SPOT_MENU_ID
+import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotRecyclerViewAdapter.Companion.REPORT_LOVE_SPOT_MENU_ID
+import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotRecyclerViewAdapter.Companion.WISHLIST_LOVE_SPOT_MENU_ID
 import com.lovemap.lovemapandroid.ui.main.lovespot.report.ReportLoveSpotActivity
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class LoveSpotListFragment : Fragment() {
     private val appContext = AppContext.INSTANCE
@@ -32,6 +40,7 @@ class LoveSpotListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        EventBus.getDefault().register(this)
     }
 
     override fun onCreateView(
@@ -39,7 +48,7 @@ class LoveSpotListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val linearLayout =
-            inflater.inflate(R.layout.fragment_lovespot_list, container, false) as LinearLayout
+            inflater.inflate(R.layout.fragment_love_spot_list, container, false) as LinearLayout
         recycleView = linearLayout.findViewById(R.id.loveSpotList)
         progressBar = linearLayout.findViewById(R.id.loveSpotListProgressBar)
         recycleView.isClickable = true
@@ -47,14 +56,6 @@ class LoveSpotListFragment : Fragment() {
         recycleView.layoutManager = LinearLayoutManager(context)
         recycleView.adapter = adapter
         return linearLayout
-    }
-
-    override fun onResume() {
-        super.onResume()
-        MainScope().launch {
-            updateData()
-            progressBar.visibility = View.GONE
-        }
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
@@ -87,8 +88,33 @@ class LoveSpotListFragment : Fragment() {
         return super.onContextItemSelected(item)
     }
 
-    private suspend fun updateData() {
-        adapter.updateData(loveSpotService.getLoveSpotHolderList())
-        adapter.notifyDataSetChanged()
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onLoveSpotListFiltersChanged(event: LoveSpotListFiltersChanged) {
+        updateData(event.request, event.listOrdering, event.listLocation)
+    }
+
+    private fun updateData(
+        request: LoveSpotSearchRequest,
+        listOrdering: ListOrdering,
+        listLocation: ListLocation
+    ) {
+        MainScope().launch {
+            recycleView.visibility = View.GONE
+            progressBar.visibility = View.VISIBLE
+            val loveSpots = loveSpotService.getLoveSpotHolderList(
+                listOrdering = listOrdering,
+                listLocation = listLocation,
+                loveSpotSearchRequest = request
+            )
+            adapter.updateData(loveSpots)
+            adapter.notifyDataSetChanged()
+            recycleView.visibility = View.VISIBLE
+            progressBar.visibility = View.GONE
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
     }
 }

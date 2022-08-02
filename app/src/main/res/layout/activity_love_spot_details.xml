@@ -198,7 +198,7 @@
 
             <fragment
                 android:id="@+id/detailsLoveListFragment"
-                android:name="com.lovemap.lovemapandroid.ui.main.love.LoveListFragment"
+                android:name="com.lovemap.lovemapandroid.ui.main.love.list.LoveListFragment"
                 app:love_spot_based="true"
                 app:is_clickable="false"
                 android:layout_marginTop="@dimen/standard_16"

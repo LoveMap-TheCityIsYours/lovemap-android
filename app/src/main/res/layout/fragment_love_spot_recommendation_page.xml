@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/standard_8"
+    android:paddingEnd="@dimen/standard_8"
+    tools:context=".ui.main.lovespot.widget.LoveSpotRecommendationPageFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:scrollbars="vertical"
+        android:scrollbarFadeDuration="0"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/discoverTitle"
+                style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/standard_8"
+                android:layout_marginBottom="@dimen/standard_32"
+                android:text="@string/discover_love_spots" />
+
+            <fragment
+                android:id="@+id/topRatedSpotsWidget"
+                android:name="com.lovemap.lovemapandroid.ui.main.lovespot.widget.LoveSpotWidgetFragment"
+                app:spot_widget_type="TOP_RATED"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/standard_32"/>
+
+            <fragment
+                android:id="@+id/closestSpotsWidget"
+                android:name="com.lovemap.lovemapandroid.ui.main.lovespot.widget.LoveSpotWidgetFragment"
+                app:spot_widget_type="CLOSEST"
+                android:layout_marginBottom="@dimen/standard_32"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <fragment
+                android:id="@+id/recentlyActiveSpotsWidget"
+                android:name="com.lovemap.lovemapandroid.ui.main.lovespot.widget.LoveSpotWidgetFragment"
+                app:spot_widget_type="RECENTLY_ACTIVE"
+                android:layout_marginBottom="@dimen/standard_32"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <fragment
+                android:id="@+id/popularSpotsWidget"
+                android:name="com.lovemap.lovemapandroid.ui.main.lovespot.widget.LoveSpotWidgetFragment"
+                app:spot_widget_type="POPULAR"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/standard_32"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

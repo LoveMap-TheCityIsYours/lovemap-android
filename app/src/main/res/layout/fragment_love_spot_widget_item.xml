@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/loveSpotWidgetItem"
+    android:clickable="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/standard_8"
+    android:layout_marginEnd="@dimen/standard_8"
+    android:layout_marginBottom="@dimen/standard_10"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    tools:context=".ui.main.lovespot.widget.LoveSpotWidgetItemFragment"
+    android:orientation="vertical">
+
+    <TextView
+        style="?android:attr/weekSeparatorLineColor"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/myColorPrimary"
+        android:gravity="center_horizontal" />
+
+    <TextView
+        android:id="@+id/spotWidgetItemName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        style="@style/TextAppearance.Material3.TitleMedium"
+        android:text=" - " />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            />
+
+        <ImageView
+            android:id="@+id/spotWidgetItemTypeImage"
+            android:layout_weight="0"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_public_space_3" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            />
+
+        <LinearLayout
+            android:layout_weight="8"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextAppearance.Material3.LabelMedium"
+                    android:text="@string/rating"/>
+
+                <RatingBar
+                    android:id="@+id/spotWidgetItemRating"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/standard_8"
+                    android:isIndicator="true"
+                    android:numStars="5" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextAppearance.Material3.LabelMedium"
+                    android:text="@string/type"/>
+
+                <TextView
+                    android:id="@+id/spotWidgetItemType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/standard_8"
+                    android:text="Public Space"
+                    style="@style/TextAppearance.Material3.LabelLarge" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextAppearance.Material3.LabelMedium"
+                    android:text="@string/availability"/>
+
+                <TextView
+                    android:id="@+id/spotWidgetItemAvailability"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/standard_8"
+                    android:text="All day"
+                    style="@style/TextAppearance.Material3.LabelLarge" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    style="@style/TextAppearance.Material3.LabelMedium"
+                    android:text="@string/risk"/>
+
+                <TextView
+                    android:id="@+id/spotWidgetItemRisk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/standard_8"
+                    android:text="Very risky"
+                    style="@style/TextAppearance.Material3.LabelLarge" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            />
+
+        <TextView
+            android:id="@+id/spotWidgetItemDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_gravity="center"
+            android:text=""/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            />
+
+    </LinearLayout>
+    <TextView
+        style="?android:attr/weekSeparatorLineColor"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="@dimen/standard_5"
+        android:background="@color/myColorPrimary"
+        android:gravity="center_horizontal" />
+
+
+</LinearLayout>

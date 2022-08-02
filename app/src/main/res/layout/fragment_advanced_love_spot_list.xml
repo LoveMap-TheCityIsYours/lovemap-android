@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:orientation="vertical"
+    tools:context=".ui.main.lovespot.list.advanced.AdvancedLoveSpotListFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/standard_8"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/ordering_button_text"
+            android:textColor="@color/myColorOnBackground" />
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="@string/location_button_text"
+            android:textColor="@color/myColorOnBackground" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/standard_8"
+        android:layout_marginEnd="@dimen/standard_8"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_5"
+            android:layout_marginEnd="@dimen/standard_5"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Spinner
+                android:id="@+id/spotOrderingSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/ordering_list"
+                android:spinnerMode="dropdown" />
+
+        </LinearLayout>
+
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_5"
+            android:layout_marginEnd="@dimen/standard_5"
+            android:layout_weight="4"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/locationSelectorButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoSizeTextType="uniform"
+                android:maxWidth="@dimen/standard_225"
+                android:maxLines="2"
+                android:text="Nearby: 5000 meters" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/locationConfigurationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/standard_8"
+        android:animateLayoutChanges="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            style="?android:attr/weekSeparatorLineColor"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/separatorLine"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/standard_8"
+            android:text="@string/select_location_filter"
+            android:textColor="@color/myColorOnBackground" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/countryFilterButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/standard_8"
+            android:layout_marginEnd="@dimen/standard_8"
+            android:gravity="center"
+            android:text="@string/country_filter"
+            android:textSize="16sp"
+            app:icon="@drawable/ic_country4"
+            app:iconGravity="textStart" />
+
+        <LinearLayout
+            android:id="@+id/countryFilterViewGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_16"
+            android:layout_marginTop="@dimen/standard_16"
+            android:layout_marginEnd="@dimen/standard_16"
+            android:animateLayoutChanges="true"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <AutoCompleteTextView
+                android:id="@+id/countryAutocompleteText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:animateLayoutChanges="true"
+                android:completionThreshold="1"
+                android:imeOptions="actionDone"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/myColorOnBackground"
+                android:textColorHint="@color/myColorOnBackground" />
+
+            <Button
+                android:id="@+id/countryGoButton"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standard_8"
+                android:text="@string/go_button_text" />
+
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/cityFilterButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/standard_8"
+            android:layout_marginTop="@dimen/standard_8"
+            android:layout_marginEnd="@dimen/standard_8"
+            android:layout_marginBottom="@dimen/standard_8"
+            android:gravity="center"
+            android:text="@string/city_filter"
+            android:textSize="16sp"
+            app:icon="@drawable/ic_city4"
+            app:iconGravity="textStart" />
+
+        <LinearLayout
+            android:id="@+id/cityFilterViewGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_16"
+            android:layout_marginTop="@dimen/standard_8"
+            android:layout_marginEnd="@dimen/standard_16"
+            android:layout_marginBottom="@dimen/standard_8"
+            android:animateLayoutChanges="true"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <AutoCompleteTextView
+                android:id="@+id/cityAutocompleteText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:animateLayoutChanges="true"
+                android:completionThreshold="1"
+                android:imeOptions="actionDone"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/myColorOnBackground"
+                android:textColorHint="@color/myColorOnBackground" />
+
+            <Button
+                android:id="@+id/cityGoButton"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standard_8"
+                android:text="@string/go_button_text" />
+
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/nearbyFilterButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/standard_8"
+            android:layout_marginEnd="@dimen/standard_8"
+            android:gravity="center"
+            android:text="@string/nearby_filter"
+            android:textSize="16sp"
+            app:icon="@drawable/ic_baseline_my_location_24"
+            app:iconGravity="textStart" />
+
+        <LinearLayout
+            android:id="@+id/nearbyFilterViewGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/standard_16"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/standard_16"
+                android:paddingEnd="@dimen/standard_16">
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/within"
+                    android:textColor="@color/myColorOnBackground" />
+
+                <EditText
+                    android:id="@+id/nearbyFilterEditText"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:inputType="number"
+                    android:minWidth="@dimen/standard_80" />
+
+                <Spinner
+                    android:id="@+id/nearbyFilterSpinner"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/distance_units"
+                    android:spinnerMode="dropdown"
+                    android:text="meters"
+                    android:textColor="@color/myColorOnBackground" />
+
+                <Button
+                    android:id="@+id/nearbyGoButton"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/go_button_text" />
+
+            </LinearLayout>
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/nearbyFilterSlider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standard_16"
+                android:layout_marginEnd="@dimen/standard_16"
+                android:stepSize="100"
+                android:valueFrom="0"
+                android:valueTo="10000" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.lovemap.lovemapandroid.ui.customviews.NestedScrollableHost
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <HorizontalScrollView
+            android:id="@+id/typeFilterScrollView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:paddingTop="@dimen/standard_8"
+            android:paddingBottom="@dimen/standard_8">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/typeFilterAll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="@dimen/standard_8"
+                    android:layout_marginEnd="@dimen/standard_8"
+                    android:background="@drawable/label_filter_on"
+                    android:text="@string/type_filter_all"
+                    android:textAllCaps="false"
+                    android:textColor="@color/myColorOnSecondary"
+                    app:backgroundTint="@null" />
+
+                <Button
+                    android:id="@+id/typeFilterPublicSpace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="@dimen/standard_8"
+                    android:background="@drawable/label_filter_off"
+                    android:text="@string/type_filter_public_space"
+                    android:textAllCaps="false"
+                    android:textColor="@color/myColorOnSecondary"
+                    app:backgroundTint="@null" />
+
+                <Button
+                    android:id="@+id/typeFilterSwingerClub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="@dimen/standard_8"
+                    android:animateLayoutChanges="true"
+                    android:background="@drawable/label_filter_off"
+                    android:text="@string/type_filter_swinger_club"
+                    android:textAllCaps="false"
+                    android:textColor="@color/myColorOnSecondary"
+                    app:backgroundTint="@null" />
+
+                <Button
+                    android:id="@+id/typeFilterCruisingSpot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="@dimen/standard_8"
+                    android:background="@drawable/label_filter_off"
+                    android:text="@string/type_filter_cruising_spot"
+                    android:textAllCaps="false"
+                    android:textColor="@color/myColorOnSecondary"
+                    app:backgroundTint="@null" />
+
+                <Button
+                    android:id="@+id/typeFilterSexBooth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="@dimen/standard_8"
+                    android:background="@drawable/label_filter_off"
+                    android:text="@string/type_filter_sex_booth"
+                    android:textAllCaps="false"
+                    android:textColor="@color/myColorOnSecondary"
+                    app:backgroundTint="@null" />
+
+                <Button
+                    android:id="@+id/typeFilterNightClub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="@dimen/standard_8"
+                    android:background="@drawable/label_filter_off"
+                    android:text="@string/type_filter_night_club"
+                    android:textAllCaps="false"
+                    android:textColor="@color/myColorOnSecondary"
+                    app:backgroundTint="@null" />
+
+                <Button
+                    android:id="@+id/typeFilterOtherVenue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="@dimen/standard_8"
+                    android:background="@drawable/label_filter_off"
+                    android:text="@string/type_filter_other_venue"
+                    android:textAllCaps="false"
+                    android:textColor="@color/myColorOnSecondary"
+                    app:backgroundTint="@null" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+    </com.lovemap.lovemapandroid.ui.customviews.NestedScrollableHost>
+
+    <TextView
+        style="?android:attr/weekSeparatorLineColor"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/separatorLine"
+        android:gravity="center_horizontal" />
+
+    <fragment
+        android:id="@+id/fragmentDiscoverLoveSpotList"
+        android:name="com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/standard_8" />
+
+</LinearLayout>

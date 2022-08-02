@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -79,8 +81,11 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     private lateinit var addSpotOkFab: FloatingActionButton
     private lateinit var addSpotCancelFab: FloatingActionButton
 
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         askForLocationPermission()
     }
 
@@ -238,7 +243,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
 
         val visibleRegion = googleMap.projection.visibleRegion
         val loveSpotsInArea = loveSpotService
-            .search(visibleRegion.latLngBounds)
+            .list(visibleRegion.latLngBounds)
 
         putLoveSpotListOnMap(loveSpotsInArea, googleMap)
 
@@ -387,6 +392,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
                         }
                     }
                     locationEnabled = true
+                    requestLocationUpdates()
                 }
                 else -> {
                     // No location access granted.
@@ -396,6 +402,27 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
 
         locationPermissionRequest.launch(
             arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+        )
+    }
+
+    private fun requestLocationUpdates() {
+        appContext.locationEnabled = true
+        val locationRequest = LocationRequest.create()
+            .setInterval(60 * 1000)
+            .setPriority(Priority.PRIORITY_BALANCED_POWER_ACCURACY)
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            object : LocationCallback() {
+                override fun onLocationResult(locationResult: LocationResult) {
+                    appContext.lastLocation = locationResult.lastLocation?.let {
+                        com.javadocmd.simplelatlng.LatLng(
+                            it.latitude,
+                            it.longitude
+                        )
+                    }
+                }
+            },
+            Looper.myLooper()
         )
     }
 

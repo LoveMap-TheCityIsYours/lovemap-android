@@ -1,13 +1,16 @@
 package com.lovemap.lovemapandroid.ui.utils
 
-import android.content.Context
 import android.view.View
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import com.javadocmd.simplelatlng.LatLng
+import com.javadocmd.simplelatlng.LatLngTool
+import com.javadocmd.simplelatlng.util.LengthUnit
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.Availability
-import com.lovemap.lovemapandroid.api.lovespot.Type
+import com.lovemap.lovemapandroid.api.lovespot.ListOrdering
+import com.lovemap.lovemapandroid.api.lovespot.LoveSpotType
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import kotlinx.coroutines.MainScope
@@ -36,18 +39,18 @@ object LoveSpotUtils {
     }
 
     fun setType(
-        type: Type,
+        type: LoveSpotType,
         typeView: TextView
     ) {
         val context = AppContext.INSTANCE.applicationContext
         typeView.text = when (type) {
-                Type.PUBLIC_SPACE -> context.getString(R.string.type_public_space)
-                Type.SWINGER_CLUB -> context.getString(R.string.type_swinger_club)
-                Type.CRUISING_SPOT -> context.getString(R.string.type_cruising_spot)
-                Type.SEX_BOOTH -> context.getString(R.string.type_sex_booth)
-                Type.NIGHT_CLUB -> context.getString(R.string.type_night_club)
-                Type.OTHER_VENUE -> context.getString(R.string.type_other_venue)
-            }
+            LoveSpotType.PUBLIC_SPACE -> context.getString(R.string.type_public_space)
+            LoveSpotType.SWINGER_CLUB -> context.getString(R.string.type_swinger_club)
+            LoveSpotType.CRUISING_SPOT -> context.getString(R.string.type_cruising_spot)
+            LoveSpotType.SEX_BOOTH -> context.getString(R.string.type_sex_booth)
+            LoveSpotType.NIGHT_CLUB -> context.getString(R.string.type_night_club)
+            LoveSpotType.OTHER_VENUE -> context.getString(R.string.type_other_venue)
+        }
     }
 
     fun setRisk(
@@ -113,35 +116,76 @@ object LoveSpotUtils {
         }
     }
 
-    fun positionToType(position: Int) =
-        when (position) {
-            0 -> Type.PUBLIC_SPACE
-            1 -> Type.SWINGER_CLUB
-            2 -> Type.CRUISING_SPOT
-            3 -> Type.SEX_BOOTH
-            4 -> Type.NIGHT_CLUB
-            else -> Type.OTHER_VENUE
-        }
+    fun positionToType(position: Int): LoveSpotType = when (position) {
+        0 -> LoveSpotType.PUBLIC_SPACE
+        1 -> LoveSpotType.SWINGER_CLUB
+        2 -> LoveSpotType.CRUISING_SPOT
+        3 -> LoveSpotType.SEX_BOOTH
+        4 -> LoveSpotType.NIGHT_CLUB
+        else -> LoveSpotType.OTHER_VENUE
+    }
 
-    fun typeToPosition(type: Type): Int {
-        return when (type) {
-            Type.PUBLIC_SPACE -> 0
-            Type.SWINGER_CLUB -> 1
-            Type.CRUISING_SPOT -> 2
-            Type.SEX_BOOTH -> 3
-            Type.NIGHT_CLUB -> 4
-            Type.OTHER_VENUE -> 5
+    fun typeToPosition(type: LoveSpotType): Int = when (type) {
+        LoveSpotType.PUBLIC_SPACE -> 0
+        LoveSpotType.SWINGER_CLUB -> 1
+        LoveSpotType.CRUISING_SPOT -> 2
+        LoveSpotType.SEX_BOOTH -> 3
+        LoveSpotType.NIGHT_CLUB -> 4
+        LoveSpotType.OTHER_VENUE -> 5
+    }
+
+    fun positionToOrdering(position: Int): ListOrdering = when (position) {
+        0 -> ListOrdering.TOP_RATED
+        1 -> ListOrdering.CLOSEST
+        2 -> ListOrdering.RECENTLY_ACTIVE
+        else -> ListOrdering.POPULAR
+    }
+
+    fun orderingToPosition(ordering: ListOrdering): Int = when (ordering) {
+        ListOrdering.TOP_RATED -> 0
+        ListOrdering.CLOSEST -> 1
+        ListOrdering.RECENTLY_ACTIVE -> 2
+        ListOrdering.POPULAR -> 3
+    }
+
+    fun setTypeImage(type: LoveSpotType, imageView: ImageView) {
+        when (type) {
+            LoveSpotType.PUBLIC_SPACE -> imageView.setImageResource(R.drawable.ic_public_space_3)
+            LoveSpotType.SWINGER_CLUB -> imageView.setImageResource(R.drawable.ic_swinger_club_2)
+            LoveSpotType.CRUISING_SPOT -> imageView.setImageResource(R.drawable.ic_cruising_spot_1)
+            LoveSpotType.SEX_BOOTH -> imageView.setImageResource(R.drawable.ic_sex_booth_1)
+            LoveSpotType.NIGHT_CLUB -> imageView.setImageResource(R.drawable.ic_night_club_2)
+            LoveSpotType.OTHER_VENUE -> imageView.setImageResource(R.drawable.ic_other_venue_1)
         }
     }
 
-    fun setTypeImage(type: Type, imageView: ImageView) {
-        when (type) {
-            Type.PUBLIC_SPACE -> imageView.setImageResource(R.drawable.ic_public_space_3)
-            Type.SWINGER_CLUB -> imageView.setImageResource(R.drawable.ic_swinger_club_2)
-            Type.CRUISING_SPOT -> imageView.setImageResource(R.drawable.ic_cruising_spot_1)
-            Type.SEX_BOOTH -> imageView.setImageResource(R.drawable.ic_sex_booth_1)
-            Type.NIGHT_CLUB -> imageView.setImageResource(R.drawable.ic_night_club_2)
-            Type.OTHER_VENUE -> imageView.setImageResource(R.drawable.ic_other_venue_1)
+    fun setDistance(distanceKm: Double?, loveSpotItemDistance: TextView) {
+        distanceKm?.let {
+            setDistanceText(loveSpotItemDistance, it)
+        } ?: run {
+            loveSpotItemDistance.visibility = View.GONE
+        }
+    }
+
+    fun setDistance(loveSpot: LoveSpot, loveSpotItemDistance: TextView) {
+        if (AppContext.INSTANCE.lastLocation != null) {
+            val distanceKm = LatLngTool.distance(
+                AppContext.INSTANCE.lastLocation,
+                LatLng(loveSpot.latitude, loveSpot.longitude),
+                LengthUnit.KILOMETER
+            )
+            setDistanceText(loveSpotItemDistance, distanceKm)
+        } else {
+            loveSpotItemDistance.visibility = View.GONE
+        }
+    }
+
+    private fun setDistanceText(loveSpotItemDistance: TextView, distanceKm: Double) {
+        loveSpotItemDistance.visibility = View.VISIBLE
+        if (distanceKm < 1.0) {
+            loveSpotItemDistance.text = (distanceKm * 1000).toInt().toString() + " m"
+        } else {
+            loveSpotItemDistance.text = String.format("%.1f", distanceKm) + " km"
         }
     }
 }

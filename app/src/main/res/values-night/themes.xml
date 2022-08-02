@@ -28,4 +28,49 @@
         <item name="android:statusBarColor">@color/splash_screen</item>
         <item name="android:windowBackground">@drawable/background_splash</item>
     </style>
+
+    <style name="LabelFilterOff" parent="Widget.Design.FloatingActionButton">
+        <item name="android:background">@null</item>
+        <item name="enforceMaterialTheme">true</item>
+        <item name="backgroundTint">@color/myColorSecondary</item>
+        <item name="strokeColor">@color/myColorPrimary</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:textStyle">bold</item>
+        <item name="strokeWidth">4dp</item>
+        <item name="ensureMinTouchTargetSize">true</item>
+        <item name="elevation">@dimen/mtrl_fab_elevation</item>
+        <item name="tint">@color/mtrl_fab_icon_text_color_selector</item>
+        <item name="hoveredFocusedTranslationZ">@dimen/mtrl_fab_translation_z_hovered_focused</item>
+        <item name="pressedTranslationZ">@dimen/mtrl_fab_translation_z_pressed</item>
+        <item name="rippleColor">@color/mtrl_fab_ripple_color</item>
+        <item name="showMotionSpec">@animator/mtrl_fab_show_motion_spec</item>
+        <item name="hideMotionSpec">@animator/mtrl_fab_hide_motion_spec</item>
+        <item name="shapeAppearance">?attr/shapeAppearanceSmallComponent</item>
+        <item name="shapeAppearanceOverlay">
+            @style/ShapeAppearanceOverlay.MaterialComponents.FloatingActionButton
+        </item>
+    </style>
+
+    <style name="LabelFilterOn" parent="Widget.Design.FloatingActionButton">
+        <item name="android:background">@null</item>
+        <item name="enforceMaterialTheme">true</item>
+        <item name="backgroundTint">@color/myColorPrimary</item>
+        <item name="strokeColor">@color/myColorPrimary</item>
+        <item name="strokeWidth">4dp</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:textStyle">bold</item>
+        <item name="ensureMinTouchTargetSize">true</item>
+        <item name="elevation">@dimen/mtrl_fab_elevation</item>
+        <item name="tint">@color/mtrl_fab_icon_text_color_selector</item>
+        <item name="hoveredFocusedTranslationZ">@dimen/mtrl_fab_translation_z_hovered_focused</item>
+        <item name="pressedTranslationZ">@dimen/mtrl_fab_translation_z_pressed</item>
+        <item name="rippleColor">@color/mtrl_fab_ripple_color</item>
+        <item name="showMotionSpec">@animator/mtrl_fab_show_motion_spec</item>
+        <item name="hideMotionSpec">@animator/mtrl_fab_hide_motion_spec</item>
+        <item name="shapeAppearance">?attr/shapeAppearanceSmallComponent</item>
+        <item name="shapeAppearanceOverlay">
+            @style/ShapeAppearanceOverlay.MaterialComponents.FloatingActionButton
+        </item>
+    </style>
+
 </resources>

@@ -12,11 +12,15 @@ import com.lovemap.lovemapandroid.data.lovespot.LoveSpotDao
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.ui.data.LoveSpotHolder
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import kotlin.math.max
+import kotlin.math.min
 
 class LoveSpotService(
     private val loveSpotApi: LoveSpotApi,
     private val loveSpotDao: LoveSpotDao,
+    private val geoLocationService: GeoLocationService,
     private val metadataStore: MetadataStore,
     private val toaster: Toaster,
 ) {
@@ -41,6 +45,20 @@ class LoveSpotService(
     suspend fun getLoveSpotHolderList(): MutableList<LoveSpotHolder> {
         return withContext(Dispatchers.IO) {
             val loveSpots = loveSpotDao.getAllOrderedByRating()
+            loveSpots.map { loveSpot -> LoveSpotHolder.of(loveSpot) }
+                .toMutableList()
+        }
+    }
+
+    suspend fun getLoveSpotHolderList(
+        listOrdering: ListOrdering,
+        listLocation: ListLocation,
+        loveSpotSearchRequest: LoveSpotSearchRequest,
+        delay: Long = 200,
+    ): MutableList<LoveSpotHolder> {
+        return withContext(Dispatchers.IO) {
+            val loveSpots = advancedList(listOrdering, listLocation, loveSpotSearchRequest)
+            delay(delay)
             loveSpots.map { loveSpot -> LoveSpotHolder.of(loveSpot) }
                 .toMutableList()
         }
@@ -78,10 +96,10 @@ class LoveSpotService(
                 return@withContext null
             }
             if (response.isSuccessful) {
+                geoLocationService.getCities()
                 savedCreationState = null
                 val loveSpot = response.body()!!
                 loveSpotDao.insert(loveSpot)
-                // TODO: optimize a lot
                 loveSpot
             } else {
                 val errorMessage: ErrorMessage = response.getErrorMessages()[0]
@@ -113,10 +131,10 @@ class LoveSpotService(
         }
     }
 
-    suspend fun search(latLngBounds: LatLngBounds): List<LoveSpot> {
+    suspend fun list(latLngBounds: LatLngBounds): List<LoveSpot> {
         return withContext(Dispatchers.IO) {
             val request = loveSpotSearchRequestFromBounds(latLngBounds)
-            val localSpots = loveSpotDao.search(
+            val localSpots = loveSpotDao.list(
                 request.longFrom,
                 request.longTo,
                 request.latFrom,
@@ -127,11 +145,10 @@ class LoveSpotService(
                 return@withContext localSpots
             }
 
-            val call = loveSpotApi.search(request)
+            val call = loveSpotApi.list(request)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
-//                toaster.showNoServerToast()
                 return@withContext localSpots
             }
             if (response.isSuccessful) {
@@ -144,11 +161,33 @@ class LoveSpotService(
                 val deletedSpots = localSpotSet.subtract(serverSpotSet)
                 loveSpotDao.delete(*deletedSpots.toTypedArray())
                 loveSpotDao.insert(*serverSpotSet.toTypedArray())
-                // TODO: optimize a lot
                 serverSpots
             } else {
-//                toaster.showNoServerToast()
                 localSpots
+            }
+        }
+    }
+
+    private suspend fun advancedList(
+        ordering: ListOrdering,
+        location: ListLocation,
+        request: LoveSpotSearchRequest
+    ): List<LoveSpot> {
+        return withContext(Dispatchers.IO) {
+            val call = loveSpotApi.search(ordering, location, request)
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
+                toaster.showNoServerToast()
+                return@withContext emptyList()
+            }
+            if (response.isSuccessful) {
+                val serverSpots = response.body()!!
+                loveSpotDao.insert(*serverSpots.toTypedArray())
+                serverSpots
+            } else {
+                toaster.showResponseError(response)
+                emptyList()
             }
         }
     }
@@ -184,25 +223,26 @@ class LoveSpotService(
         }
     }
 
-    private fun loveSpotSearchRequestFromBounds(latLngBounds: LatLngBounds): LoveSpotSearchRequest {
+    private fun loveSpotSearchRequestFromBounds(latLngBounds: LatLngBounds): LoveSpotListRequest {
         val northeast = latLngBounds.northeast
         val southwest = latLngBounds.southwest
-        return LoveSpotSearchRequest(
-            latFrom = if (northeast.latitude < southwest.latitude) northeast.latitude else southwest.latitude,
-            longFrom = if (northeast.longitude < southwest.longitude) northeast.longitude else southwest.longitude,
-            latTo = if (northeast.latitude >= southwest.latitude) northeast.latitude else southwest.latitude,
-            longTo = if (northeast.longitude >= southwest.longitude) northeast.longitude else southwest.longitude,
+        return LoveSpotListRequest(
+            latFrom = min(northeast.latitude, southwest.latitude),
+            longFrom = min(northeast.longitude, southwest.longitude),
+            latTo = max(northeast.latitude, southwest.latitude),
+            longTo = max(northeast.longitude, southwest.longitude),
             limit = 100
         )
     }
 
-    private fun areaFullyQueried(request: LoveSpotSearchRequest) =
-        fullyQueriedAreas.any {
+    private fun areaFullyQueried(request: LoveSpotListRequest): Boolean {
+        return fullyQueriedAreas.any {
             it.contains(LatLng(request.latFrom, request.longFrom)) &&
                     it.contains(LatLng(request.latTo, request.longTo)) &&
                     it.contains(LatLng(request.latFrom, request.longTo)) &&
                     it.contains(LatLng(request.latTo, request.longFrom))
         }
+    }
 
     suspend fun insertIntoDb(loveSpot: LoveSpot) {
         return withContext(Dispatchers.IO) {
@@ -215,6 +255,29 @@ class LoveSpotService(
             loveSpotDao.loadSingle(loveSpotId)?.let {
                 loveSpotDao.delete(it)
                 AppContext.INSTANCE.shouldClearMap = true
+            }
+        }
+    }
+
+    suspend fun getRecommendations(request: RecommendationsRequest): RecommendationsResponse {
+        return withContext(Dispatchers.IO) {
+            val call = loveSpotApi.recommendations(request)
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
+                toaster.showNoServerToast()
+                return@withContext RecommendationsResponse.empty()
+            }
+            if (response.isSuccessful) {
+                val result = response.body()!!
+                loveSpotDao.insert(*result.topRatedSpots.toTypedArray())
+                loveSpotDao.insert(*result.closestSpots.toTypedArray())
+                loveSpotDao.insert(*result.recentlyActiveSpots.toTypedArray())
+                loveSpotDao.insert(*result.popularSpots.toTypedArray())
+                result
+            } else {
+                toaster.showResponseError(response)
+                RecommendationsResponse.empty()
             }
         }
     }
