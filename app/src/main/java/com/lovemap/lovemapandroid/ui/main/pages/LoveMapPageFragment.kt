@@ -56,7 +56,6 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     private val loveSpotService: LoveSpotService = appContext.loveSpotService
     private val loveService: LoveService = appContext.loveService
     private var cameraMoved = false
-    private var locationEnabled = false
     private var localSpotsDrawn = false
     private var mapMode = LOVE_SPOTS
     private val drawnSpots = HashSet<Long>()
@@ -222,7 +221,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     }
 
     private fun setMyLocation(googleMap: GoogleMap) {
-        if (locationEnabled) {
+        if (appContext.locationEnabled) {
             googleMap.isMyLocationEnabled = true
             googleMap.uiSettings.isMyLocationButtonEnabled = true
         }
@@ -391,8 +390,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
                             it.uiSettings.isMyLocationButtonEnabled = true
                         }
                     }
-                    locationEnabled = true
-                    requestLocationUpdates()
+                    appContext.requestLocationUpdates()
                 }
                 else -> {
                     // No location access granted.
@@ -402,27 +400,6 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
 
         locationPermissionRequest.launch(
             arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
-        )
-    }
-
-    private fun requestLocationUpdates() {
-        appContext.locationEnabled = true
-        val locationRequest = LocationRequest.create()
-            .setInterval(60 * 1000)
-            .setPriority(Priority.PRIORITY_BALANCED_POWER_ACCURACY)
-        fusedLocationClient.requestLocationUpdates(
-            locationRequest,
-            object : LocationCallback() {
-                override fun onLocationResult(locationResult: LocationResult) {
-                    appContext.lastLocation = locationResult.lastLocation?.let {
-                        com.javadocmd.simplelatlng.LatLng(
-                            it.latitude,
-                            it.longitude
-                        )
-                    }
-                }
-            },
-            Looper.myLooper()
         )
     }
 

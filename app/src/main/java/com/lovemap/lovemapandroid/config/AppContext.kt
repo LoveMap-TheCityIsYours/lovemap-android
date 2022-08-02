@@ -1,11 +1,13 @@
 package com.lovemap.lovemapandroid.config
 
-import android.content.Context
+import android.annotation.SuppressLint
+import android.os.Looper
 import android.telephony.TelephonyManager
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.multidex.MultiDexApplication
 import androidx.room.Room
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.lovemap.lovemapandroid.R
@@ -122,6 +124,8 @@ class AppContext : MultiDexApplication() {
 
     private lateinit var gsonConverterFactory: GsonConverterFactory
     private lateinit var authorizingRetrofit: Retrofit
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreate() {
         super.onCreate()
@@ -329,5 +333,28 @@ class AppContext : MultiDexApplication() {
             loveSpotReviewDao.delete(*loveSpotReviewDao.getAll().toTypedArray())
             partnershipDao.delete(*partnershipDao.getAll().toTypedArray())
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun requestLocationUpdates() {
+        locationEnabled = true
+        val locationRequest = LocationRequest.create()
+            .setInterval(60 * 1000)
+            .setPriority(Priority.PRIORITY_BALANCED_POWER_ACCURACY)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            object : LocationCallback() {
+                override fun onLocationResult(locationResult: LocationResult) {
+                    lastLocation = locationResult.lastLocation?.let {
+                        com.javadocmd.simplelatlng.LatLng(
+                            it.latitude,
+                            it.longitude
+                        )
+                    }
+                }
+            },
+            Looper.myLooper()
+        )
     }
 }

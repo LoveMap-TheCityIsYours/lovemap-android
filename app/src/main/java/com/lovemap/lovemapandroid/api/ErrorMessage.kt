@@ -65,6 +65,7 @@ private val errorCodeMessageMap = HashMap<ErrorCode, Int>().apply {
     put(WrongPwResetCode, R.string.wrongPwResetCode)
     put(PwResetCodeTimedOut, R.string.pwResetCodeTimedOut)
     put(InvalidLimit, R.string.invalidLimit)
+    put(MissingListCoordinates, R.string.missingListCoordinates)
 }
 
 enum class ErrorCode {

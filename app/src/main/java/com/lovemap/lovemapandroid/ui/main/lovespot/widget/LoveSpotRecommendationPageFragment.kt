@@ -49,12 +49,17 @@ class LoveSpotRecommendationPageFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_love_spot_recommendation_page, container, false)
+        getRecommendationsWhenLocationAccessIsDenied()
+        return view
+    }
 
-        registerForActivityResult(
+    private fun getRecommendationsWhenLocationAccessIsDenied() {
+        val locationPermissionRequest = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) { permissions ->
             when {
                 permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+                    appContext.requestLocationUpdates()
                 }
                 else -> {
                     // No location access granted.
@@ -63,8 +68,9 @@ class LoveSpotRecommendationPageFragment : Fragment() {
             }
         }
 
-
-        return view
+        locationPermissionRequest.launch(
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+        )
     }
 
     private fun getRecommendations() {
