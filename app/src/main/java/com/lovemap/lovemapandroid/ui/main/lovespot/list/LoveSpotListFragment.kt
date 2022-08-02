@@ -58,18 +58,6 @@ class LoveSpotListFragment : Fragment() {
         return linearLayout
     }
 
-    override fun onResume() {
-        super.onResume()
-        MainScope().launch {
-            updateData(
-                LoveSpotListFilterState.createSearchRequest(),
-                LoveSpotListFilterState.listOrdering,
-                LoveSpotListFilterState.listLocation
-            )
-            progressBar.visibility = View.GONE
-        }
-    }
-
     override fun onContextItemSelected(item: MenuItem): Boolean {
         val position = try {
             adapter.position
