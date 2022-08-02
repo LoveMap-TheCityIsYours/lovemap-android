@@ -54,6 +54,7 @@ class SpotListLocationFilterViewLogic(
     }
 
     private fun setOrderingSpinner() {
+        spotOrderingSpinner.setSelection(LoveSpotUtils.orderingToPosition(LoveSpotListFilterState.listOrdering))
         spotOrderingSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,

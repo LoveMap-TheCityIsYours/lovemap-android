@@ -14,13 +14,13 @@ object LoveSpotListFilterState {
     private val appContext = AppContext.INSTANCE
     var initialized = false
 
-    var listOrdering = ListOrdering.POPULAR
+    var listOrdering = ListOrdering.TOP_RATED
         set(value) {
             field = value
             sendChangeEvent()
         }
 
-    var listLocation = ListLocation.COUNTRY
+    var listLocation = ListLocation.COORDINATE
 
     var locationName: String? = "Hungary"
         set(value) {

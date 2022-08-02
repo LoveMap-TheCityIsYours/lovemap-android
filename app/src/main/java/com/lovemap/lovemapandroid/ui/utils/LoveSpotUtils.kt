@@ -132,17 +132,17 @@ object LoveSpotUtils {
     }
 
     fun positionToOrdering(position: Int): ListOrdering = when (position) {
-        0 -> ListOrdering.POPULAR
-        1 -> ListOrdering.TOP_RATED
+        0 -> ListOrdering.TOP_RATED
+        1 -> ListOrdering.CLOSEST
         2 -> ListOrdering.RECENTLY_ACTIVE
-        else -> ListOrdering.CLOSEST
+        else -> ListOrdering.POPULAR
     }
 
     fun orderingToPosition(ordering: ListOrdering): Int = when (ordering) {
-        ListOrdering.POPULAR -> 0
-        ListOrdering.TOP_RATED -> 1
+        ListOrdering.TOP_RATED -> 0
+        ListOrdering.CLOSEST -> 1
         ListOrdering.RECENTLY_ACTIVE -> 2
-        ListOrdering.CLOSEST -> 3
+        ListOrdering.POPULAR -> 3
     }
 
     fun setTypeImage(type: LoveSpotType, imageView: ImageView) {

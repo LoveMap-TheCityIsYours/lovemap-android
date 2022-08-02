@@ -31,10 +31,10 @@
     </string-array>
 
     <string-array name="ordering_list">
-        <item>Popular</item>
         <item>Top Rated</item>
-        <item>Recently Active</item>
         <item>Closest</item>
+        <item>Recently Active</item>
+        <item>Popular</item>
     </string-array>
 
     <string-array name="distance_units">

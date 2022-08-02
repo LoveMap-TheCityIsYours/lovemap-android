@@ -32,20 +32,20 @@
                 android:text="@string/discover_love_spots" />
 
             <fragment
-                android:id="@+id/popularSpotsWidget"
-                android:name="com.lovemap.lovemapandroid.ui.main.lovespot.widget.LoveSpotWidgetFragment"
-                app:spot_widget_type="POPULAR"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/standard_32"/>
-
-            <fragment
                 android:id="@+id/topRatedSpotsWidget"
                 android:name="com.lovemap.lovemapandroid.ui.main.lovespot.widget.LoveSpotWidgetFragment"
                 app:spot_widget_type="TOP_RATED"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standard_32"/>
+
+            <fragment
+                android:id="@+id/closestSpotsWidget"
+                android:name="com.lovemap.lovemapandroid.ui.main.lovespot.widget.LoveSpotWidgetFragment"
+                app:spot_widget_type="CLOSEST"
+                android:layout_marginBottom="@dimen/standard_32"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <fragment
                 android:id="@+id/recentlyActiveSpotsWidget"
@@ -56,12 +56,12 @@
                 android:layout_height="wrap_content" />
 
             <fragment
-                android:id="@+id/closestSpotsWidget"
+                android:id="@+id/popularSpotsWidget"
                 android:name="com.lovemap.lovemapandroid.ui.main.lovespot.widget.LoveSpotWidgetFragment"
-                app:spot_widget_type="CLOSEST"
-                android:layout_marginBottom="@dimen/standard_32"
+                app:spot_widget_type="POPULAR"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/standard_32"/>
 
         </LinearLayout>
     </ScrollView>
