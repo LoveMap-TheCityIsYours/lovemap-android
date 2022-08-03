@@ -1,5 +1,6 @@
 package com.lovemap.lovemapandroid.ui.main.lovespot.widget
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +12,13 @@ import androidx.fragment.app.Fragment
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
+import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
 
 class LoveSpotWidgetItemFragment : Fragment() {
+
+    private val appContext = AppContext.INSTANCE
+    private var loveSpot: LoveSpot? = null
 
     private lateinit var spotWidgetItemName: TextView
     private lateinit var spotWidgetItemType: TextView
@@ -45,9 +50,17 @@ class LoveSpotWidgetItemFragment : Fragment() {
         spotWidgetItemDistance = view.findViewById(R.id.spotWidgetItemDistance)
         spotWidgetItemRating = view.findViewById(R.id.spotWidgetItemRating)
         spotWidgetItemTypeImage = view.findViewById(R.id.spotWidgetItemTypeImage)
+        view.setOnClickListener {
+            if (loveSpot != null) {
+                appContext.selectedLoveSpot = loveSpot
+                appContext.selectedLoveSpotId = loveSpot!!.id
+                startActivity(Intent(requireContext(), LoveSpotDetailsActivity::class.java))
+            }
+        }
     }
 
     fun setLoveSpot(loveSpot: LoveSpot) {
+        this.loveSpot = loveSpot
         spotWidgetItemName.text = loveSpot.name
         LoveSpotUtils.setType(loveSpot.type, spotWidgetItemType)
         LoveSpotUtils.setAvailability(loveSpot.availability, spotWidgetItemAvailability)

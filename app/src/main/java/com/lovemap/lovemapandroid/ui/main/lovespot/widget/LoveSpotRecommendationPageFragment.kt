@@ -79,8 +79,7 @@ class LoveSpotRecommendationPageFragment : Fragment() {
                 RecommendationsRequest(
                     appContext.lastLocation?.longitude,
                     appContext.lastLocation?.latitude,
-                    appContext.country,
-                    LoveSpotListFilterState.getSelectedTypes()
+                    appContext.country
                 )
             )
             EventBus.getDefault().post(
