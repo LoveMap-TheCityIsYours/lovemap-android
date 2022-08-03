@@ -145,7 +145,7 @@ class AppContext : MultiDexApplication() {
     private fun initCountry() {
         val telephonyManager = getSystemService(TELEPHONY_SERVICE) as TelephonyManager
         val countryCode: String = telephonyManager.networkCountryIso
-        country = Locale("EN", countryCode).displayCountry
+        country = Locale("EN", countryCode).getDisplayCountry(Locale("EN"))
         LoveSpotListFilterState.locationName = country
     }
 
