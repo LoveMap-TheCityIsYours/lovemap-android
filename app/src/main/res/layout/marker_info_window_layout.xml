@@ -11,6 +11,8 @@
         android:id="@+id/marker_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxWidth="@dimen/standard_225"
+        android:maxLines="2"
         android:layout_gravity="center"
         android:layout_marginBottom="@dimen/standard_8"
         android:text="@string/title"
@@ -126,12 +128,13 @@
 
     <TextView
         android:id="@+id/marker_description"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginStart="@dimen/standard_16"
         android:autoLink="web"
-        android:maxWidth="@dimen/standard_200"
+        android:minWidth="@dimen/standard_125"
+        android:maxWidth="@dimen/standard_225"
         android:maxLines="2"
         android:text=" - "
         android:textColor="@color/myColorOnBackground" />
