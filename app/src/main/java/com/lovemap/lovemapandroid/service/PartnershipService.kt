@@ -23,22 +23,26 @@ class PartnershipService(
 
     suspend fun getPartnerships(): List<Partnership> {
         return withContext(Dispatchers.IO) {
-            val localPartnerships = partnershipDao.getAll()
-            val call = partnershipApi.getLoverPartnerships(metadataStore.getUser().id)
-            val response = try {
-                call.execute()
-            } catch (e: Exception) {
-                toaster.showNoServerToast()
-                return@withContext localPartnerships
-            }
-            if (response.isSuccessful) {
-                val partnershipsResponse = response.body()!!
-                val partnerships = partnershipsResponse.partnerships
-                partnershipDao.insert(*partnerships.toTypedArray())
-                partnerships
+            if (metadataStore.isLoggedIn()) {
+                val localPartnerships = partnershipDao.getAll()
+                val call = partnershipApi.getLoverPartnerships(metadataStore.getUser().id)
+                val response = try {
+                    call.execute()
+                } catch (e: Exception) {
+                    toaster.showNoServerToast()
+                    return@withContext localPartnerships
+                }
+                if (response.isSuccessful) {
+                    val partnershipsResponse = response.body()!!
+                    val partnerships = partnershipsResponse.partnerships
+                    partnershipDao.insert(*partnerships.toTypedArray())
+                    partnerships
+                } else {
+                    toaster.showNoServerToast()
+                    localPartnerships
+                }
             } else {
-                toaster.showNoServerToast()
-                localPartnerships
+                emptyList()
             }
         }
     }

@@ -157,7 +157,10 @@ class ProfilePageFragment : Fragment() {
                 partner?.let {
                     profilePartnerName.text = it.userName
                     profilePartnerRelation.text =
-                        I18nUtils.partnershipStatus(partnership.partnershipStatus, requireContext())
+                        I18nUtils.partnershipStatus(
+                            partnership.partnershipStatus,
+                            requireContext()
+                        )
                     profilePartnerRelation.visibility = View.VISIBLE
                 }
             } else {
@@ -217,10 +220,10 @@ class ProfilePageFragment : Fragment() {
         logout.setOnClickListener {
             runBlocking {
                 appContext.deleteAllData()
+                val intent = Intent(context, LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                startActivity(intent)
             }
-            val intent = Intent(context, LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            startActivity(intent)
         }
     }
 
