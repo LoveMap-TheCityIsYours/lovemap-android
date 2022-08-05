@@ -95,7 +95,7 @@
     <string name="add_review_text">Public review of this Love Spot</string>
     <string name="riskLevelText">What is the risk of being caught in the act?</string>
     <string name="reviewStarsText">How good is this Love Spot?</string>
-    <string name="lovemaking_recorded">Lovemaking recorded</string>
+    <string name="lovemaking_recorded">Love-making recorded</string>
     <string name="also_made_love_here">I also made love here</string>
     <string name="switch_map_mode">Switch map mode</string>
     <string name="add_spot">Add spot</string>
@@ -158,7 +158,7 @@
     <string name="in_partnership">In Partnership</string>
     <string name="cancelRequest">Cancel Request</string>
     <string name="not_yet_implemented">Not yet implemented</string>
-    <string name="showing_your_love_makings">"Showing Your Lovemakings "</string>
+    <string name="showing_your_love_makings">"Showing Your Love-makings "</string>
     <string name="showing_love_spots">Showing Love Spots</string>
     <string name="partner_colon">Partner:</string>
     <string name="your_love_makings_together">Your Love-makings together:</string>
@@ -173,9 +173,9 @@
     <string name="invalidLoveSpotDescription">Description must be between 5 and 1000 characters</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
-    <string name="love_making_deleted">LoveMaking deleted</string>
-    <string name="love_making_updated">LoveMaking updated</string>
-    <string name="editLoveMakingTitle">Edit Love-Making</string>
+    <string name="love_making_deleted">Love-making deleted</string>
+    <string name="love_making_updated">Love-making updated</string>
+    <string name="editLoveMakingTitle">Edit Love-making</string>
     <string name="partnershipNotFound">No Partnership between you and the user</string>
     <string name="editLoveSpotTitle">Edit Love Spot</string>
     <string name="love_spot_updated">Love Spot updated</string>

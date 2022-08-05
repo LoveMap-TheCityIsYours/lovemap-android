@@ -16,6 +16,7 @@ import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.ui.login.LoginActivity
 import com.lovemap.lovemapandroid.ui.relations.ViewOtherLoverActivity
 import com.lovemap.lovemapandroid.ui.utils.I18nUtils
+import com.lovemap.lovemapandroid.ui.utils.InfoPopupShower
 import com.lovemap.lovemapandroid.ui.utils.ProfileUtils
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -44,6 +45,7 @@ class ProfilePageFragment : Fragment() {
     private lateinit var currentRank: TextView
     private lateinit var profileShareDescription: TextView
     private lateinit var profileProgressBar: ProgressBar
+    private lateinit var linkSharingInfoButton: ImageButton
 
     private val appContext = AppContext.INSTANCE
     private val loverService = appContext.loverService
@@ -105,6 +107,13 @@ class ProfilePageFragment : Fragment() {
         currentRank = view.findViewById(R.id.current_rank)
         profileShareDescription = view.findViewById(R.id.profileShareDescription)
         profileProgressBar = view.findViewById(R.id.profileProgressBar)
+
+        linkSharingInfoButton = view.findViewById(R.id.linkSharingInfoButton)
+        linkSharingInfoButton.setOnClickListener {
+            val infoPopupShower = InfoPopupShower(R.string.link_sharing_hint)
+            infoPopupShower.show(view)
+        }
+
         return view
     }
 
@@ -223,8 +232,8 @@ class ProfilePageFragment : Fragment() {
         }
         linkToggleText.text = getString(R.string.linkShareOn)
         shareLinkButton.isEnabled = true
-        profileShareDescription.visibility = View.VISIBLE
-        profileShareDescription.animate().alpha(1f).duration = 500
+//        profileShareDescription.visibility = View.VISIBLE
+//        profileShareDescription.animate().alpha(1f).duration = 500
     }
 
     private fun turnOffSharing() {
@@ -234,11 +243,11 @@ class ProfilePageFragment : Fragment() {
         }
         linkToggleText.text = getString(R.string.linkShareOff)
         shareLinkButton.isEnabled = false
-        profileShareDescription.animate().alpha(0f).apply {
-            withEndAction {
-                profileShareDescription.visibility = View.GONE
-            }
-        }.duration = 500
+//        profileShareDescription.animate().alpha(0f).apply {
+//            withEndAction {
+//                profileShareDescription.visibility = View.GONE
+//            }
+//        }.duration = 500
 
     }
 }

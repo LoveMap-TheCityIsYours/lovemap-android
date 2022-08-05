@@ -29,7 +29,7 @@
             android:text="@string/report_love_spot_name_placeholder"
             android:textAlignment="center" />
 
-        <Space
+        <androidx.legacy.widget.Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
@@ -59,7 +59,7 @@
                 android:text="@string/cancel"
                 android:textSize="@dimen/standard_10" />
 
-            <Space
+            <androidx.legacy.widget.Space
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="6" />

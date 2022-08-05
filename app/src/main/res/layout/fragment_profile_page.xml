@@ -164,7 +164,7 @@
 
                 </LinearLayout>
 
-                <Space
+                <androidx.legacy.widget.Space
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
@@ -253,7 +253,7 @@
                     android:maxLines="2"
                     android:text="@string/profileUserLevelText" />
 
-                <Space
+                <androidx.legacy.widget.Space
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
@@ -411,6 +411,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/linkShareOff" />
+
+                    <ImageButton
+                        android:id="@+id/linkSharingInfoButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:backgroundTint="@color/background_color"
+                        android:src="@drawable/ic_baseline_info_24" />
+
                 </LinearLayout>
 
                 <TextView
@@ -428,7 +437,7 @@
                     android:maxWidth="150dp"
                     android:text="@string/profileShareableLink" />
 
-                <Space
+                <androidx.legacy.widget.Space
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
