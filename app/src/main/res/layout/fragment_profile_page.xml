@@ -394,7 +394,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/text_margin"
+                    android:layout_margin="16dp"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -414,8 +414,9 @@
 
                     <ImageButton
                         android:id="@+id/linkSharingInfoButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="@dimen/standard_8"
                         android:layout_gravity="center"
                         android:backgroundTint="@color/background_color"
                         android:src="@drawable/ic_baseline_info_24" />
@@ -453,18 +454,6 @@
                     android:src="@drawable/ic_baseline_share_24_primary" />
 
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/profileShareDescription"
-                android:animateLayoutChanges="true"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/standard_8"
-                android:layout_marginStart="@dimen/standard_16"
-                android:layout_marginEnd="@dimen/standard_16"
-                android:text="@string/link_sharing_hint"
-                />
 
             <TextView
                 style="?android:attr/weekSeparatorLineColor"

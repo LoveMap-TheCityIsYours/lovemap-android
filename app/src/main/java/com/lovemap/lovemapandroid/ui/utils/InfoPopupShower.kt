@@ -1,5 +1,6 @@
 package com.lovemap.lovemapandroid.ui.utils
 
+import android.text.Html
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +19,7 @@ class InfoPopupShower(private val resId: Int) {
         val popupView: View? = inflater?.inflate(R.layout.info_popup_window_layout, null)
 
         val textView: TextView? = popupView?.findViewById(R.id.infoPopupText)
-        textView?.text = view.context.getString(resId)
+        textView?.text = Html.fromHtml(view.context.getString(resId), Html.FROM_HTML_MODE_COMPACT)
 
         // create the popup window
         val width = LinearLayout.LayoutParams.WRAP_CONTENT

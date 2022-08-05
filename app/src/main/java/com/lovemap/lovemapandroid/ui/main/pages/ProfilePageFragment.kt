@@ -105,7 +105,6 @@ class ProfilePageFragment : Fragment() {
         points = view.findViewById(R.id.profilePoints)
         pointsToNextLevel = view.findViewById(R.id.profilePointsToNextLevel)
         currentRank = view.findViewById(R.id.current_rank)
-        profileShareDescription = view.findViewById(R.id.profileShareDescription)
         profileProgressBar = view.findViewById(R.id.profileProgressBar)
 
         linkSharingInfoButton = view.findViewById(R.id.linkSharingInfoButton)
@@ -232,8 +231,6 @@ class ProfilePageFragment : Fragment() {
         }
         linkToggleText.text = getString(R.string.linkShareOn)
         shareLinkButton.isEnabled = true
-//        profileShareDescription.visibility = View.VISIBLE
-//        profileShareDescription.animate().alpha(1f).duration = 500
     }
 
     private fun turnOffSharing() {
@@ -243,11 +240,5 @@ class ProfilePageFragment : Fragment() {
         }
         linkToggleText.text = getString(R.string.linkShareOff)
         shareLinkButton.isEnabled = false
-//        profileShareDescription.animate().alpha(0f).apply {
-//            withEndAction {
-//                profileShareDescription.visibility = View.GONE
-//            }
-//        }.duration = 500
-
     }
 }

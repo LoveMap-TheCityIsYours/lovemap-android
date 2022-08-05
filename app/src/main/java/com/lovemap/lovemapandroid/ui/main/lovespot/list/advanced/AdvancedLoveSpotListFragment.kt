@@ -6,19 +6,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotListFilterState
-import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
+import com.lovemap.lovemapandroid.ui.utils.InfoPopupShower
 
 class AdvancedLoveSpotListFragment : Fragment() {
 
-    lateinit var locationFilterViewLogic: SpotListLocationFilterViewLogic
-    lateinit var typeFilterViewLogic: SpotListTypeFilterViewLogic
-    lateinit var countryFilterViewLogic: SpotListCountryFilterViewLogic
-    lateinit var cityFilterViewLogic: SpotListCityFilterViewLogic
-    lateinit var spotListNearbyFilterViewLogic: SpotListNearbyFilterViewLogic
+    private lateinit var locationFilterViewLogic: SpotListLocationFilterViewLogic
+    private lateinit var typeFilterViewLogic: SpotListTypeFilterViewLogic
+    private lateinit var countryFilterViewLogic: SpotListCountryFilterViewLogic
+    private lateinit var cityFilterViewLogic: SpotListCityFilterViewLogic
+    private lateinit var spotListNearbyFilterViewLogic: SpotListNearbyFilterViewLogic
+    private lateinit var orderingInfoButton: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,6 +82,12 @@ class AdvancedLoveSpotListFragment : Fragment() {
             nearbyGoButton = view.findViewById(R.id.nearbyGoButton),
             locationFilterViewLogic = locationFilterViewLogic
         )
+
+        orderingInfoButton = view.findViewById(R.id.orderingInfoButton)
+        orderingInfoButton.setOnClickListener {
+            val infoPopupShower = InfoPopupShower(R.string.ordering_explanation_popup)
+            infoPopupShower.show(view)
+        }
 
         LoveSpotListFilterState.initialized = true
 

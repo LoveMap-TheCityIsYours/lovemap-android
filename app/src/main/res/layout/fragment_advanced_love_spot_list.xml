@@ -16,6 +16,16 @@
         android:gravity="center"
         android:orientation="horizontal">
 
+        <ImageButton
+            android:id="@+id/orderingInfoButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/standard_8"
+            android:layout_weight="1"
+            android:backgroundTint="@color/background_color"
+            android:src="@drawable/ic_baseline_info_24" />
+
         <TextView
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="wrap_content"
@@ -29,7 +39,8 @@
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="20"
+            android:layout_marginStart="@dimen/standard_32"
             android:gravity="center"
             android:text="@string/location_button_text"
             android:textColor="@color/myColorOnBackground" />

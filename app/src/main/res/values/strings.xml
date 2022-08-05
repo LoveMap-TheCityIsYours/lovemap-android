@@ -133,11 +133,16 @@
     <string name="already_have_a_partner">Already have a partner</string>
     <string name="partnership_already_requested">Partnership already requested</string>
     <string name="invalid_operation_on_yourself">Invalid operation on yourself</string>
-    <string name="link_sharing_hint">- With Link Sharing you can share your profile with others.\n\n
-        - He/She/It can use the link to add you as a Partner or follow your activities as a Follower.\n\n
-        - If you become Partners, you can manage your LoveMakings together.\n\n
-        - If they become your Follower, they can see your activities. (Following feature is not yet implemented.)\n\n
-        - Turn off Link Sharing to render a link unusable. Generate a new link anytime.
+    <string name="link_sharing_hint">
+        <![CDATA[
+        <ul>
+            <li>With Link Sharing you can share your profile with others.</li><br>
+            <li>He/She/It can use the link to add you as a Partner or follow your activities as a Follower.</li><br>
+            <li>If you become Partners, you can manage your LoveMakings together.</li><br>
+            <li>If they become your Follower, they can see your activities. (Following feature is not yet implemented.)</li><br>
+            <li>Turn off Link Sharing to render a link unusable. Generate a new link anytime.</li>
+        </ul>
+        ]]>
     </string>
     <string name="loadingDotDotDot">Loading…</string>
     <string name="have_not_made_love_review">Have not made love here yet. \nMake love here first to review.</string>
@@ -235,5 +240,16 @@
     <string name="invalidLimit">Allowed \'limit\' value is between 1 and 100</string>
     <string name="no_results_in_your_area">No results in your area.</string>
     <string name="missingListCoordinates">Location services required</string>
+    <string name="ordering_explanation_popup">
+        <![CDATA[
+        <b>Ordering of Love Spots</b>:<br><br>
+        <ul>
+            <li><b> Top Rated</b>: Highest rated based on user reviews comes first.</li><br>
+            <li><b> Closest</b>: Closest to based on coordinates comes first.</li><br>
+            <li><b> Recently Active</b>: Most recently used by a Lover or had any other activity comes first.</li><br>
+            <li><b> Popular</b>: Most popular based on number of Love-makings and other activities comes first.</li>
+        </ul>
+        ]]>
+    </string>
 
 </resources>
