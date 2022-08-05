@@ -22,6 +22,7 @@ import com.lovemap.lovemapandroid.service.LoveSpotReviewService
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveFragment
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewLoveSpotFragment
+import com.lovemap.lovemapandroid.ui.utils.InfoPopupShower
 import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils.availabilityToPosition
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils.positionToAvailability
@@ -53,6 +54,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
     private lateinit var addSpotSeparator2: TextView
     private lateinit var addSpotAvailability: Spinner
     private lateinit var addSpotType: Spinner
+    private lateinit var loveSpotTypeInfoButton: ImageButton
 
     private var availability = ALL_DAY
     private var type = LoveSpotType.PUBLIC_SPACE
@@ -92,10 +94,16 @@ class AddLoveSpotActivity : AppCompatActivity() {
         addSpotSeparator2 = binding.addSpotSeparator2
         addSpotAvailability = binding.addSpotAvailability
         addSpotType = binding.addSpotType
+        loveSpotTypeInfoButton = binding.loveSpotTypeInfoButton
         reviewLoveSpotFragment =
             supportFragmentManager.findFragmentById(R.id.addSpotReviewLoveSpotFragment) as ReviewLoveSpotFragment
         recordLoveFragment =
             supportFragmentManager.findFragmentById(R.id.addSpotRecordLoveFragment) as RecordLoveFragment
+
+        loveSpotTypeInfoButton.setOnClickListener {
+            val infoPopupShower = InfoPopupShower(R.string.love_spot_type_explanation)
+            infoPopupShower.show(binding.root)
+        }
 
         addSpotSeparator1.visibility = View.GONE
         addSpotSeparator2.visibility = View.GONE

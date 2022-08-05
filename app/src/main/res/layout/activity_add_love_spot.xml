@@ -71,15 +71,33 @@
                 android:layout_margin="@dimen/standard_8"
                 android:text="@string/type" />
 
-            <Spinner
-                android:id="@+id/addSpotType"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/standard_8"
-                android:layout_marginEnd="@dimen/standard_8"
                 android:layout_marginBottom="@dimen/standard_16"
-                android:entries="@array/type_list"
-                android:spinnerMode="dropdown" />
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/addSpotType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/standard_8"
+                    android:layout_marginEnd="@dimen/standard_8"
+                    android:layout_weight="10"
+                    android:entries="@array/type_list"
+                    android:spinnerMode="dropdown" />
+
+                <ImageButton
+                    android:id="@+id/loveSpotTypeInfoButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/standard_8"
+                    android:backgroundTint="@color/background_color"
+                    android:src="@drawable/ic_baseline_info_24" />
+            </LinearLayout>
+
 
             <CheckBox
                 android:id="@+id/madeLoveCheckBox"
