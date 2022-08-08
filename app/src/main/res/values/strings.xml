@@ -3,6 +3,11 @@
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_main">MainActivity</string>
 
+    <!-- FB stuff -->
+    <string name="facebook_app_id">1137729193447265</string>
+    <string name="fb_login_protocol_scheme">fb1137729193447265</string>
+    <string name="facebook_client_token">e476c80ce861915681da79d9269cc0ee</string>
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_username">Username</string>
@@ -245,7 +250,7 @@
         <b>Ordering of Love Spots</b>:<br><br>
         <ul>
             <li><b> Top Rated</b>: Highest rated based on user reviews comes first.</li><br>
-            <li><b> Closest</b>: Closest to based on coordinates comes first.</li><br>
+            <li><b> Closest</b>: Closest to you based on coordinates comes first.</li><br>
             <li><b> Recently Active</b>: Most recently used by a Lover or had any other activity comes first.</li><br>
             <li><b> Popular</b>: Most popular based on number of Love-makings and other activities comes first.</li>
         </ul>
@@ -255,7 +260,7 @@
         <![CDATA[
         <b>Love Spot Types</b>:<br><br>
         <ul>
-            <li><b>Public Space</b>: A public location like a park, parking lot, outlook tower, etc.</li><br>
+            <li><b>Public Space</b>: A public location like a park, parking lot, lookout tower, etc.</li><br>
             <li><b>Swinger Club</b>: A swinger club where singles and couples meet up to fuck.</li><br>
             <li><b>Cruising Spot</b>: A location mostly used by the gay community for anonymous sex with unknown partners.</li><br>
             <li><b>Sex Booth</b>: A small place that is provided for fucking. E.g. in sex shops, or glory holes in various places.</li><br>

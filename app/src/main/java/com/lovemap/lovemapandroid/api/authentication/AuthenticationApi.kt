@@ -19,4 +19,7 @@ interface AuthenticationApi {
 
     @POST("/authentication/new-password")
     fun newPassword(@Body request: NewPasswordRequest): Call<LoverRelationsDto>
+
+    @POST("/authentication/facebook-login")
+    fun facebookLogin(@Body request: FacebookAuthenticationRequest): Call<LoverDto>
 }

@@ -1,10 +1,7 @@
 package com.lovemap.lovemapandroid.ui.login
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -15,6 +12,10 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.widget.LoginButton
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.lovemap.lovemapandroid.R
@@ -26,12 +27,14 @@ import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.util.*
 
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var fbLoginButton: LoginButton
     private val appContext = AppContext.INSTANCE
     private val metadataStore: MetadataStore = appContext.metadataStore
     private val authenticationService = appContext.authenticationService
@@ -55,12 +58,23 @@ class LoginActivity : AppCompatActivity() {
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        initViews()
+    }
 
+    private fun initViews() {
+        initLoginViewModel()
+        val resetPassword = binding.resetPassword
+        resetPassword.setOnClickListener {
+            startActivity(Intent(this, PasswordResetActivity::class.java))
+        }
+        initFbLoginButton()
+    }
+
+    private fun initLoginViewModel() {
         val email = binding.email
         val password = binding.password
         val login = binding.login
         val register = binding.register
-        val resetPassword = binding.resetPassword
         val loading = binding.loading
 
         loginViewModel =
@@ -90,7 +104,7 @@ class LoginActivity : AppCompatActivity() {
             if (loginResult.success != null) {
                 updateUiWithUser(loginResult.success)
             }
-            setResult(Activity.RESULT_OK)
+            setResult(RESULT_OK)
 
             //Complete and destroy login activity once successful
             finish()
@@ -120,10 +134,37 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
             }
         }
+    }
 
-        resetPassword.setOnClickListener {
-            startActivity(Intent(this, PasswordResetActivity::class.java))
+    private fun initFbLoginButton() {
+        val loadingBarShower = LoadingBarShower(this@LoginActivity)
+        fbLoginButton = binding.fbLoginButton
+        val callbackManager = CallbackManager.Factory.create()
+        fbLoginButton.setPermissions(listOf("email"))
+        fbLoginButton.setOnClickListener {
+            loadingBarShower.show()
         }
+        fbLoginButton.registerCallback(callbackManager, object : FacebookCallback<com.facebook.login.LoginResult> {
+            override fun onSuccess(result: com.facebook.login.LoginResult) {
+                println(result)
+                MainScope().launch {
+                    val loggedInUser = authenticationService.facebookLogin("alma@alma.hu", result.accessToken.token)
+                    if (loggedInUser != null) {
+                        appContext.toaster.showToast(getString(R.string.welcome_back) + "${loggedInUser.userName}!")
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    }
+                    loadingBarShower.onResponse()
+                }
+            }
+
+            override fun onCancel() {
+                // App code
+            }
+
+            override fun onError(exception: FacebookException) {
+                // App code
+            }
+        })
     }
 
     fun login(email: String, password: String) {

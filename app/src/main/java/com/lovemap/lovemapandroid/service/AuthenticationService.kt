@@ -115,4 +115,30 @@ class AuthenticationService(
             loggedInUser
         }
     }
+
+    suspend fun facebookLogin(email: String, token: String): LoggedInUser? {
+        var loggedInUser: LoggedInUser? = null
+        return withContext(Dispatchers.IO) {
+            val call = authenticationApi.facebookLogin(
+                FacebookAuthenticationRequest(email, token)
+            )
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
+                toaster.showToast(e.message ?: "null")
+                return@withContext null
+            }
+            if (response.isSuccessful) {
+                loggedInUser = metadataStore.login(
+                    LoggedInUser.of(
+                        response.body()!!,
+                        response.headers()["authorization"]!!
+                    )
+                )
+            } else {
+                toaster.showResponseError(response)
+            }
+            loggedInUser
+        }
+    }
 }
