@@ -162,7 +162,7 @@
     <string name="accept">Accept</string>
     <string name="deny">Deny</string>
     <string name="partnership_request_text">This user has sent you a Partnership request.\nIf you accept it, you become Partners and you can manage your LoveMakings together.</string>
-    <string name="itIsYou">This is you (｡•̀ᴗ-)✧</string>
+    <string name="itIsYou">This is you 😉</string>
     <string name="endPartnership">End Partnership</string>
     <string name="partnership_requested">Partnership requested</string>
     <string name="in_partnership">In Partnership</string>
@@ -271,5 +271,14 @@
     </string>
     <string name="facebook_login_failed">Facebook Login Failed</string>
     <string name="facebookEmailOccupied">Lover already exists this email</string>
+
+    <string name="risk_safe">Safe</string>
+    <string name="risk_little_risky">Little risky</string>
+    <string name="risk_very_risky">Very risky</string>
+
+    <string name="ordering_top_rated">Top Rated</string>
+    <string name="ordering_closest">Closest</string>
+    <string name="ordering_recently_active">Recently Active</string>
+    <string name="ordering_popular">Popular</string>
 
 </resources>

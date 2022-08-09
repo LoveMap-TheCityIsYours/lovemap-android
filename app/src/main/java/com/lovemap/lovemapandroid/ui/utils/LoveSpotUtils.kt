@@ -13,8 +13,6 @@ import com.lovemap.lovemapandroid.api.lovespot.ListOrdering
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotType
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
 
 object LoveSpotUtils {
 
@@ -57,29 +55,19 @@ object LoveSpotUtils {
         averageDanger: Double?,
         risk: TextView
     ) {
-        val loveSpotService = AppContext.INSTANCE.loveSpotService
         val context = AppContext.INSTANCE.applicationContext
-        val loveSpotRisks = AppContext.INSTANCE.loveSpotRisks
-        if (loveSpotRisks != null && averageDanger != null) {
-            val riskList = loveSpotRisks.riskList
-            val loveSpotRisk = when {
+        if (averageDanger != null) {
+            risk.text = when {
                 averageDanger < 1.5 -> {
-                    riskList[0]
+                    context.getString(R.string.risk_safe)
                 }
                 averageDanger < 2.5 -> {
-                    riskList[1]
+                    context.getString(R.string.risk_little_risky)
                 }
                 else -> {
-                    riskList[2]
+                    context.getString(R.string.risk_very_risky)
                 }
             }
-
-            risk.text = loveSpotRisk.nameEN
-        } else if (averageDanger != null) {
-            MainScope().launch {
-                loveSpotService.getRisks()
-            }
-            risk.text = averageDanger.toString()
         } else {
             risk.text = context.getString(R.string.risk_unknown)
         }

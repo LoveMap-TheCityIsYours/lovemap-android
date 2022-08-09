@@ -8,19 +8,19 @@
     <string name="register">Még nem vagy Lover?\nRegisztráció</string>
     <string name="action_sign_in">Bejelentkezés</string>
     <string name="action_register">Regisztráció</string>
-    <string name="welcome">"Üdvözöllek"</string>
+    <string name="welcome">"Üdvözöllek "</string>
     <string name="invalid_email">Érvénytelen email cím.</string>
     <string name="invalid_username">A felhasználónévnek minimum 3 karaktert tartalmaznia kell.</string>
     <string name="invalid_password">A jelszónak legalább 5 karaktert tartalmaznia kell.</string>
     <string name="invalid_password_again">Jelszó újra: a beírt jelszóval egyeznie kell.</string>
     <string name="login_failed">"Sikertelen bejelentkezés"</string>
     <string name="action_sign_in_short">Bejelentkezés</string>
-    <string name="welcome_back">"Üdv újra"</string>
+    <string name="welcome_back">"Üdv újra "</string>
 
     <!-- Main activity strings -->
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
-    <string name="make_love">Hancúr felvétel</string>
+    <string name="make_love">Hancúr felvétele</string>
 
     <!-- Profile fragment -->
     <string name="logout">logout</string>
@@ -43,7 +43,7 @@
     <string name="placeholder">Placeholder</string>
     <string name="your_profile">Profilod</string>
     <string name="your_loves">Hancúrjaid</string>
-    <string name="discover_love_spots">Love spotok felfedezése</string>
+    <string name="discover_love_spots">Love Spotok felfedezése</string>
     <string name="love_map">Love Map</string>
     <string name="profileUserName"> - </string>
     <string name="profileUserLevelText"> - </string>
@@ -63,13 +63,13 @@
     <string name="noServer">Nem lehet csatlakozni a kiszolgálóhoz</string>
     <string name="points_to_next_level">Pontok a következő szintig</string>
     <string name="points">Pontok</string>
-    <string name="reports_submitted">Eddigi jelentések:</string>
+    <string name="reports_submitted">Jelentések beküldve:</string>
     <string name="love_spots_added">Hozzáadott Love Spotok:</string>
     <string name="number_of_loves">Hancúrok száma:</string>
     <string name="marker_rating">Értékelés:</string>
-    <string name="marker_availability">Használható:</string>
+    <string name="marker_availability">Elérhetőság:</string>
     <string name="risk">Kockázat:</string>
-    <string name="marker_description">A held leírása:</string>
+    <string name="marker_description">A hely leírása:</string>
     <string name="marker_custom_availability">Elérhetőség meghatározása:</string>
     <string name="available_all_day">Egész nap</string>
     <string name="available_night_only">Csak éjszaka</string>
@@ -84,9 +84,9 @@
     <string name="invalid_spot_name">A névnek legalább hero karaktert tartalmaznia kell</string>
     <string name="invalid_spot_description">A jellemzésnek legalább öt karaktert tartalmaznia kell</string>
     <string name="love_spot_added">Love Spot hozzáadva</string>
-    <string name="report_spot">Love Spot jelentése</string>
+    <string name="report_spot">Jelentés</string>
     <string name="to_wishlist">Kívánságlistára</string>
-    <string name="recordLoveMakingTitle">Hanker felvétele</string>
+    <string name="recordLoveMakingTitle">Hancúr felvétele</string>
     <string name="availability">Elérhetőség:</string>
     <string name="add_private_note">Privát jegyzeted személyes tapasztalatodról ezen a Love Spoton</string>
     <string name="add_review_text">Nyilvános értékelése ennek a Love Spotnak</string>
@@ -95,7 +95,7 @@
     <string name="lovemaking_recorded">Hancúr felvéve</string>
     <string name="also_made_love_here">Hancúroztam is itt</string>
     <string name="switch_map_mode">Térképes nézet módosítása</string>
-    <string name="add_spot">Love Spot hozzáadása</string>
+    <string name="add_spot">Hozzáadás</string>
     <string name="review_love_spot">Love Spot értékelése</string>
     <string name="love_spot_reviewed">Love Spot értékelve</string>
     <string name="havent_made_love_on_this_spot_yet">Ezen a Love Spoton még nem hancúroztál</string>
@@ -143,8 +143,8 @@
     </string>
     <string name="loadingDotDotDot">Töltés...</string>
     <string name="have_not_made_love_review">Itt még nem hancúroztál.\nCsak hancúr után lehet értékelni  </string>
-    <string name="have_not_made_love_here_yet">Itt mega nem hancúroztál.</string>
-    <string name="reports_received">Eddig jelentettek:</string>
+    <string name="have_not_made_love_here_yet">Itt nem hancúroztál.</string>
+    <string name="reports_received">Kapott jelentések:</string>
     <string name="meaningful_reviews">Részletes értékelések:</string>
     <string name="report_love_spot">Love Spot jelentése</string>
     <string name="add_report_text">Miért akarod jelenteni ezt a Love Spotot?</string>
@@ -154,7 +154,7 @@
     <string name="accept">Elfogadás</string>
     <string name="deny">Megtagadás</string>
     <string name="partnership_request_text">Ez a felhasználó kapcsolatot akar kezdeményezni veled.\nHa elfogadod, partnerekké váltok és együtt tudjátok kezelni a Hancúrjaitokat.</string>
-    <string name="itIsYou">Ez te vagy (｡•̀ᴗ-)✧</string>
+    <string name="itIsYou">Ez te vagy 😉</string>
     <string name="endPartnership">Kapcsolat megszakítása</string>
     <string name="partnership_requested">Kapcsolat kérvényezve</string>
     <string name="in_partnership">Kapcsolatban</string>
@@ -195,9 +195,9 @@
     <string name="wrongPwResetCode">Hibás Jelszó visszaállító kód</string>
     <string name="pwResetCodeTimedOut">Kérj új Jelszó visszaállító kódot!</string>
     <string name="reset_code_requested">A visszaállító kód email címedre elküldve.</string>
-    <string name="show_lovemakings">Mutasd Hancúrjaim</string>
+    <string name="show_lovemakings">Mutasd a Hancúrjaim</string>
     <string name="show_love_spots">Mutasd a Love Spotokat</string>
-    <string name="type">Type:</string>
+    <string name="type">Típus:</string>
     <string name="type_public_space">Nyilvános helyszín</string>
     <string name="type_swinger_club">Swinger Klub</string>
     <string name="type_cruising_spot">Cruising Spot</string>
@@ -233,7 +233,7 @@
     <string name="city_search_button_text">"Város: "</string>
     <string name="country_search_button_text">"Ország: "</string>
     <string name="nearby_search_button_text">"Közelség: "</string>
-    <string name="meters">méterek</string>
+    <string name="meters">méter</string>
     <string name="invalidLimit">A megengedett \'limit\' érték 1 és 100 közötti</string>
     <string name="no_results_in_your_area">Nincs eredmény a környékeden. </string>
     <string name="missingListCoordinates">GPS engedély szükséges</string>
@@ -261,7 +261,17 @@
         </ul>
         ]]>
     </string>
-    <string name="facebook_login_failed">Facebook Login Sikertelen</string>
+
+    <string name="facebook_login_failed">Facebook login sikertelen</string>
     <string name="facebookEmailOccupied">Már létezik Lover ezzel az emaillel</string>
+
+    <string name="risk_safe">Biztonságos</string>
+    <string name="risk_little_risky">Para</string>
+    <string name="risk_very_risky">Nagyon para</string>
+
+    <string name="ordering_top_rated">Legjobbra értékelt</string>
+    <string name="ordering_closest">Legközelebbi</string>
+    <string name="ordering_recently_active">Nemrég használt</string>
+    <string name="ordering_popular">Legnépszerűbb</string>
 
 </resources>

@@ -67,6 +67,7 @@ private val errorCodeMessageMap = HashMap<ErrorCode, Int>().apply {
     put(InvalidLimit, R.string.invalidLimit)
     put(MissingListCoordinates, R.string.missingListCoordinates)
     put(FacebookEmailOccupied, R.string.facebookEmailOccupied)
+    put(FacebookLoginFailed, R.string.facebook_login_failed)
 }
 
 enum class ErrorCode {
@@ -104,6 +105,7 @@ enum class ErrorCode {
     InvalidLimit,
     InvalidListLocationType,
     FacebookEmailOccupied,
+    FacebookLoginFailed,
 
     UNDEFINED
 }
