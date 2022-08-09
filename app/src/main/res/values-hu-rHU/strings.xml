@@ -23,7 +23,7 @@
     <string name="make_love">Hancúr felvétele</string>
 
     <!-- Profile fragment -->
-    <string name="logout">logout</string>
+    <string name="logout">kijelentkezés</string>
 
     <!-- Preference Titles -->
     <string name="messages_header">Üzenetek</string>
@@ -159,9 +159,9 @@
     <string name="partnership_requested">Kapcsolat kérvényezve</string>
     <string name="in_partnership">Kapcsolatban</string>
     <string name="cancelRequest">Kérelem törlése</string>
-    <string name="not_yet_implemented">A funkció mega fejlesztés alatt</string>
-    <string name="showing_your_love_makings">"Hancúrok mutates "</string>
-    <string name="showing_love_spots">Love Spotok mutates</string>
+    <string name="not_yet_implemented">A funkció fejlesztés alatt</string>
+    <string name="showing_your_love_makings">"Hancúrok mutatása"</string>
+    <string name="showing_love_spots">Love Spotok mutatása</string>
     <string name="partner_colon">Partner:</string>
     <string name="your_love_makings_together">Közös Hancúrjaitok:</string>
     <string name="rating">Értékelés:</string>
@@ -266,7 +266,7 @@
     <string name="facebookEmailOccupied">Már létezik Lover ezzel az emaillel</string>
 
     <string name="risk_safe">Biztonságos</string>
-    <string name="risk_little_risky">Para</string>
+    <string name="risk_little_risky">Kicsit Para</string>
     <string name="risk_very_risky">Nagyon para</string>
 
     <string name="ordering_top_rated">Legjobbra értékelt</string>
