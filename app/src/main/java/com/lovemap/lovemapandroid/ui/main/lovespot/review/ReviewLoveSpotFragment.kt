@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.RatingBar
 import android.widget.Spinner
@@ -30,7 +29,7 @@ class ReviewLoveSpotFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_review_love_spot, container, false)
         initViews(view)
-        setRiskDropdown()
+        spotRiskDropdown.setSelection(1)
         return view
     }
 
@@ -56,21 +55,5 @@ class ReviewLoveSpotFragment : Fragment() {
         spotRiskDropdown = view.findViewById(R.id.spotRiskDropdown)
         spotReviewRating = view.findViewById(R.id.marker_review_rating_bar)
         reviewText = view.findViewById(R.id.addReviewText)
-    }
-
-    private fun setRiskDropdown() {
-        spotRiskDropdown.setSelection(1)
-        // TODO: i18n
-        MainScope().launch {
-            if (appContext.metadataStore.isRisksStored()) {
-                val risks = appContext.metadataStore.getRisks()
-                spotRiskDropdown.adapter = ArrayAdapter(
-                    requireContext(),
-                    android.R.layout.simple_spinner_dropdown_item,
-                    risks.riskList.map { it.nameEN }.toTypedArray()
-                )
-                spotRiskDropdown.setSelection(1)
-            }
-        }
     }
 }

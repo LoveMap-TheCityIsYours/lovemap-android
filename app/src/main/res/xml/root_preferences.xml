@@ -9,8 +9,8 @@
 
         <ListPreference
             app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
+            app:entries="@array/ordering_list"
+            app:entryValues="@array/ordering_list"
             app:key="reply"
             app:title="@string/reply_title"
             app:useSimpleSummaryProvider="true" />

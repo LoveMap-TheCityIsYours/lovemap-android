@@ -1,0 +1,277 @@
+<resources>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_username">Felhasználónév</string>
+    <string name="prompt_password">Jelszó</string>
+    <string name="prompt_password_again">Jelszó megerősítése</string>
+    <string name="register">Még nem vagy Lover?\nRegisztráció</string>
+    <string name="action_sign_in">Bejelentkezés</string>
+    <string name="action_register">Regisztráció</string>
+    <string name="welcome">"Üdvözöllek "</string>
+    <string name="invalid_email">Érvénytelen email cím.</string>
+    <string name="invalid_username">A felhasználónévnek minimum 3 karaktert tartalmaznia kell.</string>
+    <string name="invalid_password">A jelszónak legalább 5 karaktert tartalmaznia kell.</string>
+    <string name="invalid_password_again">Jelszó újra: a beírt jelszóval egyeznie kell.</string>
+    <string name="login_failed">"Sikertelen bejelentkezés"</string>
+    <string name="action_sign_in_short">Bejelentkezés</string>
+    <string name="welcome_back">"Üdv újra "</string>
+
+    <!-- Main activity strings -->
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="make_love">Hancúr felvétele</string>
+
+    <!-- Profile fragment -->
+    <string name="logout">kijelentkezés</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Üzenetek</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="settings">Beállítások</string>
+    <string name="placeholder">Placeholder</string>
+    <string name="your_profile">Profilod</string>
+    <string name="your_loves">Hancúrjaid</string>
+    <string name="discover_love_spots">Love Spotok felfedezése</string>
+    <string name="love_map">Love Map</string>
+    <string name="profileUserName"> - </string>
+    <string name="profileUserLevelText"> - </string>
+    <string name="profileShareableLink">Megosztható link mutatása</string>
+    <string name="linkShareOff">Megosztható link kikapcsolása</string>
+    <string name="linkShareOn">Megosztható link bekapcsolása</string>
+    <string name="privateProfile">Privát profil</string>
+    <string name="profileInPartnershipWith">Kapcsolatban vele:</string>
+    <string name="profilePartnersEmpty">Még nincs kapcsolatban</string>
+    <string name="profileRank">Jelenlegi rang:</string>
+    <string name="userOccupied">A felhasználónév foglalt</string>
+    <string name="emailOccupied">Ezzel az email címmel már létezik felhasználó</string>
+    <string name="invalidCredentials">Érvénytelen hitelesítő adatok</string>
+    <string name="invalidEmail">Érvénytelen email cím</string>
+    <string name="invalidUsername">Érvénytelen felhasználónév</string>
+    <string name="invalidPassword">Érvénytelen jelszó</string>
+    <string name="noServer">Nem lehet csatlakozni a kiszolgálóhoz</string>
+    <string name="points_to_next_level">Pontok a következő szintig</string>
+    <string name="points">Pontok</string>
+    <string name="reports_submitted">Jelentések beküldve:</string>
+    <string name="love_spots_added">Hozzáadott Love Spotok:</string>
+    <string name="number_of_loves">Hancúrok száma:</string>
+    <string name="marker_rating">Értékelés:</string>
+    <string name="marker_availability">Elérhetőság:</string>
+    <string name="risk">Kockázat:</string>
+    <string name="marker_description">A hely leírása:</string>
+    <string name="marker_custom_availability">Elérhetőség meghatározása:</string>
+    <string name="available_all_day">Egész nap</string>
+    <string name="available_night_only">Csak éjszaka</string>
+    <string name="custom_availability_text">Elérhetőség meghatározása</string>
+    <string name="risk_unknown">Ismeretlen</string>
+    <string name="new_lovespot">Új Love Spot</string>
+    <string name="add_spot_name">Név</string>
+    <string name="add_new_love_spot">Új Love Spot hozzáadása</string>
+    <string name="add_spot_description">Hogy jellemeznéd ezt a Love Spotot?</string>
+    <string name="submit">Beküldés</string>
+    <string name="cancel">Mégse</string>
+    <string name="invalid_spot_name">A névnek legalább hero karaktert tartalmaznia kell</string>
+    <string name="invalid_spot_description">A jellemzésnek legalább öt karaktert tartalmaznia kell</string>
+    <string name="love_spot_added">Love Spot hozzáadva</string>
+    <string name="report_spot">Jelentés</string>
+    <string name="to_wishlist">Kívánságlistára</string>
+    <string name="recordLoveMakingTitle">Hancúr felvétele</string>
+    <string name="availability">Elérhetőség:</string>
+    <string name="add_private_note">Privát jegyzeted személyes tapasztalatodról ezen a Love Spoton</string>
+    <string name="add_review_text">Nyilvános értékelése ennek a Love Spotnak</string>
+    <string name="riskLevelText">Mennyi a lebukás kockázata?</string>
+    <string name="reviewStarsText">Mennyire jó/ajánlható ez a Love Spot?</string>
+    <string name="lovemaking_recorded">Hancúr felvéve</string>
+    <string name="also_made_love_here">Hancúroztam is itt</string>
+    <string name="switch_map_mode">Térképes nézet módosítása</string>
+    <string name="add_spot">Hozzáadás</string>
+    <string name="review_love_spot">Love Spot értékelése</string>
+    <string name="love_spot_reviewed">Love Spot értékelve</string>
+    <string name="havent_made_love_on_this_spot_yet">Ezen a Love Spoton még nem hancúroztál</string>
+    <string name="love_spot_details">Love Spot részletei</string>
+    <string name="night_only">Csak éjszaka</string>
+    <string name="title">Cím</string>
+    <string name="average_rating">Átlag értékelés:</string>
+    <string name="risk_based_on_reviewers">Az értékelések alapján a rizikó:</string>
+    <string name="update">Frissít</string>
+    <string name="your_review">Értékelésed:</string>
+    <string name="user_reviews">Felhasználói értékelések:</string>
+    <string name="your_love_makings_here">Ittmlévő hancúrjaid:</string>
+    <string name="happened_at">Itt történt:</string>
+    <string name="change">Megváltoztatás</string>
+    <string name="select_partners">Partner(ek) felvétele:</string>
+    <string name="add_partner">Új partner hozzáadása</string>
+    <string name="dummy_date">2022–04–03 12:11</string>
+    <string name="no_partners_yet">Nincs kiválasztott partner</string>
+    <string name="not_app_user">Nem felhasználó</string>
+    <string name="select_partner">A kiválasztott partner:</string>
+    <string name="my_lovemap_profile_link">LoveMap profilom</string>
+    <string name="share_subject">A linkkel tekintsd meg LoveMap profilom ;)</string>
+    <string name="filter_view_other_lover">Tekintsd meg a Lover profilját</string>
+    <string name="yourRelationWith">Kapcsolatod ezzel a felhasználóval:</string>
+    <string name="relationPlaceholder">Semmi</string>
+    <string name="follow">Követés</string>
+    <string name="requestPartnership">Kapcsolat kérvényezése</string>
+    <string name="nothing">Semmi</string>
+    <string name="following">Követések</string>
+    <string name="partner">Partner</string>
+    <string name="blocked">Letiltások</string>
+    <string name="already_have_a_partner">Mar van partnerkapcsolat</string>
+    <string name="partnership_already_requested">Kapcsolat korábban kérvényezve</string>
+    <string name="invalid_operation_on_yourself">Érvénytelen művelet önmagadon</string>
+    <string name="link_sharing_hint">
+        <![CDATA[
+        <ul>
+            <li>A fenti link megosztásával profilodat megoszthatod másokkal.</li><br>
+            <li>A másik személy a megosztott linkre kattintva felvehet téged partnernek vagy követheti tevékenységeidet.</li><br>
+            <li>Ha partnerekké váltok, közös tevékenységeitek automatikusan megjelennek mindkettőtöknél, így közösen szerkeszthetitek hancúrjaitokat.</li><br>
+            <li>Ha a music a követőddé válik, láthatja tevékenységeidet. (Ez a funkció még fejlesztés alatt). </li><br>
+            <li>Ha kikapcsolod a linkmegosztást, a megosztott link használhatatlanná válik. Bármikor kérhetsz új linket.</li>
+        </ul>
+        ]]>
+    </string>
+    <string name="loadingDotDotDot">Töltés...</string>
+    <string name="have_not_made_love_review">Itt még nem hancúroztál.\nCsak hancúr után lehet értékelni  </string>
+    <string name="have_not_made_love_here_yet">Itt nem hancúroztál.</string>
+    <string name="reports_received">Kapott jelentések:</string>
+    <string name="meaningful_reviews">Részletes értékelések:</string>
+    <string name="report_love_spot">Love Spot jelentése</string>
+    <string name="add_report_text">Miért akarod jelenteni ezt a Love Spotot?</string>
+    <string name="invalid_report_text">A jelentés szövegének minimum hat karaktert kell tartalmaznia.</string>
+    <string name="report_love_spot_name_placeholder">-</string>
+    <string name="loveSpotReported">Love Spot jelentve</string>
+    <string name="accept">Elfogadás</string>
+    <string name="deny">Megtagadás</string>
+    <string name="partnership_request_text">Ez a felhasználó kapcsolatot akar kezdeményezni veled.\nHa elfogadod, partnerekké váltok és együtt tudjátok kezelni a Hancúrjaitokat.</string>
+    <string name="itIsYou">Ez te vagy 😉</string>
+    <string name="endPartnership">Kapcsolat megszakítása</string>
+    <string name="partnership_requested">Kapcsolat kérvényezve</string>
+    <string name="in_partnership">Kapcsolatban</string>
+    <string name="cancelRequest">Kérelem törlése</string>
+    <string name="not_yet_implemented">A funkció fejlesztés alatt</string>
+    <string name="showing_your_love_makings">"Hancúrok mutatása"</string>
+    <string name="showing_love_spots">Love Spotok mutatása</string>
+    <string name="partner_colon">Partner:</string>
+    <string name="your_love_makings_together">Közös Hancúrjaitok:</string>
+    <string name="rating">Értékelés:</string>
+    <string name="see_all">Mutasd mindet</string>
+    <string name="somethingWentWrong">Valami nem stimmel</string>
+    <string name="love_spot_not_available">Ez a Love Spot nem elérhető</string>
+    <string name="loveSpotDeleted">Love Spot törölve</string>
+    <string name="show_on_map">Mutasd a térképen</string>
+    <string name="spotTooCloseToAnother"><![CDATA[LoveSpotok Tel közel egymáshoz. Minimum köztes távolság: > 20 méter.]]></string>
+    <string name="invalidLoveSpotName">A névnek 3 és 50 karakter közt kell lennie.</string>
+    <string name="invalidLoveSpotDescription">A leírás 5 és 1000 karakter közt lehet</string>
+    <string name="edit">Szerkesztés</string>
+    <string name="delete">Törlés</string>
+    <string name="love_making_deleted">Hancúr törölve</string>
+    <string name="love_making_updated">Hancúr frissítve</string>
+    <string name="editLoveMakingTitle">Hancúr szerkesztése</string>
+    <string name="partnershipNotFound">Közted és e felhasználó közt nincs kapcsolat</string>
+    <string name="editLoveSpotTitle">Love Spot szerkesztése</string>
+    <string name="love_spot_updated">Love Spot frissítve</string>
+    <string name="edit_spot">Love Spot szerkesztése</string>
+    <string name="max_level_reached">KIMAXOLVA (✿ ♡‿♡)</string>
+    <string name="reset_password">Jelszó visszaállítása</string>
+    <string name="request_code">Visszaállító kód kérése</string>
+    <string name="prompt_reset_code">Kód visszaállítása</string>
+    <string name="prompt_new_password">Új jelszó</string>
+    <string name="prompt_new_password_again">Új jelszó megerősítése</string>
+    <string name="reset_code_explanation">3rd be email come, majd nyomd meg a \'  Visszaállító kód kérése\' gombot.\n\nEgy visszaállító kód elküldésre kerül megadott email címedre. A kódot be kell másolnod a  \'Visszaállító kód\' beviteli mezőbe. Ha nem találod a kódot e-mailjeit között, ellenőrizd spam mappád.\n\nEzt követően válassz új jelszót, majd nyomd meg a \'Jelszó megváltoztatása\' gombot.</string>
+    <string name="action_change_password">Jelszó megváltoztatása</string>
+    <string name="invalidPwResetCode">A jelszó visszaállító kód 8 karakter hosszúságú.</string>
+    <string name="pwResetBackoffNotPassed">15 percnek el kell telnie újabb Visszaállító kód kérése előtt.</string>
+    <string name="wrongPwResetCode">Hibás Jelszó visszaállító kód</string>
+    <string name="pwResetCodeTimedOut">Kérj új Jelszó visszaállító kódot!</string>
+    <string name="reset_code_requested">A visszaállító kód email címedre elküldve.</string>
+    <string name="show_lovemakings">Mutasd a Hancúrjaim</string>
+    <string name="show_love_spots">Mutasd a Love Spotokat</string>
+    <string name="type">Típus:</string>
+    <string name="type_public_space">Nyilvános helyszín</string>
+    <string name="type_swinger_club">Swinger Klub</string>
+    <string name="type_cruising_spot">Cruising Spot</string>
+    <string name="type_sex_booth">Szex Bódé</string>
+    <string name="type_night_club">Szórakozóhely</string>
+    <string name="type_other_venue">Egyéb helyszín</string>
+    <string name="note">Note:</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search_button">Keresés</string>
+    <string name="more_button">Több</string>
+    <string name="popular_love_spots">Népszerű Spotok</string>
+    <string name="top_rated_love_spots">Legjobbra értékelt Spotok</string>
+    <string name="recently_active_love_spots">Nemrég használt Spotok</string>
+    <string name="closest_love_spots">Legközelebbi Spotok</string>
+    <string name="ordering_button_text">Rendezés:</string>
+    <string name="location_button_text">Helyszín:</string>
+    <string name="select_location_filter">Helyszín szűrő kiválasztása...</string>
+    <string name="country_filter">Ország szűrő</string>
+    <string name="city_filter">Város szűrő</string>
+    <string name="nearby_filter">Közeli szűrő</string>
+    <string name="within">Bell</string>
+    <string name="around_me">körülöttem.</string>
+    <string name="type_filter_all">Mind</string>
+    <string name="type_filter_public_space">Nyilvános helyszín</string>
+    <string name="type_filter_swinger_club">Swinger Klub</string>
+    <string name="type_filter_cruising_spot">Cruising Spot</string>
+    <string name="type_filter_sex_booth">Szex Bódé</string>
+    <string name="type_filter_night_club">Szórakozóhely</string>
+    <string name="type_filter_other_venue">Egyéb helyszín</string>
+    <string name="recommendations_title">Ajánlások</string>
+    <string name="search_title">Keresés</string>
+    <string name="go_button_text">Mehet</string>
+    <string name="city_search_button_text">"Város: "</string>
+    <string name="country_search_button_text">"Ország: "</string>
+    <string name="nearby_search_button_text">"Közelség: "</string>
+    <string name="meters">méter</string>
+    <string name="invalidLimit">A megengedett \'limit\' érték 1 és 100 közötti</string>
+    <string name="no_results_in_your_area">Nincs eredmény a környékeden. </string>
+    <string name="missingListCoordinates">GPS engedély szükséges</string>
+    <string name="ordering_explanation_popup">
+        <![CDATA[
+        <b>Love Spotok rendezése</b>:<br><br>
+        <ul>
+            <li><b> Legjobbra értékelt</b>: A felhasználói értékelések alapján legjobbra értékelt Spotokat mutatja elöl.</li><br>
+            <li><b> Legközelebbi</b>: Hozzád legközelebbi Spotok mutatása.</li><br>
+            <li><b> Nemrég használt</b>: A bármelyik felhasználó által legfrissebben használt Spotokat mutatja elöl.</li><br>
+            <li><b> Népszerű</b>: A felhasználói aktivitás alapján legnépszerűbb Spotokat mutatja elöl.</li>
+        </ul>
+        ]]>
+    </string>
+    <string name="love_spot_type_explanation">
+        <![CDATA[
+        <b>Love Spot típusok</b>:<br><br>
+        <ul>
+            <li><b>Nyilvános helyszín</b>: Egy közterület pl park, parkoló, kilátó stb.</li><br>
+            <li><b>Swinger Klub</b>: Egy klub ahol szinglik és párban élők egyaránt találkozhatnak hancúrozni.</li><br>
+            <li><b>Cruising Spot</b>: Főleg a meleg közösség által használt helyszínfajta, ahol anonim szexre van lehetőség ismeretlenekkel.</li><br>
+            <li><b>Szex Bódé</b>: Egy apró helyiség hancúrozásra tervezve, pl. szex boltokban vagy glory hole-ok egyéb helyeken. </li><br>
+            <li><b>Szórakozóhely</b>: Éjszakai klubb/diszkó ahol az emberek bulizhatnak ill. hancúrozhatnak is.</li><br>
+            <li><b>Egyéb helyszín</b>: Minden mos, ami a fenti kategóriákba nem illik bele pl múzeum, fürdő, pláza stb.</li>
+        </ul>
+        ]]>
+    </string>
+
+    <string name="facebook_login_failed">Facebook login sikertelen</string>
+    <string name="facebookEmailOccupied">Már létezik Lover ezzel az emaillel</string>
+
+    <string name="risk_safe">Biztonságos</string>
+    <string name="risk_little_risky">Kicsit Para</string>
+    <string name="risk_very_risky">Nagyon para</string>
+
+    <string name="ordering_top_rated">Legjobbra értékelt</string>
+    <string name="ordering_closest">Legközelebbi</string>
+    <string name="ordering_recently_active">Nemrég használt</string>
+    <string name="ordering_popular">Legnépszerűbb</string>
+
+</resources>

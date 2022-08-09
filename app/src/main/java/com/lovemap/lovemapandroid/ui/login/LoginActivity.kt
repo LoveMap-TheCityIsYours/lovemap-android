@@ -1,10 +1,7 @@
 package com.lovemap.lovemapandroid.ui.login
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -15,6 +12,9 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.facebook.*
+import com.facebook.login.LoginResult
+import com.facebook.login.widget.LoginButton
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.lovemap.lovemapandroid.R
@@ -26,12 +26,14 @@ import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.json.JSONObject
 
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var fbLoginButton: LoginButton
     private val appContext = AppContext.INSTANCE
     private val metadataStore: MetadataStore = appContext.metadataStore
     private val authenticationService = appContext.authenticationService
@@ -55,12 +57,23 @@ class LoginActivity : AppCompatActivity() {
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        initViews()
+    }
 
+    private fun initViews() {
+        initLoginViewModel()
+        val resetPassword = binding.resetPassword
+        resetPassword.setOnClickListener {
+            startActivity(Intent(this, PasswordResetActivity::class.java))
+        }
+        initFbLoginButton()
+    }
+
+    private fun initLoginViewModel() {
         val email = binding.email
         val password = binding.password
         val login = binding.login
         val register = binding.register
-        val resetPassword = binding.resetPassword
         val loading = binding.loading
 
         loginViewModel =
@@ -90,7 +103,7 @@ class LoginActivity : AppCompatActivity() {
             if (loginResult.success != null) {
                 updateUiWithUser(loginResult.success)
             }
-            setResult(Activity.RESULT_OK)
+            setResult(RESULT_OK)
 
             //Complete and destroy login activity once successful
             finish()
@@ -120,10 +133,97 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
             }
         }
+    }
 
-        resetPassword.setOnClickListener {
-            startActivity(Intent(this, PasswordResetActivity::class.java))
+    private fun initFbLoginButton() {
+        val loadingBarShower = LoadingBarShower(this@LoginActivity)
+        fbLoginButton = binding.fbLoginButton
+        val callbackManager = CallbackManager.Factory.create()
+        fbLoginButton.setPermissions(listOf("email"))
+        fbLoginButton.registerCallback(
+            callbackManager,
+            object : FacebookCallback<LoginResult> {
+                override fun onSuccess(result: LoginResult) {
+                    loadingBarShower.show()
+                    getEmailFromFacebookAndLogin(result, loadingBarShower)
+                }
+
+                override fun onCancel() {
+                    facebookLoginFailed(loadingBarShower)
+                }
+
+                override fun onError(exception: FacebookException) {
+                    facebookLoginFailed(loadingBarShower)
+                }
+            })
+    }
+
+    private fun getEmailFromFacebookAndLogin(
+        loginResult: LoginResult,
+        loadingBarShower: LoadingBarShower
+    ) {
+        val request = GraphRequest.newMeRequest(
+            AccessToken.getCurrentAccessToken()
+        ) { me, response ->
+            handleFacebookEmailResponse(me, response, loginResult, loadingBarShower)
         }
+        val parameters = Bundle()
+        parameters.putString("fields", "id,name,email")
+        request.parameters = parameters
+        request.executeAsync()
+    }
+
+    private fun handleFacebookEmailResponse(
+        me: JSONObject?,
+        response: GraphResponse?,
+        result: LoginResult,
+        loadingBarShower: LoadingBarShower
+    ) {
+        MainScope().launch {
+            val email = me?.optString("email")
+            val id = me?.optString("id")
+            if (meRequestFailed(response, email, id)) {
+                facebookLoginFailed(loadingBarShower)
+            } else {
+                facebookLoginWithBackend(email!!, id!!, result, loadingBarShower)
+            }
+        }
+    }
+
+    private suspend fun facebookLoginWithBackend(
+        email: String,
+        id: String,
+        result: LoginResult,
+        loadingBarShower: LoadingBarShower
+    ) {
+        val loggedInUser = authenticationService.facebookLogin(
+            email,
+            id,
+            result.accessToken.token
+        )
+        if (loggedInUser != null) {
+            loadingBarShower.onResponse()
+            appContext.toaster.showToast(getString(R.string.welcome_back) + "${loggedInUser.userName}!")
+            startActivity(
+                Intent(
+                    this@LoginActivity,
+                    MainActivity::class.java
+                )
+            )
+        } else {
+            facebookLoginFailed(loadingBarShower)
+        }
+    }
+
+    private fun meRequestFailed(
+        response: GraphResponse?,
+        email: String?,
+        id: String?
+    ) = response?.error != null || email == null || id == null
+
+    private fun facebookLoginFailed(loadingBarShower: LoadingBarShower) {
+        appContext.toaster.showToast(R.string.facebook_login_failed)
+        loadingBarShower.onResponse()
     }
 
     fun login(email: String, password: String) {

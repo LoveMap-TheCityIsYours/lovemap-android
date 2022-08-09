@@ -6,10 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".ui.login.LoginActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
@@ -31,10 +33,7 @@
             android:autofillHints="yes"
             android:hint="@string/prompt_email"
             android:inputType="textEmailAddress"
-            android:selectAllOnFocus="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.781"
-            app:layout_constraintTop_toBottomOf="@+id/logo" />
+            android:selectAllOnFocus="true" />
 
         <EditText
             android:id="@+id/password"
@@ -46,52 +45,40 @@
             android:imeActionLabel="@string/action_sign_in"
             android:imeOptions="actionDone"
             android:inputType="textPassword"
-            android:selectAllOnFocus="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/email" />
+            android:selectAllOnFocus="true"/>
 
         <Button
             android:id="@+id/login"
             android:layout_width="165dp"
             android:layout_height="60dp"
-            android:layout_gravity="start"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="64dp"
             android:backgroundTint="@color/myColorPrimary"
             android:enabled="false"
             android:text="@string/action_sign_in"
-            android:textColor="@color/myColorOnPrimary"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/password"
-            app:layout_constraintVertical_bias="0.1" />
+            android:textColor="@color/myColorOnPrimary" />
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/fbLoginButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="30dp" />
 
         <Button
             android:id="@+id/register"
             android:layout_width="165dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="64dp"
             android:backgroundTint="@color/myColorPrimary"
             android:enabled="true"
             android:text="@string/register"
-            android:textColor="@color/myColorOnPrimary"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/login"
-            app:layout_constraintVertical_bias="0.0" />
+            android:textColor="@color/myColorOnPrimary" />
 
         <Button
             android:id="@+id/resetPassword"
             android:layout_width="165dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="64dp"
             android:backgroundTint="@color/myColorPrimary"
             android:enabled="true"
             android:text="@string/reset_password"
@@ -116,6 +103,6 @@
             app:layout_constraintTop_toBottomOf="@+id/register"
             app:layout_constraintVertical_bias="0.3" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </ScrollView>

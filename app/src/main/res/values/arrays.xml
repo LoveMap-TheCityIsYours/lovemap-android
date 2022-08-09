@@ -1,47 +1,35 @@
 <resources>
-    <!-- Reply Preference -->
-    <string-array name="reply_entries">
-        <item>Reply</item>
-        <item>Reply to all</item>
-    </string-array>
-
-    <string-array name="reply_values">
-        <item>reply</item>
-        <item>reply_all</item>
-    </string-array>
-
     <string-array name="availability_list">
-        <item>All day</item>
-        <item>Night only</item>
+        <item>@string/available_all_day</item>
+        <item>@string/night_only</item>
     </string-array>
 
     <string-array name="type_list">
-        <item>Public Space</item>
-        <item>Swinger Club</item>
-        <item>Cruising Spot</item>
-        <item>Sex Booth</item>
-        <item>Night Club</item>
-        <item>Other Venue</item>
+        <item>@string/type_public_space</item>
+        <item>@string/type_swinger_club</item>
+        <item>@string/type_cruising_spot</item>
+        <item>@string/type_sex_booth</item>
+        <item>@string/type_night_club</item>
+        <item>@string/type_other_venue</item>
     </string-array>
 
     <string-array name="spot_risk_levels">
-        <item>Safe</item>
-        <item>Little risky</item>
-        <item>Very risky</item>
+        <item>@string/risk_safe</item>
+        <item>@string/risk_little_risky</item>
+        <item>@string/risk_very_risky</item>
     </string-array>
 
     <string-array name="ordering_list">
-        <item>Top Rated</item>
-        <item>Closest</item>
-        <item>Recently Active</item>
-        <item>Popular</item>
+        <item>@string/ordering_top_rated</item>
+        <item>@string/ordering_closest</item>
+        <item>@string/ordering_recently_active</item>
+        <item>@string/ordering_popular</item>
     </string-array>
 
     <string-array name="distance_units">
-        <item>meters</item>
-<!--        <item>kilometers</item>-->
-<!--        <item>feet</item>-->
-<!--        <item>miles</item>-->
+        <item>@string/meters</item>
+        <!--        <item>kilometers</item>-->
+        <!--        <item>feet</item>-->
+        <!--        <item>miles</item>-->
     </string-array>
-
 </resources>
