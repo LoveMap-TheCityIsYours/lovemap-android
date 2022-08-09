@@ -27,5 +27,6 @@ data class NewPasswordRequest(
 
 data class FacebookAuthenticationRequest(
     val email: String,
+    val facebookId: String,
     val accessToken: String,
 )

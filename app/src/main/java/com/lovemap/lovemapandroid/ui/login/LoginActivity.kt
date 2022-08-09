@@ -12,9 +12,8 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
+import com.facebook.*
+import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
@@ -27,7 +26,7 @@ import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.util.*
+import org.json.JSONObject
 
 
 class LoginActivity : AppCompatActivity() {
@@ -141,30 +140,90 @@ class LoginActivity : AppCompatActivity() {
         fbLoginButton = binding.fbLoginButton
         val callbackManager = CallbackManager.Factory.create()
         fbLoginButton.setPermissions(listOf("email"))
-        fbLoginButton.setOnClickListener {
-            loadingBarShower.show()
-        }
-        fbLoginButton.registerCallback(callbackManager, object : FacebookCallback<com.facebook.login.LoginResult> {
-            override fun onSuccess(result: com.facebook.login.LoginResult) {
-                println(result)
-                MainScope().launch {
-                    val loggedInUser = authenticationService.facebookLogin("alma@alma.hu", result.accessToken.token)
-                    if (loggedInUser != null) {
-                        appContext.toaster.showToast(getString(R.string.welcome_back) + "${loggedInUser.userName}!")
-                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                    }
-                    loadingBarShower.onResponse()
+        fbLoginButton.registerCallback(
+            callbackManager,
+            object : FacebookCallback<LoginResult> {
+                override fun onSuccess(result: LoginResult) {
+                    loadingBarShower.show()
+                    getEmailFromFacebookAndLogin(result, loadingBarShower)
                 }
-            }
 
-            override fun onCancel() {
-                // App code
-            }
+                override fun onCancel() {
+                    facebookLoginFailed(loadingBarShower)
+                }
 
-            override fun onError(exception: FacebookException) {
-                // App code
+                override fun onError(exception: FacebookException) {
+                    facebookLoginFailed(loadingBarShower)
+                }
+            })
+    }
+
+    private fun getEmailFromFacebookAndLogin(
+        loginResult: LoginResult,
+        loadingBarShower: LoadingBarShower
+    ) {
+        val request = GraphRequest.newMeRequest(
+            AccessToken.getCurrentAccessToken()
+        ) { me, response ->
+            handleFacebookEmailResponse(me, response, loginResult, loadingBarShower)
+        }
+        val parameters = Bundle()
+        parameters.putString("fields", "id,name,email")
+        request.parameters = parameters
+        request.executeAsync()
+    }
+
+    private fun handleFacebookEmailResponse(
+        me: JSONObject?,
+        response: GraphResponse?,
+        result: LoginResult,
+        loadingBarShower: LoadingBarShower
+    ) {
+        MainScope().launch {
+            val email = me?.optString("email")
+            val id = me?.optString("id")
+            if (meRequestFailed(response, email, id)) {
+                facebookLoginFailed(loadingBarShower)
+            } else {
+                facebookLoginWithBackend(email!!, id!!, result, loadingBarShower)
             }
-        })
+        }
+    }
+
+    private suspend fun facebookLoginWithBackend(
+        email: String,
+        id: String,
+        result: LoginResult,
+        loadingBarShower: LoadingBarShower
+    ) {
+        val loggedInUser = authenticationService.facebookLogin(
+            email,
+            id,
+            result.accessToken.token
+        )
+        if (loggedInUser != null) {
+            loadingBarShower.onResponse()
+            appContext.toaster.showToast(getString(R.string.welcome_back) + "${loggedInUser.userName}!")
+            startActivity(
+                Intent(
+                    this@LoginActivity,
+                    MainActivity::class.java
+                )
+            )
+        } else {
+            facebookLoginFailed(loadingBarShower)
+        }
+    }
+
+    private fun meRequestFailed(
+        response: GraphResponse?,
+        email: String?,
+        id: String?
+    ) = response?.error != null || email == null || id == null
+
+    private fun facebookLoginFailed(loadingBarShower: LoadingBarShower) {
+        appContext.toaster.showToast(R.string.facebook_login_failed)
+        loadingBarShower.onResponse()
     }
 
     fun login(email: String, password: String) {

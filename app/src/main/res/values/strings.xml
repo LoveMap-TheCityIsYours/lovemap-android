@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">LoveMap</string>
-    <string name="title_activity_register">RegisterActivity</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="app_name" translatable="false">LoveMap</string>
+    <string name="title_activity_register" translatable="false">RegisterActivity</string>
+    <string name="title_activity_main" translatable="false">MainActivity</string>
 
     <!-- FB stuff -->
-    <string name="facebook_app_id">1137729193447265</string>
-    <string name="fb_login_protocol_scheme">fb1137729193447265</string>
-    <string name="facebook_client_token">e476c80ce861915681da79d9269cc0ee</string>
+    <string name="facebook_app_id" translatable="false">1137729193447265</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb1137729193447265</string>
+    <string name="facebook_client_token" translatable="false">e476c80ce861915681da79d9269cc0ee</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -269,5 +269,7 @@
         </ul>
         ]]>
     </string>
+    <string name="facebook_login_failed">Facebook Login Failed</string>
+    <string name="facebookEmailOccupied">Lover already exists this email</string>
 
 </resources>

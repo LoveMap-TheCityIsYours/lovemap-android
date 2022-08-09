@@ -116,11 +116,11 @@ class AuthenticationService(
         }
     }
 
-    suspend fun facebookLogin(email: String, token: String): LoggedInUser? {
+    suspend fun facebookLogin(email: String, facebookId: String, token: String): LoggedInUser? {
         var loggedInUser: LoggedInUser? = null
         return withContext(Dispatchers.IO) {
             val call = authenticationApi.facebookLogin(
-                FacebookAuthenticationRequest(email, token)
+                FacebookAuthenticationRequest(email, facebookId, token)
             )
             val response = try {
                 call.execute()
