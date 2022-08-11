@@ -45,7 +45,7 @@ LoveSpotDetailsActivity : AppCompatActivity() {
     private lateinit var spotDetailsCustomAvailability: TextView
     private lateinit var loveSpotDetailsTypeImage: ImageView
 
-    private lateinit var detailsReviewLoveSpotFragment: ReviewLoveSpotFragment
+    private var detailsReviewLoveSpotFragment: ReviewLoveSpotFragment? = null
     private lateinit var haveNotMadeLoveReviewText: TextView
     private lateinit var detailsReviewButtons: LinearLayout
     private lateinit var reviewSpotSubmit: Button
@@ -248,12 +248,12 @@ LoveSpotDetailsActivity : AppCompatActivity() {
     private fun setDynamicTexts() {
         MainScope().launch {
             if (loveService.madeLoveAlready(spotId)) {
-                detailsReviewLoveSpotFragment.view?.visibility = View.VISIBLE
+                detailsReviewLoveSpotFragment?.view?.visibility = View.VISIBLE
                 detailsReviewButtons.visibility = View.VISIBLE
                 haveNotMadeLoveReviewText.visibility = View.GONE
                 haveNotMadeLoveText.visibility = View.GONE
             } else {
-                detailsReviewLoveSpotFragment.view?.visibility = View.GONE
+                detailsReviewLoveSpotFragment?.view?.visibility = View.GONE
                 detailsReviewButtons.visibility = View.GONE
                 haveNotMadeLoveReviewText.visibility = View.VISIBLE
                 haveNotMadeLoveText.visibility = View.VISIBLE

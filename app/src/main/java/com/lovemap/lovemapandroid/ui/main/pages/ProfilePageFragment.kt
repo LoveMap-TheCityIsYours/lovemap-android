@@ -1,5 +1,6 @@
 package com.lovemap.lovemapandroid.ui.main.pages
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -130,7 +131,7 @@ class ProfilePageFragment : Fragment() {
                         profileProgressBar
                     )
                     setTexts(lover)
-                    setPartnerships()
+                    setPartnerships(requireContext())
                     setLinkSharing(lover)
                 }
             }
@@ -147,7 +148,7 @@ class ProfilePageFragment : Fragment() {
         points.text = lover.points.toString()
     }
 
-    private fun setPartnerships() {
+    private fun setPartnerships(context: Context) {
         // TODO: finish this with new /partnerships API call
         MainScope().launch {
             val partnerships = partnershipService.getPartnerships()
@@ -159,7 +160,7 @@ class ProfilePageFragment : Fragment() {
                     profilePartnerRelation.text =
                         I18nUtils.partnershipStatus(
                             partnership.partnershipStatus,
-                            requireContext()
+                            context
                         )
                     profilePartnerRelation.visibility = View.VISIBLE
                 }

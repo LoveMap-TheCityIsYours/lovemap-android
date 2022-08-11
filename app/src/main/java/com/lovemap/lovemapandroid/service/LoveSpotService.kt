@@ -14,6 +14,7 @@ import com.lovemap.lovemapandroid.ui.data.LoveSpotHolder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import java.util.concurrent.CopyOnWriteArrayList
 import kotlin.math.max
 import kotlin.math.min
 
@@ -24,7 +25,7 @@ class LoveSpotService(
     private val metadataStore: MetadataStore,
     private val toaster: Toaster,
 ) {
-    private val fullyQueriedAreas = ArrayList<LatLngBounds>()
+    private val fullyQueriedAreas = CopyOnWriteArrayList<LatLngBounds>()
     private var risksQueried = false
 
     @Volatile
