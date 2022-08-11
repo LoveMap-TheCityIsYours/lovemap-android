@@ -7,7 +7,6 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,6 +58,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     private var localSpotsDrawn = false
     private var mapMode = LOVE_SPOTS
     private val drawnSpots = HashSet<Long>()
+    private var zoomLevel: Float = 1f
 
     private var viewPager2: ViewPager2? = null
     private lateinit var loveSpotInfoWindowAdapter: LoveSpotInfoWindowAdapter
@@ -142,7 +142,11 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
             }
         }
         addSpotOkFab.setOnClickListener {
-            startActivity(Intent(requireContext(), AddLoveSpotActivity::class.java))
+            if (zoomLevel < 17) {
+                appContext.toaster.showToast(R.string.zoomInMore)
+            } else {
+                startActivity(Intent(requireContext(), AddLoveSpotActivity::class.java))
+            }
         }
         addSpotCancelFab.setOnClickListener {
             closeAddLoveSpotFabs()
@@ -363,6 +367,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
                 viewPager2?.isUserInputEnabled = false
             }
             cameraMoved = true
+            zoomLevel = googleMap.cameraPosition.zoom
         }
         thisView.setOnTouchListener { _, _ ->
             viewPager2?.isUserInputEnabled = true

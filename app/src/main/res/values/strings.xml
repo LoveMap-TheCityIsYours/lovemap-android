@@ -280,5 +280,6 @@
     <string name="ordering_closest">Closest</string>
     <string name="ordering_recently_active">Recently Active</string>
     <string name="ordering_popular">Popular</string>
+    <string name="zoomInMore">Zoom in more</string>
 
 </resources>
