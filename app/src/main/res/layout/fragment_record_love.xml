@@ -13,7 +13,7 @@
         android:minLines="2"
         android:maxLines="5"
         android:hint="@string/add_private_note"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine|textCapSentences" />
 
    <TextView
        android:layout_width="wrap_content"

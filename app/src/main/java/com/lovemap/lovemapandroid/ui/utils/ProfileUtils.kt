@@ -6,6 +6,8 @@ import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import kotlin.math.max
+import kotlin.math.min
 
 object ProfileUtils {
 
@@ -28,6 +30,7 @@ object ProfileUtils {
                         rankList.size
                     }
                 }
+                levelIndex = max(levelIndex, 1)
                 val rank = rankList[levelIndex - 1]
                 if (levelIndex < rankList.size) {
                     val nextRank = rankList[levelIndex]

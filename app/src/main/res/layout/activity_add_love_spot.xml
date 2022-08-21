@@ -17,7 +17,7 @@
 
         <TextView
             android:id="@+id/addSpotTitle"
-            style="@style/TextAppearance.AppCompat.Headline"
+            style="@style/TextAppearance.Material3.HeadlineMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|top"
@@ -36,14 +36,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/add_spot_name"
-                android:inputType="text" />
+                android:inputType="text|textCapWords" />
 
             <EditText
                 android:id="@+id/addSpotDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/add_spot_description"
-                android:inputType="textMultiLine"
+                android:inputType="textMultiLine|textCapSentences"
                 android:maxLines="10"
                 android:minLines="2" />
 

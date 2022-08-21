@@ -281,5 +281,7 @@
     <string name="ordering_recently_active">Recently Active</string>
     <string name="ordering_popular">Popular</string>
     <string name="zoomInMore">Zoom in more</string>
+    <string name="recordLove">Record Love</string>
+    <string name="review_spot">Review Spot</string>
 
 </resources>

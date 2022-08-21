@@ -7,7 +7,6 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.config.AppContext
@@ -36,6 +35,7 @@ LoveSpotDetailsActivity : AppCompatActivity() {
     private val loveSpotReviewService = appContext.loveSpotReviewService
 
     private lateinit var binding: ActivityLoveSpotDetailsBinding
+    private lateinit var detailsScrollView: ScrollView
     private lateinit var spotDetailsRating: RatingBar
     private lateinit var spotDetailsRisk: TextView
     private lateinit var spotDetailsAvailability: TextView
@@ -52,8 +52,9 @@ LoveSpotDetailsActivity : AppCompatActivity() {
     private lateinit var reviewSpotCancel: Button
     private lateinit var detailsSeeAllReviewsButton: Button
 
-    private lateinit var detailsAddToWishlistButton: FloatingActionButton
-    private lateinit var makeLoveFabOnDetails: FloatingActionButton
+    private lateinit var detailsAddToWishlistButton: ExtendedFloatingActionButton
+    private lateinit var makeLoveFabOnDetails: ExtendedFloatingActionButton
+    private lateinit var detailsReviewSpotButton: ExtendedFloatingActionButton
     private lateinit var haveNotMadeLoveText: TextView
 
     private lateinit var spotDetailsReportButton: ExtendedFloatingActionButton
@@ -88,6 +89,11 @@ LoveSpotDetailsActivity : AppCompatActivity() {
                 intent.putExtra(IS_CLICKABLE, false)
                 startActivity(intent)
             }
+            detailsReviewSpotButton.setOnClickListener {
+                detailsScrollView.post {
+                    detailsScrollView.fullScroll(ScrollView.FOCUS_DOWN)
+                }
+            }
             detailsSeeAllReviewsButton.setOnClickListener {
                 startActivity(Intent(applicationContext, ReviewListActivity::class.java))
             }
@@ -115,6 +121,7 @@ LoveSpotDetailsActivity : AppCompatActivity() {
     private fun initViews() {
         binding = ActivityLoveSpotDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        detailsScrollView = binding.root
         reviewSpotSubmit = binding.reviewSpotSubmit
         reviewSpotCancel = binding.reviewSpotCancel
         spotDetailsRating = binding.spotDetailsRating
@@ -133,6 +140,7 @@ LoveSpotDetailsActivity : AppCompatActivity() {
         detailsAddToWishlistButton = binding.addToWishlistFabOnDetails
         detailsSeeAllReviewsButton = binding.detailsSeeAllReviewsButton
         detailsSeeAllLovesButton = binding.detailsSeeAllLovesButton
+        detailsReviewSpotButton = binding.detailsReviewSpotButton
         spotDetailsEditButton = binding.spotDetailsEditButton
         spotDetailsShowOnMapButton = binding.spotDetailsShowOnMap
         detailsReviewLoveSpotFragment =

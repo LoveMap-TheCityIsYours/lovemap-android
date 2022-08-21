@@ -2,11 +2,12 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detailsScrollView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:scrollbarFadeDuration="0"
     android:scrollbarAlwaysDrawVerticalTrack="true"
+    android:scrollbarFadeDuration="0"
     tools:context=".ui.main.lovespot.LoveSpotDetailsActivity">
 
     <LinearLayout
@@ -18,20 +19,19 @@
 
         <TextView
             android:id="@+id/loveSpotTitle"
-            style="@style/TextAppearance.Material3.DisplayMedium"
+            style="@style/TextAppearance.Material3.HeadlineMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
             android:layout_gravity="center_horizontal|top"
             android:layout_marginBottom="@dimen/standard_16"
-            android:text=" - " />
+            android:text=" - "
+            android:textAlignment="center" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical">
-
 
             <TextView
                 android:layout_width="wrap_content"
@@ -59,7 +59,7 @@
 
             <TextView
                 android:id="@+id/spotDetailsType"
-                style="@style/TextAppearance.Material3.HeadlineSmall"
+                style="@style/TextAppearance.Material3.BodyLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -84,12 +84,12 @@
 
             <TextView
                 android:id="@+id/spotDetailsDescription"
-                android:autoLink="web"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="@dimen/standard_16"
+                android:autoLink="web"
+                android:textAlignment="center"
                 android:textColor="@color/myColorOnBackground" />
 
             <TextView
@@ -101,12 +101,12 @@
 
             <TextView
                 android:id="@+id/spotDetailsRisk"
-                style="@style/TextAppearance.Material3.HeadlineSmall"
-                android:text="@string/risk_unknown"
+                style="@style/TextAppearance.Material3.BodyLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="@dimen/standard_16"
+                android:text="@string/risk_unknown"
                 android:textColor="@color/myColorOnBackground" />
 
             <TextView
@@ -118,24 +118,13 @@
 
             <TextView
                 android:id="@+id/spotDetailsAvailability"
-                style="@style/TextAppearance.Material3.HeadlineSmall"
+                style="@style/TextAppearance.Material3.BodyLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="@dimen/standard_16"
                 android:text=" - "
                 android:textColor="@color/myColorOnBackground" />
-
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/spotDetailsShowOnMap"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/standard_16"
-                android:layout_gravity="center"
-                android:text="@string/show_on_map"
-                android:textSize="12sp"
-                app:iconGravity="start"
-                app:icon="@android:drawable/ic_dialog_map"/>
 
             <TextView
                 android:id="@+id/spotDetailsCustomAvailabilityText"
@@ -162,6 +151,59 @@
             style="?android:attr/weekSeparatorLineColor"
             android:layout_width="match_parent"
             android:layout_height="5dp"
+            android:layout_marginTop="@dimen/standard_16"
+            android:background="@color/separatorLine"
+            android:gravity="center_horizontal" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/spotDetailsShowOnMap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/standard_8"
+            android:text="@string/show_on_map"
+            android:textSize="12sp"
+            app:icon="@android:drawable/ic_dialog_map"
+            app:iconGravity="start" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/addToWishlistFabOnDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/standard_16"
+            android:text="@string/to_wishlist"
+            android:textSize="12sp"
+            app:icon="@drawable/ic_baseline_list_add_24"
+            app:iconGravity="start" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/makeLoveFabOnDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/standard_16"
+            android:text="@string/recordLove"
+            android:textSize="12sp"
+            app:icon="@drawable/ic_baseline_favorite_24"
+            app:iconGravity="start" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/details_review_spot_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/standard_16"
+            android:text="@string/review_spot"
+            android:textSize="12sp"
+            app:icon="@drawable/ic_baseline_rate_review_24"
+            app:iconGravity="start" />
+
+
+        <TextView
+            style="?android:attr/weekSeparatorLineColor"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
             android:layout_marginTop="@dimen/standard_8"
             android:background="@color/separatorLine"
             android:gravity="center_horizontal" />
@@ -171,139 +213,7 @@
             android:layout_width="match_parent"
             android:layout_height="5dp"
             android:layout_marginTop="@dimen/standard_100"
-            android:layout_marginBottom="@dimen/standard_8"
-            android:background="@color/separatorLine"
-            android:gravity="center_horizontal" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/standard_8"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/TextAppearance.AppCompat.Large"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/your_love_makings_here" />
-
-            <TextView
-                android:id="@+id/haveNotMadeLoveText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/have_not_made_love_here_yet"
-                android:textAlignment="center" />
-
-            <fragment
-                android:id="@+id/detailsLoveListFragment"
-                android:name="com.lovemap.lovemapandroid.ui.main.love.list.LoveListFragment"
-                app:love_spot_based="true"
-                app:is_clickable="false"
-                android:layout_marginTop="@dimen/standard_16"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/detailsSeeAllLovesButton"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/see_all"
-                android:layout_gravity="center"
-                />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/standard_16"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/standard_50"
-                    android:layout_gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/spotWishlistText"
-                        android:layout_gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_corner"
-                        android:layout_marginBottom="@dimen/standard_4"
-                        android:paddingStart="5dp"
-                        android:paddingEnd="5dp"
-                        android:text="@string/to_wishlist"
-                        android:textColor="@color/myColorOnSecondary"
-                        android:textSize="10sp"
-                        tools:ignore="SmallSp" />
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/addToWishlistFabOnDetails"
-                        android:layout_gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textDirection="firstStrongRtl"
-                        app:srcCompat="@drawable/ic_baseline_list_add_24" />
-
-                </LinearLayout>
-
-                <androidx.legacy.widget.Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"/>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/standard_50"
-                    android:layout_gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/loveOnSpotText"
-                        android:layout_gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/standard_4"
-                        android:background="@drawable/rounded_corner"
-                        android:paddingStart="5dp"
-                        android:paddingEnd="5dp"
-                        android:text="@string/make_love"
-                        android:textColor="@color/myColorOnSecondary"
-                        android:textSize="10sp"
-                        tools:ignore="SmallSp" />
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/makeLoveFabOnDetails"
-                        android:layout_gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textDirection="firstStrongRtl"
-                        app:srcCompat="@drawable/ic_baseline_favorite_24" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <TextView
-            style="?android:attr/weekSeparatorLineColor"
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:layout_marginTop="@dimen/standard_8"
-            android:layout_marginBottom="@dimen/standard_100"
-            android:background="@color/separatorLine"
-            android:gravity="center_horizontal" />
-
-        <TextView
-            style="?android:attr/weekSeparatorLineColor"
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:layout_marginBottom="@dimen/standard_8"
+            android:layout_marginBottom="@dimen/standard_4"
             android:background="@color/separatorLine"
             android:gravity="center_horizontal" />
 
@@ -325,15 +235,69 @@
             android:id="@+id/detailsSeeAllReviewsButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="@string/see_all"
             android:layout_gravity="center"
-            />
+            android:text="@string/see_all" />
 
         <TextView
             style="?android:attr/weekSeparatorLineColor"
             android:layout_width="match_parent"
             android:layout_height="5dp"
-            android:layout_marginTop="@dimen/standard_8"
+            android:layout_marginTop="@dimen/standard_4"
+            android:layout_marginBottom="@dimen/standard_100"
+            android:background="@color/separatorLine"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            style="?android:attr/weekSeparatorLineColor"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_marginBottom="@dimen/standard_4"
+            android:background="@color/separatorLine"
+            android:gravity="center_horizontal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/your_love_makings_here" />
+
+            <TextView
+                android:id="@+id/haveNotMadeLoveText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/have_not_made_love_here_yet"
+                android:textAlignment="center" />
+
+            <fragment
+                android:id="@+id/detailsLoveListFragment"
+                android:name="com.lovemap.lovemapandroid.ui.main.love.list.LoveListFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standard_16"
+                app:is_clickable="false"
+                app:love_spot_based="true" />
+
+            <Button
+                android:id="@+id/detailsSeeAllLovesButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:text="@string/see_all" />
+
+        </LinearLayout>
+
+        <TextView
+            style="?android:attr/weekSeparatorLineColor"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_marginTop="@dimen/standard_4"
             android:layout_marginBottom="@dimen/standard_100"
             android:background="@color/separatorLine"
             android:gravity="center_horizontal" />
@@ -343,7 +307,7 @@
             style="?android:attr/weekSeparatorLineColor"
             android:layout_width="match_parent"
             android:layout_height="5dp"
-            android:layout_marginBottom="@dimen/standard_8"
+            android:layout_marginBottom="@dimen/standard_4"
             android:background="@color/separatorLine"
             android:gravity="center_horizontal" />
 
@@ -406,8 +370,15 @@
             style="?android:attr/weekSeparatorLineColor"
             android:layout_width="match_parent"
             android:layout_height="5dp"
-            android:layout_marginTop="@dimen/standard_8"
+            android:layout_marginTop="@dimen/standard_4"
             android:layout_marginBottom="@dimen/standard_100"
+            android:background="@color/separatorLine"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            style="?android:attr/weekSeparatorLineColor"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
             android:background="@color/separatorLine"
             android:gravity="center_horizontal" />
 
@@ -416,24 +387,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/standard_100"
-            android:layout_marginBottom="@dimen/standard_10"
+            android:layout_marginTop="@dimen/standard_8"
+            android:layout_marginBottom="@dimen/standard_8"
             android:text="@string/edit_spot"
             android:textSize="12sp"
-            app:iconGravity="end"
             android:visibility="gone"
-            app:icon="@drawable/ic_baseline_edit_24"/>
+            app:icon="@drawable/ic_baseline_edit_24" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/spotDetailsReportButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/standard_10"
+            android:layout_marginTop="@dimen/standard_8"
             android:text="@string/report_spot"
             android:textSize="12sp"
-            app:iconGravity="start"
-            app:icon="@drawable/ic_baseline_error_outline_24"/>
+            app:icon="@drawable/ic_baseline_error_outline_24" />
+
+        <TextView
+            style="?android:attr/weekSeparatorLineColor"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_marginTop="@dimen/standard_8"
+            android:background="@color/separatorLine"
+            android:gravity="center_horizontal" />
 
     </LinearLayout>
 

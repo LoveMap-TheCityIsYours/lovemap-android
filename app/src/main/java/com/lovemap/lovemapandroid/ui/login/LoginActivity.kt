@@ -203,7 +203,7 @@ class LoginActivity : AppCompatActivity() {
         )
         if (loggedInUser != null) {
             loadingBarShower.onResponse()
-            appContext.toaster.showToast(getString(R.string.welcome_back) + "${loggedInUser.userName}!")
+            appContext.toaster.showToast(getString(R.string.welcome) + "${loggedInUser.userName}!")
             startActivity(
                 Intent(
                     this@LoginActivity,
