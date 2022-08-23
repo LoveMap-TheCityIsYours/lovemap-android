@@ -80,7 +80,7 @@ class LoveRecyclerViewAdapter(
                 val loveSpotId = values[absoluteAdapterPosition].loveSpotId
                 appContext.selectedLoveSpotId = loveSpotId
                 appContext.selectedLoveSpot = null
-                appContext.selectedMarker = null
+//                appContext.selectedMarker = null
                 v?.context?.startActivity(
                     Intent(v.context, LoveSpotDetailsActivity::class.java)
                 )

@@ -3,9 +3,6 @@ package com.lovemap.lovemapandroid.ui.main.pages.map
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,24 +10,20 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.gms.location.*
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.maps.android.clustering.ClusterManager
 import com.lovemap.lovemapandroid.R
-import com.lovemap.lovemapandroid.api.lovespot.Availability.ALL_DAY
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpotListDto
@@ -44,11 +37,12 @@ import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.report.ReportLoveSpotActivity
 import com.lovemap.lovemapandroid.ui.main.pages.map.LoveMapPageFragment.MapMode.LOVE_MAKINGS
 import com.lovemap.lovemapandroid.ui.main.pages.map.LoveMapPageFragment.MapMode.LOVE_SPOTS
-import com.lovemap.lovemapandroid.ui.utils.LoveSpotInfoWindowAdapter
 import com.lovemap.lovemapandroid.utils.pixelToDp
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.math.floor
+
 
 @SuppressLint("MissingPermission")
 class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListener {
@@ -59,14 +53,12 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     private var cameraMoved = false
     private var localSpotsDrawn = false
     private var mapMode = LOVE_SPOTS
+    private val drawnSpots = HashSet<Long>()
     private var zoomLevel: Float = 1f
 
     private var viewPager2: ViewPager2? = null
     private lateinit var loveSpotInfoWindowAdapter: LoveSpotInfoWindowAdapter
     private lateinit var mapFragment: SupportMapFragment
-    private lateinit var dayBitmap: BitmapDescriptor
-    private lateinit var nightBitmap: BitmapDescriptor
-    private lateinit var loveBitmap: BitmapDescriptor
 
     private lateinit var addLoveText: TextView
     private lateinit var addLoveFab: FloatingActionButton
@@ -83,6 +75,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var clusterManager: ClusterManager<LoveSpotClusterItem>
+    private lateinit var loveSpotClusterRenderer: LoveSpotClusterRender
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,9 +89,6 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     ): View {
         val view = inflater.inflate(R.layout.fragment_love_map_page, container, false)
         mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-        dayBitmap = getIconBitmap(R.drawable.ic_marker_sun)
-        nightBitmap = getIconBitmap(R.drawable.ic_marker_moon)
-        loveBitmap = getIconBitmap(R.drawable.ic_marker_heart)
         addLoveText = view.findViewById(R.id.loveOnSpotText)
         addLoveFab = view.findViewById(R.id.addLoveFab)
         toWishlistText = view.findViewById(R.id.spotWishlistText)
@@ -109,6 +99,10 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
         addLoveSpotFab = view.findViewById(R.id.addLoveSpotFab)
         addSpotOkFab = view.findViewById(R.id.addSpotOkFab)
         addSpotCancelFab = view.findViewById(R.id.addSpotCancelFab)
+        loveSpotInfoWindowAdapter = LoveSpotInfoWindowAdapter(
+            loveSpotService,
+            requireActivity(),
+        )
         setButtons()
         return view
     }
@@ -126,10 +120,12 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
         changeMapModeFab.setOnClickListener {
             appContext.shouldClearMap = true
             mapMode = if (mapMode == LOVE_SPOTS) {
+                loveSpotClusterRenderer.drawLoveMakings = true
                 appContext.toaster.showToast(R.string.showing_your_love_makings)
                 changeMapModeFab.setText(R.string.show_love_spots)
                 LOVE_MAKINGS
             } else {
+                loveSpotClusterRenderer.drawLoveMakings = false
                 appContext.toaster.showToast(R.string.showing_love_spots)
                 changeMapModeFab.setText(R.string.show_lovemakings)
                 LOVE_SPOTS
@@ -179,9 +175,18 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onMapReady(googleMap: GoogleMap) {
-//        clusterManager = ClusterManager(requireContext(), googleMap)
-//        googleMap.setOnCameraIdleListener(clusterManager)
-//        googleMap.setOnMarkerClickListener(clusterManager)
+        if (!this::clusterManager.isInitialized) {
+            clusterManager = ClusterManager(requireContext(), googleMap)
+            googleMap.setInfoWindowAdapter(clusterManager.markerManager)
+            clusterManager.markerCollection.setInfoWindowAdapter(loveSpotInfoWindowAdapter)
+            loveSpotClusterRenderer = LoveSpotClusterRender(requireContext(), googleMap, clusterManager)
+            clusterManager.renderer = loveSpotClusterRenderer
+            googleMap.setOnMarkerClickListener(clusterManager)
+            clusterManager.markerCollection.setOnInfoWindowClickListener {
+                startActivity(Intent(requireContext(), LoveSpotDetailsActivity::class.java))
+            }
+        }
+
         val thisView = requireView()
         viewPager2 = getViewPager2(thisView)
         viewPager2?.let { vp2 ->
@@ -189,20 +194,14 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
             val tabLayout = linearLayout.findViewById<TabLayout>(R.id.tab_layout)
             setMyLocation(googleMap)
             setMapBehavior(googleMap, tabLayout, thisView)
-            googleMap.setOnInfoWindowClickListener {
-                startActivity(Intent(requireContext(), LoveSpotDetailsActivity::class.java))
-            }
             MainScope().launch {
-                loveSpotInfoWindowAdapter = LoveSpotInfoWindowAdapter(
-                    loveSpotService,
-                    requireActivity(),
-                )
-                googleMap.setInfoWindowAdapter(loveSpotInfoWindowAdapter)
                 if (appContext.shouldClearMap) {
-                    googleMap.clear()
+                    clusterManager.clearItems()
+                    drawnSpots.clear()
                     appContext.shouldClearMap = false
                     localSpotsDrawn = false
                 }
+                putMarkersFromLocalDb()
                 putMarkersBasedOnCamera(googleMap)
                 appContext.zoomOnLoveSpot?.let {
                     moveCameraTo(LatLng(it.latitude, it.longitude), googleMap)
@@ -234,6 +233,14 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
         }
     }
 
+    private suspend fun putMarkersFromLocalDb() {
+        if (!localSpotsDrawn) {
+            localSpotsDrawn = true
+            val localSpots = loveSpotService.listSpotsLocally()
+            putLoveSpotListOnMap(localSpots)
+        }
+    }
+
     private suspend fun putMarkersBasedOnCamera(
         googleMap: GoogleMap
     ) {
@@ -243,7 +250,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
         val loveSpotsInArea = loveSpotService
             .list(visibleRegion.latLngBounds)
 
-        putLoveSpotListOnMap(loveSpotsInArea, googleMap)
+        putLoveSpotListOnMap(loveSpotsInArea)
 
         if (appContext.selectedMarker != null) {
             appContext.selectedMarker!!.showInfoWindow()
@@ -254,72 +261,36 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     }
 
     private suspend fun putLoveSpotListOnMap(
-        loveSpotsInArea: LoveSpotListDto,
-        googleMap: GoogleMap,
+        loveSpotsInArea: LoveSpotListDto
     ) {
         if (loveSpotsInArea.deletedIds.isNotEmpty()) {
-            googleMap.clear()
+            clusterManager.clearItems()
+            drawnSpots.clear()
+            localSpotsDrawn = false
+            putMarkersFromLocalDb()
         }
         if (mapMode == LOVE_MAKINGS) {
             val loves = loveService.list()
             val spotIdsWithLove = loves.map { it.loveSpotId }.toHashSet()
             loveSpotsInArea.loveSpots
+                .filter { isNotDrawnYet(it) }
                 .filter { loveSpot -> spotIdsWithLove.contains(loveSpot.id) }
-                .map { loveMakingToMarkerOptions(it) }
-                .forEach { googleMap.addMarker(it) }
+                .forEach { clusterManager.addItem(LoveSpotClusterItem.ofLoveSpot(it)) }
         } else {
             loveSpotsInArea.loveSpots
-                .map { loveSpotToMarkerOptions(it) }
-                .forEach { googleMap.addMarker(it) }
+                .filter { isNotDrawnYet(it) }
+                .forEach { clusterManager.addItem(LoveSpotClusterItem.ofLoveSpot(it)) }
         }
+        clusterManager.cluster()
     }
 
-    private fun loveSpotToMarkerOptions(loveSpot: LoveSpot): MarkerOptions {
-        val icon = if (loveSpot.availability == ALL_DAY) {
-            dayBitmap
+    private fun isNotDrawnYet(it: LoveSpot): Boolean {
+        return if (!drawnSpots.contains(it.id)) {
+            drawnSpots.add(it.id)
+            true
         } else {
-            nightBitmap
+            false
         }
-        return loveItemToMarkerOptions(loveSpot, icon)
-    }
-
-    private fun loveMakingToMarkerOptions(
-        loveSpot: LoveSpot
-    ): MarkerOptions {
-        return loveItemToMarkerOptions(loveSpot, loveBitmap)
-    }
-
-    private fun loveItemToMarkerOptions(
-        loveSpot: LoveSpot,
-        icon: BitmapDescriptor
-    ): MarkerOptions {
-        val position = LatLng(loveSpot.latitude, loveSpot.longitude)
-        val marker = MarkerOptions()
-            .icon(icon)
-            .position(position)
-            .snippet(loveSpot.id.toString())
-            .title(loveSpot.name)
-        return marker
-    }
-
-    private fun getIconBitmap(drawableId: Int): BitmapDescriptor {
-        val drawable: Drawable = ContextCompat.getDrawable(requireContext(), drawableId)!!
-        val width = drawable.intrinsicWidth / 12
-        val height = drawable.intrinsicHeight / 12
-        drawable.setBounds(
-            0,
-            0,
-            width,
-            height
-        )
-        val bitmap = Bitmap.createBitmap(
-            width,
-            height,
-            Bitmap.Config.ARGB_8888
-        )
-        val canvas = Canvas(bitmap)
-        drawable.draw(canvas)
-        return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -328,11 +299,27 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
         tabLayout: TabLayout,
         thisView: View
     ) {
-        googleMap.setOnMarkerClickListener { marker ->
+        clusterManager.setOnClusterItemClickListener { item ->
             onMarkerClicked()
-            appContext.selectedMarker = marker
+            appContext.selectedLoveSpotId = item.loveSpot.id
+            appContext.selectedLoveSpot = item.loveSpot
             openMarkerFabMenu()
+            true
+        }
+        clusterManager.markerCollection.setOnMarkerClickListener { marker ->
+            appContext.selectedMarker = marker
             false
+        }
+        clusterManager.setOnClusterClickListener { cluster ->
+            googleMap.animateCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                    cluster.position, floor(
+                        googleMap.cameraPosition.zoom + 1.0
+                    ).toFloat()
+                ), 300,
+                null
+            )
+            true
         }
         googleMap.setOnMapClickListener {
             viewPager2?.isUserInputEnabled = false
@@ -345,6 +332,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
                     putMarkersBasedOnCamera(googleMap)
                 }
             }
+            clusterManager.onCameraIdle()
         }
         googleMap.setOnCameraMoveListener {
             if (tabLayout.selectedTabPosition == 2) {
@@ -497,9 +485,9 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
             val crosshair: ImageView? = requireActivity().findViewById(R.id.centerCrosshair)
             if (crosshair != null) {
                 crosshair.visibility = View.VISIBLE
-                val addLovespotText: TextView =
+                val addLoveSpotText: TextView =
                     requireActivity().findViewById(R.id.mapAddLovespotText)
-                addLovespotText.visibility = View.VISIBLE
+                addLoveSpotText.visibility = View.VISIBLE
             }
 
             appContext.areAddLoveSpotFabsOpen = true

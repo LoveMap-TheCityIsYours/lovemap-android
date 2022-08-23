@@ -182,7 +182,7 @@
     <string name="editLoveSpotTitle">Love Spot szerkesztése</string>
     <string name="love_spot_updated">Love Spot frissítve</string>
     <string name="edit_spot">Love Spot szerkesztése</string>
-    <string name="max_level_reached">KIMAXOLVA (✿ ♡‿♡)</string>
+    <string name="max_level_reached">KIMAXOLVA 😱</string>
     <string name="reset_password">Jelszó visszaállítása</string>
     <string name="request_code">Visszaállító kód kérése</string>
     <string name="prompt_reset_code">Kód visszaállítása</string>
@@ -208,10 +208,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search_button">Keresés</string>
     <string name="more_button">Több</string>
-    <string name="popular_love_spots">Népszerű Spotok</string>
-    <string name="top_rated_love_spots">Legjobbra értékelt Spotok</string>
-    <string name="recently_active_love_spots">Nemrég használt Spotok</string>
-    <string name="closest_love_spots">Legközelebbi Spotok</string>
+    <string name="popular_love_spots">Népszerű Spotok ⭐</string>
+    <string name="top_rated_love_spots">Legjobbra értékelt Spotok 🔝</string>
+    <string name="recently_active_love_spots">Nemrég használt Spotok 📈</string>
+    <string name="closest_love_spots">Legközelebbi Spotok 📍</string>
+    <string name="newest_love_spots">Legújabb Spotok 🆕</string>
     <string name="ordering_button_text">Rendezés:</string>
     <string name="location_button_text">Helyszín:</string>
     <string name="select_location_filter">Helyszín szűrő kiválasztása...</string>

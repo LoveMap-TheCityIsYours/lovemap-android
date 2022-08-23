@@ -60,6 +60,13 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (appContext.zoomOnLoveSpot != null) {
+            goToMapPage()
+        }
+    }
+
     private fun initViews() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

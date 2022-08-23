@@ -12,10 +12,9 @@ import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.databinding.ActivityLoveSpotDetailsBinding
-import com.lovemap.lovemapandroid.ui.main.MainActivity
+import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
 import com.lovemap.lovemapandroid.ui.main.love.list.LoveListActivity
 import com.lovemap.lovemapandroid.ui.main.love.list.LoveListFragment
-import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.report.ReportLoveSpotActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.LoveSpotReviewListFragment
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewListActivity
@@ -99,9 +98,6 @@ LoveSpotDetailsActivity : AppCompatActivity() {
             }
             spotDetailsShowOnMapButton.setOnClickListener {
                 appContext.zoomOnLoveSpot = appContext.selectedLoveSpot
-                val intent = Intent(this, MainActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
                 finish()
             }
 

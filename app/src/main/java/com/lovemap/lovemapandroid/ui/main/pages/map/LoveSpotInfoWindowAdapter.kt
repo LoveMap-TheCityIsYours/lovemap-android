@@ -1,4 +1,4 @@
-package com.lovemap.lovemapandroid.ui.utils
+package com.lovemap.lovemapandroid.ui.main.pages.map
 
 import android.app.Activity
 import android.view.View
@@ -9,6 +9,7 @@ import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.service.LoveSpotService
 import com.lovemap.lovemapandroid.ui.events.MapInfoWindowShownEvent
+import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
 import kotlinx.coroutines.runBlocking
 import org.greenrobot.eventbus.EventBus
 

@@ -4,6 +4,7 @@ import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.admin.AdminApi
 import com.lovemap.lovemapandroid.api.lovespot.report.LoveSpotReportApi
 import com.lovemap.lovemapandroid.api.lovespot.report.LoveSpotReportRequest
+import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReview
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
@@ -31,6 +32,7 @@ class LoveSpotReportService
     }
 
     private suspend fun deleteSpot(loveSpotId: Long): LoveSpot? {
+        AppContext.INSTANCE.shouldClearMap = true
         return withContext(Dispatchers.IO) {
             val call = adminApi.deleteLoveSpot(loveSpotId)
             val response = try {

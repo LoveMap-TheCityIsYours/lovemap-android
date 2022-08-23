@@ -46,7 +46,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-
 class AppContext : MultiDexApplication() {
     lateinit var mapCameraTarget: LatLng
     lateinit var toaster: Toaster
