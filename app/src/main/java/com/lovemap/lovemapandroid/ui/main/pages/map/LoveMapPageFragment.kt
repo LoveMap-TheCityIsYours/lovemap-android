@@ -1,4 +1,4 @@
-package com.lovemap.lovemapandroid.ui.main.pages
+package com.lovemap.lovemapandroid.ui.main.pages.map
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -28,10 +28,12 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
+import com.google.maps.android.clustering.ClusterManager
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.Availability.ALL_DAY
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
+import com.lovemap.lovemapandroid.data.lovespot.LoveSpotListDto
 import com.lovemap.lovemapandroid.service.LoveService
 import com.lovemap.lovemapandroid.service.LoveSpotService
 import com.lovemap.lovemapandroid.ui.events.MapMarkerEventListener
@@ -40,8 +42,8 @@ import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.AddLoveSpotActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.report.ReportLoveSpotActivity
-import com.lovemap.lovemapandroid.ui.main.pages.LoveMapPageFragment.MapMode.LOVE_MAKINGS
-import com.lovemap.lovemapandroid.ui.main.pages.LoveMapPageFragment.MapMode.LOVE_SPOTS
+import com.lovemap.lovemapandroid.ui.main.pages.map.LoveMapPageFragment.MapMode.LOVE_MAKINGS
+import com.lovemap.lovemapandroid.ui.main.pages.map.LoveMapPageFragment.MapMode.LOVE_SPOTS
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotInfoWindowAdapter
 import com.lovemap.lovemapandroid.utils.pixelToDp
 import kotlinx.coroutines.MainScope
@@ -57,7 +59,6 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     private var cameraMoved = false
     private var localSpotsDrawn = false
     private var mapMode = LOVE_SPOTS
-    private val drawnSpots = HashSet<Long>()
     private var zoomLevel: Float = 1f
 
     private var viewPager2: ViewPager2? = null
@@ -81,6 +82,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     private lateinit var addSpotCancelFab: FloatingActionButton
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var clusterManager: ClusterManager<LoveSpotClusterItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -177,6 +179,9 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onMapReady(googleMap: GoogleMap) {
+//        clusterManager = ClusterManager(requireContext(), googleMap)
+//        googleMap.setOnCameraIdleListener(clusterManager)
+//        googleMap.setOnMarkerClickListener(clusterManager)
         val thisView = requireView()
         viewPager2 = getViewPager2(thisView)
         viewPager2?.let { vp2 ->
@@ -195,11 +200,9 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
                 googleMap.setInfoWindowAdapter(loveSpotInfoWindowAdapter)
                 if (appContext.shouldClearMap) {
                     googleMap.clear()
-                    drawnSpots.clear()
                     appContext.shouldClearMap = false
                     localSpotsDrawn = false
                 }
-                putMarkersFromLocalDb(googleMap)
                 putMarkersBasedOnCamera(googleMap)
                 appContext.zoomOnLoveSpot?.let {
                     moveCameraTo(LatLng(it.latitude, it.longitude), googleMap)
@@ -231,14 +234,6 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
         }
     }
 
-    private suspend fun putMarkersFromLocalDb(googleMap: GoogleMap) {
-        if (!localSpotsDrawn) {
-            localSpotsDrawn = true
-            val localSpots = loveSpotService.listSpotsLocally()
-            putLoveSpotListOnMap(localSpots, googleMap, false)
-        }
-    }
-
     private suspend fun putMarkersBasedOnCamera(
         googleMap: GoogleMap
     ) {
@@ -259,34 +254,23 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     }
 
     private suspend fun putLoveSpotListOnMap(
-        loveSpotsInArea: List<LoveSpot>,
+        loveSpotsInArea: LoveSpotListDto,
         googleMap: GoogleMap,
-        includeInDrawnCache: Boolean = true,
     ) {
+        if (loveSpotsInArea.deletedIds.isNotEmpty()) {
+            googleMap.clear()
+        }
         if (mapMode == LOVE_MAKINGS) {
             val loves = loveService.list()
             val spotIdsWithLove = loves.map { it.loveSpotId }.toHashSet()
-            loveSpotsInArea
+            loveSpotsInArea.loveSpots
                 .filter { loveSpot -> spotIdsWithLove.contains(loveSpot.id) }
-                .filter { isNotDrawnYet(it, includeInDrawnCache) }
                 .map { loveMakingToMarkerOptions(it) }
                 .forEach { googleMap.addMarker(it) }
         } else {
-            loveSpotsInArea
-                .filter { isNotDrawnYet(it, includeInDrawnCache) }
+            loveSpotsInArea.loveSpots
                 .map { loveSpotToMarkerOptions(it) }
                 .forEach { googleMap.addMarker(it) }
-        }
-    }
-
-    private fun isNotDrawnYet(it: LoveSpot, includeInDrawnCache: Boolean): Boolean {
-        return if (!drawnSpots.contains(it.id)) {
-            if (includeInDrawnCache) {
-                drawnSpots.add(it.id)
-            }
-            true
-        } else {
-            false
         }
     }
 

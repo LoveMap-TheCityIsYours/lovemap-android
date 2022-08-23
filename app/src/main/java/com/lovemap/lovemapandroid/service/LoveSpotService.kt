@@ -9,6 +9,7 @@ import com.lovemap.lovemapandroid.api.lovespot.*
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpotDao
+import com.lovemap.lovemapandroid.data.lovespot.LoveSpotListDto
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.ui.data.LoveSpotHolder
 import kotlinx.coroutines.Dispatchers
@@ -34,12 +35,6 @@ class LoveSpotService(
     suspend fun findLocally(id: Long): LoveSpot? {
         return withContext(Dispatchers.IO) {
             loveSpotDao.loadSingle(id)
-        }
-    }
-
-    suspend fun listSpotsLocally(): List<LoveSpot> {
-        return withContext(Dispatchers.IO) {
-            loveSpotDao.getAll()
         }
     }
 
@@ -132,7 +127,13 @@ class LoveSpotService(
         }
     }
 
-    suspend fun list(latLngBounds: LatLngBounds): List<LoveSpot> {
+    suspend fun listSpotsLocally(): LoveSpotListDto {
+        return withContext(Dispatchers.IO) {
+            LoveSpotListDto(loveSpotDao.getAll(), emptyList())
+        }
+    }
+
+    suspend fun list(latLngBounds: LatLngBounds): LoveSpotListDto {
         return withContext(Dispatchers.IO) {
             val request = loveSpotSearchRequestFromBounds(latLngBounds)
             val localSpots = loveSpotDao.list(
@@ -143,30 +144,40 @@ class LoveSpotService(
             )
 
             if (areaFullyQueried(request)) {
-                return@withContext localSpots
+                return@withContext LoveSpotListDto(localSpots, emptyList())
             }
 
             val call = loveSpotApi.list(request)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
-                return@withContext localSpots
+                return@withContext LoveSpotListDto(localSpots, emptyList())
             }
             if (response.isSuccessful) {
                 val serverSpots = response.body()!!
-                if (serverSpots.size < request.limit) {
+                val deletedIds = if (serverSpots.size < request.limit) {
                     fullyQueriedAreas.add(latLngBounds)
+                    removeDeletedSpotsFromArea(localSpots, serverSpots)
+                } else {
+                    emptyList()
                 }
-                val localSpotSet = HashSet(localSpots)
-                val serverSpotSet: Set<LoveSpot> = HashSet(serverSpots)
-                val deletedSpots = localSpotSet.subtract(serverSpotSet)
-                loveSpotDao.delete(*deletedSpots.toTypedArray())
-                loveSpotDao.insert(*serverSpotSet.toTypedArray())
-                serverSpots
+                LoveSpotListDto(serverSpots, deletedIds)
             } else {
-                localSpots
+                LoveSpotListDto(localSpots, emptyList())
             }
         }
+    }
+
+    private fun removeDeletedSpotsFromArea(
+        localSpots: List<LoveSpot>,
+        serverSpots: List<LoveSpot>
+    ): List<Long> {
+        val localSpotSet = HashSet(localSpots)
+        val serverSpotSet: Set<LoveSpot> = HashSet(serverSpots)
+        val deletedSpots = localSpotSet.subtract(serverSpotSet)
+        loveSpotDao.delete(*deletedSpots.toTypedArray())
+        loveSpotDao.insert(*serverSpotSet.toTypedArray())
+        return deletedSpots.map { it.id }
     }
 
     private suspend fun advancedList(
@@ -212,11 +223,9 @@ class LoveSpotService(
                         metadataStore.saveRisks(ranks)
                     } else {
                         response
-//                        toaster.showNoServerToast()
                         localRisks
                     }
                 } catch (e: Exception) {
-//                    toaster.showNoServerToast()
                     localRisks
                 }
             }
