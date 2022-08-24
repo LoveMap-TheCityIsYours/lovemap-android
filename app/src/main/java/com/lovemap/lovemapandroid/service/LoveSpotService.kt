@@ -160,6 +160,7 @@ class LoveSpotService(
                     fullyQueriedAreas.add(latLngBounds)
                     removeDeletedSpotsFromArea(localSpots, serverSpots)
                 } else {
+                    loveSpotDao.insert(*serverSpots.toTypedArray())
                     emptyList()
                 }
                 LoveSpotListDto(serverSpots, deletedIds)

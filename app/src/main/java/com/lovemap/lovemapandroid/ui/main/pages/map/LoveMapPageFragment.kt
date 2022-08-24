@@ -183,7 +183,9 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
             clusterManager.renderer = loveSpotClusterRenderer
             googleMap.setOnMarkerClickListener(clusterManager)
             clusterManager.markerCollection.setOnInfoWindowClickListener {
-                startActivity(Intent(requireContext(), LoveSpotDetailsActivity::class.java))
+                if (appContext.selectedLoveSpotId != null) {
+                    startActivity(Intent(requireContext(), LoveSpotDetailsActivity::class.java))
+                }
             }
         }
 
