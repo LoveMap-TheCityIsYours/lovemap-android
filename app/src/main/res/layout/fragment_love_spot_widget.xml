@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         style="@style/TextAppearance.Material3.TitleLarge"
         android:layout_gravity="center"
-        android:textColor="@color/myColorPrimary"
+        android:textColor="@color/myColorOnBackground"
         android:text=" Spots "
         android:layout_marginBottom="@dimen/standard_8" />
 

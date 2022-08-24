@@ -10,6 +10,8 @@ import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.service.LoveSpotService
 import com.lovemap.lovemapandroid.ui.events.MapInfoWindowShownEvent
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.greenrobot.eventbus.EventBus
 

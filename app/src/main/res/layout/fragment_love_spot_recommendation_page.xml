@@ -63,6 +63,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standard_32"/>
 
+            <fragment
+                android:id="@+id/newestSpotsWidget"
+                android:name="com.lovemap.lovemapandroid.ui.main.lovespot.widget.LoveSpotWidgetFragment"
+                app:spot_widget_type="NEWEST"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/standard_32"/>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

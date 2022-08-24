@@ -274,6 +274,7 @@
     <string name="ordering_closest">Legközelebbi</string>
     <string name="ordering_recently_active">Nemrég használt</string>
     <string name="ordering_popular">Legnépszerűbb</string>
+    <string name="ordering_newest">Legújabb</string>
     <string name="zoomInMore">Nagyíts rá jobban</string>
     <string name="recordLove">Hancúr Rögzítése</string>
     <string name="review_spot">Spot Értékelése</string>

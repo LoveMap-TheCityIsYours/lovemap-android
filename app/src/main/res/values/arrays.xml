@@ -24,6 +24,7 @@
         <item>@string/ordering_closest</item>
         <item>@string/ordering_recently_active</item>
         <item>@string/ordering_popular</item>
+        <item>@string/ordering_newest</item>
     </string-array>
 
     <string-array name="distance_units">

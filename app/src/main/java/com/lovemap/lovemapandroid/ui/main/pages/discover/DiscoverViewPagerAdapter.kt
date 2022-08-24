@@ -1,4 +1,4 @@
-package com.lovemap.lovemapandroid.ui.main.pages
+package com.lovemap.lovemapandroid.ui.main.pages.discover
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.lovemap.lovemapandroid.ui.main.pages.DiscoverPageFragment2">
+    tools:context="com.lovemap.lovemapandroid.ui.main.pages.discover.DiscoverPageFragment2">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -14,18 +14,23 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/discoverTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:backgroundTint="@color/myAppBar"
             app:tabIndicatorColor="@color/tabSelectedIconColor"
-            app:tabSelectedTextColor="@color/tabSelectedIconColor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            app:tabSelectedTextColor="@color/tabSelectedIconColor" />
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/discoverViewPager"
+        <com.lovemap.lovemapandroid.ui.customviews.NestedScrollableHost
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/discoverViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </com.lovemap.lovemapandroid.ui.customviews.NestedScrollableHost>
 
     </LinearLayout>
 </LinearLayout>

@@ -58,6 +58,7 @@ class LoveSpotWidgetFragment : Fragment() {
             WidgetType.TOP_RATED -> getString(R.string.top_rated_love_spots)
             WidgetType.RECENTLY_ACTIVE -> getString(R.string.recently_active_love_spots)
             WidgetType.CLOSEST -> getString(R.string.closest_love_spots)
+            WidgetType.NEWEST -> getString(R.string.newest_love_spots)
         }
         loveSpotWidgetNoResultsText = view.findViewById(R.id.loveSpotWidgetNoResultsText)
     }
@@ -104,6 +105,7 @@ class LoveSpotWidgetFragment : Fragment() {
             WidgetType.TOP_RATED -> event.recommendations.topRatedSpots
             WidgetType.RECENTLY_ACTIVE -> event.recommendations.recentlyActiveSpots
             WidgetType.CLOSEST -> event.recommendations.closestSpots
+            WidgetType.NEWEST -> event.recommendations.newestSpots
         }
 
     private fun transitionOutItems() {
@@ -155,7 +157,7 @@ class LoveSpotWidgetFragment : Fragment() {
     }
 
     enum class WidgetType {
-        POPULAR, TOP_RATED, RECENTLY_ACTIVE, CLOSEST;
+        POPULAR, TOP_RATED, RECENTLY_ACTIVE, CLOSEST, NEWEST;
 
         fun toListOrdering(): ListOrdering {
             return when (this) {
@@ -163,6 +165,7 @@ class LoveSpotWidgetFragment : Fragment() {
                 TOP_RATED -> ListOrdering.TOP_RATED
                 RECENTLY_ACTIVE -> ListOrdering.RECENTLY_ACTIVE
                 CLOSEST -> ListOrdering.CLOSEST
+                NEWEST -> ListOrdering.NEWEST
             }
         }
     }

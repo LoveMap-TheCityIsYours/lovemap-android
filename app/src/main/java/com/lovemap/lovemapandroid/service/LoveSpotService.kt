@@ -156,11 +156,11 @@ class LoveSpotService(
             }
             if (response.isSuccessful) {
                 val serverSpots = response.body()!!
+                loveSpotDao.insert(*serverSpots.toTypedArray())
                 val deletedIds = if (serverSpots.size < request.limit) {
                     fullyQueriedAreas.add(latLngBounds)
                     removeDeletedSpotsFromArea(localSpots, serverSpots)
                 } else {
-                    loveSpotDao.insert(*serverSpots.toTypedArray())
                     emptyList()
                 }
                 LoveSpotListDto(serverSpots, deletedIds)
