@@ -2,6 +2,7 @@ package com.lovemap.lovemapandroid.ui.main.love.list
 
 import android.content.Intent
 import android.view.*
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -52,6 +53,14 @@ class LoveRecyclerViewAdapter(
         }
         holder.loveItemHappenedAt.text = love.happenedAt
         holder.loveItem = love
+        holder.loveCounter.text = "${love.number}."
+
+        if (holder.loveItem.expanded) {
+            holder.collapsibleView.visibility = View.VISIBLE
+        } else {
+            holder.collapsibleView.visibility = View.GONE
+        }
+
         holder.itemView.setOnLongClickListener {
             this.position = holder.absoluteAdapterPosition
             false
@@ -63,11 +72,16 @@ class LoveRecyclerViewAdapter(
     inner class ViewHolder(binding: FragmentLoveItemBinding) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener,
         View.OnCreateContextMenuListener {
+
         val loveItemName: TextView = binding.loveItemName
         val loveItemPartner: TextView = binding.loveItemPartner
         val loveItemNoteView: LinearLayout = binding.loveItemNoteView
         val loveItemNote: TextView = binding.loveItemNote
         val loveItemHappenedAt: TextView = binding.loveItemHappenedAt
+        val loveCounter: TextView = binding.loveCounter
+        val collapsibleView: LinearLayout = binding.collapsibleView
+        val loveItemViewSpot: Button = binding.loveItemViewSpot
+
         lateinit var loveItem: LoveHolder
 
         init {
@@ -75,15 +89,27 @@ class LoveRecyclerViewAdapter(
             binding.root.setOnCreateContextMenuListener(this)
         }
 
-        override fun onClick(v: View?) {
+        override fun onClick(view: View) {
             if (isClickable) {
-                val loveSpotId = values[absoluteAdapterPosition].loveSpotId
-                appContext.selectedLoveSpotId = loveSpotId
-                appContext.selectedLoveSpot = null
-//                appContext.selectedMarker = null
-                v?.context?.startActivity(
-                    Intent(v.context, LoveSpotDetailsActivity::class.java)
-                )
+                if (loveItem.expanded) {
+                    loveItem.expanded = false
+                    collapsibleView.visibility = View.GONE
+                    notifyItemChanged(absoluteAdapterPosition + 1)
+                } else {
+                    loveItem.expanded = true
+                    collapsibleView.visibility = View.VISIBLE
+                    notifyItemChanged(absoluteAdapterPosition - 1)
+                }
+
+                loveItemViewSpot.setOnClickListener {
+                    loveItem.loveSpotId
+                    appContext.selectedLoveSpotId = loveItem.loveSpotId
+                    appContext.selectedLoveSpot = null
+                    appContext.selectedMarker = null
+                    view.context?.startActivity(
+                        Intent(view.context, LoveSpotDetailsActivity::class.java)
+                    )
+                }
             }
         }
 

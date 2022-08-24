@@ -43,7 +43,7 @@
     <string name="placeholder">Placeholder</string>
     <string name="your_profile">Profilod</string>
     <string name="your_loves">Hancúrjaid</string>
-    <string name="discover_love_spots">Love Spotok felfedezése</string>
+    <string name="discover_love_spots">Love Spotok felfedezése 🧭</string>
     <string name="love_map">Love Map</string>
     <string name="profileUserName"> - </string>
     <string name="profileUserLevelText"> - </string>
@@ -278,5 +278,6 @@
     <string name="zoomInMore">Nagyíts rá jobban</string>
     <string name="recordLove">Hancúr Rögzítése</string>
     <string name="review_spot">Spot Értékelése</string>
+    <string name="view_spot">Spothoz!</string>
 
 </resources>

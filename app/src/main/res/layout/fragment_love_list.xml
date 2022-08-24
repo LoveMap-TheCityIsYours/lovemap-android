@@ -5,6 +5,7 @@
     tools:context="com.lovemap.lovemapandroid.ui.main.love.list.LoveListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:orientation="vertical">
 
     <ProgressBar

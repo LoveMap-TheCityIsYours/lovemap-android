@@ -165,15 +165,16 @@ class LoveService(
     suspend fun getLoveHolderList(): MutableList<LoveHolder> {
         return withContext(Dispatchers.IO) {
             val loves = loveDao.getAllOrderedByDate()
-            loves.map { love -> LoveHolder.of(love, context) }
+            loves.mapIndexed { idx, love -> LoveHolder.of(love, loves.size - idx, context) }
                 .toMutableList()
         }
     }
 
     suspend fun getLoveHolderListForSpot(): MutableList<LoveHolder> {
         AppContext.INSTANCE.selectedLoveSpotId?.let {
-            return getLovesForSpot(AppContext.INSTANCE.selectedLoveSpotId!!)
-                .map { love -> LoveHolder.of(love, context) }
+            val lovesForSpot = getLovesForSpot(AppContext.INSTANCE.selectedLoveSpotId!!)
+            return lovesForSpot
+                .mapIndexed{ idx, love -> LoveHolder.of(love, lovesForSpot.size - idx, context) }
                 .sortedByDescending { it.happenedAtLong }
                 .toMutableList()
         }

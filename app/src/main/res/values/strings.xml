@@ -51,7 +51,7 @@
     <string name="placeholder">Placeholder</string>
     <string name="your_profile">Your Profile 👤</string>
     <string name="your_loves">Your Love History 💞</string>
-    <string name="discover_love_spots">Discover Love Spots</string>
+    <string name="discover_love_spots">Discover Love Spots 🧭</string>
     <string name="love_map">Love Map 💖</string>
     <string name="profileUserName"> - </string>
     <string name="profileUserLevelText"> - </string>
@@ -285,5 +285,6 @@
     <string name="zoomInMore">Zoom in more</string>
     <string name="recordLove">Record Love</string>
     <string name="review_spot">Review Spot</string>
+    <string name="view_spot">View Spot</string>
 
 </resources>

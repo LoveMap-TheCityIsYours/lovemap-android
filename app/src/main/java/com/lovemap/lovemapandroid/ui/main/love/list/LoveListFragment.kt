@@ -21,7 +21,6 @@ import com.lovemap.lovemapandroid.ui.main.love.list.LoveRecyclerViewAdapter.Comp
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
-
 class LoveListFragment : Fragment() {
     private val loveService = AppContext.INSTANCE.loveService
     private var isLoveSpotBased: Boolean = false
@@ -61,13 +60,16 @@ class LoveListFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         adapter.isClickable = isClickable()
+        MainScope().launch {
+            updateData()
+        }
     }
 
     override fun onResume() {
         super.onResume()
         MainScope().launch {
-            updateData()
-            progressBar.visibility = View.GONE
+//            updateData()
+//            progressBar.visibility = View.GONE
         }
     }
 
@@ -106,6 +108,7 @@ class LoveListFragment : Fragment() {
                 adapter.updateData(loveService.getLoveHolderList())
             }
         }
+        progressBar.visibility = View.GONE
         adapter.notifyDataSetChanged()
     }
 
