@@ -15,14 +15,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
+import com.lovemap.lovemapandroid.ui.events.ShowOnMapClickedEvent
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
 import com.lovemap.lovemapandroid.ui.main.love.list.LoveRecyclerViewAdapter.Companion.DELETE_LOVE_MENU_ID
 import com.lovemap.lovemapandroid.ui.main.love.list.LoveRecyclerViewAdapter.Companion.EDIT_LOVE_MENU_ID
+import com.lovemap.lovemapandroid.ui.main.love.list.LoveRecyclerViewAdapter.Companion.SHOW_LOVE_ON_MAP_MENU_ID
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 
 class LoveListFragment : Fragment() {
-    private val loveService = AppContext.INSTANCE.loveService
+    private val appContext = AppContext.INSTANCE
+    private val loveService = appContext.loveService
     private var isLoveSpotBased: Boolean = false
     private var isPartnerBased: Boolean = false
     private var isClickable: Boolean = true
@@ -34,7 +38,8 @@ class LoveListFragment : Fragment() {
 
     override fun onInflate(context: Context, attrs: AttributeSet, savedInstanceState: Bundle?) {
         super.onInflate(context, attrs, savedInstanceState)
-        val attributes = requireActivity().obtainStyledAttributes(attrs, R.styleable.LoveListFragment)
+        val attributes =
+            requireActivity().obtainStyledAttributes(attrs, R.styleable.LoveListFragment)
         isLoveSpotBased = attributes.getBoolean(R.styleable.LoveListFragment_love_spot_based, false)
         isPartnerBased = attributes.getBoolean(R.styleable.LoveListFragment_partner_based, false)
         isClickable = attributes.getBoolean(R.styleable.LoveListFragment_is_clickable, true)
@@ -65,14 +70,6 @@ class LoveListFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        MainScope().launch {
-//            updateData()
-//            progressBar.visibility = View.GONE
-        }
-    }
-
     override fun onContextItemSelected(item: MenuItem): Boolean {
         val position = try {
             adapter.position
@@ -82,6 +79,9 @@ class LoveListFragment : Fragment() {
         val loveHolder = adapter.values[position]
         MainScope().launch {
             when (item.itemId) {
+                SHOW_LOVE_ON_MAP_MENU_ID -> {
+                    EventBus.getDefault().post(ShowOnMapClickedEvent(loveHolder.loveSpotId))
+                }
                 EDIT_LOVE_MENU_ID -> {
                     val intent = Intent(requireContext(), RecordLoveActivity::class.java)
                     intent.putExtra(RecordLoveActivity.EDIT, loveHolder.id)

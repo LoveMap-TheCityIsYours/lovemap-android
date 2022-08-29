@@ -21,3 +21,5 @@ data class LoveSpotListFiltersChanged(
 data class LocationUpdated(val value: LatLng)
 
 data class RecommendationsUpdated(val recommendations: RecommendationsResponse)
+
+data class ShowOnMapClickedEvent(val loveSpotId: Long)

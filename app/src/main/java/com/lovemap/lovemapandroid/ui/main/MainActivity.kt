@@ -15,6 +15,12 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.databinding.ActivityMainBinding
+import com.lovemap.lovemapandroid.ui.events.ShowOnMapClickedEvent
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 const val MAP_PAGE = 2
@@ -22,6 +28,8 @@ const val MAP_PAGE = 2
 class MainActivity : AppCompatActivity() {
 
     private val appContext = AppContext.INSTANCE
+    private val loveSpotService = appContext.loveSpotService
+
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var viewPager2: ViewPager2
@@ -31,6 +39,7 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        EventBus.getDefault().register(this)
         initViews()
 
         TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
@@ -60,10 +69,22 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (appContext.zoomOnLoveSpot != null) {
-            goToMapPage()
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onShowOnMapClicked(showOnMapClickedEvent: ShowOnMapClickedEvent) {
+        MainScope().launch {
+            val loveSpot = loveSpotService.findLocally(showOnMapClickedEvent.loveSpotId)
+            if (loveSpot != null) {
+                appContext.zoomOnLoveSpot = loveSpot
+                appContext.selectedLoveSpot = null
+                appContext.selectedLoveSpotId = null
+                appContext.selectedMarker = null
+                goToMapPage()
+            }
         }
     }
 

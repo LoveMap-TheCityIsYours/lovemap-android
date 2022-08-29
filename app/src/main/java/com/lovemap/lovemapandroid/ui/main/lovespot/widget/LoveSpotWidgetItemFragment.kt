@@ -2,9 +2,7 @@ package com.lovemap.lovemapandroid.ui.main.lovespot.widget
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
@@ -19,6 +17,7 @@ class LoveSpotWidgetItemFragment : Fragment() {
 
     private val appContext = AppContext.INSTANCE
     private var loveSpot: LoveSpot? = null
+    private val contextMenuIds = LoveSpotUtils.ContextMenuIds()
 
     private lateinit var spotWidgetItemName: TextView
     private lateinit var spotWidgetItemType: TextView
@@ -38,6 +37,7 @@ class LoveSpotWidgetItemFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_love_spot_widget_item, container, false)
+        registerForContextMenu(view)
         initViews(view)
         return view
     }
@@ -68,5 +68,24 @@ class LoveSpotWidgetItemFragment : Fragment() {
         LoveSpotUtils.setDistance(loveSpot, spotWidgetItemDistance)
         LoveSpotUtils.setRating(loveSpot.averageRating, spotWidgetItemRating)
         LoveSpotUtils.setTypeImage(loveSpot.type, spotWidgetItemTypeImage)
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        loveSpot?.let {
+            val spotId = it.id
+            LoveSpotUtils.onContextItemSelected(item, contextMenuIds, spotId, requireContext())
+        }
+        return super.onContextItemSelected(item)
+    }
+
+    override fun onCreateContextMenu(
+        menu: ContextMenu,
+        v: View,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
+        loveSpot?.let {
+            LoveSpotUtils.onCreateContextMenu(menu, contextMenuIds, it.name, it.addedBy)
+        }
+        super.onCreateContextMenu(menu, v, menuInfo)
     }
 }

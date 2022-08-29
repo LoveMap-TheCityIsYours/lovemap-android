@@ -1,6 +1,5 @@
 package com.lovemap.lovemapandroid.ui.main.lovespot.list
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -17,13 +16,7 @@ import com.lovemap.lovemapandroid.api.lovespot.ListOrdering
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotSearchRequest
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.ui.events.LoveSpotListFiltersChanged
-import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
-import com.lovemap.lovemapandroid.ui.main.lovespot.AddLoveSpotActivity
-import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotRecyclerViewAdapter.Companion.EDIT_LOVE_SPOT_MENU_ID
-import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotRecyclerViewAdapter.Companion.MAKE_LOVE_LOVE_SPOT_MENU_ID
-import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotRecyclerViewAdapter.Companion.REPORT_LOVE_SPOT_MENU_ID
-import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotRecyclerViewAdapter.Companion.WISHLIST_LOVE_SPOT_MENU_ID
-import com.lovemap.lovemapandroid.ui.main.lovespot.report.ReportLoveSpotActivity
+import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
@@ -65,26 +58,12 @@ class LoveSpotListFragment : Fragment() {
             return super.onContextItemSelected(item)
         }
         val loveSpotHolder = adapter.values[position]
-        when (item.itemId) {
-            EDIT_LOVE_SPOT_MENU_ID -> {
-                val intent = Intent(requireContext(), AddLoveSpotActivity::class.java)
-                intent.putExtra(AddLoveSpotActivity.EDIT, loveSpotHolder.id)
-                startActivity(intent)
-            }
-            WISHLIST_LOVE_SPOT_MENU_ID -> {
-                appContext.toaster.showToast(R.string.not_yet_implemented)
-            }
-            MAKE_LOVE_LOVE_SPOT_MENU_ID -> {
-                appContext.selectedLoveSpotId = loveSpotHolder.id
-                val intent = Intent(requireContext(), RecordLoveActivity::class.java)
-                startActivity(intent)
-            }
-            REPORT_LOVE_SPOT_MENU_ID -> {
-                appContext.selectedLoveSpotId = loveSpotHolder.id
-                val intent = Intent(requireContext(), ReportLoveSpotActivity::class.java)
-                startActivity(intent)
-            }
-        }
+        LoveSpotUtils.onContextItemSelected(
+            item,
+            adapter.contextMenuIds,
+            loveSpotHolder.id,
+            requireContext()
+        )
         return super.onContextItemSelected(item)
     }
 

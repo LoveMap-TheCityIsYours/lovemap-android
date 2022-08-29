@@ -12,6 +12,7 @@ import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.databinding.ActivityLoveSpotDetailsBinding
+import com.lovemap.lovemapandroid.ui.events.ShowOnMapClickedEvent
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
 import com.lovemap.lovemapandroid.ui.main.love.list.LoveListActivity
 import com.lovemap.lovemapandroid.ui.main.love.list.LoveListFragment
@@ -24,6 +25,7 @@ import com.lovemap.lovemapandroid.utils.IS_CLICKABLE
 import com.lovemap.lovemapandroid.utils.canEditLoveSpot
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 
 class
 LoveSpotDetailsActivity : AppCompatActivity() {
@@ -97,7 +99,7 @@ LoveSpotDetailsActivity : AppCompatActivity() {
                 startActivity(Intent(applicationContext, ReviewListActivity::class.java))
             }
             spotDetailsShowOnMapButton.setOnClickListener {
-                appContext.zoomOnLoveSpot = appContext.selectedLoveSpot
+                EventBus.getDefault().post(ShowOnMapClickedEvent(spotId))
                 finish()
             }
 

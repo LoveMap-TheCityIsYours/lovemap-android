@@ -451,7 +451,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
         googleMap.animateCamera(
             CameraUpdateFactory.newLatLngZoom(
                 position,
-                14f
+                16f
             )
         )
     }

@@ -1,5 +1,10 @@
 package com.lovemap.lovemapandroid.ui.utils
 
+import android.content.Context
+import android.content.Intent
+import android.view.ContextMenu
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.RatingBar
@@ -13,8 +18,20 @@ import com.lovemap.lovemapandroid.api.lovespot.ListOrdering
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotType
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
+import com.lovemap.lovemapandroid.ui.events.ShowOnMapClickedEvent
+import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
+import com.lovemap.lovemapandroid.ui.main.lovespot.AddLoveSpotActivity
+import com.lovemap.lovemapandroid.ui.main.lovespot.report.ReportLoveSpotActivity
+import com.lovemap.lovemapandroid.utils.canEditLoveSpot
+import org.greenrobot.eventbus.EventBus
 
 object LoveSpotUtils {
+
+    private const val SHOW_SPOT_ON_MAP_MENU_ID = 10
+    private const val EDIT_LOVE_SPOT_MENU_ID = 11
+    private const val WISHLIST_LOVE_SPOT_MENU_ID = 12
+    private const val MAKE_LOVE_LOVE_SPOT_MENU_ID = 13
+    private const val REPORT_LOVE_SPOT_MENU_ID = 14
 
     fun setRating(
         rating: Double?,
@@ -178,5 +195,129 @@ object LoveSpotUtils {
             loveSpotItemDistance.text = String.format("%.1f", distanceKm) + " km"
         }
     }
+
+    class ContextMenuIds {
+        companion object {
+            var showOnMapCounter: Int = 5000
+            var editCounter: Int = 6000
+            var wishlistCounter: Int = 7000
+            var makeLoveCounter: Int = 8000
+            var reportCounter: Int = 9000
+        }
+
+        val showOnMapId: Int = nextShowOnMapId()
+        val editId: Int = nextEditId()
+        val wishlistId: Int = nextWishlistId()
+        val makeLoveId: Int = nextMaveLoveId()
+        val reportId: Int = nextReportId()
+
+        fun nextShowOnMapId(): Int {
+            if (showOnMapCounter == 5999) {
+                showOnMapCounter = 5000
+            }
+            return showOnMapCounter++
+        }
+
+        fun nextEditId(): Int {
+            if (editCounter == 6999) {
+                editCounter = 6000
+            }
+            return editCounter++
+        }
+
+        fun nextWishlistId(): Int {
+            if (wishlistCounter == 7999) {
+                wishlistCounter = 7000
+            }
+            return wishlistCounter++
+        }
+
+        fun nextMaveLoveId(): Int {
+            if (makeLoveCounter == 8999) {
+                makeLoveCounter = 8000
+            }
+            return makeLoveCounter++
+        }
+
+        fun nextReportId(): Int {
+            if (reportCounter == 9999) {
+                reportCounter = 9000
+            }
+            return reportCounter++
+        }
+    }
+
+    fun onContextItemSelected(
+        item: MenuItem,
+        contextMenuIds: ContextMenuIds,
+        spotId: Long,
+        context: Context
+    ) {
+        when (item.itemId) {
+            contextMenuIds.showOnMapId -> {
+                EventBus.getDefault().post(ShowOnMapClickedEvent(spotId))
+            }
+            contextMenuIds.editId -> {
+                val intent = Intent(context, AddLoveSpotActivity::class.java)
+                intent.putExtra(AddLoveSpotActivity.EDIT, spotId)
+                context.startActivity(intent)
+            }
+            contextMenuIds.wishlistId -> {
+                AppContext.INSTANCE.toaster.showToast(R.string.not_yet_implemented)
+            }
+            contextMenuIds.makeLoveId -> {
+                AppContext.INSTANCE.selectedLoveSpotId = spotId
+                val intent = Intent(context, RecordLoveActivity::class.java)
+                context.startActivity(intent)
+            }
+            contextMenuIds.reportId -> {
+                AppContext.INSTANCE.selectedLoveSpotId = spotId
+                val intent = Intent(context, ReportLoveSpotActivity::class.java)
+                context.startActivity(intent)
+            }
+        }
+    }
+
+    fun onCreateContextMenu(
+        menu: ContextMenu,
+        contextMenuIds: ContextMenuIds,
+        name: String,
+        addedBy: Long
+    ) {
+        menu.setHeaderTitle(name)
+        menu.add(
+            Menu.NONE,
+            contextMenuIds.showOnMapId,
+            Menu.NONE,
+            R.string.show_on_map
+        )
+        if (canEditLoveSpot(addedBy)) {
+            menu.add(
+                Menu.NONE,
+                contextMenuIds.editId,
+                Menu.NONE,
+                R.string.edit
+            )
+        }
+        menu.add(
+            Menu.NONE,
+            contextMenuIds.wishlistId,
+            Menu.NONE,
+            R.string.to_wishlist
+        )
+        menu.add(
+            Menu.NONE,
+            contextMenuIds.makeLoveId,
+            Menu.NONE,
+            R.string.make_love
+        )
+        menu.add(
+            Menu.NONE,
+            contextMenuIds.reportId,
+            Menu.NONE,
+            R.string.report_spot
+        )
+    }
+
 }
 

@@ -119,13 +119,15 @@ class LoveRecyclerViewAdapter(
             menuInfo: ContextMenu.ContextMenuInfo?
         ) {
             menu.setHeaderTitle(loveItem.name)
+            menu.add(Menu.NONE, SHOW_LOVE_ON_MAP_MENU_ID, Menu.NONE, R.string.show_on_map)
             menu.add(Menu.NONE, EDIT_LOVE_MENU_ID, Menu.NONE, R.string.edit)
             menu.add(Menu.NONE, DELETE_LOVE_MENU_ID, Menu.NONE, R.string.delete)
         }
     }
 
     companion object {
-        const val EDIT_LOVE_MENU_ID = 0
-        const val DELETE_LOVE_MENU_ID = 1
+        const val SHOW_LOVE_ON_MAP_MENU_ID = 0
+        const val EDIT_LOVE_MENU_ID = 1
+        const val DELETE_LOVE_MENU_ID = 2
     }
 }
