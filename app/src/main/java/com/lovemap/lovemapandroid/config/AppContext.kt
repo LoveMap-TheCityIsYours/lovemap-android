@@ -203,13 +203,6 @@ class AppContext : MultiDexApplication() {
             metadataStore = metadataStore,
             toaster = toaster
         )
-        loveService = LoveService(
-            loveApi = authorizingRetrofit.create(LoveApi::class.java),
-            loveDao = loveDao,
-            metadataStore = metadataStore,
-            context = applicationContext,
-            toaster = toaster,
-        )
         geoLocationService = GeoLocationService(
             geoLocationApi = authorizingRetrofit.create(GeoLocationApi::class.java),
             metadataStore = metadataStore,
@@ -227,6 +220,14 @@ class AppContext : MultiDexApplication() {
             loveSpotReviewDao = loveSpotReviewDao,
             loveSpotService = loveSpotService,
             metadataStore = metadataStore,
+            toaster = toaster,
+        )
+        loveService = LoveService(
+            loveApi = authorizingRetrofit.create(LoveApi::class.java),
+            loveDao = loveDao,
+            loveSpotReviewService = loveSpotReviewService,
+            metadataStore = metadataStore,
+            context = applicationContext,
             toaster = toaster,
         )
         loveSpotReportService = LoveSpotReportService(

@@ -11,6 +11,9 @@ interface LoveSpotReviewDao {
     @Query("SELECT * FROM love_spot_review WHERE reviewerId = :loverId AND loveSpotId = :spotId")
     fun findByLoverAndSpotId(loverId: Long, spotId: Long): LoveSpotReview?
 
+    @Query("SELECT * FROM love_spot_review WHERE reviewerId = :loverId AND loveId = :loveId")
+    fun findByLoverAndLoveId(loverId: Long, loveId: Long): LoveSpotReview?
+
     @Query("SELECT * FROM love_spot_review WHERE reviewerId = :loverId")
     fun getAllByLover(loverId: Long): List<LoveSpotReview>
 

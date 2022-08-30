@@ -54,11 +54,6 @@ class ProfilePageFragment : Fragment() {
 
     private var partner: LoverViewDto? = null
 
-    private val refreshListener = SwipeRefreshLayout.OnRefreshListener {
-        profileSwipeRefreshLayout.isRefreshing = true
-        fillViewWithData()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -79,8 +74,7 @@ class ProfilePageFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_profile_page, container, false)
-        profileSwipeRefreshLayout = view.findViewById(R.id.profileSwipeRefreshLayout)
-        profileSwipeRefreshLayout.setOnRefreshListener(refreshListener)
+        setRefreshListener(view)
 
         profilePartnerView = view.findViewById(R.id.profilePartnerView)
         profilePartnerView.setOnClickListener { onPartnerClicked() }
@@ -115,6 +109,14 @@ class ProfilePageFragment : Fragment() {
         }
 
         return view
+    }
+
+    private fun setRefreshListener(view: View) {
+        profileSwipeRefreshLayout = view.findViewById(R.id.profileSwipeRefreshLayout)
+        profileSwipeRefreshLayout.setOnRefreshListener {
+            profileSwipeRefreshLayout.isRefreshing = true
+            fillViewWithData()
+        }
     }
 
     private fun fillViewWithData() {

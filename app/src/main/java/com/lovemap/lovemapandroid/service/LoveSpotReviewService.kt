@@ -80,6 +80,16 @@ class LoveSpotReviewService(
         }
     }
 
+    suspend fun loveDeleted(loveId: Long) {
+        withContext(Dispatchers.IO) {
+            val loverId = metadataStore.getUser().id
+            val loveSpotReview = loveSpotReviewDao.findByLoverAndLoveId(loverId, loveId)
+            if (loveSpotReview != null) {
+                loveSpotReviewDao.delete(loveSpotReview)
+            }
+        }
+    }
+
     suspend fun getReviewsByLover(): List<LoveSpotReview> {
         return withContext(Dispatchers.IO) {
             val loverId = metadataStore.getUser().id
@@ -92,14 +102,25 @@ class LoveSpotReviewService(
                 return@withContext localReviews
             }
             if (response.isSuccessful) {
-                val reviewList = response.body()!!
-                loveSpotReviewDao.insert(*reviewList.toTypedArray())
-                reviewList
+                val serverReviews = response.body()!!
+                removeDeletedReviews(localReviews, serverReviews)
+                loveSpotReviewDao.insert(*serverReviews.toTypedArray())
+                serverReviews
             } else {
                 toaster.showNoServerToast()
                 localReviews
             }
         }
+    }
+
+    private fun removeDeletedReviews(
+        localReviews: List<LoveSpotReview>,
+        serverReviews: List<LoveSpotReview>
+    ) {
+        val localReviewSet = HashSet(localReviews)
+        val serverReviewSet = HashSet(serverReviews)
+        val deletedReviews = localReviewSet.subtract(serverReviewSet)
+        loveSpotReviewDao.delete(*deletedReviews.toTypedArray())
     }
 
     suspend fun getReviewsBySpot(): List<LoveSpotReview> {

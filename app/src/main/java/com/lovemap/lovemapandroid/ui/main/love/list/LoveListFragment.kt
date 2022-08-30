@@ -13,6 +13,7 @@ import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.ui.events.ShowOnMapClickedEvent
@@ -25,16 +26,19 @@ import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 
 class LoveListFragment : Fragment() {
+    var isClickableOverride: Boolean? = null
+
     private val appContext = AppContext.INSTANCE
     private val loveService = appContext.loveService
+
     private var isLoveSpotBased: Boolean = false
     private var isPartnerBased: Boolean = false
     private var isClickable: Boolean = true
-    var isClickableOverride: Boolean? = null
 
     private lateinit var progressBar: ProgressBar
     private lateinit var recycleView: RecyclerView
     private lateinit var adapter: LoveRecyclerViewAdapter
+    private lateinit var loveListSwipeRefresh: SwipeRefreshLayout
 
     override fun onInflate(context: Context, attrs: AttributeSet, savedInstanceState: Bundle?) {
         super.onInflate(context, attrs, savedInstanceState)
@@ -54,12 +58,23 @@ class LoveListFragment : Fragment() {
             inflater.inflate(R.layout.fragment_love_list, container, false) as LinearLayout
         recycleView = linearLayout.findViewById(R.id.loveList)
         progressBar = linearLayout.findViewById(R.id.loveListProgressBar)
+        setRefreshListener(linearLayout)
         recycleView.isClickable = isClickable
         adapter = LoveRecyclerViewAdapter(ArrayList(), isClickable)
         recycleView.adapter = adapter
         recycleView.layoutManager = LinearLayoutManager(context)
         registerForContextMenu(recycleView)
         return linearLayout
+    }
+
+    private fun setRefreshListener(linearLayout: LinearLayout) {
+        loveListSwipeRefresh = linearLayout.findViewById(R.id.loveListSwipeRefresh)
+        loveListSwipeRefresh.setOnRefreshListener {
+            loveListSwipeRefresh.isRefreshing = true
+            MainScope().launch {
+                updateData()
+            }
+        }
     }
 
     override fun onStart() {
@@ -109,6 +124,7 @@ class LoveListFragment : Fragment() {
             }
         }
         progressBar.visibility = View.GONE
+        loveListSwipeRefresh.isRefreshing = false
         adapter.notifyDataSetChanged()
     }
 

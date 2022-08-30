@@ -17,15 +17,11 @@ import java.time.Instant
 class LoveService(
     private val loveApi: LoveApi,
     private val loveDao: LoveDao,
+    private val loveSpotReviewService: LoveSpotReviewService,
     private val metadataStore: MetadataStore,
     private val context: Context,
     private val toaster: Toaster,
 ) {
-    var lastUpdatedIndex = -1
-
-    @Volatile
-    private var lovesQueried = false
-
     @Volatile
     var savedCreationState: SavedCreationState? = null
 
@@ -37,30 +33,21 @@ class LoveService(
 
     suspend fun list(): List<Love> {
         return withContext(Dispatchers.IO) {
-            val localLoves = loveDao.getAll()
-            if (!lovesQueried) {
-                lovesQueried = true
-                val call = loveApi.listByLover(metadataStore.getUser().id)
-                val response = try {
-                    call.execute()
-                } catch (e: Exception) {
-                    lovesQueried = false
-//                    toaster.showNoServerToast()
-                    return@withContext localLoves
-                }
-                if (response.isSuccessful) {
-                    val serverLoves = response.body()!!
-                    val localLoveSet = HashSet(localLoves)
-                    val serverLoveSet = HashSet(serverLoves)
-                    val deletedLoves = localLoveSet.subtract(serverLoveSet)
-                    loveDao.delete(*deletedLoves.toTypedArray())
-                    loveDao.insert(*serverLoveSet.toTypedArray())
-                    serverLoves
-                } else {
-                    lovesQueried = false
-//                    toaster.showNoServerToast()
-                    localLoves
-                }
+            val localLoves = loveDao.getAllOrderedByDate()
+            val call = loveApi.listByLover(metadataStore.getUser().id)
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
+                return@withContext localLoves
+            }
+            if (response.isSuccessful) {
+                val serverLoves = response.body()!!
+                val localLoveSet = HashSet(localLoves)
+                val serverLoveSet = HashSet(serverLoves)
+                val deletedLoves = localLoveSet.subtract(serverLoveSet)
+                loveDao.delete(*deletedLoves.toTypedArray())
+                loveDao.insert(*serverLoveSet.toTypedArray())
+                serverLoves
             } else {
                 localLoves
             }
@@ -130,6 +117,7 @@ class LoveService(
             if (response.isSuccessful) {
                 val love = response.body()!!
                 loveDao.delete(love)
+                loveSpotReviewService.loveDeleted(id)
                 toaster.showToast(R.string.love_making_deleted)
                 love
             } else {
@@ -146,25 +134,15 @@ class LoveService(
         }
     }
 
-    suspend fun getLovesForSpot(spotId: Long): List<Love> {
-        return withContext(Dispatchers.IO) {
-            val lovesAsLover =
-                loveDao.findByLoverAndSpotId(metadataStore.getUser().id, spotId)
-            val lovesAsPartner =
-                loveDao.findByPartnerAndSpotId(metadataStore.getUser().id, spotId)
-            return@withContext ArrayList(lovesAsLover).apply { addAll(lovesAsPartner) }
-        }
-    }
-
     suspend fun madeLoveAlready(spotId: Long): Boolean {
         return withContext(Dispatchers.IO) {
-            return@withContext getLovesForSpot(spotId).isNotEmpty()
+            return@withContext getLovesForSpotLocally(spotId).isNotEmpty()
         }
     }
 
     suspend fun getLoveHolderList(): MutableList<LoveHolder> {
         return withContext(Dispatchers.IO) {
-            val loves = loveDao.getAllOrderedByDate()
+            val loves = list()
             loves.mapIndexed { idx, love -> LoveHolder.of(love, loves.size - idx, context) }
                 .toMutableList()
         }
@@ -172,9 +150,10 @@ class LoveService(
 
     suspend fun getLoveHolderListForSpot(): MutableList<LoveHolder> {
         AppContext.INSTANCE.selectedLoveSpotId?.let {
-            val lovesForSpot = getLovesForSpot(AppContext.INSTANCE.selectedLoveSpotId!!)
+            list()
+            val lovesForSpot = getLovesForSpotLocally(AppContext.INSTANCE.selectedLoveSpotId!!)
             return lovesForSpot
-                .mapIndexed{ idx, love -> LoveHolder.of(love, lovesForSpot.size - idx, context) }
+                .mapIndexed { idx, love -> LoveHolder.of(love, lovesForSpot.size - idx, context) }
                 .sortedByDescending { it.happenedAtLong }
                 .toMutableList()
         }
@@ -197,6 +176,16 @@ class LoveService(
         return withContext(Dispatchers.IO) {
             val loves = loveDao.findBySpotId(loveSpotId)
             loveDao.delete(*loves.toTypedArray())
+        }
+    }
+
+    private suspend fun getLovesForSpotLocally(spotId: Long): List<Love> {
+        return withContext(Dispatchers.IO) {
+            val lovesAsLover =
+                loveDao.findByLoverAndSpotId(metadataStore.getUser().id, spotId)
+            val lovesAsPartner =
+                loveDao.findByPartnerAndSpotId(metadataStore.getUser().id, spotId)
+            return@withContext ArrayList(lovesAsLover).apply { addAll(lovesAsPartner) }
         }
     }
 }
