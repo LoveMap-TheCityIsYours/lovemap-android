@@ -2,6 +2,8 @@ package com.lovemap.lovemapandroid.ui.main.love.list
 
 import android.content.Intent
 import android.view.*
+import android.view.animation.Animation
+import android.view.animation.ScaleAnimation
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -11,12 +13,15 @@ import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.databinding.FragmentLoveItemBinding
 import com.lovemap.lovemapandroid.ui.data.LoveHolder
 import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
+import com.lovemap.lovemapandroid.ui.utils.setListItemAnimation
+
 
 class LoveRecyclerViewAdapter(
     val values: MutableList<LoveHolder>,
     var isClickable: Boolean
 ) : RecyclerView.Adapter<LoveRecyclerViewAdapter.ViewHolder>() {
 
+    var lastPosition: Int = -1
     var position: Int = 0
 
     private val appContext = AppContext.INSTANCE
@@ -59,6 +64,11 @@ class LoveRecyclerViewAdapter(
             holder.collapsibleView.visibility = View.VISIBLE
         } else {
             holder.collapsibleView.visibility = View.GONE
+        }
+
+        setListItemAnimation(holder.itemView, position, lastPosition)
+        if (position > lastPosition) {
+            lastPosition = position
         }
 
         holder.itemView.setOnLongClickListener {

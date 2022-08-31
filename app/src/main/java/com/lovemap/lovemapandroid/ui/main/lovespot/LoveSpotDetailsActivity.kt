@@ -20,6 +20,7 @@ import com.lovemap.lovemapandroid.ui.main.lovespot.report.ReportLoveSpotActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.LoveSpotReviewListFragment
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewListActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewLoveSpotFragment
+import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
 import com.lovemap.lovemapandroid.utils.IS_CLICKABLE
 import com.lovemap.lovemapandroid.utils.canEditLoveSpot
@@ -202,6 +203,7 @@ LoveSpotDetailsActivity : AppCompatActivity() {
     private fun setReviewSubmitButton() {
         reviewSpotSubmit.setOnClickListener {
             if (reviewSpotSubmit.isEnabled) {
+                val loadingBarShower = LoadingBarShower(this).show()
                 MainScope().launch {
                     val love = loveService.getAnyLoveByLoveSpotId(spotId)
                     love?.let {
@@ -227,6 +229,7 @@ LoveSpotDetailsActivity : AppCompatActivity() {
                         appContext.shouldCloseFabs = true
                         onBackPressed()
                     }
+                    loadingBarShower.onResponse()
                 }
             }
         }

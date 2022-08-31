@@ -9,6 +9,11 @@
     android:paddingEnd="@dimen/standard_8"
     tools:context=".ui.main.lovespot.widget.LoveSpotRecommendationPageFragment">
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/recommendationsSwipeRefresh"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
     <ScrollView
         android:layout_width="match_parent"
         android:scrollbars="vertical"
@@ -73,4 +78,5 @@
 
         </LinearLayout>
     </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

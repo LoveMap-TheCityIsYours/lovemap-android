@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.RecommendationsRequest
 import com.lovemap.lovemapandroid.config.AppContext
@@ -14,6 +15,7 @@ import com.lovemap.lovemapandroid.ui.events.LocationUpdated
 import com.lovemap.lovemapandroid.ui.events.RecommendationsUpdated
 import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotListFilterState
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -26,9 +28,25 @@ class LoveSpotRecommendationPageFragment : Fragment() {
     private val loveSpotService = appContext.loveSpotService
     private var lastUpdateWithLocation: Long = 0
 
+    private lateinit var recommendationsSwipeRefresh: SwipeRefreshLayout
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         EventBus.getDefault().register(this)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        val view = inflater.inflate(R.layout.fragment_love_spot_recommendation_page, container, false)
+        recommendationsSwipeRefresh = view.findViewById(R.id.recommendationsSwipeRefresh)
+        recommendationsSwipeRefresh.setOnRefreshListener {
+            getRecommendations()
+        }
+        getRecommendationsWhenLocationAccessIsDenied()
+        return view
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -42,16 +60,6 @@ class LoveSpotRecommendationPageFragment : Fragment() {
 
     private fun oneMinutePassedSinceLastUpdate(currentTimeMillis: Long) =
         currentTimeMillis - lastUpdateWithLocation >= 60 * 1000
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_love_spot_recommendation_page, container, false)
-        getRecommendationsWhenLocationAccessIsDenied()
-        return view
-    }
 
     private fun getRecommendationsWhenLocationAccessIsDenied() {
         val locationPermissionRequest = registerForActivityResult(
@@ -87,6 +95,7 @@ class LoveSpotRecommendationPageFragment : Fragment() {
                     recommendations
                 )
             )
+            recommendationsSwipeRefresh.isRefreshing = false
         }
     }
 

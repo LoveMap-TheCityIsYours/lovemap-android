@@ -14,11 +14,13 @@ import com.lovemap.lovemapandroid.databinding.FragmentLovespotItemBinding
 import com.lovemap.lovemapandroid.ui.data.LoveSpotHolder
 import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
+import com.lovemap.lovemapandroid.ui.utils.setListItemAnimation
 
 class LoveSpotRecyclerViewAdapter(
     val values: MutableList<LoveSpotHolder>
 ) : RecyclerView.Adapter<LoveSpotRecyclerViewAdapter.ViewHolder>() {
 
+    var lastPosition: Int = -1
     var position: Int = 0
     val contextMenuIds = LoveSpotUtils.ContextMenuIds()
 
@@ -76,6 +78,10 @@ class LoveSpotRecyclerViewAdapter(
         holder.itemView.setOnLongClickListener {
             this.position = holder.absoluteAdapterPosition
             false
+        }
+        setListItemAnimation(holder.itemView, position, lastPosition)
+        if (position > lastPosition) {
+            lastPosition = position
         }
     }
 

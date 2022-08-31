@@ -12,8 +12,10 @@
         android:id="@+id/loveListProgressBar"
         style="?android:progressBarStyleLarge"
         android:indeterminateTint="@color/myColorPrimary"
+        android:indeterminate="true"
+        android:visibility="visible"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="200dp"
         android:layout_gravity="center" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

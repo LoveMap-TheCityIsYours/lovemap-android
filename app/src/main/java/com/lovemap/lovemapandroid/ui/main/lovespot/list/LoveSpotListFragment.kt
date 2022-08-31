@@ -10,6 +10,7 @@ import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.ListLocation
 import com.lovemap.lovemapandroid.api.lovespot.ListOrdering
@@ -27,9 +28,12 @@ class LoveSpotListFragment : Fragment() {
     private val appContext = AppContext.INSTANCE
     private val loveSpotService = appContext.loveSpotService
 
+    private var lastEvent: LoveSpotListFiltersChanged? = null
+
     private lateinit var progressBar: ProgressBar
-    private lateinit var recycleView: RecyclerView
+    private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: LoveSpotRecyclerViewAdapter
+    private lateinit var loveSpotListSwipeRefresh: SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,13 +46,29 @@ class LoveSpotListFragment : Fragment() {
     ): View {
         val linearLayout =
             inflater.inflate(R.layout.fragment_love_spot_list, container, false) as LinearLayout
-        recycleView = linearLayout.findViewById(R.id.loveSpotList)
+        recyclerView = linearLayout.findViewById(R.id.loveSpotList)
         progressBar = linearLayout.findViewById(R.id.loveSpotListProgressBar)
-        recycleView.isClickable = true
+        setSwipeRefresh(linearLayout)
+        recyclerView.isClickable = true
         adapter = LoveSpotRecyclerViewAdapter(ArrayList())
-        recycleView.layoutManager = LinearLayoutManager(context)
-        recycleView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = adapter
         return linearLayout
+    }
+
+    private fun setSwipeRefresh(linearLayout: LinearLayout) {
+        loveSpotListSwipeRefresh = linearLayout.findViewById(R.id.loveSpotListSwipeRefresh)
+        loveSpotListSwipeRefresh.setOnRefreshListener {
+            MainScope().launch {
+                lastEvent?.let {
+                    updateData(
+                        it.request,
+                        it.listOrdering,
+                        it.listLocation
+                    )
+                }
+            }
+        }
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
@@ -69,6 +89,7 @@ class LoveSpotListFragment : Fragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onLoveSpotListFiltersChanged(event: LoveSpotListFiltersChanged) {
+        lastEvent = event
         updateData(event.request, event.listOrdering, event.listLocation)
     }
 
@@ -77,8 +98,10 @@ class LoveSpotListFragment : Fragment() {
         listOrdering: ListOrdering,
         listLocation: ListLocation
     ) {
+        adapter.lastPosition = -1
         MainScope().launch {
-            recycleView.visibility = View.GONE
+            loveSpotListSwipeRefresh.isRefreshing = false
+            recyclerView.visibility = View.GONE
             progressBar.visibility = View.VISIBLE
             val loveSpots = loveSpotService.getLoveSpotHolderList(
                 listOrdering = listOrdering,
@@ -87,7 +110,7 @@ class LoveSpotListFragment : Fragment() {
             )
             adapter.updateData(loveSpots)
             adapter.notifyDataSetChanged()
-            recycleView.visibility = View.VISIBLE
+            recyclerView.visibility = View.VISIBLE
             progressBar.visibility = View.GONE
         }
     }

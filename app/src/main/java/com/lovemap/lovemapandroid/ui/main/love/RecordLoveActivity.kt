@@ -11,6 +11,7 @@ import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.love.Love
 import com.lovemap.lovemapandroid.databinding.ActivityRecordLoveBinding
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewLoveSpotFragment
+import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
 import com.lovemap.lovemapandroid.utils.instantOfApiString
 import com.lovemap.lovemapandroid.utils.toApiString
 import com.lovemap.lovemapandroid.utils.toFormattedString
@@ -121,6 +122,7 @@ class RecordLoveActivity : AppCompatActivity() {
         recordLoveSubmit.setOnClickListener {
             if (recordLoveSubmit.isEnabled) {
                 MainScope().launch {
+                    val loadingBarShower = LoadingBarShower(this@RecordLoveActivity).show()
                     if (!editMode) {
                         createLoveAndReview()
                     } else {
@@ -129,6 +131,7 @@ class RecordLoveActivity : AppCompatActivity() {
                             goBack()
                         }
                     }
+                    loadingBarShower.onResponse()
                 }
             }
         }

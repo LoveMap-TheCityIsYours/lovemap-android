@@ -11,6 +11,7 @@ import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.report.LoveSpotReportRequest
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.databinding.ActivityReportLoveSpotBinding
+import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
@@ -37,7 +38,7 @@ class ReportLoveSpotActivity : AppCompatActivity() {
         appContext.selectedLoveSpotId?.let {
             MainScope().launch {
                 appContext.selectedLoveSpot = loveSpotService.findLocally(it)
-                reportLoveSpotName.text = appContext.selectedLoveSpot!!.name
+                reportLoveSpotName.text = appContext.selectedLoveSpot?.name
             }
         }
 
@@ -57,6 +58,7 @@ class ReportLoveSpotActivity : AppCompatActivity() {
 
         reportSpotSubmit.setOnClickListener {
             MainScope().launch {
+                val loadingBarShower = LoadingBarShower(this@ReportLoveSpotActivity).show()
                 appContext.selectedLoveSpot?.let {
                     loveSpotReportService.submitReport(
                         LoveSpotReportRequest(
@@ -66,6 +68,7 @@ class ReportLoveSpotActivity : AppCompatActivity() {
                         )
                     )
                 }
+                loadingBarShower.onResponse()
             }
             onBackPressed()
         }
