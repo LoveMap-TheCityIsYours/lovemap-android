@@ -80,6 +80,7 @@ class LoveListFragment : Fragment() {
             updateDataWithProgressBar(false)
             recyclerView.visibility = View.VISIBLE
             progressBar.visibility = View.GONE
+            recyclerView.smoothScrollToPosition(0)
         }
     }
 

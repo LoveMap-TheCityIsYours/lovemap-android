@@ -112,6 +112,7 @@ class LoveSpotListFragment : Fragment() {
             adapter.notifyDataSetChanged()
             recyclerView.visibility = View.VISIBLE
             progressBar.visibility = View.GONE
+            recyclerView.smoothScrollToPosition(0)
         }
     }
 

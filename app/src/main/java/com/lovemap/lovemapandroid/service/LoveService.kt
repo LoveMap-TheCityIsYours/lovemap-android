@@ -149,9 +149,10 @@ class LoveService(
     }
 
     suspend fun getLoveHolderListForSpot(): MutableList<LoveHolder> {
-        AppContext.INSTANCE.selectedLoveSpotId?.let {
+        val loveSpotId = AppContext.INSTANCE.selectedLoveSpotId
+        loveSpotId?.let {
             list()
-            val lovesForSpot = getLovesForSpotLocally(AppContext.INSTANCE.selectedLoveSpotId!!)
+            val lovesForSpot = getLovesForSpotLocally(loveSpotId)
             return lovesForSpot
                 .mapIndexed { idx, love -> LoveHolder.of(love, lovesForSpot.size - idx, context) }
                 .sortedByDescending { it.happenedAtLong }
