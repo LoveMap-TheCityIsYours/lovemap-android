@@ -309,12 +309,13 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
         clusterManager.setOnClusterItemClickListener { item ->
             appContext.selectedLoveSpotId = item.loveSpot.id
             appContext.selectedLoveSpot = item.loveSpot
-            onMarkerClicked()
             true
         }
         clusterManager.markerCollection.setOnMarkerClickListener { marker ->
             appContext.selectedMarker = marker
+            appContext.selectedLoveSpotId = marker.snippet?.toLong()
             markerOpen = true
+            onMarkerClicked()
             false
         }
         clusterManager.setOnClusterClickListener { cluster ->
