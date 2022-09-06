@@ -54,6 +54,12 @@ class LoveService(
         }
     }
 
+    suspend fun localList(): List<Love> {
+        return withContext(Dispatchers.IO) {
+            loveDao.getAllOrderedByDate()
+        }
+    }
+
     suspend fun create(request: CreateLoveRequest): Love? {
         return withContext(Dispatchers.IO) {
             val call = loveApi.create(request)

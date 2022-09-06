@@ -26,7 +26,6 @@ import com.google.maps.android.clustering.ClusterManager
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
-import com.lovemap.lovemapandroid.data.lovespot.LoveSpotListDto
 import com.lovemap.lovemapandroid.service.LoveService
 import com.lovemap.lovemapandroid.service.LoveSpotService
 import com.lovemap.lovemapandroid.ui.events.MapMarkerEventListener
@@ -51,6 +50,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     private val loveSpotService: LoveSpotService = appContext.loveSpotService
     private val loveService: LoveService = appContext.loveService
     private var cameraMoved = false
+    private var markerOpen = false
     private var localSpotsDrawn = false
     private var mapMode = LOVE_SPOTS
     private val drawnSpots = HashSet<Long>()
@@ -189,26 +189,34 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
             }
         }
 
+        clearMap()
         val thisView = requireView()
         viewPager2 = getViewPager2(thisView)
         viewPager2?.let { vp2 ->
             val linearLayout = vp2.parent as ViewGroup
             val tabLayout = linearLayout.findViewById<TabLayout>(R.id.tab_layout)
-            setMyLocation(googleMap)
             setMapBehavior(googleMap, tabLayout, thisView)
-            MainScope().launch {
-                if (appContext.shouldClearMap) {
-                    clusterManager.clearItems()
-                    drawnSpots.clear()
-                    appContext.shouldClearMap = false
-                    localSpotsDrawn = false
-                }
-                putMarkersFromLocalDb()
-                putMarkersBasedOnCamera(googleMap)
-                appContext.zoomOnLoveSpot?.let {
-                    moveCameraTo(LatLng(it.latitude, it.longitude), googleMap)
-                    appContext.zoomOnLoveSpot = null
-                }
+        }
+        setMyLocation(googleMap)
+        putMarkersOnMapReady(googleMap)
+    }
+
+    private fun clearMap() {
+        if (appContext.shouldClearMap) {
+            clusterManager.clearItems()
+            drawnSpots.clear()
+            appContext.shouldClearMap = false
+            localSpotsDrawn = false
+        }
+    }
+
+    private fun putMarkersOnMapReady(googleMap: GoogleMap) {
+        MainScope().launch {
+            putMarkersFromLocalDb()
+            putMarkersBasedOnCamera(googleMap)
+            appContext.zoomOnLoveSpot?.let {
+                moveCameraTo(LatLng(it.latitude, it.longitude), googleMap)
+                appContext.zoomOnLoveSpot = null
             }
         }
     }
@@ -249,9 +257,12 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
         appContext.mapCameraTarget = googleMap.cameraPosition.target
 
         val visibleRegion = googleMap.projection.visibleRegion
-        val loveSpotsInArea = loveSpotService
-            .list(visibleRegion.latLngBounds)
+        val loveSpotsInArea = loveSpotService.list(visibleRegion.latLngBounds)
 
+        if (clusterManager.markerCollection.markers.size > 300) {
+            clusterManager.clearItems()
+            drawnSpots.clear()
+        }
         putLoveSpotListOnMap(loveSpotsInArea)
 
         if (appContext.selectedMarker != null) {
@@ -263,23 +274,17 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     }
 
     private suspend fun putLoveSpotListOnMap(
-        loveSpotsInArea: LoveSpotListDto
+        loveSpotsInArea: Collection<LoveSpot>
     ) {
-        if (loveSpotsInArea.deletedIds.isNotEmpty()) {
-            clusterManager.clearItems()
-            drawnSpots.clear()
-            localSpotsDrawn = false
-            putMarkersFromLocalDb()
-        }
         if (mapMode == LOVE_MAKINGS) {
-            val loves = loveService.list()
+            val loves = loveService.localList()
             val spotIdsWithLove = loves.map { it.loveSpotId }.toHashSet()
-            loveSpotsInArea.loveSpots
+            loveSpotsInArea
                 .filter { isNotDrawnYet(it) }
                 .filter { loveSpot -> spotIdsWithLove.contains(loveSpot.id) }
                 .forEach { clusterManager.addItem(LoveSpotClusterItem.ofLoveSpot(it)) }
         } else {
-            loveSpotsInArea.loveSpots
+            loveSpotsInArea
                 .filter { isNotDrawnYet(it) }
                 .forEach { clusterManager.addItem(LoveSpotClusterItem.ofLoveSpot(it)) }
         }
@@ -302,17 +307,18 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
         thisView: View
     ) {
         clusterManager.setOnClusterItemClickListener { item ->
-            onMarkerClicked()
             appContext.selectedLoveSpotId = item.loveSpot.id
             appContext.selectedLoveSpot = item.loveSpot
-            openMarkerFabMenu()
+            onMarkerClicked()
             true
         }
         clusterManager.markerCollection.setOnMarkerClickListener { marker ->
             appContext.selectedMarker = marker
+            markerOpen = true
             false
         }
         clusterManager.setOnClusterClickListener { cluster ->
+            onMapClicked()
             googleMap.animateCamera(
                 CameraUpdateFactory.newLatLngZoom(
                     cluster.position, floor(
@@ -325,16 +331,25 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
         }
         googleMap.setOnMapClickListener {
             viewPager2?.isUserInputEnabled = false
-            onMapClicked()
-            appContext.selectedMarker = null
-        }
-        googleMap.setOnCameraIdleListener {
-            if (cameraMoved) {
+            if (markerOpen) {
+                markerOpen = false
+                appContext.selectedMarker = null
                 MainScope().launch {
                     putMarkersBasedOnCamera(googleMap)
                 }
             }
-            clusterManager.onCameraIdle()
+            onMapClicked()
+        }
+        googleMap.setOnCameraIdleListener {
+            if (!markerOpen) {
+                if (cameraMoved) {
+                    cameraMoved = false
+                    MainScope().launch {
+                        putMarkersBasedOnCamera(googleMap)
+                    }
+                }
+                clusterManager.onCameraIdle()
+            }
         }
         googleMap.setOnCameraMoveListener {
             if (tabLayout.selectedTabPosition == 2) {
@@ -458,9 +473,12 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
 
     override fun onMarkerClicked() {
         closeAddLoveSpotFabs()
+        openMarkerFabMenu()
     }
 
     override fun onMapClicked() {
+        appContext.selectedMarker = null
+        markerOpen = false
         closeAddLoveSpotFabs()
         closeMarkerFabMenu()
     }

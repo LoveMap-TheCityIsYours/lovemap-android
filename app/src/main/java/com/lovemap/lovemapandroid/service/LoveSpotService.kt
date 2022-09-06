@@ -9,13 +9,11 @@ import com.lovemap.lovemapandroid.api.lovespot.*
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpotDao
-import com.lovemap.lovemapandroid.data.lovespot.LoveSpotListDto
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.ui.data.LoveSpotHolder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
-import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
 import kotlin.math.max
 import kotlin.math.min
@@ -128,58 +126,58 @@ class LoveSpotService(
         }
     }
 
-    suspend fun listSpotsLocally(): LoveSpotListDto {
+    suspend fun listSpotsLocally(): List<LoveSpot> {
         return withContext(Dispatchers.IO) {
-            LoveSpotListDto(loveSpotDao.getAll(), emptyList())
+            loveSpotDao.getAll()
         }
     }
 
-    suspend fun list(latLngBounds: LatLngBounds): LoveSpotListDto {
+    suspend fun list(latLngBounds: LatLngBounds): Collection<LoveSpot> {
         return withContext(Dispatchers.IO) {
             val request = loveSpotSearchRequestFromBounds(latLngBounds)
-            val localSpots = loveSpotDao.list(
-                request.longFrom,
-                request.longTo,
-                request.latFrom,
-                request.latTo
+            val localSpots = HashSet(
+                loveSpotDao.list(
+                    request.longFrom,
+                    request.longTo,
+                    request.latFrom,
+                    request.latTo
+                )
             )
 
             if (areaFullyQueried(request)) {
-                return@withContext LoveSpotListDto(localSpots, emptyList())
+                return@withContext localSpots
             }
 
             val call = loveSpotApi.list(request)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
-                return@withContext LoveSpotListDto(localSpots, emptyList())
+                return@withContext localSpots
             }
             if (response.isSuccessful) {
-                val serverSpots = response.body()!!
+                val serverSpots = HashSet(response.body()!!)
                 loveSpotDao.insert(*serverSpots.toTypedArray())
-                val deletedIds = if (serverSpots.size < request.limit) {
+                val loveSpotSet = if (serverSpots.size < request.limit) {
                     fullyQueriedAreas.add(latLngBounds)
                     removeDeletedSpotsFromArea(localSpots, serverSpots)
                 } else {
-                    emptyList()
+                    serverSpots.plus(localSpots)
                 }
-                LoveSpotListDto(serverSpots, deletedIds)
+                loveSpotSet
             } else {
-                LoveSpotListDto(localSpots, emptyList())
+                localSpots
             }
         }
     }
 
     private fun removeDeletedSpotsFromArea(
-        localSpots: List<LoveSpot>,
-        serverSpots: List<LoveSpot>
-    ): List<Long> {
-        val localSpotSet = HashSet(localSpots)
-        val serverSpotSet: Set<LoveSpot> = HashSet(serverSpots)
+        localSpotSet: Set<LoveSpot>,
+        serverSpotSet: Set<LoveSpot>
+    ): Set<LoveSpot> {
         val deletedSpots = localSpotSet.subtract(serverSpotSet)
         loveSpotDao.delete(*deletedSpots.toTypedArray())
         loveSpotDao.insert(*serverSpotSet.toTypedArray())
-        return deletedSpots.map { it.id }
+        return serverSpotSet.plus(localSpotSet).minus(deletedSpots)
     }
 
     private suspend fun advancedList(
@@ -238,11 +236,17 @@ class LoveSpotService(
     private fun loveSpotSearchRequestFromBounds(latLngBounds: LatLngBounds): LoveSpotListRequest {
         val northeast = latLngBounds.northeast
         val southwest = latLngBounds.southwest
+        val latFrom = min(northeast.latitude, southwest.latitude)
+        val latTo = max(northeast.latitude, southwest.latitude)
+        val latDif = (latTo - latFrom) * 0.2
+        val longFrom = min(northeast.longitude, southwest.longitude)
+        val longTo = max(northeast.longitude, southwest.longitude)
+        val longDif = (longTo - longFrom) * 0.2
         return LoveSpotListRequest(
-            latFrom = min(northeast.latitude, southwest.latitude),
-            longFrom = min(northeast.longitude, southwest.longitude),
-            latTo = max(northeast.latitude, southwest.latitude),
-            longTo = max(northeast.longitude, southwest.longitude),
+            latFrom = latFrom - latDif,
+            latTo = latTo + latDif,
+            longFrom = longFrom - longDif,
+            longTo = longTo + longDif,
             limit = 100
         )
     }
