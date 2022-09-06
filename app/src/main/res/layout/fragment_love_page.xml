@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -10,20 +9,27 @@
 
     <TextView
         android:id="@+id/lovesTitle"
+        style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/standard_8"
         android:layout_marginBottom="@dimen/standard_8"
-        style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-        android:text="@string/your_loves"/>
+        android:text="@string/your_loves" />
 
-    <fragment
-        android:id="@+id/fragmentLovesLoveList"
-        android:name="com.lovemap.lovemapandroid.ui.main.love.list.LoveListFragment"
-        app:love_spot_based="false"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/loveListSwipeRefresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
+
+        <fragment
+            android:id="@+id/fragmentLovesLoveList"
+            android:name="com.lovemap.lovemapandroid.ui.main.love.list.LoveListFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:love_spot_based="false" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
 </LinearLayout>

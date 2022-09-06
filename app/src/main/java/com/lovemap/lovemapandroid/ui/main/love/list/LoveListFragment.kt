@@ -13,7 +13,6 @@ import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.ui.events.ShowOnMapClickedEvent
@@ -38,7 +37,6 @@ class LoveListFragment : Fragment() {
     private lateinit var progressBar: ProgressBar
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: LoveRecyclerViewAdapter
-    private lateinit var loveListSwipeRefresh: SwipeRefreshLayout
 
     override fun onInflate(context: Context, attrs: AttributeSet, savedInstanceState: Bundle?) {
         super.onInflate(context, attrs, savedInstanceState)
@@ -58,7 +56,6 @@ class LoveListFragment : Fragment() {
             inflater.inflate(R.layout.fragment_love_list, container, false) as LinearLayout
         progressBar = linearLayout.findViewById(R.id.loveListProgressBar)
         initializeRecyclerView(linearLayout)
-        setRefreshListener(linearLayout)
         initializeData()
         return linearLayout
     }
@@ -77,18 +74,10 @@ class LoveListFragment : Fragment() {
         MainScope().launch {
             recyclerView.visibility = View.GONE
             progressBar.visibility = View.VISIBLE
-            updateDataWithProgressBar(false)
+            updateData()
             recyclerView.visibility = View.VISIBLE
             progressBar.visibility = View.GONE
             recyclerView.smoothScrollToPosition(0)
-        }
-    }
-
-    private fun setRefreshListener(linearLayout: LinearLayout) {
-        loveListSwipeRefresh = linearLayout.findViewById(R.id.loveListSwipeRefresh)
-        loveListSwipeRefresh.setOnRefreshListener {
-            loveListSwipeRefresh.isRefreshing = true
-            MainScope().launch { updateDataWithProgressBar() }
         }
     }
 
@@ -112,21 +101,14 @@ class LoveListFragment : Fragment() {
             DELETE_LOVE_MENU_ID -> {
                 MainScope().launch {
                     loveService.delete(loveHolder.id)
-                    updateDataWithProgressBar()
+                    updateData()
                 }
             }
         }
         return super.onContextItemSelected(item)
     }
 
-    private suspend fun updateDataWithProgressBar(isRefreshing: Boolean = true) {
-        loveListSwipeRefresh.isRefreshing = isRefreshing
-        updateData()
-        recyclerView.invalidate()
-        loveListSwipeRefresh.isRefreshing = false
-    }
-
-    private suspend fun updateData() {
+    suspend fun updateData() {
         adapter.lastPosition = -1
         when {
             isLoveSpotBased -> {
@@ -140,6 +122,7 @@ class LoveListFragment : Fragment() {
             }
         }
         adapter.notifyDataSetChanged()
+        recyclerView.invalidate()
     }
 
     private fun isClickable(): Boolean {

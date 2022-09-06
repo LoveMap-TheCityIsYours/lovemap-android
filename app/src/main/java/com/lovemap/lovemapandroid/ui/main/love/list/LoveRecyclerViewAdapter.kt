@@ -2,8 +2,6 @@ package com.lovemap.lovemapandroid.ui.main.love.list
 
 import android.content.Intent
 import android.view.*
-import android.view.animation.Animation
-import android.view.animation.ScaleAnimation
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView

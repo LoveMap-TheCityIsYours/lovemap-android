@@ -98,7 +98,6 @@ class LoveSpotListFragment : Fragment() {
         listOrdering: ListOrdering,
         listLocation: ListLocation
     ) {
-        adapter.lastPosition = -1
         MainScope().launch {
             loveSpotListSwipeRefresh.isRefreshing = false
             recyclerView.visibility = View.GONE
@@ -113,6 +112,7 @@ class LoveSpotListFragment : Fragment() {
             recyclerView.visibility = View.VISIBLE
             progressBar.visibility = View.GONE
             recyclerView.smoothScrollToPosition(0)
+            adapter.lastPosition = -1
         }
     }
 

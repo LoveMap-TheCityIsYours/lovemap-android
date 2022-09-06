@@ -4,10 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.lovemap.lovemapandroid.R
+import com.lovemap.lovemapandroid.ui.main.love.list.LoveListFragment
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 class LovesPageFragment : Fragment() {
+
+    private lateinit var loveListSwipeRefresh: SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,8 +23,25 @@ class LovesPageFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_love_page, container, false)
+    ): View {
+        val linearLayout =
+            inflater.inflate(R.layout.fragment_love_page, container, false) as LinearLayout
+        setRefreshListener(linearLayout)
+        return linearLayout
+    }
+
+    private fun setRefreshListener(linearLayout: LinearLayout) {
+        loveListSwipeRefresh = linearLayout.findViewById(R.id.loveListSwipeRefresh)
+        loveListSwipeRefresh.setOnRefreshListener {
+            MainScope().launch { updateData() }
+        }
+    }
+
+    private suspend fun updateData() {
+        loveListSwipeRefresh.isRefreshing = true
+        val fragmentLovesLoveList = childFragmentManager
+            .findFragmentById(R.id.fragmentLovesLoveList) as LoveListFragment
+        fragmentLovesLoveList.updateData()
+        loveListSwipeRefresh.isRefreshing = false
     }
 }
