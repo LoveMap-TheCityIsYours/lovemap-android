@@ -108,11 +108,11 @@ class LoveSpotListFragment : Fragment() {
                 loveSpotSearchRequest = request
             )
             adapter.updateData(loveSpots)
+            recyclerView.scrollToPosition(0)
+            adapter.lastPosition = -1
             adapter.notifyDataSetChanged()
             recyclerView.visibility = View.VISIBLE
             progressBar.visibility = View.GONE
-            recyclerView.smoothScrollToPosition(0)
-            adapter.lastPosition = -1
         }
     }
 
