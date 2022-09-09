@@ -11,9 +11,7 @@ import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpotDao
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.ui.data.LoveSpotHolder
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.util.concurrent.CopyOnWriteArrayList
 import kotlin.math.max
 import kotlin.math.min
@@ -149,29 +147,36 @@ class LoveSpotService(
                     request.latTo
                 )
             )
-
             if (areaFullyQueried(request)) {
                 return@withContext localSpots
-            }
-
-            val call = loveSpotApi.list(request)
-            val response = try {
-                call.execute()
-            } catch (e: Exception) {
-                return@withContext localSpots
-            }
-            if (response.isSuccessful) {
-                val serverSpots = HashSet(response.body()!!)
-                loveSpotDao.insert(*serverSpots.toTypedArray())
-                val loveSpotSet = if (serverSpots.size < request.limit) {
-                    fullyQueriedAreas.add(latLngBounds)
-                    removeDeletedSpotsFromArea(localSpots, serverSpots)
-                } else {
-                    serverSpots.plus(localSpots)
-                }
-                loveSpotSet
             } else {
+                GlobalScope.launch(Dispatchers.IO) {
+                    async { fetchSpotsFromServer(request, localSpots, latLngBounds) }
+                }
                 localSpots
+            }
+        }
+    }
+
+    private fun fetchSpotsFromServer(
+        request: LoveSpotListRequest,
+        localSpots: Set<LoveSpot>,
+        latLngBounds: LatLngBounds
+    ) {
+        val call = loveSpotApi.list(request)
+        val response = try {
+            call.execute()
+        } catch (e: Exception) {
+            null
+        }
+        if (response?.isSuccessful == true) {
+            val serverSpots = HashSet(response.body()!!)
+            loveSpotDao.insert(*serverSpots.toTypedArray())
+            if (serverSpots.size < request.limit) {
+                fullyQueriedAreas.add(latLngBounds)
+                removeDeletedSpotsFromArea(localSpots, serverSpots)
+            } else {
+                serverSpots.plus(localSpots)
             }
         }
     }

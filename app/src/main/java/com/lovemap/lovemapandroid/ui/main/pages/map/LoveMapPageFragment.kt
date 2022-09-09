@@ -400,7 +400,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     private fun tooManyMarkersInMemory() = drawnSpots.size > 1000
 
     private fun tooManyMarkersInManager() = clusterManager.markerCollection.markers.size +
-            clusterManager.clusterMarkerCollection.markers.size > 1000
+            clusterManager.clusterMarkerCollection.markers.size > 500
 
     private fun askForLocationPermission() {
         val locationPermissionRequest = registerForActivityResult(
