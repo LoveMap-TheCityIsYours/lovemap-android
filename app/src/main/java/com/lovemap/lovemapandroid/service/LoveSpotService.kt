@@ -126,9 +126,15 @@ class LoveSpotService(
         }
     }
 
-    suspend fun listSpotsLocally(): List<LoveSpot> {
+    suspend fun listSpotsLocally(latLngBounds: LatLngBounds): List<LoveSpot> {
         return withContext(Dispatchers.IO) {
-            loveSpotDao.getAll()
+            val request = loveSpotSearchRequestFromBounds(latLngBounds)
+            loveSpotDao.list(
+                request.longFrom,
+                request.longTo,
+                request.latFrom,
+                request.latTo
+            )
         }
     }
 

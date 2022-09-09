@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
@@ -45,6 +47,8 @@ import kotlin.math.floor
 
 @SuppressLint("MissingPermission")
 class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListener {
+
+    private val TAG = "LoveMapPageFragment"
 
     private val appContext = AppContext.INSTANCE
     private val loveSpotService: LoveSpotService = appContext.loveSpotService
@@ -179,7 +183,8 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
             clusterManager = ClusterManager(requireContext(), googleMap)
             googleMap.setInfoWindowAdapter(clusterManager.markerManager)
             clusterManager.markerCollection.setInfoWindowAdapter(loveSpotInfoWindowAdapter)
-            loveSpotClusterRenderer = LoveSpotClusterRender(requireContext(), googleMap, clusterManager)
+            loveSpotClusterRenderer =
+                LoveSpotClusterRender(requireContext(), googleMap, clusterManager)
             clusterManager.renderer = loveSpotClusterRenderer
             googleMap.setOnMarkerClickListener(clusterManager)
             clusterManager.markerCollection.setOnInfoWindowClickListener {
@@ -203,16 +208,21 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
 
     private fun clearMap() {
         if (appContext.shouldClearMap) {
-            clusterManager.clearItems()
-            drawnSpots.clear()
+            clearMarkers()
             appContext.shouldClearMap = false
             localSpotsDrawn = false
         }
     }
 
+    private fun clearMarkers() {
+        clusterManager.clearItems()
+        clusterManager.cluster()
+        drawnSpots.clear()
+    }
+
     private fun putMarkersOnMapReady(googleMap: GoogleMap) {
         MainScope().launch {
-            putMarkersFromLocalDb()
+            putMarkersFromLocalDb(googleMap.projection.visibleRegion.latLngBounds)
             putMarkersBasedOnCamera(googleMap)
             appContext.zoomOnLoveSpot?.let {
                 moveCameraTo(LatLng(it.latitude, it.longitude), googleMap)
@@ -243,10 +253,10 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
         }
     }
 
-    private suspend fun putMarkersFromLocalDb() {
+    private suspend fun putMarkersFromLocalDb(latLngBounds: LatLngBounds) {
         if (!localSpotsDrawn) {
             localSpotsDrawn = true
-            val localSpots = loveSpotService.listSpotsLocally()
+            val localSpots = loveSpotService.listSpotsLocally(latLngBounds)
             putLoveSpotListOnMap(localSpots)
         }
     }
@@ -259,9 +269,8 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
         val visibleRegion = googleMap.projection.visibleRegion
         val loveSpotsInArea = loveSpotService.list(visibleRegion.latLngBounds)
 
-        if (clusterManager.markerCollection.markers.size > 300) {
-            clusterManager.clearItems()
-            drawnSpots.clear()
+        if (tooManyMarkersInMemory()) {
+            clearMarkers()
         }
         putLoveSpotListOnMap(loveSpotsInArea)
 
@@ -342,6 +351,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
             onMapClicked()
         }
         googleMap.setOnCameraIdleListener {
+            logMarkers()
             if (!markerOpen) {
                 if (cameraMoved) {
                     cameraMoved = false
@@ -350,6 +360,11 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
                     }
                 }
                 clusterManager.onCameraIdle()
+            } else {
+                if (cameraMoved) {
+                    cameraMoved = false
+                    clusterManager.cluster()
+                }
             }
         }
         googleMap.setOnCameraMoveListener {
@@ -357,6 +372,15 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
                 viewPager2?.isUserInputEnabled = false
             }
             cameraMoved = true
+            if (googleMap.cameraPosition.zoom < zoomLevel - 3) {
+                if (tooManyMarkersInMemory()) {
+                    clearMarkers()
+                }
+            } else {
+                if (tooManyMarkersInManager()) {
+                    clearMarkers()
+                }
+            }
             zoomLevel = googleMap.cameraPosition.zoom
         }
         thisView.setOnTouchListener { _, _ ->
@@ -372,6 +396,11 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
     }
+
+    private fun tooManyMarkersInMemory() = drawnSpots.size > 1000
+
+    private fun tooManyMarkersInManager() = clusterManager.markerCollection.markers.size +
+            clusterManager.clusterMarkerCollection.markers.size > 1000
 
     private fun askForLocationPermission() {
         val locationPermissionRequest = registerForActivityResult(
@@ -533,6 +562,14 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
             }
 
             appContext.areAddLoveSpotFabsOpen = false
+        }
+    }
+
+    private fun logMarkers() {
+        if (drawnSpots.size > 0) {
+            Log.i(TAG, "clusters: ${clusterManager.clusterMarkerCollection.markers.size}")
+            Log.i(TAG, "markers: ${clusterManager.markerCollection.markers.size}")
+            Log.i(TAG, "drawnSpots: ${drawnSpots.size}\n")
         }
     }
 

@@ -20,7 +20,8 @@ interface LoveSpotDao {
     @Query(
         "SELECT * FROM love_spot WHERE " +
                 "longitude >= :longFrom AND longitude <= :longTo AND " +
-                "latitude >= :latFrom AND latitude <= :latTo"
+                "latitude >= :latFrom AND latitude <= :latTo " +
+                "LIMIT 10000"
     )
     fun list(
         longFrom: Double,
