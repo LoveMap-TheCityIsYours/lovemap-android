@@ -1,36 +1,35 @@
 package com.lovemap.lovemapandroid.ui.main.love
 
-import android.app.Dialog
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.utils.partnersFromRelations
 import com.lovemap.lovemapandroid.utils.timeZone
 import com.lovemap.lovemapandroid.utils.toFormattedString
-import com.noowenz.customdatetimepicker.CustomDateTimePicker
+import com.lovemap.lovemapandroid.utils.toInstant
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import java.time.Instant
-import java.time.ZonedDateTime
-import java.util.*
+import java.time.LocalDateTime
 
-class RecordLoveFragment : Fragment(), CustomDateTimePicker.ICustomDateTimeListener {
+class RecordLoveFragment : Fragment(),
+    DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private val appContext = AppContext.INSTANCE
     private val loverService = appContext.loverService
 
-    lateinit var datePicker: CustomDateTimePicker
+    lateinit var datePicker: DatePickerDialog
+    lateinit var timePicker: TimePickerDialog
     lateinit var recordLoveHappenedAt: TextView
     lateinit var recordLoveChangeDateTime: Button
-    var selectedTime: Instant = Instant.now()
+    var selectedDateTime: LocalDateTime = LocalDateTime.now()
 
     lateinit var recordLoveSelectPartnerDropdown: Spinner
     private val partners: MutableList<String> = ArrayList()
@@ -74,14 +73,31 @@ class RecordLoveFragment : Fragment(), CustomDateTimePicker.ICustomDateTimeListe
     }
 
     private fun initHappenedAtViews(view: View) {
-        datePicker = CustomDateTimePicker(requireActivity(), this)
-        datePicker.set24HourFormat(true)
         recordLoveChangeDateTime = view.findViewById(R.id.recordLoveChangeDateTime)
         recordLoveHappenedAt = view.findViewById(R.id.recordLoveHappenedAt)
-        recordLoveHappenedAt.text = Instant.now().toFormattedString()
+        recordLoveHappenedAt.text = selectedDateTime.toInstant().toFormattedString()
+        datePicker = DatePickerDialog(
+            requireActivity(),
+            this,
+            selectedDateTime.year,
+            selectedDateTime.monthValue - 1,
+            selectedDateTime.dayOfMonth
+        )
+        timePicker = TimePickerDialog(
+            requireActivity(),
+            this,
+            selectedDateTime.hour,
+            selectedDateTime.minute,
+            true
+        )
+
         recordLoveChangeDateTime.setOnClickListener {
-            datePicker.setDate(Calendar.getInstance())
-            datePicker.showDialog()
+            datePicker.updateDate(
+                selectedDateTime.year,
+                selectedDateTime.monthValue - 1,
+                selectedDateTime.dayOfMonth
+            )
+            datePicker.show()
         }
     }
 
@@ -90,30 +106,27 @@ class RecordLoveFragment : Fragment(), CustomDateTimePicker.ICustomDateTimeListe
         return partnerIds[selectedPartnerName]
     }
 
-    override fun onCancel() {
-
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        selectedDateTime = LocalDateTime.of(
+            year,
+            month + 1,
+            dayOfMonth,
+            selectedDateTime.hour,
+            selectedDateTime.minute
+        )
+        recordLoveHappenedAt.text = selectedDateTime.toInstant().toFormattedString()
+        timePicker.updateTime(selectedDateTime.hour, selectedDateTime.minute)
+        timePicker.show()
     }
 
-    override fun onSet(
-        dialog: Dialog,
-        calendarSelected: Calendar,
-        dateSelected: Date,
-        year: Int,
-        monthFullName: String,
-        monthShortName: String,
-        monthNumber: Int,
-        day: Int,
-        weekDayFullName: String,
-        weekDayShortName: String,
-        hour24: Int,
-        hour12: Int,
-        min: Int,
-        sec: Int,
-        AM_PM: String
-    ) {
-        val zonedDateTime =
-            ZonedDateTime.of(year, monthNumber + 1, day, hour24, min, sec, 0, timeZone.toZoneId())
-        selectedTime = zonedDateTime.toInstant()
-        recordLoveHappenedAt.text = selectedTime.toFormattedString()
+    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+        selectedDateTime = LocalDateTime.of(
+            selectedDateTime.year,
+            selectedDateTime.monthValue,
+            selectedDateTime.dayOfMonth,
+            hourOfDay,
+            minute
+        )
+        recordLoveHappenedAt.text = selectedDateTime.toInstant().toFormattedString()
     }
 }

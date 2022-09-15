@@ -28,10 +28,13 @@ import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils.availabilityToPosition
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils.positionToAvailability
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils.positionToType
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils.typeToPosition
+import com.lovemap.lovemapandroid.utils.timeZone
 import com.lovemap.lovemapandroid.utils.toApiString
 import com.lovemap.lovemapandroid.utils.toFormattedString
+import com.lovemap.lovemapandroid.utils.toInstant
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
 
 class AddLoveSpotActivity : AppCompatActivity() {
@@ -199,7 +202,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
                 it.partnerSelection,
                 true
             )
-            recordLoveFragment.selectedTime = it.happenedAt
+            recordLoveFragment.selectedDateTime = LocalDateTime.ofInstant(it.happenedAt, timeZone.toZoneId())
             recordLoveFragment.recordLoveHappenedAt.text = it.happenedAt.toFormattedString()
         }
         loveService.savedCreationState = null
@@ -312,7 +315,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
             name,
             loveSpot.id,
             appContext.userId,
-            recordLoveFragment.selectedTime.toApiString(),
+            recordLoveFragment.selectedDateTime.toInstant().toApiString(),
             recordLoveFragment.selectedPartner(),
             recordLoveFragment.addPrivateNote.text.toString()
         )
@@ -351,7 +354,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
             loveService.savedCreationState = LoveService.SavedCreationState(
                 name,
                 recordLoveFragment.recordLoveSelectPartnerDropdown.selectedItemPosition,
-                recordLoveFragment.selectedTime
+                recordLoveFragment.selectedDateTime.toInstant()
             )
             loveSpotReviewService.savedCreationState = LoveSpotReviewService.SavedCreationState(
                 reviewLoveSpotFragment.reviewText.text.toString(),

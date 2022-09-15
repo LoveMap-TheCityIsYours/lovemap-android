@@ -12,11 +12,10 @@ import com.lovemap.lovemapandroid.data.love.Love
 import com.lovemap.lovemapandroid.databinding.ActivityRecordLoveBinding
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewLoveSpotFragment
 import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
-import com.lovemap.lovemapandroid.utils.instantOfApiString
-import com.lovemap.lovemapandroid.utils.toApiString
-import com.lovemap.lovemapandroid.utils.toFormattedString
+import com.lovemap.lovemapandroid.utils.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
 class RecordLoveActivity : AppCompatActivity() {
     private val appContext = AppContext.INSTANCE
@@ -110,7 +109,7 @@ class RecordLoveActivity : AppCompatActivity() {
                     recordLoveFragment.recordLoveSelectPartnerDropdown.setSelection(0, true)
                 }
                 val happenedAt = instantOfApiString(it.happenedAt)
-                recordLoveFragment.selectedTime = happenedAt
+                recordLoveFragment.selectedDateTime = LocalDateTime.ofInstant(happenedAt, timeZone.toZoneId())
                 recordLoveFragment.recordLoveHappenedAt.text =
                     happenedAt.toFormattedString()
                 recordLoveFragment.addPrivateNote.text = it.note
@@ -155,7 +154,7 @@ class RecordLoveActivity : AppCompatActivity() {
                 loveSpot.name,
                 spotId,
                 appContext.userId,
-                recordLoveFragment.selectedTime.toApiString(),
+                recordLoveFragment.selectedDateTime.toInstant().toApiString(),
                 recordLoveFragment.selectedPartner(),
                 recordLoveFragment.addPrivateNote.text.toString()
             )
@@ -168,7 +167,7 @@ class RecordLoveActivity : AppCompatActivity() {
                 editedLoveId,
                 UpdateLoveRequest(
                     it.name,
-                    recordLoveFragment.selectedTime.toApiString(),
+                    recordLoveFragment.selectedDateTime.toInstant().toApiString(),
                     recordLoveFragment.selectedPartner(),
                     recordLoveFragment.addPrivateNote.text.toString(),
                 )

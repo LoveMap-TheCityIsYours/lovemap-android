@@ -5,7 +5,12 @@ import com.lovemap.lovemapandroid.api.lover.LoverViewDto
 import com.lovemap.lovemapandroid.api.relation.RelationStatus
 import com.lovemap.lovemapandroid.config.AppContext
 import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.chrono.Chronology
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeFormatterBuilder
 import java.time.format.FormatStyle
 import java.util.*
 
@@ -22,8 +27,14 @@ const val ROLE_ADMIN = "ROLE_ADMIN"
 
 val objectMapper = jacksonObjectMapper()
 
-val timeZone = TimeZone.getDefault()
-val dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
+val timeZone: TimeZone = TimeZone.getDefault()
+
+val locale: Locale = Locale.forLanguageTag("HU")
+val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern(
+    DateTimeFormatterBuilder.getLocalizedDateTimePattern(
+        FormatStyle.MEDIUM, FormatStyle.MEDIUM, Chronology.ofLocale(locale), locale
+    )
+)
 
 fun partnersFromRelations(relations: List<LoverViewDto>) =
     relations.filter { isPartner(it) }
@@ -41,6 +52,15 @@ fun Instant.toFormattedString(): String {
     val timeZone = TimeZone.getDefault()
     val zonedDateTime = this.atZone(timeZone.toZoneId())
     return zonedDateTime.format(dateTimeFormatter)
+}
+
+fun LocalDateTime.toInstant(): Instant {
+    val zoneOffset = ZoneId.systemDefault().rules.getOffset(this)
+    return toInstant(zoneOffset)
+}
+
+fun LocalDateTime.ofInstant(instant: Instant): LocalDateTime {
+    return LocalDateTime.ofInstant(instant, timeZone.toZoneId())
 }
 
 fun instantOfApiString(instantString: String): Instant {
