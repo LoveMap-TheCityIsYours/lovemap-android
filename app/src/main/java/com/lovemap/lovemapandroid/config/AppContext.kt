@@ -8,8 +8,6 @@ import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.multidex.MultiDexApplication
 import androidx.room.Room
 import com.google.android.gms.location.*
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.admin.AdminApi
 import com.lovemap.lovemapandroid.api.authentication.AuthenticationApi
@@ -29,9 +27,7 @@ import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReviewDao
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.data.partnership.PartnershipDao
 import com.lovemap.lovemapandroid.service.*
-import com.lovemap.lovemapandroid.ui.events.LocationUpdated
 import com.lovemap.lovemapandroid.ui.events.MapInfoWindowShownEvent
-import com.lovemap.lovemapandroid.ui.events.MapMarkerEventListener
 import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotListFilterState
 import com.lovemap.lovemapandroid.utils.AUTHORIZATION_HEADER
 import com.lovemap.lovemapandroid.utils.X_CLIENT_ID_HEADER
@@ -47,7 +43,6 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 class AppContext : MultiDexApplication() {
-    lateinit var mapCameraTarget: LatLng
     lateinit var toaster: Toaster
 
     lateinit var authenticationService: AuthenticationService
@@ -67,16 +62,6 @@ class AppContext : MultiDexApplication() {
     lateinit var metadataStore: MetadataStore
     lateinit var database: AppDatabase
 
-    lateinit var mapMarkerEventListener: MapMarkerEventListener
-
-    var lastLocation: com.javadocmd.simplelatlng.LatLng? = null
-        set(value) {
-            field = value
-            if (value != null) {
-                EventBus.getDefault().post(LocationUpdated(value))
-            }
-        }
-
     @Volatile
     var userId: Long = 0
 
@@ -87,37 +72,13 @@ class AppContext : MultiDexApplication() {
     var otherLoverId: Long = 0
 
     @Volatile
-    var areMarkerFabsOpen = false
-
-    @Volatile
-    var areAddLoveSpotFabsOpen = false
-
-    @Volatile
-    var shouldCloseFabs = false
-
-    @Volatile
     var displayDensity: Float = 0f
-
-    @Volatile
-    var selectedMarker: Marker? = null
-
-    @Volatile
-    var selectedLoveSpot: LoveSpot? = null
 
     @Volatile
     var selectedLoveSpotId: Long? = null
 
     @Volatile
-    var zoomOnLoveSpot: LoveSpot? = null
-
-    @Volatile
-    var shouldClearMap: Boolean = false
-
-    @Volatile
     var loveSpotRisks: LoveSpotRisks? = null
-
-    @Volatile
-    var locationEnabled: Boolean = false
 
     lateinit var country: String
 
@@ -184,9 +145,12 @@ class AppContext : MultiDexApplication() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMapInfoWindowShownEvent(event: MapInfoWindowShownEvent) {
-        selectedMarker = event.marker
-        selectedLoveSpot = event.loveSpot
+        MapContext.selectedMarker = event.marker
         selectedLoveSpotId = event.loveSpot?.id
+    }
+
+    suspend fun findSelectedSpotLocally(): LoveSpot? {
+        return selectedLoveSpotId?.let { loveSpotService.findLocally(it) }
     }
 
     private suspend fun initClients() {
@@ -337,7 +301,7 @@ class AppContext : MultiDexApplication() {
 
     @SuppressLint("MissingPermission")
     fun requestLocationUpdates() {
-        locationEnabled = true
+        MapContext.locationEnabled = true
         val locationRequest = LocationRequest.create()
             .setInterval(60 * 1000)
             .setPriority(Priority.PRIORITY_BALANCED_POWER_ACCURACY)
@@ -346,7 +310,7 @@ class AppContext : MultiDexApplication() {
             locationRequest,
             object : LocationCallback() {
                 override fun onLocationResult(locationResult: LocationResult) {
-                    lastLocation = locationResult.lastLocation?.let {
+                    MapContext.lastLocation = locationResult.lastLocation?.let {
                         com.javadocmd.simplelatlng.LatLng(
                             it.latitude,
                             it.longitude

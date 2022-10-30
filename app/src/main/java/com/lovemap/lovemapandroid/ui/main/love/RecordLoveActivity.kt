@@ -81,9 +81,8 @@ class RecordLoveActivity : AppCompatActivity() {
         appContext.selectedLoveSpotId?.let {
             val spotId = appContext.selectedLoveSpotId!!
             MainScope().launch {
-                appContext.selectedLoveSpot =
-                    loveSpotService.findLocally(appContext.selectedLoveSpotId!!)
-                recordLoveSpotName.text = appContext.selectedLoveSpot!!.name
+                val loveSpot =  loveSpotService.findLocally(spotId)
+                recordLoveSpotName.text = loveSpot!!.name
                 if (loveSpotReviewService.hasReviewedAlready(spotId)) {
                     recordLoveSubmit.isEnabled = true
                 } else {

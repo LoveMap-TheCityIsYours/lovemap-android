@@ -6,6 +6,7 @@ import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.databinding.ActivityReviewListBinding
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 class ReviewListActivity : AppCompatActivity() {
 
@@ -20,6 +21,10 @@ class ReviewListActivity : AppCompatActivity() {
         reviewListFragment =
             supportFragmentManager.findFragmentById(R.id.reviewListFragment) as LoveSpotReviewListFragment
 
-        binding.loveSpotTitle.text = AppContext.INSTANCE.selectedLoveSpot?.name
+        MainScope().launch {
+            AppContext.INSTANCE.findSelectedSpotLocally()?.let {
+                binding.loveSpotTitle.text = it.name
+            }
+        }
     }
 }

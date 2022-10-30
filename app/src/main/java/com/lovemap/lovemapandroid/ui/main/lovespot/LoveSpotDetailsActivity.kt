@@ -10,6 +10,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.config.AppContext
+import com.lovemap.lovemapandroid.config.MapContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.databinding.ActivityLoveSpotDetailsBinding
 import com.lovemap.lovemapandroid.ui.events.ShowOnMapClickedEvent
@@ -158,10 +159,10 @@ LoveSpotDetailsActivity : AppCompatActivity() {
 
     private fun setDetails() {
         MainScope().launch {
-            appContext.selectedLoveSpot = loveSpotService.findLocally(spotId)
-            setDetails(appContext.selectedLoveSpot)
-            appContext.selectedLoveSpot = loveSpotService.refresh(spotId)
-            setDetails(appContext.selectedLoveSpot)
+            var loveSpot = loveSpotService.findLocally(spotId)
+            setDetails(loveSpot)
+            loveSpot = loveSpotService.refresh(spotId)
+            setDetails(loveSpot)
         }
     }
 
@@ -222,11 +223,11 @@ LoveSpotDetailsActivity : AppCompatActivity() {
                         }
 
                         appContext.toaster.showToast(R.string.love_spot_reviewed)
-                        appContext.shouldCloseFabs = true
+                        MapContext.shouldCloseFabs = true
                         onBackPressed()
                     } ?: run {
                         appContext.toaster.showToast(R.string.havent_made_love_on_this_spot_yet)
-                        appContext.shouldCloseFabs = true
+                        MapContext.shouldCloseFabs = true
                         onBackPressed()
                     }
                     loadingBarShower.onResponse()

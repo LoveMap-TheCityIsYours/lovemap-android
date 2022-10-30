@@ -6,6 +6,8 @@ import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.databinding.ActivityLoveListBinding
 import com.lovemap.lovemapandroid.utils.IS_CLICKABLE
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 class LoveListActivity : AppCompatActivity() {
 
@@ -21,6 +23,10 @@ class LoveListActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.loveListFragment) as LoveListFragment
 
         loveListFragment.isClickableOverride = intent.getBooleanExtra(IS_CLICKABLE, true)
-        binding.loveSpotTitle.text = AppContext.INSTANCE.selectedLoveSpot?.name
+        MainScope().launch {
+            AppContext.INSTANCE.findSelectedSpotLocally()?.let {
+                binding.loveSpotTitle.text = it.name
+            }
+        }
     }
 }

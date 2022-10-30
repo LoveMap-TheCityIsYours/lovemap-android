@@ -27,6 +27,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.maps.android.clustering.ClusterManager
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
+import com.lovemap.lovemapandroid.config.MapContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.service.LoveService
 import com.lovemap.lovemapandroid.service.LoveSpotService
@@ -122,7 +123,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
             startActivity(Intent(requireContext(), RecordLoveActivity::class.java))
         }
         changeMapModeFab.setOnClickListener {
-            appContext.shouldClearMap = true
+            MapContext.shouldClearMap = true
             mapMode = if (mapMode == LOVE_SPOTS) {
                 loveSpotClusterRenderer.drawLoveMakings = true
                 appContext.toaster.showToast(R.string.showing_your_love_makings)
@@ -137,7 +138,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
             mapFragment.getMapAsync(this)
         }
         addLoveSpotFab.setOnClickListener {
-            if (!appContext.areAddLoveSpotFabsOpen) {
+            if (!MapContext.areAddLoveSpotFabsOpen) {
                 openAddLoveSpotFabs()
             } else {
                 closeAddLoveSpotFabs()
@@ -159,15 +160,15 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
         super.onResume()
         mapFragment.getMapAsync(this)
         viewPager2 = getViewPager2(requireView())
-        appContext.mapMarkerEventListener = this
+        MapContext.mapMarkerEventListener = this
         viewPager2?.let {
             val crosshair: ImageView = it.findViewById(R.id.centerCrosshair)
             val addLovespotText: TextView = it.findViewById(R.id.mapAddLovespotText)
-            if (appContext.shouldCloseFabs) {
-                appContext.shouldCloseFabs = false
+            if (MapContext.shouldCloseFabs) {
+                MapContext.shouldCloseFabs = false
                 onMapClicked()
             }
-            if (appContext.areAddLoveSpotFabsOpen) {
+            if (MapContext.areAddLoveSpotFabsOpen) {
                 crosshair.visibility = View.VISIBLE
                 addLovespotText.visibility = View.VISIBLE
             } else {
@@ -207,9 +208,9 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     }
 
     private fun clearMap() {
-        if (appContext.shouldClearMap) {
+        if (MapContext.shouldClearMap) {
             clearMarkers()
-            appContext.shouldClearMap = false
+            MapContext.shouldClearMap = false
             localSpotsDrawn = false
         }
     }
@@ -224,9 +225,9 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
         MainScope().launch {
             putMarkersFromLocalDb(googleMap.projection.visibleRegion.latLngBounds)
             putMarkersBasedOnCamera(googleMap)
-            appContext.zoomOnLoveSpot?.let {
+            MapContext.zoomOnLoveSpot?.let {
                 moveCameraTo(LatLng(it.latitude, it.longitude), googleMap)
-                appContext.zoomOnLoveSpot = null
+                MapContext.zoomOnLoveSpot = null
             }
         }
     }
@@ -247,7 +248,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     }
 
     private fun setMyLocation(googleMap: GoogleMap) {
-        if (appContext.locationEnabled) {
+        if (MapContext.locationEnabled) {
             googleMap.isMyLocationEnabled = true
             googleMap.uiSettings.isMyLocationButtonEnabled = true
         }
@@ -264,7 +265,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     private suspend fun putMarkersBasedOnCamera(
         googleMap: GoogleMap
     ) {
-        appContext.mapCameraTarget = googleMap.cameraPosition.target
+        MapContext.mapCameraTarget = googleMap.cameraPosition.target
 
         val visibleRegion = googleMap.projection.visibleRegion
         val loveSpotsInArea = loveSpotService.list(visibleRegion.latLngBounds)
@@ -274,8 +275,8 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
         }
         putLoveSpotListOnMap(loveSpotsInArea)
 
-        if (appContext.selectedMarker != null) {
-            appContext.selectedMarker!!.showInfoWindow()
+        if (MapContext.selectedMarker != null) {
+            MapContext.selectedMarker!!.showInfoWindow()
             openMarkerFabMenu()
         } else {
             closeMarkerFabMenu()
@@ -317,11 +318,10 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     ) {
         clusterManager.setOnClusterItemClickListener { item ->
             appContext.selectedLoveSpotId = item.loveSpot.id
-            appContext.selectedLoveSpot = item.loveSpot
             true
         }
         clusterManager.markerCollection.setOnMarkerClickListener { marker ->
-            appContext.selectedMarker = marker
+            MapContext.selectedMarker = marker
             appContext.selectedLoveSpotId = marker.snippet?.toLong()
             markerOpen = true
             onMarkerClicked()
@@ -343,7 +343,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
             viewPager2?.isUserInputEnabled = false
             if (markerOpen) {
                 markerOpen = false
-                appContext.selectedMarker = null
+                MapContext.selectedMarker = null
                 MainScope().launch {
                     putMarkersBasedOnCamera(googleMap)
                 }
@@ -428,8 +428,8 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     }
 
     private fun openMarkerFabMenu() {
-        if (!appContext.areMarkerFabsOpen) {
-            appContext.areMarkerFabsOpen = true
+        if (!MapContext.areMarkerFabsOpen) {
+            MapContext.areMarkerFabsOpen = true
             reportLoveSpotFab.visibility = View.VISIBLE
             addToWishlistFab.visibility = View.VISIBLE
             addLoveFab.visibility = View.VISIBLE
@@ -470,8 +470,8 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     }
 
     private fun closeMarkerFabMenu() {
-        if (appContext.areMarkerFabsOpen) {
-            appContext.areMarkerFabsOpen = false
+        if (MapContext.areMarkerFabsOpen) {
+            MapContext.areMarkerFabsOpen = false
             reportLoveSpotFab.animate().rotationBy(360f).translationX(0f)
                 .withEndAction { reportLoveSpotFab.visibility = View.GONE }
             addToWishlistFab.animate().rotationBy(360f).translationX(0f)
@@ -507,14 +507,14 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     }
 
     override fun onMapClicked() {
-        appContext.selectedMarker = null
+        MapContext.selectedMarker = null
         markerOpen = false
         closeAddLoveSpotFabs()
         closeMarkerFabMenu()
     }
 
     private fun openAddLoveSpotFabs() {
-        if (!appContext.areAddLoveSpotFabsOpen) {
+        if (!MapContext.areAddLoveSpotFabsOpen) {
             closeMarkerFabMenu()
             viewPager2?.post {
                 viewPager2?.setCurrentItem(MAP_PAGE, true)
@@ -527,9 +527,8 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
             addSpotCancelFab.animate().rotationBy(720f)
                 .translationX(-resources.getDimension(R.dimen.standard_225))
 
-            appContext.selectedMarker?.hideInfoWindow()
-            appContext.selectedMarker = null
-            appContext.selectedLoveSpot = null
+            MapContext.selectedMarker?.hideInfoWindow()
+            MapContext.selectedMarker = null
             appContext.selectedLoveSpotId = null
 
             val crosshair: ImageView? = requireActivity().findViewById(R.id.centerCrosshair)
@@ -540,12 +539,12 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
                 addLoveSpotText.visibility = View.VISIBLE
             }
 
-            appContext.areAddLoveSpotFabsOpen = true
+            MapContext.areAddLoveSpotFabsOpen = true
         }
     }
 
     private fun closeAddLoveSpotFabs() {
-        if (appContext.areAddLoveSpotFabsOpen) {
+        if (MapContext.areAddLoveSpotFabsOpen) {
             addSpotOkFab.animate().rotationBy(720f).translationX(0f).withEndAction {
                 addSpotOkFab.visibility = View.GONE
             }
@@ -561,7 +560,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
                 addLovespotText.visibility = View.GONE
             }
 
-            appContext.areAddLoveSpotFabsOpen = false
+            MapContext.areAddLoveSpotFabsOpen = false
         }
     }
 

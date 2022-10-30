@@ -6,6 +6,7 @@ import com.lovemap.lovemapandroid.api.lovespot.ListOrdering
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotSearchRequest
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotType
 import com.lovemap.lovemapandroid.config.AppContext
+import com.lovemap.lovemapandroid.config.MapContext
 import com.lovemap.lovemapandroid.ui.events.LoveSpotListFiltersChanged
 import org.greenrobot.eventbus.EventBus
 
@@ -67,8 +68,8 @@ object LoveSpotListFilterState {
         }
     }
 
-    fun createSearchRequest(): LoveSpotSearchRequest {
-        currentLocation = appContext.lastLocation
+    private fun createSearchRequest(): LoveSpotSearchRequest {
+        currentLocation = MapContext.lastLocation
         return LoveSpotSearchRequest(
             limit = defaultLimit,
             latitude = currentLocation?.latitude,

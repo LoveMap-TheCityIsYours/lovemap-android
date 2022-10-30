@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.report.LoveSpotReportRequest
 import com.lovemap.lovemapandroid.config.AppContext
+import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.databinding.ActivityReportLoveSpotBinding
 import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
 import kotlinx.coroutines.MainScope
@@ -27,6 +28,8 @@ class ReportLoveSpotActivity : AppCompatActivity() {
     private lateinit var reportLoveSpotName: TextView
     private lateinit var reportSpotSubmit: Button
 
+    private var loveSpot: LoveSpot? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityReportLoveSpotBinding.inflate(layoutInflater)
@@ -37,8 +40,8 @@ class ReportLoveSpotActivity : AppCompatActivity() {
 
         appContext.selectedLoveSpotId?.let {
             MainScope().launch {
-                appContext.selectedLoveSpot = loveSpotService.findLocally(it)
-                reportLoveSpotName.text = appContext.selectedLoveSpot?.name
+                loveSpot = loveSpotService.findLocally(it)
+                reportLoveSpotName.text = loveSpot?.name
             }
         }
 
@@ -59,7 +62,7 @@ class ReportLoveSpotActivity : AppCompatActivity() {
         reportSpotSubmit.setOnClickListener {
             MainScope().launch {
                 val loadingBarShower = LoadingBarShower(this@ReportLoveSpotActivity).show()
-                appContext.selectedLoveSpot?.let {
+                loveSpot?.let {
                     loveSpotReportService.submitReport(
                         LoveSpotReportRequest(
                             appContext.userId,

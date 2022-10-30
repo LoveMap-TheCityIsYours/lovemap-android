@@ -7,6 +7,7 @@ import com.lovemap.lovemapandroid.api.ErrorMessage
 import com.lovemap.lovemapandroid.api.getErrorMessages
 import com.lovemap.lovemapandroid.api.lovespot.*
 import com.lovemap.lovemapandroid.config.AppContext
+import com.lovemap.lovemapandroid.config.MapContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpotDao
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
@@ -281,7 +282,7 @@ class LoveSpotService(
         return withContext(Dispatchers.IO) {
             loveSpotDao.loadSingle(loveSpotId)?.let {
                 loveSpotDao.delete(it)
-                AppContext.INSTANCE.shouldClearMap = true
+                MapContext.shouldClearMap = true
             }
         }
     }

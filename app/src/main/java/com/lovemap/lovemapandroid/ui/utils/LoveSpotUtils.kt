@@ -17,6 +17,7 @@ import com.lovemap.lovemapandroid.api.lovespot.Availability
 import com.lovemap.lovemapandroid.api.lovespot.ListOrdering
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotType
 import com.lovemap.lovemapandroid.config.AppContext
+import com.lovemap.lovemapandroid.config.MapContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.ui.events.ShowOnMapClickedEvent
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
@@ -175,9 +176,9 @@ object LoveSpotUtils {
     }
 
     fun setDistance(loveSpot: LoveSpot, loveSpotItemDistance: TextView) {
-        if (AppContext.INSTANCE.lastLocation != null) {
+        if (MapContext.lastLocation != null) {
             val distanceKm = LatLngTool.distance(
-                AppContext.INSTANCE.lastLocation,
+                MapContext.lastLocation,
                 LatLng(loveSpot.latitude, loveSpot.longitude),
                 LengthUnit.KILOMETER
             )

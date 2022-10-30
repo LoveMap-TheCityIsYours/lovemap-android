@@ -10,6 +10,7 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.lovemap.lovemapandroid.config.AppContext
+import com.lovemap.lovemapandroid.config.MapContext
 import com.lovemap.lovemapandroid.databinding.FragmentLovespotItemBinding
 import com.lovemap.lovemapandroid.ui.data.LoveSpotHolder
 import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
@@ -109,8 +110,7 @@ class LoveSpotRecyclerViewAdapter(
         override fun onClick(v: View?) {
             val loveSpotId = values[absoluteAdapterPosition].id
             appContext.selectedLoveSpotId = loveSpotId
-            appContext.selectedLoveSpot = null
-            appContext.selectedMarker = null
+            MapContext.selectedMarker = null
             v?.context?.startActivity(
                 Intent(v.context, LoveSpotDetailsActivity::class.java)
             )

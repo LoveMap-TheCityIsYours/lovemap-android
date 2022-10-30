@@ -14,6 +14,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
+import com.lovemap.lovemapandroid.config.MapContext
 import com.lovemap.lovemapandroid.databinding.ActivityMainBinding
 import com.lovemap.lovemapandroid.ui.events.ShowOnMapClickedEvent
 import kotlinx.coroutines.MainScope
@@ -79,10 +80,9 @@ class MainActivity : AppCompatActivity() {
         MainScope().launch {
             val loveSpot = loveSpotService.findLocally(showOnMapClickedEvent.loveSpotId)
             if (loveSpot != null) {
-                appContext.zoomOnLoveSpot = loveSpot
-                appContext.selectedLoveSpot = null
+                MapContext.zoomOnLoveSpot = loveSpot
+                MapContext.selectedMarker = null
                 appContext.selectedLoveSpotId = null
-                appContext.selectedMarker = null
                 goToMapPage()
             }
         }
@@ -131,12 +131,12 @@ class MainActivity : AppCompatActivity() {
     private fun isMapPageOpen() = tabLayout.selectedTabPosition == 2
 
     private fun closeMapElements() {
-        if (appContext.areAddLoveSpotFabsOpen) {
-            appContext.mapMarkerEventListener.onMapClicked()
-        } else if (appContext.areMarkerFabsOpen) {
-            appContext.mapMarkerEventListener.onMapClicked()
-            appContext.selectedMarker?.hideInfoWindow()
-            appContext.selectedMarker = null
+        if (MapContext.areAddLoveSpotFabsOpen) {
+            MapContext.mapMarkerEventListener.onMapClicked()
+        } else if (MapContext.areMarkerFabsOpen) {
+            MapContext.mapMarkerEventListener.onMapClicked()
+            MapContext.selectedMarker?.hideInfoWindow()
+            MapContext.selectedMarker = null
         } else {
             val exit = Intent(Intent.ACTION_MAIN)
             exit.addCategory(Intent.CATEGORY_HOME)

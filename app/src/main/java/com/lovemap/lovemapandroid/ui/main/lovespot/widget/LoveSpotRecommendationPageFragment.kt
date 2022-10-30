@@ -11,6 +11,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.RecommendationsRequest
 import com.lovemap.lovemapandroid.config.AppContext
+import com.lovemap.lovemapandroid.config.MapContext
 import com.lovemap.lovemapandroid.ui.events.LocationUpdated
 import com.lovemap.lovemapandroid.ui.events.RecommendationsUpdated
 import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotListFilterState
@@ -85,8 +86,8 @@ class LoveSpotRecommendationPageFragment : Fragment() {
         MainScope().launch {
             val recommendations = loveSpotService.getRecommendations(
                 RecommendationsRequest(
-                    appContext.lastLocation?.longitude,
-                    appContext.lastLocation?.latitude,
+                    MapContext.lastLocation?.longitude,
+                    MapContext.lastLocation?.latitude,
                     appContext.country
                 )
             )

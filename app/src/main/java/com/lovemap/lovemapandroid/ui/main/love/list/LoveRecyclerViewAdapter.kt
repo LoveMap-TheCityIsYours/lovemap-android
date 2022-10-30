@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
+import com.lovemap.lovemapandroid.config.MapContext
 import com.lovemap.lovemapandroid.databinding.FragmentLoveItemBinding
 import com.lovemap.lovemapandroid.ui.data.LoveHolder
 import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
@@ -112,8 +113,7 @@ class LoveRecyclerViewAdapter(
                 loveItemViewSpot.setOnClickListener {
                     loveItem.loveSpotId
                     appContext.selectedLoveSpotId = loveItem.loveSpotId
-                    appContext.selectedLoveSpot = null
-                    appContext.selectedMarker = null
+                    MapContext.selectedMarker = null
                     view.context?.startActivity(
                         Intent(view.context, LoveSpotDetailsActivity::class.java)
                     )

@@ -52,7 +52,6 @@ class LoveSpotWidgetItemFragment : Fragment() {
         spotWidgetItemTypeImage = view.findViewById(R.id.spotWidgetItemTypeImage)
         view.setOnClickListener {
             if (loveSpot != null) {
-                appContext.selectedLoveSpot = loveSpot
                 appContext.selectedLoveSpotId = loveSpot!!.id
                 startActivity(Intent(requireContext(), LoveSpotDetailsActivity::class.java))
             }

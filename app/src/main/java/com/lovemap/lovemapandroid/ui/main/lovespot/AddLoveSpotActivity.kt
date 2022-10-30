@@ -14,6 +14,7 @@ import com.lovemap.lovemapandroid.api.lovespot.LoveSpotType
 import com.lovemap.lovemapandroid.api.lovespot.UpdateLoveSpotRequest
 import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewRequest
 import com.lovemap.lovemapandroid.config.AppContext
+import com.lovemap.lovemapandroid.config.MapContext
 import com.lovemap.lovemapandroid.data.love.Love
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.databinding.ActivityAddLoveSpotBinding
@@ -300,8 +301,8 @@ class AddLoveSpotActivity : AppCompatActivity() {
         return loveSpotService.create(
             CreateLoveSpotRequest(
                 name,
-                appContext.mapCameraTarget.longitude,
-                appContext.mapCameraTarget.latitude,
+                MapContext.mapCameraTarget.longitude,
+                MapContext.mapCameraTarget.latitude,
                 description,
                 null,
                 availability,
@@ -366,8 +367,8 @@ class AddLoveSpotActivity : AppCompatActivity() {
 
     private fun goBack(loveSpot: LoveSpot, loadingBarShower: LoadingBarShower) {
         appContext.toaster.showToast(R.string.love_spot_added)
-        appContext.shouldCloseFabs = true
-        appContext.zoomOnLoveSpot = loveSpot
+        MapContext.shouldCloseFabs = true
+        MapContext.zoomOnLoveSpot = loveSpot
         loadingBarShower.onResponse()
         onBackPressed()
     }
