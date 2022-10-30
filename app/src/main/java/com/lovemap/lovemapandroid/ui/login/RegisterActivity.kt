@@ -1,9 +1,11 @@
 package com.lovemap.lovemapandroid.ui.login
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
@@ -112,6 +114,12 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun addRegisterListener() {
         register.setOnClickListener {
+            val imm: InputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(
+                register.windowToken,
+                InputMethodManager.RESULT_UNCHANGED_SHOWN
+            )
             loading.visibility = View.VISIBLE
             MainScope().launch {
                 val loadingBarShower = LoadingBarShower(this@RegisterActivity).show()
