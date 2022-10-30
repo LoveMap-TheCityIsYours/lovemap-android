@@ -66,7 +66,6 @@ class LoveListFragment : Fragment() {
         adapter = LoveRecyclerViewAdapter(ArrayList(), isClickable)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
-        registerForContextMenu(recyclerView)
     }
 
     private fun initializeData() {
@@ -82,6 +81,9 @@ class LoveListFragment : Fragment() {
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
+        if (adapter.values.isEmpty()) {
+            return false
+        }
         val position = try {
             adapter.position
         } catch (e: Exception) {

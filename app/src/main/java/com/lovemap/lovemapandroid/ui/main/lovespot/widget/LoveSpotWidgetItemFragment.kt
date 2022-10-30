@@ -38,6 +38,9 @@ class LoveSpotWidgetItemFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_love_spot_widget_item, container, false)
         registerForContextMenu(view)
+        view.setOnCreateContextMenuListener { menu, v, menuInfo ->
+            onCreateContextMenu(menu, v, menuInfo)
+        }
         initViews(view)
         return view
     }
@@ -84,7 +87,7 @@ class LoveSpotWidgetItemFragment : Fragment() {
     ) {
         loveSpot?.let {
             LoveSpotUtils.onCreateContextMenu(menu, contextMenuIds, it.name, it.addedBy)
+            super.onCreateContextMenu(menu, v, menuInfo)
         }
-        super.onCreateContextMenu(menu, v, menuInfo)
     }
 }

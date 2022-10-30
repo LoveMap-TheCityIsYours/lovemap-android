@@ -175,6 +175,7 @@
             />
 
     </LinearLayout>
+
     <TextView
         style="?android:attr/weekSeparatorLineColor"
         android:layout_width="match_parent"
