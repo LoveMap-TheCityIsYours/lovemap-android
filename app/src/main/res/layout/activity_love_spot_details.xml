@@ -205,14 +205,23 @@
             android:layout_width="match_parent"
             android:layout_height="5dp"
             android:layout_marginTop="@dimen/standard_8"
+            android:layout_marginBottom="@dimen/standard_8"
             android:background="@color/separatorLine"
             android:gravity="center_horizontal" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/loveSpotDetailsImagesRV"
+            android:layout_width="wrap_content"
+            android:layout_height="500dp"
+            android:scrollbars="horizontal"
+            android:orientation="horizontal">
+        </androidx.recyclerview.widget.RecyclerView>
 
         <TextView
             style="?android:attr/weekSeparatorLineColor"
             android:layout_width="match_parent"
             android:layout_height="5dp"
-            android:layout_marginTop="@dimen/standard_100"
+            android:layout_marginTop="@dimen/standard_8"
             android:layout_marginBottom="@dimen/standard_4"
             android:background="@color/separatorLine"
             android:gravity="center_horizontal" />

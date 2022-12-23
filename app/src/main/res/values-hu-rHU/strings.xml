@@ -279,5 +279,9 @@
     <string name="recordLove">Hancúr Rögzítése</string>
     <string name="review_spot">Spot Értékelése</string>
     <string name="view_spot">Spothoz!</string>
+    <string name="unsupported_image_format">Nem Támogatott Képformátum</string>
+    <string name="image_upload_failed">Képfeltöltés sikertelen</string>
+    <string name="upload_photo">Kép Feltöltése</string>
+    <string name="failed_to_load_photos">Képek betöltése sikertelen</string>
 
 </resources>

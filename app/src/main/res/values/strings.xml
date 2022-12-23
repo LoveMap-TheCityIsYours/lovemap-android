@@ -286,5 +286,9 @@
     <string name="recordLove">Record Love</string>
     <string name="review_spot">Review Spot</string>
     <string name="view_spot">View Spot</string>
+    <string name="unsupported_image_format">Unsupported Image Format</string>
+    <string name="image_upload_failed">Image Upload Failed</string>
+    <string name="upload_photo">Upload</string>
+    <string name="failed_to_load_photos">Failed to load photos</string>
 
 </resources>

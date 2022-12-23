@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.lovemap.lovemapandroid.R
@@ -28,6 +29,7 @@ import com.lovemap.lovemapandroid.utils.canEditLoveSpot
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
+
 
 class
 LoveSpotDetailsActivity : AppCompatActivity() {
@@ -68,6 +70,8 @@ LoveSpotDetailsActivity : AppCompatActivity() {
     private lateinit var detailsSeeAllLovesButton: Button
     private lateinit var detailsReviewListFragment: LoveSpotReviewListFragment
 
+    private lateinit var loveSpotDetailsImagesRV: RecyclerView
+
     private var spotId: Long = 0
     private var rating: Int = 0
 
@@ -104,6 +108,10 @@ LoveSpotDetailsActivity : AppCompatActivity() {
                 EventBus.getDefault().post(ShowOnMapClickedEvent(spotId))
                 finish()
             }
+            loveSpotDetailsImagesRV = binding.loveSpotDetailsImagesRV
+            loveSpotDetailsImagesRV.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            loveSpotDetailsImagesRV.adapter = PhotoRecyclerAdapter(this)
+            loveSpotDetailsImagesRV.invalidate()
 
             setReviewRatingBar()
             setReviewSubmitButton()

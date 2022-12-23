@@ -68,6 +68,8 @@ private val errorCodeMessageMap = HashMap<ErrorCode, Int>().apply {
     put(MissingListCoordinates, R.string.missingListCoordinates)
     put(FacebookEmailOccupied, R.string.facebookEmailOccupied)
     put(FacebookLoginFailed, R.string.facebook_login_failed)
+    put(UnsupportedImageFormat, R.string.unsupported_image_format)
+    put(ImageUploadFailed, R.string.image_upload_failed)
 }
 
 enum class ErrorCode {
@@ -106,6 +108,8 @@ enum class ErrorCode {
     InvalidListLocationType,
     FacebookEmailOccupied,
     FacebookLoginFailed,
+    UnsupportedImageFormat,
+    ImageUploadFailed,
 
     UNDEFINED
 }
