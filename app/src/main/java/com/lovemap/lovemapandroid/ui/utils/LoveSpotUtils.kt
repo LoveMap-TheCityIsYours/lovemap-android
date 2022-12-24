@@ -156,15 +156,19 @@ object LoveSpotUtils {
         ListOrdering.NEWEST -> 4
     }
 
-    fun setTypeImage(type: LoveSpotType, imageView: ImageView) {
-        when (type) {
-            LoveSpotType.PUBLIC_SPACE -> imageView.setImageResource(R.drawable.ic_public_space_3)
-            LoveSpotType.SWINGER_CLUB -> imageView.setImageResource(R.drawable.ic_swinger_club_2)
-            LoveSpotType.CRUISING_SPOT -> imageView.setImageResource(R.drawable.ic_cruising_spot_1)
-            LoveSpotType.SEX_BOOTH -> imageView.setImageResource(R.drawable.ic_sex_booth_1)
-            LoveSpotType.NIGHT_CLUB -> imageView.setImageResource(R.drawable.ic_night_club_2)
-            LoveSpotType.OTHER_VENUE -> imageView.setImageResource(R.drawable.ic_other_venue_1)
+    fun getTypeImageResource(type: LoveSpotType): Int {
+        return when (type) {
+            LoveSpotType.PUBLIC_SPACE -> R.drawable.ic_public_space_3
+            LoveSpotType.SWINGER_CLUB -> R.drawable.ic_swinger_club_2
+            LoveSpotType.CRUISING_SPOT -> R.drawable.ic_cruising_spot_1
+            LoveSpotType.SEX_BOOTH -> R.drawable.ic_sex_booth_1
+            LoveSpotType.NIGHT_CLUB -> R.drawable.ic_night_club_2
+            LoveSpotType.OTHER_VENUE -> R.drawable.ic_other_venue_1
         }
+    }
+
+    fun setTypeImage(type: LoveSpotType, imageView: ImageView) {
+        imageView.setImageResource(getTypeImageResource(type))
     }
 
     fun setDistance(distanceKm: Double?, loveSpotItemDistance: TextView) {

@@ -1,7 +1,6 @@
 package com.lovemap.lovemapandroid.api
 
 import android.content.Context
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.ErrorCode.*
@@ -68,8 +67,8 @@ private val errorCodeMessageMap = HashMap<ErrorCode, Int>().apply {
     put(MissingListCoordinates, R.string.missingListCoordinates)
     put(FacebookEmailOccupied, R.string.facebookEmailOccupied)
     put(FacebookLoginFailed, R.string.facebook_login_failed)
-    put(UnsupportedImageFormat, R.string.unsupported_image_format)
-    put(ImageUploadFailed, R.string.image_upload_failed)
+    put(UnsupportedImageFormat, R.string.unsupported_photo_format)
+    put(ImageUploadFailed, R.string.photo_upload_failed)
 }
 
 enum class ErrorCode {

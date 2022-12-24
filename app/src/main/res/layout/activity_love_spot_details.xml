@@ -213,9 +213,38 @@
             android:id="@+id/loveSpotDetailsImagesRV"
             android:layout_width="wrap_content"
             android:layout_height="500dp"
+            android:visibility="gone"
             android:scrollbars="horizontal"
             android:orientation="horizontal">
         </androidx.recyclerview.widget.RecyclerView>
+
+        <LinearLayout
+            android:id="@+id/detailsNoPhotoViewGroup"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/standard_16"
+                android:text="@string/no_photo_for_this_lovespot_yet" />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/spotDetailsUploadButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/standard_8"
+                android:text="@string/upload_photo"
+                android:textSize="12sp"
+                app:icon="@drawable/ic_baseline_cloud_upload_24"
+                app:iconGravity="start" />
+        </LinearLayout>
+
 
         <TextView
             style="?android:attr/weekSeparatorLineColor"

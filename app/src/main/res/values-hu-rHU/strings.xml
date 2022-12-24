@@ -279,9 +279,12 @@
     <string name="recordLove">Hancúr Rögzítése</string>
     <string name="review_spot">Spot Értékelése</string>
     <string name="view_spot">Spothoz!</string>
-    <string name="unsupported_image_format">Nem Támogatott Képformátum</string>
-    <string name="image_upload_failed">Képfeltöltés sikertelen</string>
+    <string name="unsupported_photo_format">Nem Támogatott Képformátum</string>
+    <string name="photo_upload_failed">Képfeltöltés sikertelen</string>
     <string name="upload_photo">Kép Feltöltése</string>
     <string name="failed_to_load_photos">Képek betöltése sikertelen</string>
+    <string name="no_photo_for_this_lovespot_yet">Ehhez A LoveSpothoz még nincsenek képek</string>
+    <string name="write_review_before_photo_upload">Előbb írj LoveSpot értékelést</string>
+    <string name="photo_uploaded_succesfully">Kép(ek) sikeresen feltöltve</string>
 
 </resources>

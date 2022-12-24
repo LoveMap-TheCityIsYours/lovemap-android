@@ -16,6 +16,7 @@ import com.lovemap.lovemapandroid.api.love.LoveApi
 import com.lovemap.lovemapandroid.api.lover.LoverApi
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotApi
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotRisks
+import com.lovemap.lovemapandroid.api.lovespot.photo.LoveSpotPhotoApi
 import com.lovemap.lovemapandroid.api.lovespot.report.LoveSpotReportApi
 import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewApi
 import com.lovemap.lovemapandroid.api.partnership.PartnershipApi
@@ -39,6 +40,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -53,6 +55,7 @@ class AppContext : MultiDexApplication() {
     lateinit var loveSpotReportService: LoveSpotReportService
     lateinit var partnershipService: PartnershipService
     lateinit var geoLocationService: GeoLocationService
+    lateinit var loveSpotPhotoService: LoveSpotPhotoService
 
     lateinit var loveDao: LoveDao
     lateinit var loveSpotDao: LoveSpotDao
@@ -207,6 +210,11 @@ class AppContext : MultiDexApplication() {
             partnershipApi = authorizingRetrofit.create(PartnershipApi::class.java),
             partnershipDao = partnershipDao,
             metadataStore = metadataStore,
+            toaster = toaster
+        )
+        loveSpotPhotoService = LoveSpotPhotoService(
+            loveSpotPhotoApi = authorizingRetrofit.create(LoveSpotPhotoApi::class.java),
+            loveSpotService = loveSpotService,
             toaster = toaster
         )
         if (metadataStore.isLoggedIn()) {

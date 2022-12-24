@@ -8,9 +8,16 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.lovemap.lovemapandroid.R
+import com.lovemap.lovemapandroid.api.lovespot.photo.LoveSpotPhoto
+import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
+import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
 import com.squareup.picasso.Picasso
 
-class PhotoRecyclerAdapter(private val context: Context) :
+class PhotoRecyclerAdapter(
+    private val context: Context,
+    private val loveSpot: LoveSpot,
+    private val photoList: List<LoveSpotPhoto>
+) :
     RecyclerView.Adapter<PhotoRecyclerAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -23,25 +30,26 @@ class PhotoRecyclerAdapter(private val context: Context) :
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        if (position == itemCount - 1) {
+        if (position == photoList.size) {
             viewHolder.imageView.visibility = View.GONE
-            viewHolder.spotDetailsUploadButton.visibility = View.VISIBLE
+            viewHolder.spotPhotosUploadButton.visibility = View.VISIBLE
         } else {
             viewHolder.imageView.visibility = View.VISIBLE
-            viewHolder.spotDetailsUploadButton.visibility = View.GONE
+            viewHolder.spotPhotosUploadButton.visibility = View.GONE
             Picasso.get()
-                .load("https://natureconservancy-h.assetsadobe.com/is/image/content/dam/tnc/nature/en/photos/Independence-Lake-Clean-Drinking-Water_4000x2200.jpg?crop=1175,0,1650,2200&wid=600&hei=800&scl=2.75")
-                .placeholder(context.resources.getDrawable(R.drawable.ic_sex_booth_1)) // placeholder
+                .load(photoList[position].url)
+                .placeholder(LoveSpotUtils.getTypeImageResource(loveSpot.type))
                 .into(viewHolder.imageView)
         }
     }
 
     override fun getItemCount(): Int {
-        return 12
+        return photoList.size + 1
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imageView: ImageView = view.findViewById<View>(R.id.loveSpotPhotoItem) as ImageView
-        val spotDetailsUploadButton: ExtendedFloatingActionButton = view.findViewById<View>(R.id.spotDetailsUploadButton) as ExtendedFloatingActionButton
+        val spotPhotosUploadButton: ExtendedFloatingActionButton =
+            view.findViewById<View>(R.id.spotPhotosUploadButton) as ExtendedFloatingActionButton
     }
 }

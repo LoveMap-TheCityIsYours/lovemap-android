@@ -9,12 +9,12 @@ def localProperties = new Properties()
 localProperties.load(new FileInputStream(rootProject.file("local.properties")))
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.lovemap.lovemapandroid"
         minSdk 26
-        targetSdk 32
+        targetSdk 33
         versionCode 47
         versionName "1.5.13"
 
@@ -87,6 +87,7 @@ dependencies {
     implementation 'com.google.android.libraries.places:places:3.0.0'
     implementation "com.javadocmd:simplelatlng:1.4.0"
     implementation 'com.squareup.picasso:picasso:2.8'
+//    implementation 'com.github.Drjacky:ImagePicker:2.3.22'
 
     implementation 'com.facebook.android:facebook-login:latest.release'
 
