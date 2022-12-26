@@ -23,7 +23,7 @@ class LoadingBarShower(private val activity: Activity) {
         }
     }
 
-    fun show(): LoadingBarShower {
+    fun show(resId: Int = R.string.loadingDotDotDot): LoadingBarShower {
         MainScope().launch {
             withContext(Dispatchers.Main) {
                 activity.window.setFlags(
@@ -31,7 +31,7 @@ class LoadingBarShower(private val activity: Activity) {
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                 )
                 progressBar.isIndeterminate = true
-                progressBar.setMessage(activity.getString(R.string.loadingDotDotDot))
+                progressBar.setMessage(activity.getString(resId))
                 progressBar.setCanceledOnTouchOutside(false)
                 progressBar.show()
             }

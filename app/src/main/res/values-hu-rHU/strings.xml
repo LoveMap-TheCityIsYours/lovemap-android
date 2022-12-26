@@ -281,10 +281,14 @@
     <string name="view_spot">Spothoz!</string>
     <string name="unsupported_photo_format">Nem Támogatott Képformátum</string>
     <string name="photo_upload_failed">Képfeltöltés sikertelen</string>
-    <string name="upload_photo">Kép Feltöltése</string>
+    <string name="upload_photo">Képek Feltöltése</string>
+    <string name="attach_photos">Képek Csatolása</string>
     <string name="failed_to_load_photos">Képek betöltése sikertelen</string>
     <string name="no_photo_for_this_lovespot_yet">Ehhez A LoveSpothoz még nincsenek képek</string>
     <string name="write_review_before_photo_upload">Előbb írj LoveSpot értékelést</string>
     <string name="photo_uploaded_succesfully">Kép(ek) sikeresen feltöltve</string>
+    <string name="uploading_photo">Kép(ek) feltöltése...</string>
+    <string name="attached_photos">Csatolt Képek:</string>
+    <string name="zero_photos">0</string>
 
 </resources>

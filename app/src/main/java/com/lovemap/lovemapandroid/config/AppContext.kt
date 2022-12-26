@@ -41,6 +41,7 @@ import org.greenrobot.eventbus.ThreadMode
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
+import java.time.Duration
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -214,7 +215,6 @@ class AppContext : MultiDexApplication() {
         )
         loveSpotPhotoService = LoveSpotPhotoService(
             loveSpotPhotoApi = authorizingRetrofit.create(LoveSpotPhotoApi::class.java),
-            loveSpotService = loveSpotService,
             toaster = toaster
         )
         if (metadataStore.isLoggedIn()) {
@@ -279,10 +279,10 @@ class AppContext : MultiDexApplication() {
     }
 
     private fun getTimeoutClientBuilder() = OkHttpClient.Builder()
-        .callTimeout(60, TimeUnit.SECONDS)
+        .callTimeout(Duration.ofMinutes(5))
         .connectTimeout(60, TimeUnit.SECONDS)
-        .readTimeout(60, TimeUnit.SECONDS)
-        .writeTimeout(60, TimeUnit.SECONDS)
+        .readTimeout(Duration.ofMinutes(5))
+        .writeTimeout(Duration.ofMinutes(5))
 
     companion object {
         var INSTANCE = AppContext()
