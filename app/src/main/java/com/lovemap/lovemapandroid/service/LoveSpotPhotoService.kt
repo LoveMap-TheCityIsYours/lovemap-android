@@ -37,6 +37,24 @@ class LoveSpotPhotoService(
         }
     }
 
+    suspend fun deletePhoto(loveSpotId: Long, photoId: Long): List<LoveSpotPhoto> {
+        return withContext(Dispatchers.IO) {
+            val call = loveSpotPhotoApi.deletePhoto(loveSpotId, photoId)
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
+                toaster.showToast(R.string.failed_to_load_photos)
+                return@withContext emptyList()
+            }
+            if (response.isSuccessful) {
+                response.body()!!
+            } else {
+                toaster.showToast(R.string.failed_to_load_photos)
+                emptyList()
+            }
+        }
+    }
+
     suspend fun uploadToLoveSpot(loveSpotId: Long, photos: List<File>, activity: Activity) {
         if (photos.isNotEmpty()) {
             val loadingBarShower = LoadingBarShower(activity).show(R.string.uploading_photo)

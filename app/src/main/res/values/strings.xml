@@ -297,5 +297,10 @@
     <string name="uploading_photo">Uploading photo(s)...</string>
     <string name="attached_photos">Attached Photos:</string>
     <string name="zero_photos">0</string>
+    <string name="delete_photo_dialog_title">Deleting Photo</string>
+    <string name="delete_photo_dialog_message">Are you sure you want to delete it?</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+    <string name="photo_not_found">Photo not found</string>
 
 </resources>

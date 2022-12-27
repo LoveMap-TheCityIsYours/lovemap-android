@@ -1,9 +1,7 @@
 package com.lovemap.lovemapandroid.ui.main.lovespot
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -24,6 +22,7 @@ import com.lovemap.lovemapandroid.ui.events.ShowOnMapClickedEvent
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
 import com.lovemap.lovemapandroid.ui.main.love.list.LoveListActivity
 import com.lovemap.lovemapandroid.ui.main.love.list.LoveListFragment
+import com.lovemap.lovemapandroid.ui.main.lovespot.photos.PhotoRecyclerAdapter
 import com.lovemap.lovemapandroid.ui.main.lovespot.report.ReportLoveSpotActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.LoveSpotReviewListFragment
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewListActivity
@@ -37,7 +36,6 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
-import java.io.File
 
 
 class
@@ -90,6 +88,9 @@ LoveSpotDetailsActivity : AppCompatActivity() {
 
     @Volatile
     private var photosLoaded = false
+
+    @Volatile
+    private var photosRefreshed = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -148,6 +149,7 @@ LoveSpotDetailsActivity : AppCompatActivity() {
                     this@LoveSpotDetailsActivity
                 )
                 photosLoaded = false
+                photosRefreshed = false
                 Log.i(
                     this@LoveSpotDetailsActivity::class.simpleName,
                     "Upload finished, starting refreshing views."
@@ -159,7 +161,7 @@ LoveSpotDetailsActivity : AppCompatActivity() {
 
     private suspend fun startPhotoRefreshSequence() {
         repeat(20) {
-            if (!photosLoaded) {
+            if (!photosRefreshed) {
                 Log.i(
                     this@LoveSpotDetailsActivity::class.simpleName,
                     "New photos not loaded yet, keeps refreshing views."
@@ -168,7 +170,7 @@ LoveSpotDetailsActivity : AppCompatActivity() {
                 delay(1000)
                 val loveSpot = loveSpotService.refresh(loveSpotId)
                 if (localData != null && loveSpot != null) {
-                    photosLoaded = refreshPhotos(localData.numberOfPhotos, loveSpot)
+                    photosRefreshed = refreshPhotos(localData.numberOfPhotos, loveSpot)
                 }
             }
         }
@@ -242,17 +244,25 @@ LoveSpotDetailsActivity : AppCompatActivity() {
 
     private suspend fun loadPhotos(loveSpot: LoveSpot) {
         Log.i(this@LoveSpotDetailsActivity::class.simpleName, "Loading photos")
-        if (loveSpot.numberOfPhotos > 0) {
-            val photos = loveSpotPhotoService.getPhotosForLoveSpot(loveSpotId)
-            loveSpotDetailsImagesRV.adapter =
-                PhotoRecyclerAdapter(this@LoveSpotDetailsActivity, loveSpot, photos, photoPickerLauncher)
-            detailsNoPhotoViewGroup.visibility = View.GONE
-            loveSpotDetailsImagesRV.visibility = View.VISIBLE
-            loveSpotDetailsImagesRV.invalidate()
-        } else {
-            detailsNoPhotoViewGroup.visibility = View.VISIBLE
-            loveSpotDetailsImagesRV.visibility = View.GONE
-            detailsNoPhotoViewGroup.invalidate()
+        if (!photosLoaded) {
+            if (loveSpot.numberOfPhotos > 0) {
+                val photos = loveSpotPhotoService.getPhotosForLoveSpot(loveSpotId)
+                loveSpotDetailsImagesRV.adapter =
+                    PhotoRecyclerAdapter(
+                        this@LoveSpotDetailsActivity,
+                        loveSpot,
+                        photos,
+                        photoPickerLauncher
+                    )
+                detailsNoPhotoViewGroup.visibility = View.GONE
+                loveSpotDetailsImagesRV.visibility = View.VISIBLE
+                loveSpotDetailsImagesRV.invalidate()
+                photosLoaded = true
+            } else {
+                detailsNoPhotoViewGroup.visibility = View.VISIBLE
+                loveSpotDetailsImagesRV.visibility = View.GONE
+                detailsNoPhotoViewGroup.invalidate()
+            }
         }
     }
 
@@ -265,7 +275,12 @@ LoveSpotDetailsActivity : AppCompatActivity() {
             )
             val photos = loveSpotPhotoService.getPhotosForLoveSpot(loveSpotId)
             loveSpotDetailsImagesRV.adapter =
-                PhotoRecyclerAdapter(this@LoveSpotDetailsActivity, loveSpot, photos, photoPickerLauncher)
+                PhotoRecyclerAdapter(
+                    this@LoveSpotDetailsActivity,
+                    loveSpot,
+                    photos,
+                    photoPickerLauncher
+                )
             detailsNoPhotoViewGroup.visibility = View.GONE
             loveSpotDetailsImagesRV.visibility = View.VISIBLE
             loveSpotDetailsImagesRV.invalidate()

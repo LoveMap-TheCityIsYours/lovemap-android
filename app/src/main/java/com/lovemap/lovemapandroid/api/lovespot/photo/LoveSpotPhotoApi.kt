@@ -1,7 +1,6 @@
 package com.lovemap.lovemapandroid.api.lovespot.photo
 
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -13,13 +12,6 @@ interface LoveSpotPhotoApi {
     fun uploadToLoveSpot(
         @Path("loveSpotId") loveSpotId: Long,
         @Part photos: List<MultipartBody.Part>
-    ): Call<ResponseBody>
-
-//    @Multipart
-    @POST("/lovespots/{loveSpotId}/photos")
-    fun uploadToLoveSpot(
-        @Path("loveSpotId") loveSpotId: Long,
-        @Body photos: RequestBody
     ): Call<ResponseBody>
 
     @Multipart
@@ -37,5 +29,11 @@ interface LoveSpotPhotoApi {
     fun getPhotosForLoveSpotReview(
         @Path("loveSpotId") loveSpotId: Long,
         @Path("reviewId") reviewId: Long
+    ): Call<List<LoveSpotPhoto>>
+
+    @DELETE("/lovespots/{loveSpotId}/photos/{photoId}")
+    fun deletePhoto(
+        @Path("loveSpotId") loveSpotId: Long,
+        @Path("photoId") photoId: Long
     ): Call<List<LoveSpotPhoto>>
 }

@@ -69,6 +69,7 @@ private val errorCodeMessageMap = HashMap<ErrorCode, Int>().apply {
     put(FacebookLoginFailed, R.string.facebook_login_failed)
     put(UnsupportedImageFormat, R.string.unsupported_photo_format)
     put(ImageUploadFailed, R.string.photo_upload_failed)
+    put(PhotoNotFound, R.string.photo_not_found)
 }
 
 enum class ErrorCode {
@@ -109,6 +110,7 @@ enum class ErrorCode {
     FacebookLoginFailed,
     UnsupportedImageFormat,
     ImageUploadFailed,
+    PhotoNotFound,
 
     UNDEFINED
 }

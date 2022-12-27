@@ -1,18 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/loveSpotPhotoItem"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
+    <!--    <ImageView-->
+    <!--        android:id="@+id/loveSpotPhotoItem"-->
+    <!--        android:scaleType="fitCenter"-->
+    <!--        android:adjustViewBounds="true"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:layout_marginStart="@dimen/standard_8"-->
+    <!--        android:layout_marginEnd="@dimen/standard_8">-->
+    <!--    </ImageView>-->
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/standard_8"
-        android:layout_marginEnd="@dimen/standard_8">
-    </ImageView>
+        android:gravity="bottom|center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/loveSpotPhotoItem"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginStart="@dimen/standard_8"
+            android:layout_marginEnd="@dimen/standard_8"
+            android:layout_weight="10"
+            android:scaleType="centerInside"/>
+
+        <androidx.legacy.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/buttonViewGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/standard_8"
+            android:orientation="horizontal">
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/likeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginEnd="@dimen/standard_4"
+                android:textSize="12sp"
+                app:icon="@drawable/ic_baseline_thumb_up_alt_24"
+                app:iconGravity="start" />
+
+            <TextView
+                android:id="@+id/photoItemLikes"
+                android:text="0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginEnd="@dimen/standard_16"
+                />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/dislikeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginEnd="@dimen/standard_4"
+                android:textSize="12sp"
+                app:icon="@drawable/ic_baseline_thumb_down_alt_24"
+                app:iconGravity="start" />
+
+            <TextView
+                android:id="@+id/photoItemDislikes"
+                android:text="0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginEnd="@dimen/standard_16"
+                />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/deleteButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:textSize="12sp"
+                app:icon="@drawable/ic_baseline_delete_forever_24"
+                app:iconGravity="start" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/spotPhotosUploadButton"

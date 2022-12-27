@@ -4,4 +4,8 @@
         <item name="android:windowEnterAnimation">@anim/popup_show</item>
         <item name="android:windowExitAnimation">@anim/popup_hide</item>
     </style>
+    <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/myColorPrimary</item>
+        <item name="colorPrimary">@color/myColorOnSecondary</item>
+    </style>
 </resources>

@@ -290,5 +290,10 @@
     <string name="uploading_photo">Kép(ek) feltöltése...</string>
     <string name="attached_photos">Csatolt Képek:</string>
     <string name="zero_photos">0</string>
+    <string name="delete_photo_dialog_title">Kép Törlése</string>
+    <string name="delete_photo_dialog_message">Biztos vagy benne, hogy törölni akarod?</string>
+    <string name="yes">IGEN</string>
+    <string name="no">NEM</string>
+    <string name="photo_not_found">Fotó nem található</string>
 
 </resources>
