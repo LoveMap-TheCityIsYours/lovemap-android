@@ -1,11 +1,16 @@
 package com.lovemap.lovemapandroid.ui.main.lovespot
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.*
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.love.CreateLoveRequest
 import com.lovemap.lovemapandroid.api.lovespot.Availability.ALL_DAY
@@ -29,12 +34,14 @@ import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils.availabilityToPosition
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils.positionToAvailability
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils.positionToType
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils.typeToPosition
+import com.lovemap.lovemapandroid.ui.utils.PhotoUploadUtils
 import com.lovemap.lovemapandroid.utils.timeZone
 import com.lovemap.lovemapandroid.utils.toApiString
 import com.lovemap.lovemapandroid.utils.toFormattedString
 import com.lovemap.lovemapandroid.utils.toInstant
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import java.io.File
 import java.time.LocalDateTime
 
 
@@ -44,6 +51,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
     private val loveService = appContext.loveService
     private val loveSpotService = appContext.loveSpotService
     private val loveSpotReviewService = appContext.loveSpotReviewService
+    private val loveSpotPhotoService = appContext.loveSpotPhotoService
 
     private lateinit var binding: ActivityAddLoveSpotBinding
     private lateinit var addSpotTitle: TextView
@@ -59,6 +67,10 @@ class AddLoveSpotActivity : AppCompatActivity() {
     private lateinit var addSpotAvailability: Spinner
     private lateinit var addSpotType: Spinner
     private lateinit var loveSpotTypeInfoButton: ImageButton
+    private lateinit var addSpotUploadButton: ExtendedFloatingActionButton
+    private lateinit var attachedPhotosCount: TextView
+    private lateinit var photoPickerLauncher: ActivityResultLauncher<Intent>
+    private val filesToUpload = ArrayList<File>()
 
     private var availability = ALL_DAY
     private var type = LoveSpotType.PUBLIC_SPACE
@@ -83,6 +95,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
         setDescriptionText()
         setAvailabilitySpinner()
         setTypeSpinner()
+        setUploadButton()
     }
 
     private fun initViews() {
@@ -99,10 +112,19 @@ class AddLoveSpotActivity : AppCompatActivity() {
         addSpotAvailability = binding.addSpotAvailability
         addSpotType = binding.addSpotType
         loveSpotTypeInfoButton = binding.loveSpotTypeInfoButton
+        addSpotUploadButton = binding.addSpotUploadButton
+        attachedPhotosCount = binding.attachedPhotosCount
+
         reviewLoveSpotFragment =
             supportFragmentManager.findFragmentById(R.id.addSpotReviewLoveSpotFragment) as ReviewLoveSpotFragment
         recordLoveFragment =
             supportFragmentManager.findFragmentById(R.id.addSpotRecordLoveFragment) as RecordLoveFragment
+
+        photoPickerLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+                handlePhotoPickerResult(activityResult)
+            }
+
 
         loveSpotTypeInfoButton.setOnClickListener {
             val infoPopupShower = InfoPopupShower(R.string.love_spot_type_explanation)
@@ -121,6 +143,17 @@ class AddLoveSpotActivity : AppCompatActivity() {
             initViewsIfEditMode()
         } else {
             restoreSavedLoveSpot()
+        }
+    }
+
+    private fun handlePhotoPickerResult(activityResult: ActivityResult) {
+        MainScope().launch {
+            if (activityResult.resultCode == RESULT_OK) {
+                val files = PhotoUploadUtils.readResultToFiles(activityResult, contentResolver)
+                filesToUpload.clear()
+                filesToUpload.addAll(files)
+                attachedPhotosCount.text = "${filesToUpload.size}"
+            }
         }
     }
 
@@ -203,7 +236,8 @@ class AddLoveSpotActivity : AppCompatActivity() {
                 it.partnerSelection,
                 true
             )
-            recordLoveFragment.selectedDateTime = LocalDateTime.ofInstant(it.happenedAt, timeZone.toZoneId())
+            recordLoveFragment.selectedDateTime =
+                LocalDateTime.ofInstant(it.happenedAt, timeZone.toZoneId())
             recordLoveFragment.recordLoveHappenedAt.text = it.happenedAt.toFormattedString()
         }
         loveService.savedCreationState = null
@@ -270,6 +304,11 @@ class AddLoveSpotActivity : AppCompatActivity() {
                     val love = createLove(loveSpot)
                     submitReview(love, loveSpot)
                 }
+                loveSpotPhotoService.uploadToLoveSpot(
+                    loveSpot.id,
+                    filesToUpload,
+                    this@AddLoveSpotActivity
+                )
                 goBack(loveSpot, loadingBarShower)
             } else {
                 loadingBarShower.onResponse()
@@ -437,6 +476,15 @@ class AddLoveSpotActivity : AppCompatActivity() {
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
+    }
+
+    private fun setUploadButton() {
+        addSpotUploadButton.setOnClickListener {
+            MainScope().launch {
+                PhotoUploadUtils.verifyStoragePermissions(this@AddLoveSpotActivity)
+                PhotoUploadUtils.startPickerIntent(photoPickerLauncher)
+            }
+        }
     }
 
     private fun isSubmitReady(): Boolean {

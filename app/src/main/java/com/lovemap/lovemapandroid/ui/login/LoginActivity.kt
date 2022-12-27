@@ -147,7 +147,7 @@ class LoginActivity : AppCompatActivity() {
         val loadingBarShower = LoadingBarShower(this@LoginActivity)
         fbLoginButton = binding.fbLoginButton
         val callbackManager = CallbackManager.Factory.create()
-        fbLoginButton.setPermissions(listOf("email"))
+        fbLoginButton.setPermissions("email")
         fbLoginButton.registerCallback(
             callbackManager,
             object : FacebookCallback<LoginResult> {

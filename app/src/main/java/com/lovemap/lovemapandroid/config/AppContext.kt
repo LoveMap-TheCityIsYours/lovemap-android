@@ -16,6 +16,7 @@ import com.lovemap.lovemapandroid.api.love.LoveApi
 import com.lovemap.lovemapandroid.api.lover.LoverApi
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotApi
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotRisks
+import com.lovemap.lovemapandroid.api.lovespot.photo.LoveSpotPhotoApi
 import com.lovemap.lovemapandroid.api.lovespot.report.LoveSpotReportApi
 import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewApi
 import com.lovemap.lovemapandroid.api.partnership.PartnershipApi
@@ -39,6 +40,8 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
+import java.time.Duration
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -53,6 +56,7 @@ class AppContext : MultiDexApplication() {
     lateinit var loveSpotReportService: LoveSpotReportService
     lateinit var partnershipService: PartnershipService
     lateinit var geoLocationService: GeoLocationService
+    lateinit var loveSpotPhotoService: LoveSpotPhotoService
 
     lateinit var loveDao: LoveDao
     lateinit var loveSpotDao: LoveSpotDao
@@ -209,6 +213,10 @@ class AppContext : MultiDexApplication() {
             metadataStore = metadataStore,
             toaster = toaster
         )
+        loveSpotPhotoService = LoveSpotPhotoService(
+            loveSpotPhotoApi = authorizingRetrofit.create(LoveSpotPhotoApi::class.java),
+            toaster = toaster
+        )
         if (metadataStore.isLoggedIn()) {
             val user = metadataStore.getUser()
             userId = user.id
@@ -271,10 +279,10 @@ class AppContext : MultiDexApplication() {
     }
 
     private fun getTimeoutClientBuilder() = OkHttpClient.Builder()
-        .callTimeout(60, TimeUnit.SECONDS)
+        .callTimeout(Duration.ofMinutes(5))
         .connectTimeout(60, TimeUnit.SECONDS)
-        .readTimeout(60, TimeUnit.SECONDS)
-        .writeTimeout(60, TimeUnit.SECONDS)
+        .readTimeout(Duration.ofMinutes(5))
+        .writeTimeout(Duration.ofMinutes(5))
 
     companion object {
         var INSTANCE = AppContext()

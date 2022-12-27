@@ -23,6 +23,7 @@ data class LoveSpot(
     @ColumnInfo var averageDanger: Double?,
     @ColumnInfo var numberOfRatings: Int,
     @ColumnInfo var addedBy: Long,
+    @ColumnInfo var numberOfPhotos: Int,
     @ColumnInfo var type: LoveSpotType = LoveSpotType.PUBLIC_SPACE,
 ) {
     fun readCustomAvailability(): Pair<LocalTime, LocalTime>? {

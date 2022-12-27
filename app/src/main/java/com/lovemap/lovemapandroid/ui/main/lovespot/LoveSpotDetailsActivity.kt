@@ -1,10 +1,17 @@
 package com.lovemap.lovemapandroid.ui.main.lovespot
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.lovemap.lovemapandroid.R
@@ -23,11 +30,15 @@ import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewListActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewLoveSpotFragment
 import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
+import com.lovemap.lovemapandroid.ui.utils.PhotoUploadUtils
 import com.lovemap.lovemapandroid.utils.IS_CLICKABLE
 import com.lovemap.lovemapandroid.utils.canEditLoveSpot
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
+import java.io.File
+
 
 class
 LoveSpotDetailsActivity : AppCompatActivity() {
@@ -36,6 +47,7 @@ LoveSpotDetailsActivity : AppCompatActivity() {
     private val loveService = appContext.loveService
     private val loveSpotService = appContext.loveSpotService
     private val loveSpotReviewService = appContext.loveSpotReviewService
+    private val loveSpotPhotoService = appContext.loveSpotPhotoService
 
     private lateinit var binding: ActivityLoveSpotDetailsBinding
     private lateinit var detailsScrollView: ScrollView
@@ -68,20 +80,28 @@ LoveSpotDetailsActivity : AppCompatActivity() {
     private lateinit var detailsSeeAllLovesButton: Button
     private lateinit var detailsReviewListFragment: LoveSpotReviewListFragment
 
-    private var spotId: Long = 0
+    private lateinit var loveSpotDetailsImagesRV: RecyclerView
+    private lateinit var detailsNoPhotoViewGroup: LinearLayout
+    private lateinit var spotDetailsUploadButton: ExtendedFloatingActionButton
+    private lateinit var photoPickerLauncher: ActivityResultLauncher<Intent>
+
+    private var loveSpotId: Long = 0
     private var rating: Int = 0
+
+    @Volatile
+    private var photosLoaded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appContext.selectedLoveSpotId?.let {
-            spotId = appContext.selectedLoveSpotId!!
+            loveSpotId = appContext.selectedLoveSpotId!!
             initViews()
             spotDetailsReportButton.setOnClickListener {
                 startActivity(Intent(applicationContext, ReportLoveSpotActivity::class.java))
             }
             spotDetailsEditButton.setOnClickListener {
                 val intent = Intent(this, AddLoveSpotActivity::class.java)
-                intent.putExtra(AddLoveSpotActivity.EDIT, spotId)
+                intent.putExtra(AddLoveSpotActivity.EDIT, loveSpotId)
                 startActivity(intent)
             }
             detailsAddToWishlistButton.setOnClickListener {
@@ -101,14 +121,56 @@ LoveSpotDetailsActivity : AppCompatActivity() {
                 startActivity(Intent(applicationContext, ReviewListActivity::class.java))
             }
             spotDetailsShowOnMapButton.setOnClickListener {
-                EventBus.getDefault().post(ShowOnMapClickedEvent(spotId))
+                EventBus.getDefault().post(ShowOnMapClickedEvent(loveSpotId))
                 finish()
             }
+            photoPickerLauncher =
+                registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+                    handlePhotoPickerResult(activityResult)
+                }
 
             setReviewRatingBar()
             setReviewSubmitButton()
             setCancelButton()
             setMakeLoveButton()
+            setUploadButton()
+        }
+    }
+
+    private fun handlePhotoPickerResult(activityResult: ActivityResult) {
+        MainScope().launch {
+            if (activityResult.resultCode == RESULT_OK) {
+                val files = PhotoUploadUtils.readResultToFiles(activityResult, contentResolver)
+                Log.i(this@LoveSpotDetailsActivity::class.simpleName, "Starting upload")
+                loveSpotPhotoService.uploadToLoveSpot(
+                    loveSpotId,
+                    files,
+                    this@LoveSpotDetailsActivity
+                )
+                photosLoaded = false
+                Log.i(
+                    this@LoveSpotDetailsActivity::class.simpleName,
+                    "Upload finished, starting refreshing views."
+                )
+                startPhotoRefreshSequence()
+            }
+        }
+    }
+
+    private suspend fun startPhotoRefreshSequence() {
+        repeat(20) {
+            if (!photosLoaded) {
+                Log.i(
+                    this@LoveSpotDetailsActivity::class.simpleName,
+                    "New photos not loaded yet, keeps refreshing views."
+                )
+                val localData = loveSpotService.findLocally(loveSpotId)
+                delay(1000)
+                val loveSpot = loveSpotService.refresh(loveSpotId)
+                if (localData != null && loveSpot != null) {
+                    photosLoaded = refreshPhotos(localData.numberOfPhotos, loveSpot)
+                }
+            }
         }
     }
 
@@ -155,14 +217,65 @@ LoveSpotDetailsActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.detailsReviewListFragment) as LoveSpotReviewListFragment
         (detailsReviewListFragment.view?.findViewById(R.id.reviewList) as RecyclerView).isNestedScrollingEnabled =
             false
+
+        detailsNoPhotoViewGroup = binding.detailsNoPhotoViewGroup
+        spotDetailsUploadButton = binding.spotDetailsUploadButton
+        loveSpotDetailsImagesRV = binding.loveSpotDetailsImagesRV
+        loveSpotDetailsImagesRV.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     }
 
     private fun setDetails() {
         MainScope().launch {
-            var loveSpot = loveSpotService.findLocally(spotId)
+            Log.i(this::class.simpleName, "Setting details")
+            val localData = loveSpotService.findLocally(loveSpotId)
+            setDetails(localData)
+
+            val loveSpot = loveSpotService.refresh(loveSpotId)
             setDetails(loveSpot)
-            loveSpot = loveSpotService.refresh(spotId)
-            setDetails(loveSpot)
+
+            loveSpot?.let {
+                loadPhotos(it)
+            }
+        }
+    }
+
+    private suspend fun loadPhotos(loveSpot: LoveSpot) {
+        Log.i(this@LoveSpotDetailsActivity::class.simpleName, "Loading photos")
+        if (loveSpot.numberOfPhotos > 0) {
+            val photos = loveSpotPhotoService.getPhotosForLoveSpot(loveSpotId)
+            loveSpotDetailsImagesRV.adapter =
+                PhotoRecyclerAdapter(this@LoveSpotDetailsActivity, loveSpot, photos, photoPickerLauncher)
+            detailsNoPhotoViewGroup.visibility = View.GONE
+            loveSpotDetailsImagesRV.visibility = View.VISIBLE
+            loveSpotDetailsImagesRV.invalidate()
+        } else {
+            detailsNoPhotoViewGroup.visibility = View.VISIBLE
+            loveSpotDetailsImagesRV.visibility = View.GONE
+            detailsNoPhotoViewGroup.invalidate()
+        }
+    }
+
+    private suspend fun refreshPhotos(localPhotoCount: Int, loveSpot: LoveSpot): Boolean {
+        Log.i(this@LoveSpotDetailsActivity::class.simpleName, "Refreshing photos")
+        if (loveSpot.numberOfPhotos > localPhotoCount) {
+            Log.i(
+                this@LoveSpotDetailsActivity::class.simpleName,
+                "New photos found. loveSpot.numberOfPhotos (${loveSpot.numberOfPhotos}) > localPhotoCount ($localPhotoCount)"
+            )
+            val photos = loveSpotPhotoService.getPhotosForLoveSpot(loveSpotId)
+            loveSpotDetailsImagesRV.adapter =
+                PhotoRecyclerAdapter(this@LoveSpotDetailsActivity, loveSpot, photos, photoPickerLauncher)
+            detailsNoPhotoViewGroup.visibility = View.GONE
+            loveSpotDetailsImagesRV.visibility = View.VISIBLE
+            loveSpotDetailsImagesRV.invalidate()
+            return true
+        } else {
+            Log.i(
+                this@LoveSpotDetailsActivity::class.simpleName,
+                "No new photos. loveSpot.numberOfPhotos (${loveSpot.numberOfPhotos}) <= localPhotoCount ($localPhotoCount)"
+            )
+            return false
         }
     }
 
@@ -206,13 +319,13 @@ LoveSpotDetailsActivity : AppCompatActivity() {
             if (reviewSpotSubmit.isEnabled) {
                 val loadingBarShower = LoadingBarShower(this).show()
                 MainScope().launch {
-                    val love = loveService.getAnyLoveByLoveSpotId(spotId)
+                    val love = loveService.getAnyLoveByLoveSpotId(loveSpotId)
                     love?.let {
                         val reviewedSpot = loveSpotReviewService.submitReview(
                             LoveSpotReviewRequest(
                                 love.id,
                                 appContext.userId,
-                                spotId,
+                                loveSpotId,
                                 findViewById<EditText>(R.id.addReviewText).text.toString(),
                                 rating,
                                 findViewById<Spinner>(R.id.spotRiskDropdown).selectedItemPosition + 1
@@ -255,9 +368,20 @@ LoveSpotDetailsActivity : AppCompatActivity() {
         }
     }
 
+    private fun setUploadButton() {
+        spotDetailsUploadButton.setOnClickListener {
+            MainScope().launch {
+                if (PhotoUploadUtils.canUploadForSpot(loveSpotId)) {
+                    PhotoUploadUtils.verifyStoragePermissions(this@LoveSpotDetailsActivity)
+                    PhotoUploadUtils.startPickerIntent(photoPickerLauncher)
+                }
+            }
+        }
+    }
+
     private fun setDynamicTexts() {
         MainScope().launch {
-            if (loveService.madeLoveAlready(spotId)) {
+            if (loveService.madeLoveAlready(loveSpotId)) {
                 detailsReviewLoveSpotFragment?.view?.visibility = View.VISIBLE
                 detailsReviewButtons.visibility = View.VISIBLE
                 haveNotMadeLoveReviewText.visibility = View.GONE

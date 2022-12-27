@@ -286,5 +286,16 @@
     <string name="recordLove">Record Love</string>
     <string name="review_spot">Review Spot</string>
     <string name="view_spot">View Spot</string>
+    <string name="unsupported_photo_format">Unsupported Photo Format</string>
+    <string name="photo_upload_failed">Photo Upload Failed</string>
+    <string name="upload_photo">Upload</string>
+    <string name="attach_photos">Attach Photos</string>
+    <string name="failed_to_load_photos">Failed to load photos</string>
+    <string name="no_photo_for_this_lovespot_yet">This LoveSpot has no photos yet</string>
+    <string name="write_review_before_photo_upload">Submit Review to Upload Photo</string>
+    <string name="photo_uploaded_succesfully">Photo(s) uploaded successfully</string>
+    <string name="uploading_photo">Uploading photo(s)...</string>
+    <string name="attached_photos">Attached Photos:</string>
+    <string name="zero_photos">0</string>
 
 </resources>
