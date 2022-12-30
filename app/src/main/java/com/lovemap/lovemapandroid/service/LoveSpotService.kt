@@ -309,4 +309,12 @@ class LoveSpotService(
             }
         }
     }
+
+    suspend fun updatePhotoCount(loveSpotId: Long, photoCount: Int) {
+        withContext(Dispatchers.IO) {
+            loveSpotDao.loadSingle(loveSpotId)?.let {
+                loveSpotDao.insert(it.copy(numberOfPhotos = photoCount))
+            }
+        }
+    }
 }

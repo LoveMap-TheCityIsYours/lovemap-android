@@ -302,5 +302,6 @@
     <string name="yes">YES</string>
     <string name="no">NO</string>
     <string name="photo_not_found">Photo not found</string>
+    <string name="allow_access_to_storage">Allow access to external storage</string>
 
 </resources>

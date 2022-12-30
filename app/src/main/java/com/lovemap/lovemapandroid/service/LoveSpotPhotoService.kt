@@ -16,6 +16,7 @@ import java.io.File
 
 class LoveSpotPhotoService(
     private val loveSpotPhotoApi: LoveSpotPhotoApi,
+    private val loveSpotService: LoveSpotService,
     private val toaster: Toaster
 ) {
 
@@ -37,20 +38,22 @@ class LoveSpotPhotoService(
         }
     }
 
-    suspend fun deletePhoto(loveSpotId: Long, photoId: Long): List<LoveSpotPhoto> {
+    suspend fun deletePhoto(loveSpotId: Long, photoId: Long): Result<List<LoveSpotPhoto>> {
         return withContext(Dispatchers.IO) {
             val call = loveSpotPhotoApi.deletePhoto(loveSpotId, photoId)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
                 toaster.showToast(R.string.failed_to_load_photos)
-                return@withContext emptyList()
+                return@withContext Result.failure(e)
             }
             if (response.isSuccessful) {
-                response.body()!!
+                val remainingPhotos = response.body()!!
+                loveSpotService.updatePhotoCount(loveSpotId, remainingPhotos.size)
+                Result.success(remainingPhotos)
             } else {
-                toaster.showToast(R.string.failed_to_load_photos)
-                emptyList()
+                toaster.showResponseError(response)
+                Result.failure(IllegalStateException("${response.errorBody()}"))
             }
         }
     }
@@ -61,6 +64,35 @@ class LoveSpotPhotoService(
             withContext(Dispatchers.IO) {
                 val parts: List<MultipartBody.Part> = photos.map { prepareFilePart(it) }
                 val call = loveSpotPhotoApi.uploadToLoveSpot(loveSpotId, parts)
+                try {
+                    val response = call.execute()
+                    loadingBarShower.onResponse()
+                    if (response.isSuccessful) {
+                        toaster.showToast(R.string.photo_uploaded_succesfully)
+                    } else {
+                        toaster.showResponseError(response)
+                        Log.e("LoveSpotPhotoService", "Photo upload exception: $response")
+                    }
+                } catch (e: Exception) {
+                    loadingBarShower.onResponse()
+                    Log.e("LoveSpotPhotoService", "Photo upload exception", e)
+                    toaster.showToast(R.string.photo_upload_failed)
+                }
+            }
+        }
+    }
+
+    suspend fun uploadToReview(
+        loveSpotId: Long,
+        reviewId: Long,
+        photos: List<File>,
+        activity: Activity
+    ) {
+        if (photos.isNotEmpty()) {
+            val loadingBarShower = LoadingBarShower(activity).show(R.string.uploading_photo)
+            withContext(Dispatchers.IO) {
+                val parts: List<MultipartBody.Part> = photos.map { prepareFilePart(it) }
+                val call = loveSpotPhotoApi.uploadToLoveSpotReview(loveSpotId, reviewId, parts)
                 try {
                     val response = call.execute()
                     loadingBarShower.onResponse()

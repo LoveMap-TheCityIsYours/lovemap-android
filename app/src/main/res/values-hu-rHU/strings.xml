@@ -295,5 +295,6 @@
     <string name="yes">IGEN</string>
     <string name="no">NEM</string>
     <string name="photo_not_found">Fotó nem található</string>
+    <string name="allow_access_to_storage">Adj hozzáférést a tárhelyhez</string>
 
 </resources>

@@ -16,13 +16,15 @@ import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.photo.LoveSpotPhoto
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
+import com.lovemap.lovemapandroid.ui.events.LoveSpotPhotoDeleted
+import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
 import com.lovemap.lovemapandroid.ui.utils.AlertDialogUtils
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
 import com.lovemap.lovemapandroid.ui.utils.PhotoUploadUtils
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-
+import org.greenrobot.eventbus.EventBus
 
 class PhotoRecyclerAdapter(
     private val activity: Activity,
@@ -33,6 +35,7 @@ class PhotoRecyclerAdapter(
 
     private val toaster = AppContext.INSTANCE.toaster
     private val loveSpotPhotoService = AppContext.INSTANCE.loveSpotPhotoService
+    private val loveSpotReviewService = AppContext.INSTANCE.loveSpotReviewService
 
     override fun onCreateViewHolder(
         viewGroup: ViewGroup,
@@ -52,9 +55,16 @@ class PhotoRecyclerAdapter(
 
             viewHolder.spotPhotosUploadButton.setOnClickListener {
                 MainScope().launch {
+                    PhotoUploadUtils.verifyStoragePermissions(activity)
                     if (PhotoUploadUtils.canUploadForSpot(loveSpot.id)) {
-                        PhotoUploadUtils.verifyStoragePermissions(activity)
                         PhotoUploadUtils.startPickerIntent(launcher)
+                    } else if (PhotoUploadUtils.canUploadForReview(loveSpot.id)) {
+                        loveSpotReviewService.findByLoverAndSpotId(loveSpot.id)?.let { review ->
+                            if (activity is LoveSpotDetailsActivity) {
+                                activity.photoUploadReviewId = review.id
+                            }
+                            PhotoUploadUtils.startPickerIntent(launcher)
+                        }
                     }
                 }
             }
@@ -62,8 +72,13 @@ class PhotoRecyclerAdapter(
             viewHolder.imageView.visibility = View.VISIBLE
             viewHolder.spotPhotosUploadButton.visibility = View.GONE
             viewHolder.buttonViewGroup.visibility = View.VISIBLE
-
             val photo = photoList[position]
+            if (PhotoUploadUtils.canDeletePhoto(photo)) {
+                viewHolder.deleteButton.visibility = View.VISIBLE
+            } else {
+                viewHolder.deleteButton.visibility = View.GONE
+            }
+
             Picasso.get()
                 .load(photo.url)
                 .placeholder(LoveSpotUtils.getTypeImageResource(loveSpot.type))
@@ -83,10 +98,16 @@ class PhotoRecyclerAdapter(
                 AlertDialogUtils.newDialog(
                     activity,
                     R.string.delete_photo_dialog_title,
-                    R.string.delete_photo_dialog_message,
-                    {
+                    R.string.delete_photo_dialog_message, {
                         MainScope().launch {
-                            loveSpotPhotoService.deletePhoto(loveSpot.id, photo.id)
+                            val deleteResult =
+                                loveSpotPhotoService.deletePhoto(loveSpot.id, photo.id)
+                            deleteResult.onSuccess { remainingPhotos ->
+                                EventBus.getDefault().post(
+                                    LoveSpotPhotoDeleted(remainingPhotos)
+                                )
+                            }
+
                         }
                     }
                 ).show()

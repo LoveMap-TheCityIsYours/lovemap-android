@@ -215,6 +215,7 @@ class AppContext : MultiDexApplication() {
         )
         loveSpotPhotoService = LoveSpotPhotoService(
             loveSpotPhotoApi = authorizingRetrofit.create(LoveSpotPhotoApi::class.java),
+            loveSpotService = loveSpotService,
             toaster = toaster
         )
         if (metadataStore.isLoggedIn()) {

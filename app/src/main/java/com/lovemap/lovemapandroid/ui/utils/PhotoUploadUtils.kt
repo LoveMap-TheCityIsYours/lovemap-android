@@ -12,13 +12,16 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.app.ActivityCompat
 import com.lovemap.lovemapandroid.R
+import com.lovemap.lovemapandroid.api.lovespot.photo.LoveSpotPhoto
 import com.lovemap.lovemapandroid.config.AppContext
+import com.lovemap.lovemapandroid.service.Toaster
 import java.io.File
 
 
 object PhotoUploadUtils {
 
     private const val REQUEST_EXTERNAL_STORAGE = 1
+
     private val PERMISSIONS_STORAGE = arrayOf(
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -32,6 +35,7 @@ object PhotoUploadUtils {
         )
         if (permission != PackageManager.PERMISSION_GRANTED) {
             // We don't have permission so prompt the user
+            AppContext.INSTANCE.toaster.showToast(R.string.allow_access_to_storage)
             ActivityCompat.requestPermissions(
                 activity,
                 PERMISSIONS_STORAGE,
@@ -40,18 +44,30 @@ object PhotoUploadUtils {
         }
     }
 
+    suspend fun canUploadForReview(loveSpotId: Long): Boolean {
+        return if (AppContext.INSTANCE.loveSpotReviewService.hasReviewedAlready(loveSpotId)) {
+            true
+        } else {
+            AppContext.INSTANCE.toaster.showToast(R.string.write_review_before_photo_upload)
+            false
+        }
+    }
+
     suspend fun canUploadForSpot(loveSpotId: Long): Boolean {
         val loveSpot = AppContext.INSTANCE.loveSpotService.findLocally(loveSpotId)
         if (loveSpot != null) {
-            if (loveSpot.addedBy == AppContext.INSTANCE.userId) {
-                return true
+            return if (AppContext.INSTANCE.isAdmin) {
+                true
+            } else {
+                loveSpot.addedBy == AppContext.INSTANCE.userId
             }
         }
-        if (AppContext.INSTANCE.loveSpotReviewService.hasReviewedAlready(loveSpotId)) {
-            return true
-        }
-        AppContext.INSTANCE.toaster.showToast(R.string.write_review_before_photo_upload)
         return false
+    }
+
+    fun canDeletePhoto(loveSpotPhoto: LoveSpotPhoto): Boolean {
+        return AppContext.INSTANCE.isAdmin
+                || loveSpotPhoto.uploadedBy == AppContext.INSTANCE.userId
     }
 
     fun startPickerIntent(launcher: ActivityResultLauncher<Intent>) {
