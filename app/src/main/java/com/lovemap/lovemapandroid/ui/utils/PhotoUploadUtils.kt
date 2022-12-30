@@ -89,7 +89,6 @@ object PhotoUploadUtils {
             val uri = clipData.getItemAt(i).uri
             Log.i("uri", "$uri")
             addToFilesFromUri(uri, files, contentResolver)
-
         }
         return files
     }

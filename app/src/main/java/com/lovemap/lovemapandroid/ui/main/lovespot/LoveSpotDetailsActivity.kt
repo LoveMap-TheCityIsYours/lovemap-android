@@ -49,6 +49,7 @@ LoveSpotDetailsActivity : AppCompatActivity() {
     var photoUploadReviewId: Long? = null
 
     private val appContext = AppContext.INSTANCE
+    private val toaster = appContext.toaster
     private val loveService = appContext.loveService
     private val loveSpotService = appContext.loveSpotService
     private val loveSpotReviewService = appContext.loveSpotReviewService
@@ -174,6 +175,8 @@ LoveSpotDetailsActivity : AppCompatActivity() {
                     "Upload finished, starting refreshing views."
                 )
                 startPhotoRefreshSequence()
+            } else {
+                toaster.showToast(R.string.failed_to_access_photos)
             }
         }
     }
