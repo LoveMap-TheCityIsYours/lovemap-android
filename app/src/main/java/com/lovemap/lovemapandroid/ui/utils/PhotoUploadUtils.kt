@@ -2,11 +2,13 @@ package com.lovemap.lovemapandroid.ui.utils
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.ContentResolver
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.MediaStore
+import android.provider.Settings
 import android.util.Log
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -14,7 +16,6 @@ import androidx.core.app.ActivityCompat
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.photo.LoveSpotPhoto
 import com.lovemap.lovemapandroid.config.AppContext
-import com.lovemap.lovemapandroid.service.Toaster
 import java.io.File
 
 
@@ -35,7 +36,7 @@ object PhotoUploadUtils {
         )
         if (permission != PackageManager.PERMISSION_GRANTED) {
             // We don't have permission so prompt the user
-            AppContext.INSTANCE.toaster.showToast(R.string.allow_access_to_storage)
+//            AppContext.INSTANCE.toaster.showToast(R.string.allow_access_to_storage)
             ActivityCompat.requestPermissions(
                 activity,
                 PERMISSIONS_STORAGE,
@@ -113,5 +114,40 @@ object PhotoUploadUtils {
                     }
                 }
             }
+    }
+
+    fun permissionDialog(activity: Activity): AlertDialog {
+        val alertDialog = AlertDialog.Builder(activity, R.style.MyDialogTheme)
+            .setTitle(activity.getString(R.string.photo_upload_failed))
+            .setMessage(activity.getString(R.string.allow_access_to_storage_long))
+            .setPositiveButton(activity.getString(R.string.ok_capital)) { dialog, _ -> // Do nothing but close the dialog
+                activity.startActivity(
+                    Intent(
+                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                        Uri.parse("package:com.lovemap.lovemapandroid")
+                    )
+                )
+                dialog.dismiss()
+            }
+            .setNegativeButton(activity.getString(R.string.cancel_capital)) { dialog, _ -> // Do nothing
+                dialog.dismiss()
+            }.create()
+
+        alertDialog.setOnShowListener {
+            alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(
+                activity.resources.getColor(
+                    R.color.myColorOnSecondary,
+                    activity.theme
+                )
+            )
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(
+                activity.resources.getColor(
+                    R.color.myColorOnSecondary,
+                    activity.theme
+                )
+            )
+        }
+
+        return alertDialog
     }
 }

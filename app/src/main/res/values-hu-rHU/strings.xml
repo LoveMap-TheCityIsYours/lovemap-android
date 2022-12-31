@@ -297,5 +297,8 @@
     <string name="photo_not_found">Fotó nem található</string>
     <string name="allow_access_to_storage">Adj hozzáférést a tárhelyhez</string>
     <string name="failed_to_access_photos">Nem sikerült hozzáférni a képekhez</string>
+    <string name="allow_access_to_storage_long">Az appnak nincs hozzáférése a tárhelyhez, kérlek engedélyezd a hozzáférést manuálisan az Android beállitásokban.</string>
+    <string name="cancel_capital">MÉGSE</string>
+    <string name="ok_capital">OK</string>
 
 </resources>

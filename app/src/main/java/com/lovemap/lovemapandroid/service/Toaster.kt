@@ -23,7 +23,7 @@ class Toaster(
     }
 
     fun showResponseError(response: Response<out Any>) {
-        doShow(response.getErrorMessages()[0].translatedString(context))
+        doShowNullable(response.getErrorMessages().firstOrNull()?.translatedString(context))
     }
 
     fun showNoServerToast() {
@@ -38,6 +38,20 @@ class Toaster(
                 Toast.makeText(
                     context,
                     message,
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+
+    private fun doShowNullable(message: String?) {
+        val currentTimeMillis = System.currentTimeMillis()
+        if (haveFiveSecondsPassed(currentTimeMillis)) {
+            lastShownTimestamp = currentTimeMillis
+            Handler(looper).post {
+                Toast.makeText(
+                    context,
+                    message ?: context.getString(R.string.noServer),
                     Toast.LENGTH_LONG
                 ).show()
             }

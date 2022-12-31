@@ -29,6 +29,7 @@ class LoveSpotListFragment : Fragment() {
     private val loveSpotService = appContext.loveSpotService
 
     private var lastEvent: LoveSpotListFiltersChanged? = null
+    private var lastEventAt: Long = 0
 
     private lateinit var progressBar: ProgressBar
     private lateinit var recyclerView: RecyclerView
@@ -90,7 +91,11 @@ class LoveSpotListFragment : Fragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onLoveSpotListFiltersChanged(event: LoveSpotListFiltersChanged) {
         lastEvent = event
-        updateData(event.request, event.listOrdering, event.listLocation)
+        val now = System.currentTimeMillis()
+        if (now - lastEventAt > 300) {
+            updateData(event.request, event.listOrdering, event.listLocation)
+            lastEventAt = now
+        }
     }
 
     private fun updateData(

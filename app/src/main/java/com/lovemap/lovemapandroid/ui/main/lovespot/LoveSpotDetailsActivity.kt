@@ -153,7 +153,7 @@ LoveSpotDetailsActivity : AppCompatActivity() {
             if (activityResult.resultCode == RESULT_OK) {
                 val files = PhotoUploadUtils.readResultToFiles(activityResult, contentResolver)
                 Log.i(this@LoveSpotDetailsActivity::class.simpleName, "Starting upload")
-                if (photoUploadReviewId != null) {
+                val result: Boolean = if (photoUploadReviewId != null) {
                     loveSpotPhotoService.uploadToReview(
                         loveSpotId,
                         photoUploadReviewId!!,
@@ -167,14 +167,16 @@ LoveSpotDetailsActivity : AppCompatActivity() {
                         this@LoveSpotDetailsActivity
                     )
                 }
-                photosLoaded = false
-                photosRefreshed = false
+                photosLoaded = !result
+                photosRefreshed = !result
                 photoUploadReviewId = null
-                Log.i(
-                    this@LoveSpotDetailsActivity::class.simpleName,
-                    "Upload finished, starting refreshing views."
-                )
-                startPhotoRefreshSequence()
+                if (result) {
+                    Log.i(
+                        this@LoveSpotDetailsActivity::class.simpleName,
+                        "Upload finished, starting refreshing views."
+                    )
+                    startPhotoRefreshSequence()
+                }
             } else {
                 toaster.showToast(R.string.failed_to_access_photos)
             }

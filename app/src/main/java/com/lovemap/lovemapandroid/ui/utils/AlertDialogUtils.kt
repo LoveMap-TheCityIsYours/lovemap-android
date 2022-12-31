@@ -6,6 +6,16 @@ import com.lovemap.lovemapandroid.R
 
 object AlertDialogUtils {
 
+    fun newAlert(
+        activity: Activity,
+        titleResId: Int,
+        messageResId: Int
+    ): AlertDialog {
+        return AlertDialog.Builder(activity, R.style.MyDialogTheme)
+            .setTitle(activity.getString(titleResId))
+            .setMessage(activity.getString(messageResId)).create()
+    }
+
     fun newDialog(
         activity: Activity,
         titleResId: Int,

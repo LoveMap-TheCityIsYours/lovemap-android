@@ -304,5 +304,8 @@
     <string name="photo_not_found">Photo not found</string>
     <string name="allow_access_to_storage">Allow access to external storage</string>
     <string name="failed_to_access_photos">Failed to access photos</string>
+    <string name="allow_access_to_storage_long">App does not have access to external storage, please allow it manually in the Android Settings.</string>
+    <string name="cancel_capital">CANCEL</string>
+    <string name="ok_capital">OK</string>
 
 </resources>
