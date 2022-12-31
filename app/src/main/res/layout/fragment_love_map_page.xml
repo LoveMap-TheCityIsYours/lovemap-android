@@ -8,6 +8,18 @@
     android:orientation="vertical"
     tools:context="com.lovemap.lovemapandroid.ui.main.pages.map.LoveMapPageFragment">
 
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/changeMapLayer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_marginEnd="@dimen/standard_64"
+        android:layout_marginTop="50dp"
+        android:textColor="@color/myColorOnPrimary"
+        android:backgroundTint="@color/myColorPrimary"
+        app:iconTint="@color/myColorOnPrimary"
+        app:icon="@drawable/ic_baseline_layers_24"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

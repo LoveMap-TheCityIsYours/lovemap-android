@@ -60,6 +60,8 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     private var mapMode = LOVE_SPOTS
     private val drawnSpots = HashSet<Long>()
     private var zoomLevel: Float = 1f
+    private var mapType =  GoogleMap.MAP_TYPE_NORMAL
+    private var googleMap: GoogleMap? = null
 
     private var viewPager2: ViewPager2? = null
     private lateinit var loveSpotInfoWindowAdapter: LoveSpotInfoWindowAdapter
@@ -73,6 +75,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     private lateinit var reportLoveSpotFab: FloatingActionButton
 
     private lateinit var changeMapModeFab: ExtendedFloatingActionButton
+    private lateinit var changeMapLayer: ExtendedFloatingActionButton
 
     private lateinit var addLoveSpotFab: ExtendedFloatingActionButton
     private lateinit var addSpotOkFab: FloatingActionButton
@@ -101,6 +104,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
         reportSpotText = view.findViewById(R.id.spotReportText)
         reportLoveSpotFab = view.findViewById(R.id.reportLoveSpotFab)
         changeMapModeFab = view.findViewById(R.id.changeMapModeFab)
+        changeMapLayer = view.findViewById(R.id.changeMapLayer)
         addLoveSpotFab = view.findViewById(R.id.addLoveSpotFab)
         addSpotOkFab = view.findViewById(R.id.addSpotOkFab)
         addSpotCancelFab = view.findViewById(R.id.addSpotCancelFab)
@@ -136,6 +140,16 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
                 LOVE_SPOTS
             }
             mapFragment.getMapAsync(this)
+        }
+        changeMapLayer.setOnClickListener {
+            mapType = if (mapType == GoogleMap.MAP_TYPE_NORMAL) {
+                GoogleMap.MAP_TYPE_HYBRID
+            } else {
+                GoogleMap.MAP_TYPE_NORMAL
+            }
+            if (googleMap != null) {
+                googleMap?.mapType = mapType
+            }
         }
         addLoveSpotFab.setOnClickListener {
             if (!MapContext.areAddLoveSpotFabsOpen) {
@@ -180,6 +194,8 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onMapReady(googleMap: GoogleMap) {
+        this.googleMap = googleMap
+        googleMap.mapType = mapType
         if (!this::clusterManager.isInitialized) {
             clusterManager = ClusterManager(requireContext(), googleMap)
             googleMap.setInfoWindowAdapter(clusterManager.markerManager)
