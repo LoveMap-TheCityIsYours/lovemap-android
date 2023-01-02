@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.lovemap.lovemapandroid.R
@@ -33,6 +34,7 @@ class PhotoRecyclerAdapter(
     private val launcher: ActivityResultLauncher<Intent>
 ) : RecyclerView.Adapter<PhotoRecyclerAdapter.ViewHolder>() {
 
+    private val userId: Long = AppContext.INSTANCE.userId
     private val toaster = AppContext.INSTANCE.toaster
     private val loveSpotPhotoService = AppContext.INSTANCE.loveSpotPhotoService
     private val loveSpotReviewService = AppContext.INSTANCE.loveSpotReviewService
@@ -113,13 +115,47 @@ class PhotoRecyclerAdapter(
                 ).show()
             }
 
+            updateLikeButtons(viewHolder, photo)
+
             viewHolder.likeButton.setOnClickListener {
-                toaster.showToast(R.string.not_yet_implemented)
+                MainScope().launch {
+                    loveSpotPhotoService.likePhoto(photo.loveSpotId, photo.id)?.let {
+                        updateLikeButtons(viewHolder, it)
+                    }
+                }
             }
 
             viewHolder.dislikeButton.setOnClickListener {
-                toaster.showToast(R.string.not_yet_implemented)
+                MainScope().launch {
+                    loveSpotPhotoService.dislikePhoto(photo.loveSpotId, photo.id)?.let {
+                        updateLikeButtons(viewHolder, it)
+                    }
+                }
             }
+        }
+    }
+
+    private fun updateLikeButtons(
+        viewHolder: ViewHolder,
+        photo: LoveSpotPhoto
+    ) {
+        viewHolder.photoItemLikes.text = "${photo.likes}"
+        viewHolder.photoItemDislikes.text = "${photo.dislikes}"
+        if (photo.likers.contains(userId)) {
+            viewHolder.likeButton.icon =
+                AppCompatResources.getDrawable(activity, R.drawable.ic_baseline_thumb_up_alt_24)
+        } else {
+            viewHolder.likeButton.icon =
+                AppCompatResources.getDrawable(activity, R.drawable.ic_baseline_thumb_up_off_alt_24)
+        }
+        if (photo.dislikers.contains(userId)) {
+            viewHolder.dislikeButton.icon =
+                AppCompatResources.getDrawable(activity, R.drawable.ic_baseline_thumb_down_alt_24)
+        } else {
+            viewHolder.dislikeButton.icon = AppCompatResources.getDrawable(
+                activity,
+                R.drawable.ic_baseline_thumb_down_off_alt_24
+            )
         }
     }
 

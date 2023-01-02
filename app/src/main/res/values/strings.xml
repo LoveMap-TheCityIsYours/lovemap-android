@@ -307,5 +307,7 @@
     <string name="allow_access_to_storage_long">App does not have access to external storage, please allow it manually in the Android Settings.</string>
     <string name="cancel_capital">CANCEL</string>
     <string name="ok_capital">OK</string>
+    <string name="failed_to_like_photo">Failed to like photo</string>
+    <string name="failed_to_dislike_photo">Failed to dislike photo</string>
 
 </resources>

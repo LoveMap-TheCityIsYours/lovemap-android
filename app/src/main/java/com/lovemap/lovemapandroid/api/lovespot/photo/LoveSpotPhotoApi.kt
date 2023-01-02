@@ -31,6 +31,19 @@ interface LoveSpotPhotoApi {
         @Path("reviewId") reviewId: Long
     ): Call<List<LoveSpotPhoto>>
 
+    @POST("/lovespots/{loveSpotId}/photos/{photoId}/like")
+    fun likePhoto(
+        @Path("loveSpotId") loveSpotId: Long,
+        @Path("photoId") photoId: Long
+    ): Call<LoveSpotPhoto>
+
+
+    @POST("/lovespots/{loveSpotId}/photos/{photoId}/dislike")
+    fun dislikePhoto(
+        @Path("loveSpotId") loveSpotId: Long,
+        @Path("photoId") photoId: Long
+    ): Call<LoveSpotPhoto>
+
     @DELETE("/lovespots/{loveSpotId}/photos/{photoId}")
     fun deletePhoto(
         @Path("loveSpotId") loveSpotId: Long,

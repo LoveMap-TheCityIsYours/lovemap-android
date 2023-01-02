@@ -300,5 +300,7 @@
     <string name="allow_access_to_storage_long">Az appnak nincs hozzáférése a tárhelyhez, kérlek engedélyezd a hozzáférést manuálisan az Android beállitásokban.</string>
     <string name="cancel_capital">MÉGSE</string>
     <string name="ok_capital">OK</string>
+    <string name="failed_to_like_photo">Fotó Lájkolása sikertelen</string>
+    <string name="failed_to_dislike_photo">Fotó Diszlájkolása sikertelen</string>
 
 </resources>

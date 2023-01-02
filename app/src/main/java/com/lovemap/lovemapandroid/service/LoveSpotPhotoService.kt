@@ -60,6 +60,42 @@ class LoveSpotPhotoService(
         }
     }
 
+    suspend fun likePhoto(loveSpotId: Long, photoId: Long): LoveSpotPhoto? {
+        return withContext(Dispatchers.IO) {
+            val call = loveSpotPhotoApi.likePhoto(loveSpotId, photoId)
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
+                toaster.showToast(R.string.failed_to_like_photo)
+                return@withContext null
+            }
+            if (response.isSuccessful) {
+                response.body()!!
+            } else {
+                toaster.showResponseError(response)
+                null
+            }
+        }
+    }
+
+    suspend fun dislikePhoto(loveSpotId: Long, photoId: Long): LoveSpotPhoto? {
+        return withContext(Dispatchers.IO) {
+            val call = loveSpotPhotoApi.dislikePhoto(loveSpotId, photoId)
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
+                toaster.showToast(R.string.failed_to_dislike_photo)
+                return@withContext null
+            }
+            if (response.isSuccessful) {
+                response.body()!!
+            } else {
+                toaster.showResponseError(response)
+                null
+            }
+        }
+    }
+
     suspend fun uploadToLoveSpot(
         loveSpotId: Long,
         photos: List<File>,
