@@ -34,7 +34,7 @@ import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils.availabilityToPosition
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils.positionToAvailability
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils.positionToType
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils.typeToPosition
-import com.lovemap.lovemapandroid.ui.utils.PhotoUploadUtils
+import com.lovemap.lovemapandroid.ui.utils.PhotoUtils
 import com.lovemap.lovemapandroid.utils.timeZone
 import com.lovemap.lovemapandroid.utils.toApiString
 import com.lovemap.lovemapandroid.utils.toFormattedString
@@ -149,10 +149,13 @@ class AddLoveSpotActivity : AppCompatActivity() {
     private fun handlePhotoPickerResult(activityResult: ActivityResult) {
         MainScope().launch {
             if (activityResult.resultCode == RESULT_OK) {
-                val files = PhotoUploadUtils.readResultToFiles(activityResult, contentResolver)
+                val loadingBarShower = LoadingBarShower(this@AddLoveSpotActivity)
+                    .show(R.string.processing_photos)
+                val files = PhotoUtils.readResultToFiles(activityResult, contentResolver)
                 filesToUpload.clear()
                 filesToUpload.addAll(files)
                 attachedPhotosCount.text = "${filesToUpload.size}"
+                loadingBarShower.onResponse()
             }
         }
     }
@@ -304,11 +307,14 @@ class AddLoveSpotActivity : AppCompatActivity() {
                     val love = createLove(loveSpot)
                     submitReview(love, loveSpot)
                 }
+                val uploadBar = LoadingBarShower(this@AddLoveSpotActivity)
+                    .show(R.string.uploading_photo)
                 loveSpotPhotoService.uploadToLoveSpot(
                     loveSpot.id,
                     filesToUpload,
                     this@AddLoveSpotActivity
                 )
+                uploadBar.onResponse()
                 goBack(loveSpot, loadingBarShower)
             } else {
                 loadingBarShower.onResponse()
@@ -481,8 +487,8 @@ class AddLoveSpotActivity : AppCompatActivity() {
     private fun setUploadButton() {
         addSpotUploadButton.setOnClickListener {
             MainScope().launch {
-                PhotoUploadUtils.verifyStoragePermissions(this@AddLoveSpotActivity)
-                PhotoUploadUtils.startPickerIntent(photoPickerLauncher)
+                PhotoUtils.verifyStoragePermissions(this@AddLoveSpotActivity)
+                PhotoUtils.startPickerIntent(photoPickerLauncher)
             }
         }
     }

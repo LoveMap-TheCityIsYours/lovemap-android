@@ -6,7 +6,7 @@ import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.photo.LoveSpotPhoto
 import com.lovemap.lovemapandroid.api.lovespot.photo.LoveSpotPhotoApi
 import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
-import com.lovemap.lovemapandroid.ui.utils.PhotoUploadUtils
+import com.lovemap.lovemapandroid.ui.utils.PhotoUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType
@@ -102,13 +102,11 @@ class LoveSpotPhotoService(
         activity: Activity
     ): Boolean {
         return if (photos.isNotEmpty()) {
-            val loadingBarShower = LoadingBarShower(activity).show(R.string.uploading_photo)
             withContext(Dispatchers.IO) {
                 val parts: List<MultipartBody.Part> = photos.map { prepareFilePart(it) }
                 val call = loveSpotPhotoApi.uploadToLoveSpot(loveSpotId, parts)
                 try {
                     val response = call.execute()
-                    loadingBarShower.onResponse()
                     if (response.isSuccessful) {
                         toaster.showToast(R.string.photo_uploaded_succesfully)
                         true
@@ -118,7 +116,6 @@ class LoveSpotPhotoService(
                         false
                     }
                 } catch (e: Exception) {
-                    loadingBarShower.onResponse()
                     Log.e("LoveSpotPhotoService", "Photo upload exception", e)
                     showUploadFailedAlert(e, activity)
                     false
@@ -136,13 +133,11 @@ class LoveSpotPhotoService(
         activity: Activity
     ): Boolean {
         return if (photos.isNotEmpty()) {
-            val loadingBarShower = LoadingBarShower(activity).show(R.string.uploading_photo)
             withContext(Dispatchers.IO) {
                 val parts: List<MultipartBody.Part> = photos.map { prepareFilePart(it) }
                 val call = loveSpotPhotoApi.uploadToLoveSpotReview(loveSpotId, reviewId, parts)
                 try {
                     val response = call.execute()
-                    loadingBarShower.onResponse()
                     if (response.isSuccessful) {
                         toaster.showToast(
                             R.string.photo_uploaded_succesfully
@@ -154,7 +149,6 @@ class LoveSpotPhotoService(
                         false
                     }
                 } catch (e: Exception) {
-                    loadingBarShower.onResponse()
                     Log.e("LoveSpotPhotoService", "Photo upload exception", e)
                     showUploadFailedAlert(e, activity)
                     false
@@ -169,7 +163,7 @@ class LoveSpotPhotoService(
         toaster.showToast(R.string.photo_upload_failed)
         if (exception is FileNotFoundException) {
             activity.runOnUiThread {
-                PhotoUploadUtils.permissionDialog(activity).show()
+                PhotoUtils.permissionDialog(activity).show()
             }
         }
     }

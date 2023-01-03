@@ -20,9 +20,7 @@ import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.ui.events.LoveSpotPhotoDeleted
 import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
 import com.lovemap.lovemapandroid.ui.utils.AlertDialogUtils
-import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
-import com.lovemap.lovemapandroid.ui.utils.PhotoUploadUtils
-import com.squareup.picasso.Picasso
+import com.lovemap.lovemapandroid.ui.utils.PhotoUtils
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
@@ -57,15 +55,15 @@ class PhotoRecyclerAdapter(
 
             viewHolder.spotPhotosUploadButton.setOnClickListener {
                 MainScope().launch {
-                    PhotoUploadUtils.verifyStoragePermissions(activity)
-                    if (PhotoUploadUtils.canUploadForSpot(loveSpot.id)) {
-                        PhotoUploadUtils.startPickerIntent(launcher)
-                    } else if (PhotoUploadUtils.canUploadForReview(loveSpot.id)) {
+                    PhotoUtils.verifyStoragePermissions(activity)
+                    if (PhotoUtils.canUploadForSpot(loveSpot.id)) {
+                        PhotoUtils.startPickerIntent(launcher)
+                    } else if (PhotoUtils.canUploadForReview(loveSpot.id)) {
                         loveSpotReviewService.findByLoverAndSpotId(loveSpot.id)?.let { review ->
                             if (activity is LoveSpotDetailsActivity) {
                                 activity.photoUploadReviewId = review.id
                             }
-                            PhotoUploadUtils.startPickerIntent(launcher)
+                            PhotoUtils.startPickerIntent(launcher)
                         }
                     }
                 }
@@ -74,22 +72,25 @@ class PhotoRecyclerAdapter(
             viewHolder.imageView.visibility = View.VISIBLE
             viewHolder.spotPhotosUploadButton.visibility = View.GONE
             viewHolder.buttonViewGroup.visibility = View.VISIBLE
-            val photo = photoList[position]
-            if (PhotoUploadUtils.canDeletePhoto(photo)) {
+            val photo: LoveSpotPhoto = photoList[position]
+            if (PhotoUtils.canDeletePhoto(photo)) {
                 viewHolder.deleteButton.visibility = View.VISIBLE
             } else {
                 viewHolder.deleteButton.visibility = View.GONE
             }
 
-            Picasso.get()
-                .load(photo.url)
-                .placeholder(LoveSpotUtils.getTypeImageResource(loveSpot.type))
-                .into(viewHolder.imageView)
+            if (PhotoUtils.isHeif(photo)) {
+                PhotoUtils.loadHeif(activity, viewHolder.imageView, loveSpot.type, photo.url)
+            } else {
+                PhotoUtils.loadSimpleImage(viewHolder.imageView, loveSpot.type, photo.url)
+            }
+
 
             viewHolder.imageView.setOnClickListener {
                 val intent = Intent(activity, PhotoViewerActivity::class.java)
                 val bundle = Bundle().apply {
                     putString(PhotoViewerActivity.URL, photo.url)
+                    putString(PhotoViewerActivity.FILE_NAME, photo.fileName)
                     putString(PhotoViewerActivity.LOVE_SPOT_TYPE, loveSpot.type.name)
                 }
                 intent.putExtras(bundle)

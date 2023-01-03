@@ -302,5 +302,6 @@
     <string name="ok_capital">OK</string>
     <string name="failed_to_like_photo">Fotó Lájkolása sikertelen</string>
     <string name="failed_to_dislike_photo">Fotó Diszlájkolása sikertelen</string>
+    <string name="processing_photos">Fotók feldolgozása</string>
 
 </resources>

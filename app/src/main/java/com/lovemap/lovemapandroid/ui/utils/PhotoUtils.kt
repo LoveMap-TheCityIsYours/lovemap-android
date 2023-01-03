@@ -10,16 +10,22 @@ import android.net.Uri
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
+import android.widget.ImageView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.app.ActivityCompat
 import com.lovemap.lovemapandroid.R
+import com.lovemap.lovemapandroid.api.lovespot.LoveSpotType
 import com.lovemap.lovemapandroid.api.lovespot.photo.LoveSpotPhoto
 import com.lovemap.lovemapandroid.config.AppContext
+import com.squareup.picasso.Picasso
+import linc.com.heifconverter.HeifConverter
 import java.io.File
 
 
-object PhotoUploadUtils {
+object PhotoUtils {
+
+    private val picasso = Picasso.get().apply { isLoggingEnabled = true }
 
     private const val REQUEST_EXTERNAL_STORAGE = 1
 
@@ -79,7 +85,7 @@ object PhotoUploadUtils {
         launcher.launch(intent)
     }
 
-    fun readResultToFiles(
+    suspend fun readResultToFiles(
         activityResult: ActivityResult,
         contentResolver: ContentResolver
     ): List<File> {
@@ -94,7 +100,7 @@ object PhotoUploadUtils {
         return files
     }
 
-    private fun addToFilesFromUri(
+    private suspend fun addToFilesFromUri(
         uri: Uri,
         files: ArrayList<File>,
         contentResolver: ContentResolver
@@ -110,7 +116,17 @@ object PhotoUploadUtils {
                     if (filePath != null) {
                         val file = File(filePath)
                         Log.i("file", "$file")
-                        files.add(file)
+                        if (isHeif(file.name)) {
+                            val conversionResult = HeifConverter.useContext(AppContext.INSTANCE)
+                                .fromFile(file.path)
+                                .withOutputFormat(HeifConverter.Format.JPEG)
+                                .withOutputQuality(80)
+                                .convertBlocking()
+                            val path = conversionResult[HeifConverter.Key.IMAGE_PATH] as String
+                            files.add(File(path))
+                        } else {
+                            files.add(file)
+                        }
                     }
                 }
             }
@@ -149,5 +165,41 @@ object PhotoUploadUtils {
         }
 
         return alertDialog
+    }
+
+    fun isHeif(photo: LoveSpotPhoto) = isHeif(photo.fileName)
+
+    fun isHeif(fileName: String) =
+        fileName.lowercase().endsWith("heic") || fileName.lowercase().endsWith("heif")
+
+    fun loadHeif(
+        activity: Activity,
+        imageView: ImageView,
+        loveSpotType: LoveSpotType,
+        url: String
+    ) {
+        imageView.setImageResource(LoveSpotUtils.getTypeImageResource(loveSpotType))
+        HeifConverter.useContext(activity)
+            .fromUrl(url)
+            .withOutputFormat(HeifConverter.Format.JPEG)
+            .convert { result ->
+                val path = result[HeifConverter.Key.IMAGE_PATH] as String
+                val file = File(path)
+                picasso
+                    .load(file)
+                    .placeholder(LoveSpotUtils.getTypeImageResource(loveSpotType))
+                    .into(imageView)
+            }
+    }
+
+    fun loadSimpleImage(
+        imageView: ImageView,
+        loveSpotType: LoveSpotType,
+        url: String
+    ) {
+        picasso
+            .load(url)
+            .placeholder(LoveSpotUtils.getTypeImageResource(loveSpotType))
+            .into(imageView)
     }
 }

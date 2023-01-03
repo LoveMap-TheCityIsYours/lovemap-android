@@ -4,15 +4,15 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotType
 import com.lovemap.lovemapandroid.databinding.ActivityPhotoViewerBinding
-import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
+import com.lovemap.lovemapandroid.ui.utils.PhotoUtils
 import com.ortiz.touchview.TouchImageView
-import com.squareup.picasso.Picasso
 
 class PhotoViewerActivity : AppCompatActivity() {
 
     companion object {
         const val URL: String = "url"
         const val LOVE_SPOT_TYPE: String = "loveSpotType"
+        const val FILE_NAME: String = "fileName"
     }
 
     private lateinit var binding: ActivityPhotoViewerBinding
@@ -23,12 +23,15 @@ class PhotoViewerActivity : AppCompatActivity() {
         binding = ActivityPhotoViewerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewerImageView = binding.viewerImageView
-        val url: String = intent.extras?.getString(URL) ?: "https://noimage.noimage.jpp"
-        val loveSpotType: LoveSpotType = LoveSpotType.valueOf(intent.extras?.getString(LOVE_SPOT_TYPE) ?: "PUBLIC_SPACE")
+        val url: String = intent.extras?.getString(URL) ?: "https://noimage.noimage.jpg"
+        val fileName: String = intent.extras?.getString(FILE_NAME) ?: "noimage.jpg"
+        val loveSpotType: LoveSpotType =
+            LoveSpotType.valueOf(intent.extras?.getString(LOVE_SPOT_TYPE) ?: "PUBLIC_SPACE")
 
-        Picasso.get()
-            .load(url)
-            .placeholder(LoveSpotUtils.getTypeImageResource(loveSpotType))
-            .into(viewerImageView)
+        if (PhotoUtils.isHeif(fileName)) {
+            PhotoUtils.loadHeif(this, viewerImageView, loveSpotType, url)
+        } else {
+            PhotoUtils.loadSimpleImage(viewerImageView, loveSpotType, url)
+        }
     }
 }

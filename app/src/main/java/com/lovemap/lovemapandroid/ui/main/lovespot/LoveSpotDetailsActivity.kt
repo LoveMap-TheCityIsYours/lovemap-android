@@ -31,7 +31,7 @@ import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewListActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewLoveSpotFragment
 import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
-import com.lovemap.lovemapandroid.ui.utils.PhotoUploadUtils
+import com.lovemap.lovemapandroid.ui.utils.PhotoUtils
 import com.lovemap.lovemapandroid.utils.IS_CLICKABLE
 import com.lovemap.lovemapandroid.utils.canEditLoveSpot
 import kotlinx.coroutines.MainScope
@@ -151,7 +151,9 @@ LoveSpotDetailsActivity : AppCompatActivity() {
     private fun handlePhotoPickerResult(activityResult: ActivityResult) {
         MainScope().launch {
             if (activityResult.resultCode == RESULT_OK) {
-                val files = PhotoUploadUtils.readResultToFiles(activityResult, contentResolver)
+                val loadingBarShower = LoadingBarShower(this@LoveSpotDetailsActivity)
+                    .show(R.string.uploading_photo)
+                val files = PhotoUtils.readResultToFiles(activityResult, contentResolver)
                 Log.i(this@LoveSpotDetailsActivity::class.simpleName, "Starting upload")
                 val result: Boolean = if (photoUploadReviewId != null) {
                     loveSpotPhotoService.uploadToReview(
@@ -167,6 +169,7 @@ LoveSpotDetailsActivity : AppCompatActivity() {
                         this@LoveSpotDetailsActivity
                     )
                 }
+                loadingBarShower.onResponse()
                 photosLoaded = !result
                 photosRefreshed = !result
                 photoUploadReviewId = null
@@ -434,13 +437,13 @@ LoveSpotDetailsActivity : AppCompatActivity() {
         spotDetailsUploadButton.setOnClickListener {
             MainScope().launch {
                 // TODO: subscribe to permission result
-                PhotoUploadUtils.verifyStoragePermissions(this@LoveSpotDetailsActivity)
-                if (PhotoUploadUtils.canUploadForSpot(loveSpotId)) {
-                    PhotoUploadUtils.startPickerIntent(photoPickerLauncher)
-                } else if (PhotoUploadUtils.canUploadForReview(loveSpotId)) {
+                PhotoUtils.verifyStoragePermissions(this@LoveSpotDetailsActivity)
+                if (PhotoUtils.canUploadForSpot(loveSpotId)) {
+                    PhotoUtils.startPickerIntent(photoPickerLauncher)
+                } else if (PhotoUtils.canUploadForReview(loveSpotId)) {
                     loveSpotReviewService.findByLoverAndSpotId(loveSpotId)?.let { review ->
                         photoUploadReviewId = review.id
-                        PhotoUploadUtils.startPickerIntent(photoPickerLauncher)
+                        PhotoUtils.startPickerIntent(photoPickerLauncher)
                     }
                 }
             }

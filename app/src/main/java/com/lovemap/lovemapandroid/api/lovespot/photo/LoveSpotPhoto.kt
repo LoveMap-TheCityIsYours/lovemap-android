@@ -9,6 +9,7 @@ data class LoveSpotPhoto(
     val reviewId: Long?,
     val uploadedBy: Long,
     val uploadedAt: String,
+    val fileName: String,
     val likes: Int,
     val likers: Set<Long>,
     val dislikes: Int,
