@@ -54,13 +54,15 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     private val appContext = AppContext.INSTANCE
     private val loveSpotService: LoveSpotService = appContext.loveSpotService
     private val loveService: LoveService = appContext.loveService
+    private val wishlistService = appContext.wishlistService
+
     private var cameraMoved = false
     private var markerOpen = false
     private var localSpotsDrawn = false
     private var mapMode = LOVE_SPOTS
     private val drawnSpots = HashSet<Long>()
     private var zoomLevel: Float = 1f
-    private var mapType =  GoogleMap.MAP_TYPE_NORMAL
+    private var mapType = GoogleMap.MAP_TYPE_NORMAL
     private var googleMap: GoogleMap? = null
 
     private var viewPager2: ViewPager2? = null
@@ -121,7 +123,11 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
             startActivity(Intent(requireContext(), ReportLoveSpotActivity::class.java))
         }
         addToWishlistFab.setOnClickListener {
-            appContext.toaster.showToast(R.string.not_yet_implemented)
+            MainScope().launch {
+                appContext.selectedLoveSpotId?.let {
+                    wishlistService.addToWishlist(it)
+                }
+            }
         }
         addLoveFab.setOnClickListener {
             startActivity(Intent(requireContext(), RecordLoveActivity::class.java))

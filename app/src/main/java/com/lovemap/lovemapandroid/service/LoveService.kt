@@ -18,6 +18,7 @@ class LoveService(
     private val loveApi: LoveApi,
     private val loveDao: LoveDao,
     private val loveSpotReviewService: LoveSpotReviewService,
+    private val wishlistService: WishlistService,
     private val metadataStore: MetadataStore,
     private val context: Context,
     private val toaster: Toaster,

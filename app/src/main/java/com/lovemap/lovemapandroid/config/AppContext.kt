@@ -14,6 +14,7 @@ import com.lovemap.lovemapandroid.api.authentication.AuthenticationApi
 import com.lovemap.lovemapandroid.api.geolocation.GeoLocationApi
 import com.lovemap.lovemapandroid.api.love.LoveApi
 import com.lovemap.lovemapandroid.api.lover.LoverApi
+import com.lovemap.lovemapandroid.api.lover.wishlist.WishlistApi
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotApi
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotRisks
 import com.lovemap.lovemapandroid.api.lovespot.photo.LoveSpotPhotoApi
@@ -22,6 +23,7 @@ import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewApi
 import com.lovemap.lovemapandroid.api.partnership.PartnershipApi
 import com.lovemap.lovemapandroid.data.AppDatabase
 import com.lovemap.lovemapandroid.data.love.LoveDao
+import com.lovemap.lovemapandroid.data.lover.wishlist.WishlistElementDao
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpotDao
 import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReviewDao
@@ -30,7 +32,6 @@ import com.lovemap.lovemapandroid.data.partnership.PartnershipDao
 import com.lovemap.lovemapandroid.service.*
 import com.lovemap.lovemapandroid.ui.events.MapInfoWindowShownEvent
 import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotListFilterState
-import com.lovemap.lovemapandroid.ui.utils.AlertDialogUtils
 import com.lovemap.lovemapandroid.utils.AUTHORIZATION_HEADER
 import com.lovemap.lovemapandroid.utils.X_CLIENT_ID_HEADER
 import com.lovemap.lovemapandroid.utils.X_CLIENT_SECRET_HEADER
@@ -41,11 +42,9 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import java.time.Duration
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.system.exitProcess
 
 class AppContext : MultiDexApplication() {
     lateinit var toaster: Toaster
@@ -59,11 +58,13 @@ class AppContext : MultiDexApplication() {
     lateinit var partnershipService: PartnershipService
     lateinit var geoLocationService: GeoLocationService
     lateinit var loveSpotPhotoService: LoveSpotPhotoService
+    lateinit var wishlistService: WishlistService
 
     lateinit var loveDao: LoveDao
     lateinit var loveSpotDao: LoveSpotDao
     lateinit var loveSpotReviewDao: LoveSpotReviewDao
     lateinit var partnershipDao: PartnershipDao
+    lateinit var wishlistElementDao: WishlistElementDao
 
     lateinit var metadataStore: MetadataStore
     lateinit var database: AppDatabase
@@ -142,6 +143,7 @@ class AppContext : MultiDexApplication() {
         loveSpotDao = database.loveSpotDao()
         loveSpotReviewDao = database.loveSpotReviewDao()
         partnershipDao = database.partnershipDao()
+        wishlistElementDao = database.wishlistElementDao()
     }
 
     override fun onTerminate() {
@@ -192,9 +194,16 @@ class AppContext : MultiDexApplication() {
             metadataStore = metadataStore,
             toaster = toaster,
         )
+        wishlistService = WishlistService(
+            toaster = toaster,
+            metadataStore = metadataStore,
+            wishlistApi = authorizingRetrofit.create(WishlistApi::class.java),
+            wishlistElementDao = wishlistElementDao
+        )
         loveService = LoveService(
             loveApi = authorizingRetrofit.create(LoveApi::class.java),
             loveDao = loveDao,
+            wishlistService = wishlistService,
             loveSpotReviewService = loveSpotReviewService,
             metadataStore = metadataStore,
             context = applicationContext,

@@ -304,6 +304,10 @@
     <string name="failed_to_dislike_photo">Fotó Diszlájkolása sikertelen</string>
     <string name="processing_photos">Fotók feldolgozása</string>
     <string name="nudity_warning_title">Meztelensés Figyelmeztetés</string>
-    <string name="nudity_warning_message">A felhasználók által a Love Spotok közé feltöltött képek között elképzelhető, hogy találsz meztelenséget ábrázolót. Az OK gombra kattintva elfogadod ezt.</string>
+    <string name="nudity_warning_message">A felhasználók által a Love Spotok közé feltöltött képek között elképzelhető, hogy találsz meztelenséget ábrázolót. Elfogadod ezt?</string>
+    <string name="wishlist_element_not_found">A kívánságlistád meghibásodott, írj a supportnak</string>
+    <string name="already_on_wishlist">A LoveSpot már a kívánságlistádon van</string>
+    <string name="failed_to_add_to_wishlist">Failed to add to Wishlist</string>
+    <string name="added_to_wishlist">Kívánságlistához hozzáadva</string>
 
 </resources>

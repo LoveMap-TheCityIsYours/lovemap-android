@@ -311,6 +311,10 @@
     <string name="failed_to_dislike_photo">Failed to dislike photo</string>
     <string name="processing_photos">Processing photos</string>
     <string name="nudity_warning_title">Nudity Warning</string>
-    <string name="nudity_warning_message">Among the user uploaded photos for Love Spots it\'s possible you might find some containing nudity. By pressing OK, you accept this.</string>
+    <string name="nudity_warning_message">Among the user uploaded photos for Love Spots it\'s possible you might find some containing nudity. Do you accept this?</string>
+    <string name="wishlist_element_not_found">Your wishlist is corrupted, contact support</string>
+    <string name="already_on_wishlist">This LoveSpot is already on your Wishlist</string>
+    <string name="failed_to_add_to_wishlist">Failed to add to Wishlist</string>
+    <string name="added_to_wishlist">Added to Wishlist</string>
 
 </resources>

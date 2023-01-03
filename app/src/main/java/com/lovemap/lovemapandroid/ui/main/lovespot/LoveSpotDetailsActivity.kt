@@ -54,6 +54,7 @@ LoveSpotDetailsActivity : AppCompatActivity() {
     private val loveSpotService = appContext.loveSpotService
     private val loveSpotReviewService = appContext.loveSpotReviewService
     private val loveSpotPhotoService = appContext.loveSpotPhotoService
+    private val wishlistService = appContext.wishlistService
 
     private lateinit var binding: ActivityLoveSpotDetailsBinding
     private lateinit var detailsScrollView: ScrollView
@@ -116,7 +117,9 @@ LoveSpotDetailsActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             detailsAddToWishlistButton.setOnClickListener {
-                appContext.toaster.showToast(R.string.not_yet_implemented)
+                MainScope().launch {
+                    wishlistService.addToWishlist(loveSpotId)
+                }
             }
             detailsSeeAllLovesButton.setOnClickListener {
                 val intent = Intent(applicationContext, LoveListActivity::class.java)

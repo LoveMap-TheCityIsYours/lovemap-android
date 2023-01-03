@@ -70,6 +70,8 @@ private val errorCodeMessageMap = HashMap<ErrorCode, Int>().apply {
     put(UnsupportedImageFormat, R.string.unsupported_photo_format)
     put(ImageUploadFailed, R.string.photo_upload_failed)
     put(PhotoNotFound, R.string.photo_not_found)
+    put(WishlistElementNotFound, R.string.wishlist_element_not_found)
+    put(AlreadyOnWishlist, R.string.already_on_wishlist)
 }
 
 enum class ErrorCode {
@@ -111,6 +113,8 @@ enum class ErrorCode {
     UnsupportedImageFormat,
     ImageUploadFailed,
     PhotoNotFound,
+    WishlistElementNotFound,
+    AlreadyOnWishlist,
 
     UNDEFINED
 }
