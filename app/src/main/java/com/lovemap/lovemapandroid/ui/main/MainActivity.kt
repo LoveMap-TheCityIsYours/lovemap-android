@@ -17,11 +17,13 @@ import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.config.MapContext
 import com.lovemap.lovemapandroid.databinding.ActivityMainBinding
 import com.lovemap.lovemapandroid.ui.events.ShowOnMapClickedEvent
+import com.lovemap.lovemapandroid.ui.utils.AlertDialogUtils
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import kotlin.system.exitProcess
 
 
 const val MAP_PAGE = 2
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity() {
 
     private val appContext = AppContext.INSTANCE
     private val loveSpotService = appContext.loveSpotService
+    private val metadataStore = appContext.metadataStore
 
     private lateinit var binding: ActivityMainBinding
 
@@ -68,6 +71,27 @@ class MainActivity : AppCompatActivity() {
 
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
+
+        MainScope().launch {
+            if (!metadataStore.isNudityAccepted())
+                AlertDialogUtils.newDialog(
+                    this@MainActivity,
+                    R.string.nudity_warning_title,
+                    R.string.nudity_warning_message,
+                    {
+                        MainScope().launch {
+                            metadataStore.setNudityAccepted(true)
+                        }
+                    },
+                    {
+                        MainScope().launch {
+                            metadataStore.setNudityAccepted(false)
+                            onBackPressed()
+                            exitProcess(0)
+                        }
+                    }
+                ).show()
+        }
     }
 
     override fun onDestroy() {

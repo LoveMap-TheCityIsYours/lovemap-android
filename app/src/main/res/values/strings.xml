@@ -310,5 +310,7 @@
     <string name="failed_to_like_photo">Failed to like photo</string>
     <string name="failed_to_dislike_photo">Failed to dislike photo</string>
     <string name="processing_photos">Processing photos</string>
+    <string name="nudity_warning_title">Nudity Warning</string>
+    <string name="nudity_warning_message">Among the user uploaded photos for Love Spots it\'s possible you might find some containing nudity. By pressing OK, you accept this.</string>
 
 </resources>

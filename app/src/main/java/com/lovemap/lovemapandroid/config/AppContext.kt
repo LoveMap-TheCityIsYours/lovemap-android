@@ -30,6 +30,7 @@ import com.lovemap.lovemapandroid.data.partnership.PartnershipDao
 import com.lovemap.lovemapandroid.service.*
 import com.lovemap.lovemapandroid.ui.events.MapInfoWindowShownEvent
 import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotListFilterState
+import com.lovemap.lovemapandroid.ui.utils.AlertDialogUtils
 import com.lovemap.lovemapandroid.utils.AUTHORIZATION_HEADER
 import com.lovemap.lovemapandroid.utils.X_CLIENT_ID_HEADER
 import com.lovemap.lovemapandroid.utils.X_CLIENT_SECRET_HEADER
@@ -44,6 +45,7 @@ import retrofit2.create
 import java.time.Duration
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.system.exitProcess
 
 class AppContext : MultiDexApplication() {
     lateinit var toaster: Toaster

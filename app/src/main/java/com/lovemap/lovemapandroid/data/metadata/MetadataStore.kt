@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Base64
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -31,6 +32,7 @@ class MetadataStore(private val context: Context) {
     private val ranksKeyName = "ranks"
     private val citiesKeyName = "cities"
     private val countriesKeyName = "countries"
+    private val nudityAcceptedKeyName = "nudityAccepted"
 
     suspend fun login(user: LoggedInUser): LoggedInUser {
         val userKey = stringPreferencesKey(userKeyName)
@@ -46,6 +48,20 @@ class MetadataStore(private val context: Context) {
         return context.dataStore.data.map { dataStore ->
             dataStore[userKey] != null
         }.first()
+    }
+
+    suspend fun isNudityAccepted(): Boolean {
+        val nudityAcceptedKey = booleanPreferencesKey(nudityAcceptedKeyName)
+        return context.dataStore.data.map { dataStore ->
+            dataStore[nudityAcceptedKey] == true
+        }.first()
+    }
+
+    suspend fun setNudityAccepted(accepted: Boolean) {
+        val nudityAcceptedKey = booleanPreferencesKey(nudityAcceptedKeyName)
+        context.dataStore.edit { dataStore ->
+            dataStore[nudityAcceptedKey] = accepted
+        }
     }
 
     suspend fun getUser(): LoggedInUser {

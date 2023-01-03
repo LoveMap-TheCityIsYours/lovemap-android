@@ -2,6 +2,7 @@ package com.lovemap.lovemapandroid.ui.utils
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import com.lovemap.lovemapandroid.R
 
 object AlertDialogUtils {

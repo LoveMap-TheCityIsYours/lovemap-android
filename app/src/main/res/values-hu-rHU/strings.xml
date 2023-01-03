@@ -303,5 +303,7 @@
     <string name="failed_to_like_photo">Fotó Lájkolása sikertelen</string>
     <string name="failed_to_dislike_photo">Fotó Diszlájkolása sikertelen</string>
     <string name="processing_photos">Fotók feldolgozása</string>
+    <string name="nudity_warning_title">Meztelensés Figyelmeztetés</string>
+    <string name="nudity_warning_message">A felhasználók által a Love Spotok közé feltöltött képek között elképzelhető, hogy találsz meztelenséget ábrázolót. Az OK gombra kattintva elfogadod ezt.</string>
 
 </resources>
