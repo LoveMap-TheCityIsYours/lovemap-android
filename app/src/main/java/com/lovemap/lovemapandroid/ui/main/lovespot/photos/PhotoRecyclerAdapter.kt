@@ -113,7 +113,7 @@ class PhotoRecyclerAdapter(
 
                         }
                     }
-                ).show()
+                )
             }
 
             updateLikeButtons(viewHolder, photo)

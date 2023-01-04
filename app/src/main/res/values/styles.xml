@@ -7,5 +7,7 @@
     <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:background">@color/myColorPrimary</item>
         <item name="colorPrimary">@color/myColorOnSecondary</item>
+        <item name="android:textColorLink">#003545</item>
+<!--        #69DCFF -->
     </style>
 </resources>

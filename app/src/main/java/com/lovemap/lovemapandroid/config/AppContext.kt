@@ -23,7 +23,7 @@ import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewApi
 import com.lovemap.lovemapandroid.api.partnership.PartnershipApi
 import com.lovemap.lovemapandroid.data.AppDatabase
 import com.lovemap.lovemapandroid.data.love.LoveDao
-import com.lovemap.lovemapandroid.data.lover.wishlist.WishlistElementDao
+import com.lovemap.lovemapandroid.data.lover.wishlist.WishlistItemDao
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpotDao
 import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReviewDao
@@ -64,7 +64,7 @@ class AppContext : MultiDexApplication() {
     lateinit var loveSpotDao: LoveSpotDao
     lateinit var loveSpotReviewDao: LoveSpotReviewDao
     lateinit var partnershipDao: PartnershipDao
-    lateinit var wishlistElementDao: WishlistElementDao
+    lateinit var wishlistItemDao: WishlistItemDao
 
     lateinit var metadataStore: MetadataStore
     lateinit var database: AppDatabase
@@ -143,7 +143,7 @@ class AppContext : MultiDexApplication() {
         loveSpotDao = database.loveSpotDao()
         loveSpotReviewDao = database.loveSpotReviewDao()
         partnershipDao = database.partnershipDao()
-        wishlistElementDao = database.wishlistElementDao()
+        wishlistItemDao = database.wishlistElementDao()
     }
 
     override fun onTerminate() {
@@ -198,7 +198,7 @@ class AppContext : MultiDexApplication() {
             toaster = toaster,
             metadataStore = metadataStore,
             wishlistApi = authorizingRetrofit.create(WishlistApi::class.java),
-            wishlistElementDao = wishlistElementDao
+            wishlistItemDao = wishlistItemDao
         )
         loveService = LoveService(
             loveApi = authorizingRetrofit.create(LoveApi::class.java),

@@ -32,7 +32,7 @@ class MetadataStore(private val context: Context) {
     private val ranksKeyName = "ranks"
     private val citiesKeyName = "cities"
     private val countriesKeyName = "countries"
-    private val nudityAcceptedKeyName = "nudityAccepted"
+    private val touAcceptedKeyName = "touAccepted"
 
     suspend fun login(user: LoggedInUser): LoggedInUser {
         val userKey = stringPreferencesKey(userKeyName)
@@ -50,17 +50,17 @@ class MetadataStore(private val context: Context) {
         }.first()
     }
 
-    suspend fun isNudityAccepted(): Boolean {
-        val nudityAcceptedKey = booleanPreferencesKey(nudityAcceptedKeyName)
+    suspend fun isTouAccepted(): Boolean {
+        val touAcceptedKey = booleanPreferencesKey(touAcceptedKeyName)
         return context.dataStore.data.map { dataStore ->
-            dataStore[nudityAcceptedKey] == true
+            dataStore[touAcceptedKey] == true
         }.first()
     }
 
-    suspend fun setNudityAccepted(accepted: Boolean) {
-        val nudityAcceptedKey = booleanPreferencesKey(nudityAcceptedKeyName)
+    suspend fun setTouAccepted(accepted: Boolean) {
+        val touAcceptedKey = booleanPreferencesKey(touAcceptedKeyName)
         context.dataStore.edit { dataStore ->
-            dataStore[nudityAcceptedKey] = accepted
+            dataStore[touAcceptedKey] = accepted
         }
     }
 

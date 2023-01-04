@@ -73,24 +73,25 @@ class MainActivity : AppCompatActivity() {
         })
 
         MainScope().launch {
-            if (!metadataStore.isNudityAccepted())
+            if (!metadataStore.isTouAccepted())
                 AlertDialogUtils.newDialog(
                     this@MainActivity,
-                    R.string.nudity_warning_title,
-                    R.string.nudity_warning_message,
+                    R.string.terms_of_use_title,
+                    R.string.terms_of_use_message,
                     {
                         MainScope().launch {
-                            metadataStore.setNudityAccepted(true)
+                            metadataStore.setTouAccepted(true)
                         }
                     },
                     {
                         MainScope().launch {
-                            metadataStore.setNudityAccepted(false)
+                            metadataStore.setTouAccepted(false)
                             onBackPressed()
                             exitProcess(0)
                         }
-                    }
-                ).show()
+                    },
+                    true
+                )
         }
     }
 

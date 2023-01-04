@@ -29,6 +29,7 @@
 
     <color name="myCardColor">#1A1049</color>
     <color name="myColorOnBackground">#FFFFFF</color>
+    <color name="myLinkColor">#69DCFF</color>
 
     <color name="tabSelectedIconColor">#E5C0FA</color>
 

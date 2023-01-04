@@ -3,8 +3,8 @@ package com.lovemap.lovemapandroid.service
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lover.wishlist.WishlistApi
 import com.lovemap.lovemapandroid.api.lover.wishlist.WishlistResponse
-import com.lovemap.lovemapandroid.data.lover.wishlist.WishlistElement
-import com.lovemap.lovemapandroid.data.lover.wishlist.WishlistElementDao
+import com.lovemap.lovemapandroid.data.lover.wishlist.WishlistItem
+import com.lovemap.lovemapandroid.data.lover.wishlist.WishlistItemDao
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -14,12 +14,12 @@ class WishlistService(
     private val toaster: Toaster,
     private val metadataStore: MetadataStore,
     private val wishlistApi: WishlistApi,
-    private val wishlistElementDao: WishlistElementDao,
+    private val wishlistItemDao: WishlistItemDao,
 ) {
 
-    suspend fun list(): List<WishlistElement> {
+    suspend fun list(): List<WishlistItem> {
         return withContext(Dispatchers.IO) {
-            val localWishlist = wishlistElementDao.getAllOrderedByDate()
+            val localWishlist = wishlistItemDao.getAllOrderedByDate()
             val call = wishlistApi.getWishlist(metadataStore.getUser().id)
             val response = try {
                 call.execute()
@@ -35,9 +35,9 @@ class WishlistService(
         }
     }
 
-    suspend fun addToWishlist(loveSpotId: Long): List<WishlistElement> {
+    suspend fun addToWishlist(loveSpotId: Long): List<WishlistItem> {
         return withContext(Dispatchers.IO) {
-            val localWishlist = wishlistElementDao.getAllOrderedByDate()
+            val localWishlist = wishlistItemDao.getAllOrderedByDate()
             val call = wishlistApi.addToWishlist(metadataStore.getUser().id, loveSpotId)
             val response = try {
                 call.execute()
@@ -55,9 +55,9 @@ class WishlistService(
         }
     }
 
-    suspend fun removeLoveSpotFromWishlist(loveSpotId: Long): List<WishlistElement> {
+    suspend fun removeLoveSpotFromWishlist(loveSpotId: Long): List<WishlistItem> {
         return withContext(Dispatchers.IO) {
-            val localWishlist = wishlistElementDao.getAllOrderedByDate()
+            val localWishlist = wishlistItemDao.getAllOrderedByDate()
             val call = wishlistApi.addToWishlist(metadataStore.getUser().id, loveSpotId)
             val response = try {
                 call.execute()
@@ -76,14 +76,14 @@ class WishlistService(
 
     private fun updateLocalWishlist(
         response: Response<List<WishlistResponse>>,
-        localWishlist: List<WishlistElement>
-    ): List<WishlistElement> {
-        val serverWishlist = response.body()!!.map { it.toWishlistElement() }
+        localWishlist: List<WishlistItem>
+    ): List<WishlistItem> {
+        val serverWishlist = response.body()!!.map { it.toWishlistItem() }
         val localWishlistSet = HashSet(localWishlist)
         val serverWishlistSet = HashSet(serverWishlist)
         val deletedWishlistElements = localWishlistSet.subtract(serverWishlistSet)
-        wishlistElementDao.delete(*deletedWishlistElements.toTypedArray())
-        wishlistElementDao.insert(*serverWishlistSet.toTypedArray())
+        wishlistItemDao.delete(*deletedWishlistElements.toTypedArray())
+        wishlistItemDao.insert(*serverWishlistSet.toTypedArray())
         return serverWishlist
     }
 }
