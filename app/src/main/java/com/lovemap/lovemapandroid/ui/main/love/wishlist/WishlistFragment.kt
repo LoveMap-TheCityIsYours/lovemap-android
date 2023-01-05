@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +24,7 @@ class WishlistFragment : Fragment() {
     private val appContext = AppContext.INSTANCE
     private val wishlistService = appContext.wishlistService
 
+    private lateinit var progressBar: ProgressBar
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: WishlistItemRecyclerAdapter
 
@@ -38,6 +40,7 @@ class WishlistFragment : Fragment() {
         // Inflate the layout for this fragment
         val linearLayout =
             inflater.inflate(R.layout.fragment_wishlist, container, false) as LinearLayout
+        progressBar = linearLayout.findViewById(R.id.wishlistProgressBar)
         initializeRecyclerView(linearLayout)
         initializeData()
         return linearLayout
@@ -64,7 +67,11 @@ class WishlistFragment : Fragment() {
 
     private fun initializeData() {
         MainScope().launch {
+            recyclerView.visibility = View.GONE
+            progressBar.visibility = View.VISIBLE
             updateData()
+            recyclerView.visibility = View.VISIBLE
+            progressBar.visibility = View.GONE
             recyclerView.smoothScrollToPosition(0)
         }
     }

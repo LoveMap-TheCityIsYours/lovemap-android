@@ -8,6 +8,16 @@
     android:orientation="vertical"
     tools:context=".ui.main.love.wishlist.WishlistFragment">
 
+    <ProgressBar
+        android:id="@+id/wishlistProgressBar"
+        style="?android:progressBarStyleLarge"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/myColorPrimary"
+        android:visibility="visible" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/wishlistRecyclerView"
         android:layout_width="match_parent"
