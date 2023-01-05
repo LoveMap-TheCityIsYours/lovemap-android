@@ -1,4 +1,4 @@
-package com.lovemap.lovemapandroid.ui.main.love.list
+package com.lovemap.lovemapandroid.ui.main.love.lovehistory
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

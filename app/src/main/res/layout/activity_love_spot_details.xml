@@ -185,7 +185,7 @@
             android:layout_marginTop="@dimen/standard_16"
             android:text="@string/recordLove"
             android:textSize="12sp"
-            app:icon="@drawable/ic_baseline_favorite_24"
+            app:icon="@drawable/ic_two_hearts_com"
             app:iconGravity="start" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -327,7 +327,7 @@
 
             <fragment
                 android:id="@+id/detailsLoveListFragment"
-                android:name="com.lovemap.lovemapandroid.ui.main.love.list.LoveListFragment"
+                android:name="com.lovemap.lovemapandroid.ui.main.love.lovehistory.LoveListFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standard_16"

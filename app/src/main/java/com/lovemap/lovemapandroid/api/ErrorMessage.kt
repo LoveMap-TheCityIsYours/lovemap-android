@@ -72,6 +72,7 @@ private val errorCodeMessageMap = HashMap<ErrorCode, Int>().apply {
     put(PhotoNotFound, R.string.photo_not_found)
     put(WishlistItemNotFound, R.string.wishlist_item_not_found)
     put(AlreadyOnWishlist, R.string.already_on_wishlist)
+    put(LoveSpotNotFound, R.string.love_spot_not_available)
 }
 
 enum class ErrorCode {
@@ -115,6 +116,7 @@ enum class ErrorCode {
     PhotoNotFound,
     WishlistItemNotFound,
     AlreadyOnWishlist,
+    LoveSpotNotFound,
 
     UNDEFINED
 }

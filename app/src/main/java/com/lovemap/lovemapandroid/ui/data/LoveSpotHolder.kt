@@ -8,6 +8,7 @@ import com.lovemap.lovemapandroid.api.lovespot.LoveSpotType
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.config.MapContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
+import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
 
 data class LoveSpotHolder(
     var id: Long,
@@ -41,13 +42,7 @@ data class LoveSpotHolder(
                 averageRating = loveSpot.averageRating,
                 numberOfRatings = loveSpot.numberOfRatings,
                 addedBy = loveSpot.addedBy,
-                distanceKm = MapContext.lastLocation?.let {
-                    LatLngTool.distance(
-                        it,
-                        LatLng(loveSpot.latitude, loveSpot.longitude),
-                        LengthUnit.KILOMETER
-                    )
-                }
+                distanceKm = LoveSpotUtils.calculateDistance(loveSpot)
             )
         }
     }

@@ -24,6 +24,8 @@ import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.AddLoveSpotActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.report.ReportLoveSpotActivity
 import com.lovemap.lovemapandroid.utils.canEditLoveSpot
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 
 object LoveSpotUtils {
@@ -181,16 +183,25 @@ object LoveSpotUtils {
 
     fun setDistance(loveSpot: LoveSpot, loveSpotItemDistance: TextView) {
         if (MapContext.lastLocation != null) {
-            val distanceKm = LatLngTool.distance(
-                MapContext.lastLocation,
-                LatLng(loveSpot.latitude, loveSpot.longitude),
-                LengthUnit.KILOMETER
-            )
+            val distanceKm = getDistance(loveSpot)
             setDistanceText(loveSpotItemDistance, distanceKm)
         } else {
             loveSpotItemDistance.visibility = View.GONE
         }
     }
+
+    fun calculateDistance(loveSpot: LoveSpot): Double? {
+        return MapContext.lastLocation?.let {
+            getDistance(loveSpot)
+        }
+    }
+
+    private fun getDistance(loveSpot: LoveSpot) =
+        LatLngTool.distance(
+            MapContext.lastLocation,
+            LatLng(loveSpot.latitude, loveSpot.longitude),
+            LengthUnit.KILOMETER
+        )
 
     private fun setDistanceText(loveSpotItemDistance: TextView, distanceKm: Double) {
         loveSpotItemDistance.visibility = View.VISIBLE
@@ -268,7 +279,9 @@ object LoveSpotUtils {
                 context.startActivity(intent)
             }
             contextMenuIds.wishlistId -> {
-                AppContext.INSTANCE.toaster.showToast(R.string.not_yet_implemented)
+                MainScope().launch {
+                    AppContext.INSTANCE.wishlistService.addToWishlist(spotId)
+                }
             }
             contextMenuIds.makeLoveId -> {
                 AppContext.INSTANCE.selectedLoveSpotId = spotId

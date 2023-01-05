@@ -9,8 +9,10 @@ import com.lovemap.lovemapandroid.config.MapContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReview
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
+import com.lovemap.lovemapandroid.ui.events.WishlistUpdatedEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.greenrobot.eventbus.EventBus
 
 class LoveSpotReportService
     (
@@ -47,6 +49,7 @@ class LoveSpotReportService
                 toaster.showToast(R.string.loveSpotDeleted)
                 loveSpotService.deleteLocally(loveSpotId)
                 loveService.deleteLocallyBySpotId(loveSpotId)
+                EventBus.getDefault().post(WishlistUpdatedEvent(null))
                 loveSpot
             } else {
                 toaster.showNoServerToast()

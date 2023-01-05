@@ -1,4 +1,4 @@
-package com.lovemap.lovemapandroid.ui.main.love.list
+package com.lovemap.lovemapandroid.ui.main.love.lovehistory
 
 import android.content.Intent
 import android.view.*
@@ -111,7 +111,6 @@ class LoveRecyclerViewAdapter(
                 }
 
                 loveItemViewSpot.setOnClickListener {
-                    loveItem.loveSpotId
                     appContext.selectedLoveSpotId = loveItem.loveSpotId
                     MapContext.selectedMarker = null
                     view.context?.startActivity(

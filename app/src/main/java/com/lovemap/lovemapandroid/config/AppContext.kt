@@ -197,6 +197,7 @@ class AppContext : MultiDexApplication() {
         wishlistService = WishlistService(
             toaster = toaster,
             metadataStore = metadataStore,
+            loveSpotService = loveSpotService,
             wishlistApi = authorizingRetrofit.create(WishlistApi::class.java),
             wishlistItemDao = wishlistItemDao
         )
@@ -316,6 +317,7 @@ class AppContext : MultiDexApplication() {
             loveSpotDao.delete(*loveSpotDao.getAll().toTypedArray())
             loveSpotReviewDao.delete(*loveSpotReviewDao.getAll().toTypedArray())
             partnershipDao.delete(*partnershipDao.getAll().toTypedArray())
+            wishlistItemDao.delete(*wishlistItemDao.getAll().toTypedArray())
         }
     }
 

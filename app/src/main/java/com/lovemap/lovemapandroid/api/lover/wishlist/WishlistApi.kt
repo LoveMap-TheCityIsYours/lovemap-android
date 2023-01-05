@@ -8,6 +8,12 @@ interface WishlistApi {
     @GET("/lovers/{loverId}/wishlist")
     fun getWishlist(@Path("loverId") loverId: Long): Call<List<WishlistResponse>>
 
+    @DELETE("/lovers/{loverId}/wishlist/{wishlistItemId}")
+    fun deleteWishlistItem(
+        @Path("loverId") loverId: Long,
+        @Path("wishlistItemId") wishlistItemId: Long
+    ): Call<List<WishlistResponse>>
+
     @POST("/lovers/{loverId}/wishlist/addSpot/{loveSpotId}")
     fun addToWishlist(
         @Path("loverId") loverId: Long,

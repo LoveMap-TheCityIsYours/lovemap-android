@@ -125,6 +125,13 @@ class LoveSpotService(
         }
     }
 
+    suspend fun saveAll(loveSpots: List<LoveSpot>): Set<LoveSpot> {
+        return withContext(Dispatchers.IO) {
+            loveSpotDao.insert(*loveSpots.toTypedArray())
+            loveSpots.toSet()
+        }
+    }
+
     suspend fun listSpotsLocally(latLngBounds: LatLngBounds): List<LoveSpot> {
         return withContext(Dispatchers.IO) {
             val request = loveSpotSearchRequestFromBounds(latLngBounds)
@@ -134,6 +141,12 @@ class LoveSpotService(
                 request.latFrom,
                 request.latTo
             )
+        }
+    }
+
+    suspend fun listSpotsLocallyByIds(ids: Iterable<Long>): List<LoveSpot> {
+        return withContext(Dispatchers.IO) {
+            loveSpotDao.listByIdIn(ids.toList())
         }
     }
 

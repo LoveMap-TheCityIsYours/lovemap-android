@@ -316,5 +316,12 @@
     <string name="already_on_wishlist">This LoveSpot is already on your Wishlist</string>
     <string name="failed_to_add_to_wishlist">Failed to add to Wishlist</string>
     <string name="added_to_wishlist">Added to Wishlist</string>
+    <string name="wishlist_title">Wishlist</string>
+    <string name="loves_title">Loves</string>
+    <string name="wishlisted_at">Wishlisted at:</string>
+    <string name="open_spot">Open Spot</string>
+    <string name="remove">Remove</string>
+    <string name="your_wishlist">Your Wishlist 📝</string>
+    <string name="failed_to_remove_from_wishlist">Failed to remove from Wishlist</string>
 
 </resources>

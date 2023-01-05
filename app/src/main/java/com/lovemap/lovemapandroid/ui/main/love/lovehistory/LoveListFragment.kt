@@ -1,4 +1,4 @@
-package com.lovemap.lovemapandroid.ui.main.love.list
+package com.lovemap.lovemapandroid.ui.main.love.lovehistory
 
 import android.content.Context
 import android.content.Intent
@@ -15,14 +15,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
+import com.lovemap.lovemapandroid.ui.data.LoveHolder
+import com.lovemap.lovemapandroid.ui.events.LoveListUpdatedEvent
 import com.lovemap.lovemapandroid.ui.events.ShowOnMapClickedEvent
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
-import com.lovemap.lovemapandroid.ui.main.love.list.LoveRecyclerViewAdapter.Companion.DELETE_LOVE_MENU_ID
-import com.lovemap.lovemapandroid.ui.main.love.list.LoveRecyclerViewAdapter.Companion.EDIT_LOVE_MENU_ID
-import com.lovemap.lovemapandroid.ui.main.love.list.LoveRecyclerViewAdapter.Companion.SHOW_LOVE_ON_MAP_MENU_ID
+import com.lovemap.lovemapandroid.ui.main.love.lovehistory.LoveRecyclerViewAdapter.Companion.DELETE_LOVE_MENU_ID
+import com.lovemap.lovemapandroid.ui.main.love.lovehistory.LoveRecyclerViewAdapter.Companion.EDIT_LOVE_MENU_ID
+import com.lovemap.lovemapandroid.ui.main.love.lovehistory.LoveRecyclerViewAdapter.Companion.SHOW_LOVE_ON_MAP_MENU_ID
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class LoveListFragment : Fragment() {
     var isClickableOverride: Boolean? = null
@@ -44,6 +48,9 @@ class LoveListFragment : Fragment() {
             requireActivity().obtainStyledAttributes(attrs, R.styleable.LoveListFragment)
         isLoveSpotBased = attributes.getBoolean(R.styleable.LoveListFragment_love_spot_based, false)
         isPartnerBased = attributes.getBoolean(R.styleable.LoveListFragment_partner_based, false)
+        if (!isLoveSpotBased && !isPartnerBased) {
+            EventBus.getDefault().register(this)
+        }
         isClickable = attributes.getBoolean(R.styleable.LoveListFragment_is_clickable, true)
         attributes.recycle()
     }
@@ -58,6 +65,13 @@ class LoveListFragment : Fragment() {
         initializeRecyclerView(linearLayout)
         initializeData()
         return linearLayout
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (!isLoveSpotBased && !isPartnerBased) {
+            EventBus.getDefault().unregister(this)
+        }
     }
 
     private fun initializeRecyclerView(linearLayout: LinearLayout) {
@@ -110,19 +124,29 @@ class LoveListFragment : Fragment() {
         return super.onContextItemSelected(item)
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onWishlistUpdated(event: LoveListUpdatedEvent) {
+        doUpdate(event.loveHolders)
+    }
+
     suspend fun updateData() {
-        adapter.lastPosition = -1
-        when {
+        val loveHolders: List<LoveHolder> = when {
             isLoveSpotBased -> {
-                adapter.updateData(loveService.getLoveHolderListForSpot())
+                loveService.getLoveHolderListForSpot()
             }
             isPartnerBased -> {
-                adapter.updateData(loveService.getLoveHolderListForPartner())
+                loveService.getLoveHolderListForPartner()
             }
             else -> {
-                adapter.updateData(loveService.getLoveHolderList())
+                loveService.getLoveHolderList()
             }
         }
+        doUpdate(loveHolders)
+    }
+
+    private fun doUpdate(loveHolders: List<LoveHolder>) {
+        adapter.lastPosition = -1
+        adapter.updateData(loveHolders)
         adapter.notifyDataSetChanged()
         recyclerView.invalidate()
     }

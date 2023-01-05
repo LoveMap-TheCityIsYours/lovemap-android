@@ -6,20 +6,10 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:orientation="vertical"
-    tools:context="com.lovemap.lovemapandroid.ui.main.love.lovehistory.LoveListFragment">
-
-    <ProgressBar
-        android:id="@+id/loveListProgressBar"
-        style="?android:progressBarStyleLarge"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_gravity="center"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/myColorPrimary"
-        android:visibility="visible" />
+    tools:context=".ui.main.love.wishlist.WishlistFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/loveList"
+        android:id="@+id/wishlistRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="4dp"
@@ -28,6 +18,6 @@
         android:scrollbarFadeDuration="0"
         android:scrollbars="vertical"
         app:layoutManager="LinearLayoutManager"
-        tools:listitem="@layout/fragment_love_item" />
+        tools:listitem="@layout/fragment_wishlist_item" />
 
 </LinearLayout>

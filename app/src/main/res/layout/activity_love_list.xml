@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="@dimen/standard_16"
-    tools:context=".ui.main.love.list.LoveListActivity">
+    tools:context=".ui.main.love.lovehistory.LoveListActivity">
 
     <TextView
         android:id="@+id/loveSpotTitle"
@@ -28,7 +28,7 @@
 
     <fragment
         android:id="@+id/loveListFragment"
-        android:name="com.lovemap.lovemapandroid.ui.main.love.list.LoveListFragment"
+        android:name="com.lovemap.lovemapandroid.ui.main.love.lovehistory.LoveListFragment"
         app:love_spot_based="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

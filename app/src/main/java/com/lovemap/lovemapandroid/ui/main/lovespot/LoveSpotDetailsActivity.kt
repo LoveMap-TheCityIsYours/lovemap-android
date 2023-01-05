@@ -22,8 +22,8 @@ import com.lovemap.lovemapandroid.databinding.ActivityLoveSpotDetailsBinding
 import com.lovemap.lovemapandroid.ui.events.LoveSpotPhotoDeleted
 import com.lovemap.lovemapandroid.ui.events.ShowOnMapClickedEvent
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
-import com.lovemap.lovemapandroid.ui.main.love.list.LoveListActivity
-import com.lovemap.lovemapandroid.ui.main.love.list.LoveListFragment
+import com.lovemap.lovemapandroid.ui.main.love.lovehistory.LoveListActivity
+import com.lovemap.lovemapandroid.ui.main.love.lovehistory.LoveListFragment
 import com.lovemap.lovemapandroid.ui.main.lovespot.photos.PhotoRecyclerAdapter
 import com.lovemap.lovemapandroid.ui.main.lovespot.report.ReportLoveSpotActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.LoveSpotReviewListFragment

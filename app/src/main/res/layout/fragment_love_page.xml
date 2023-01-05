@@ -5,31 +5,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.lovemap.lovemapandroid.ui.main.pages.LovesPageFragment">
+    tools:context=".ui.main.pages.loves.LovePageFragment">
 
-    <TextView
-        android:id="@+id/lovesTitle"
-        style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/standard_8"
-        android:layout_marginBottom="@dimen/standard_8"
-        android:text="@string/your_loves" />
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/loveListSwipeRefresh"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <fragment
-            android:id="@+id/fragmentLovesLoveList"
-            android:name="com.lovemap.lovemapandroid.ui.main.love.list.LoveListFragment"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/lovePageTabLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:love_spot_based="false" />
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/myAppBar"
+            app:tabIndicatorColor="@color/tabSelectedIconColor"
+            app:tabSelectedTextColor="@color/tabSelectedIconColor" />
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        <com.lovemap.lovemapandroid.ui.customviews.NestedScrollableHost
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/lovePageViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </com.lovemap.lovemapandroid.ui.customviews.NestedScrollableHost>
 
+    </LinearLayout>
 </LinearLayout>

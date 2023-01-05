@@ -307,7 +307,14 @@
     <string name="terms_of_use_message"><![CDATA[<<a href="https://api.lovemap.app/terms-of-use.html">Elfogadom a Felhasználási Feltételeket.</a>]]></string>
     <string name="wishlist_item_not_found">A kívánságlistád meghibásodott, írj a supportnak</string>
     <string name="already_on_wishlist">A LoveSpot már a kívánságlistádon van</string>
-    <string name="failed_to_add_to_wishlist">Failed to add to Wishlist</string>
+    <string name="failed_to_add_to_wishlist">Nem sikerült Kívánságlistához adni</string>
     <string name="added_to_wishlist">Kívánságlistához hozzáadva</string>
+    <string name="wishlist_title">Kívánságlista</string>
+    <string name="loves_title">Hancúrok</string>
+    <string name="wishlisted_at">Kívánságlistázva:</string>
+    <string name="open_spot">Spot Megnyitása</string>
+    <string name="remove">Eltávolítás</string>
+    <string name="your_wishlist">Kívánságlistád 📝</string>
+    <string name="failed_to_remove_from_wishlist">Nem sikerült a Kívánságlistáról eltávolítani</string>
 
 </resources>

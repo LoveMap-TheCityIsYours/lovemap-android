@@ -10,8 +10,10 @@ import com.lovemap.lovemapandroid.data.love.Love
 import com.lovemap.lovemapandroid.data.love.LoveDao
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.ui.data.LoveHolder
+import com.lovemap.lovemapandroid.ui.events.LoveListUpdatedEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.greenrobot.eventbus.EventBus
 import java.time.Instant
 
 class LoveService(
@@ -73,10 +75,12 @@ class LoveService(
             if (response.isSuccessful) {
                 savedCreationState = null
                 val love = response.body()!!
+                wishlistService.removeLocallyByLoveSpot(request.loveSpotId)
                 loveDao.insert(love)
+                EventBus.getDefault().post(LoveListUpdatedEvent(getLoveHolderList()))
                 love
             } else {
-                toaster.showToast(R.string.love_spot_not_available)
+                toaster.showResponseError(response)
                 null
             }
         }
@@ -100,6 +104,7 @@ class LoveService(
                     val love = response.body()!!
                     loveDao.insert(love)
                     toaster.showToast(R.string.love_making_updated)
+                    EventBus.getDefault().post(LoveListUpdatedEvent(getLoveHolderList()))
                     love
                 } else {
                     toaster.showResponseError(response)
@@ -125,6 +130,7 @@ class LoveService(
                 val love = response.body()!!
                 loveDao.delete(love)
                 loveSpotReviewService.loveDeleted(id)
+                EventBus.getDefault().post(LoveListUpdatedEvent(getLoveHolderList()))
                 toaster.showToast(R.string.love_making_deleted)
                 love
             } else {
@@ -184,6 +190,7 @@ class LoveService(
         return withContext(Dispatchers.IO) {
             val loves = loveDao.findBySpotId(loveSpotId)
             loveDao.delete(*loves.toTypedArray())
+            EventBus.getDefault().post(LoveListUpdatedEvent(getLoveHolderList()))
         }
     }
 
