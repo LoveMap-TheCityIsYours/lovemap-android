@@ -213,6 +213,7 @@
     <string name="recently_active_love_spots">Nemrég használt Spotok 📈</string>
     <string name="closest_love_spots">Legközelebbi Spotok 📍</string>
     <string name="newest_love_spots">Legújabb Spotok 🆕</string>
+    <string name="recent_photos_love_spots">Új Képekkel 📸</string>
     <string name="ordering_button_text">Rendezés:</string>
     <string name="location_button_text">Helyszín:</string>
     <string name="select_location_filter">Helyszín szűrő kiválasztása...</string>
@@ -316,5 +317,6 @@
     <string name="remove">Eltávolítás</string>
     <string name="your_wishlist">Kívánságlistád 📝</string>
     <string name="failed_to_remove_from_wishlist">Nem sikerült a Kívánságlistáról eltávolítani</string>
+    <string name="ordering_recent_photos">Új képek</string>
 
 </resources>

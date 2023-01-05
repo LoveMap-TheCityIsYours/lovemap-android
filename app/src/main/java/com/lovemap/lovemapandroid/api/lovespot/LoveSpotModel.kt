@@ -44,7 +44,7 @@ data class LoveSpotSearchRequest(
 )
 
 enum class ListOrdering {
-    CLOSEST, TOP_RATED, RECENTLY_ACTIVE, POPULAR, NEWEST
+    CLOSEST, TOP_RATED, RECENTLY_ACTIVE, POPULAR, NEWEST, RECENT_PHOTOS
 }
 
 enum class ListLocation {
@@ -79,7 +79,8 @@ data class RecommendationsResponse(
     val closestSpots: List<LoveSpot>,
     val recentlyActiveSpots: List<LoveSpot>,
     val popularSpots: List<LoveSpot>,
-    val newestSpots: List<LoveSpot>
+    val newestSpots: List<LoveSpot>,
+    val recentPhotoSpots: List<LoveSpot>,
 ) {
     companion object {
         fun empty(): RecommendationsResponse {
@@ -88,7 +89,8 @@ data class RecommendationsResponse(
                 closestSpots = emptyList(),
                 recentlyActiveSpots = emptyList(),
                 popularSpots = emptyList(),
-                newestSpots = emptyList()
+                newestSpots = emptyList(),
+                recentPhotoSpots = emptyList()
             )
         }
     }

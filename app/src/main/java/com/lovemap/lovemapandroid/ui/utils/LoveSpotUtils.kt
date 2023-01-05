@@ -147,6 +147,7 @@ object LoveSpotUtils {
         1 -> ListOrdering.CLOSEST
         2 -> ListOrdering.RECENTLY_ACTIVE
         3 -> ListOrdering.POPULAR
+        4 -> ListOrdering.RECENT_PHOTOS
         else -> ListOrdering.NEWEST
     }
 
@@ -155,7 +156,8 @@ object LoveSpotUtils {
         ListOrdering.CLOSEST -> 1
         ListOrdering.RECENTLY_ACTIVE -> 2
         ListOrdering.POPULAR -> 3
-        ListOrdering.NEWEST -> 4
+        ListOrdering.RECENT_PHOTOS -> 4
+        ListOrdering.NEWEST -> 5
     }
 
     fun getTypeImageResource(type: LoveSpotType): Int {
