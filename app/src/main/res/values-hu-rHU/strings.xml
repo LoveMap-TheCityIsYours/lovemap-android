@@ -41,10 +41,10 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="settings">Beállítások</string>
     <string name="placeholder">Placeholder</string>
-    <string name="your_profile">Profilod</string>
-    <string name="your_loves">Hancúrjaid</string>
+    <string name="your_profile">Profilod 👤</string>
+    <string name="your_loves">Hancúrjaid 💞</string>
     <string name="discover_love_spots">Love Spotok felfedezése 🧭</string>
-    <string name="love_map">Love Map</string>
+    <string name="love_map">Love Map 💖</string>
     <string name="profileUserName"> - </string>
     <string name="profileUserLevelText"> - </string>
     <string name="profileShareableLink">Megosztható link mutatása</string>
@@ -318,5 +318,8 @@
     <string name="your_wishlist">Kívánságlistád 📝</string>
     <string name="failed_to_remove_from_wishlist">Nem sikerült a Kívánságlistáról eltávolítani</string>
     <string name="ordering_recent_photos">Új képek</string>
+    <string name="remove_from_wishlist_title">Eltávolítás Kívánságlistáról</string>
+    <string name="remove_from_wishlist_message">Biztos hogy el akarod távolítani ezt a LoveSpotot a Kívánságlistádról?</string>
+    <string name="select_lovespot_type">Válassz ki LoveSpot Típust!</string>
 
 </resources>

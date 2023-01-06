@@ -125,21 +125,21 @@ object LoveSpotUtils {
     }
 
     fun positionToType(position: Int): LoveSpotType = when (position) {
-        0 -> LoveSpotType.PUBLIC_SPACE
-        1 -> LoveSpotType.SWINGER_CLUB
-        2 -> LoveSpotType.CRUISING_SPOT
-        3 -> LoveSpotType.SEX_BOOTH
-        4 -> LoveSpotType.NIGHT_CLUB
+        1 -> LoveSpotType.PUBLIC_SPACE
+        2 -> LoveSpotType.SWINGER_CLUB
+        3 -> LoveSpotType.CRUISING_SPOT
+        4 -> LoveSpotType.SEX_BOOTH
+        5 -> LoveSpotType.NIGHT_CLUB
         else -> LoveSpotType.OTHER_VENUE
     }
 
     fun typeToPosition(type: LoveSpotType): Int = when (type) {
-        LoveSpotType.PUBLIC_SPACE -> 0
-        LoveSpotType.SWINGER_CLUB -> 1
-        LoveSpotType.CRUISING_SPOT -> 2
-        LoveSpotType.SEX_BOOTH -> 3
-        LoveSpotType.NIGHT_CLUB -> 4
-        LoveSpotType.OTHER_VENUE -> 5
+        LoveSpotType.PUBLIC_SPACE -> 1
+        LoveSpotType.SWINGER_CLUB -> 2
+        LoveSpotType.CRUISING_SPOT -> 3
+        LoveSpotType.SEX_BOOTH -> 4
+        LoveSpotType.NIGHT_CLUB -> 5
+        LoveSpotType.OTHER_VENUE -> 6
     }
 
     fun positionToOrdering(position: Int): ListOrdering = when (position) {

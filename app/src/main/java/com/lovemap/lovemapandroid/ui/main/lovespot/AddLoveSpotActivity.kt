@@ -4,12 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.love.CreateLoveRequest
@@ -65,7 +68,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
     private lateinit var addSpotSeparator1: TextView
     private lateinit var addSpotSeparator2: TextView
     private lateinit var addSpotAvailability: Spinner
-    private lateinit var addSpotType: Spinner
+    private lateinit var addSpotTypeSpinner: Spinner
     private lateinit var loveSpotTypeInfoButton: ImageButton
     private lateinit var addSpotUploadButton: ExtendedFloatingActionButton
     private lateinit var attachedPhotosCount: TextView
@@ -79,6 +82,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
     private var rating = 0
 
     private var editMode: Boolean = false
+    private var restoreMode: Boolean = false
     private var editedLoveSpotId: Long = 0
     private var editedLoveSpot: LoveSpot? = null
 
@@ -110,7 +114,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
         addSpotSeparator1 = binding.addSpotSeparator1
         addSpotSeparator2 = binding.addSpotSeparator2
         addSpotAvailability = binding.addSpotAvailability
-        addSpotType = binding.addSpotType
+        addSpotTypeSpinner = binding.addSpotType
         loveSpotTypeInfoButton = binding.loveSpotTypeInfoButton
         addSpotUploadButton = binding.addSpotUploadButton
         attachedPhotosCount = binding.attachedPhotosCount
@@ -142,6 +146,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
         if (editMode) {
             initViewsIfEditMode()
         } else {
+            restoreMode = true
             restoreSavedLoveSpot()
         }
     }
@@ -178,7 +183,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
         availability = loveSpot.availability
         addSpotAvailability.setSelection(availabilityToPosition(loveSpot.availability))
         type = loveSpot.type
-        addSpotType.setSelection(typeToPosition(loveSpot.type))
+        addSpotTypeSpinner.setSelection(typeToPosition(loveSpot.type))
     }
 
     private fun restoreSavedLoveSpot() {
@@ -198,7 +203,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
         availability = it.availability
         addSpotAvailability.setSelection(availabilityToPosition(it.availability), true)
         type = it.type
-        addSpotType.setSelection(typeToPosition(it.type), true)
+        addSpotTypeSpinner.setSelection(typeToPosition(it.type), true)
     }
 
     private fun setMadeLoveCheckBox() {
@@ -453,7 +458,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
     }
 
     private fun setAvailabilitySpinner() {
-        binding.addSpotAvailability.onItemSelectedListener =
+        addSpotAvailability.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     adapterView: AdapterView<*>?,
@@ -469,7 +474,42 @@ class AddLoveSpotActivity : AppCompatActivity() {
     }
 
     private fun setTypeSpinner() {
-        binding.addSpotType.onItemSelectedListener =
+        val values: List<String> = resources.getStringArray(R.array.type_list).toList()
+        val adapter = object :
+            ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, values) {
+            override fun getDropDownView(
+                position: Int,
+                convertView: View?,
+                parent: ViewGroup
+            ): View {
+                Log.i("AttilaLog", "getDropDownView position: $position")
+                return if (position == 0) {
+                    val dropDownView = super.getDropDownView(position, convertView, parent)
+                    val textView: TextView = dropDownView.findViewById(android.R.id.text1)
+                    textView.setTextColor(
+                        ContextCompat.getColor(
+                            this@AddLoveSpotActivity,
+                            R.color.crazy_pink
+                        )
+                    )
+                    dropDownView
+                } else {
+                    super.getDropDownView(position, convertView, parent)
+                }
+            }
+        }
+
+        addSpotTypeSpinner.adapter = adapter
+        if (!editMode && !restoreMode) {
+            addSpotTypeSpinner.setBackgroundColor(
+                ContextCompat.getColor(
+                    this@AddLoveSpotActivity,
+                    R.color.crazy_pink
+                )
+            )
+        }
+
+        addSpotTypeSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     adapterView: AdapterView<*>?,
@@ -477,10 +517,39 @@ class AddLoveSpotActivity : AppCompatActivity() {
                     p2: Int,
                     p3: Long
                 ) {
-                    type = positionToType(adapterView?.selectedItemPosition ?: 0)
+                    val position = adapterView?.selectedItemPosition ?: 0
+                    Log.i("AttilaLog", "onItemSelected position: $position")
+                    if (position == 0) {
+                        addSpotSubmit.isEnabled = false
+                        addSpotTypeSpinner.setBackgroundColor(
+                            ContextCompat.getColor(
+                                this@AddLoveSpotActivity,
+                                R.color.crazy_pink
+                            )
+                        )
+                    } else {
+                        addSpotTypeSpinner.setBackgroundColor(
+                            ContextCompat.getColor(
+                                this@AddLoveSpotActivity,
+                                R.color.background_color
+                            )
+                        )
+                        type = positionToType(position)
+                        addSpotSubmit.isEnabled = isSubmitReady()
+                    }
                 }
 
-                override fun onNothingSelected(p0: AdapterView<*>?) {}
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                    Log.i("AttilaLog", "onNothingSelected")
+                    addSpotTypeSpinner.setSelection(0)
+                    addSpotTypeSpinner.setBackgroundColor(
+                        ContextCompat.getColor(
+                            this@AddLoveSpotActivity,
+                            R.color.crazy_pink
+                        )
+                    )
+                    addSpotSubmit.isEnabled = isSubmitReady()
+                }
             }
     }
 
@@ -495,7 +564,8 @@ class AddLoveSpotActivity : AppCompatActivity() {
 
     private fun isSubmitReady(): Boolean {
         return descriptionValid() && nameValid() &&
-                ((madeLoveCheckBox.isChecked && ratingValid()) || !madeLoveCheckBox.isChecked)
+                ((madeLoveCheckBox.isChecked && ratingValid()) || !madeLoveCheckBox.isChecked) &&
+                addSpotTypeSpinner.selectedItemPosition != 0
     }
 
     private fun descriptionValid() = addSpotDescription.text.toString().length >= 5

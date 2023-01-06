@@ -60,7 +60,7 @@ class WishlistFragment : Fragment() {
 
     private fun initializeRecyclerView(linearLayout: LinearLayout) {
         recyclerView = linearLayout.findViewById(R.id.wishlistRecyclerView)
-        adapter = WishlistItemRecyclerAdapter(ArrayList(), recyclerView)
+        adapter = WishlistItemRecyclerAdapter(ArrayList(), recyclerView, this.requireActivity())
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
     }

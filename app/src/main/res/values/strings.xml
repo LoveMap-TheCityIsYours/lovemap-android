@@ -325,5 +325,8 @@
     <string name="your_wishlist">Your Wishlist 📝</string>
     <string name="failed_to_remove_from_wishlist">Failed to remove from Wishlist</string>
     <string name="ordering_recent_photos">Recent Photos</string>
+    <string name="remove_from_wishlist_title">Remove from Wishlist</string>
+    <string name="remove_from_wishlist_message">Are you sure you want to remove this LoveSpot from your Wishlist?</string>
+    <string name="select_lovespot_type">Select LoveSpot Type!</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package com.lovemap.lovemapandroid.ui.main.love.wishlist
 
+import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -8,14 +9,17 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.config.MapContext
 import com.lovemap.lovemapandroid.databinding.FragmentWishlistItemBinding
 import com.lovemap.lovemapandroid.ui.data.WishlistItemHolder
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
+import com.lovemap.lovemapandroid.ui.utils.AlertDialogUtils
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
 import com.lovemap.lovemapandroid.ui.utils.setListItemAnimation
 import com.lovemap.lovemapandroid.utils.instantOfApiString
@@ -25,7 +29,8 @@ import kotlinx.coroutines.launch
 
 class WishlistItemRecyclerAdapter(
     val values: MutableList<WishlistItemHolder>,
-    val recyclerView: RecyclerView
+    val recyclerView: RecyclerView,
+    val activity: Activity
 ) : RecyclerView.Adapter<WishlistItemRecyclerAdapter.ViewHolder>() {
 
     var lastPosition: Int = -1
@@ -135,18 +140,17 @@ class WishlistItemRecyclerAdapter(
             }
 
             deleteButton.setOnClickListener {
-                MainScope().launch {
-                    wishlistService.removeWishlistItem(item.wishlistItem.wishlistItemId)
-//                    updateInternally()
-                }
+                AlertDialogUtils.newDialog(
+                    activity,
+                    R.string.remove_from_wishlist_title,
+                    R.string.remove_from_wishlist_message,
+                    {
+                        MainScope().launch {
+                            wishlistService.removeWishlistItem(item.wishlistItem.wishlistItemId)
+                        }
+                    })
             }
         }
     }
 
-//    private suspend fun updateInternally() {
-//        lastPosition = -1
-//        updateData(wishlistService.getWishlistHolderList())
-//        notifyDataSetChanged()
-//        recyclerView.invalidate()
-//    }
 }
