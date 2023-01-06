@@ -321,5 +321,7 @@
     <string name="remove_from_wishlist_title">Eltávolítás Kívánságlistáról</string>
     <string name="remove_from_wishlist_message">Biztos hogy el akarod távolítani ezt a LoveSpotot a Kívánságlistádról?</string>
     <string name="select_lovespot_type">Válassz ki LoveSpot Típust!</string>
+    <string name="internal_server_error">Szerverhiba történt</string>
+    <string name="uploaded_photo_file_empty">A feltöltött fájl üres</string>
 
 </resources>

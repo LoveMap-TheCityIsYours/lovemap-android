@@ -28,6 +28,10 @@ fun Response<out Any>.getErrorMessages(): List<ErrorMessage> {
     return errorMessages
 }
 
+fun Response<out Any>.getErrorCodes(): List<ErrorCode> {
+    return getErrorMessages().map { it.errorCode }
+}
+
 data class ErrorMessages(
     val errors: List<ErrorMessage>
 )
@@ -73,6 +77,8 @@ private val errorCodeMessageMap = HashMap<ErrorCode, Int>().apply {
     put(WishlistItemNotFound, R.string.wishlist_item_not_found)
     put(AlreadyOnWishlist, R.string.already_on_wishlist)
     put(LoveSpotNotFound, R.string.love_spot_not_available)
+    put(InternalServerError, R.string.internal_server_error)
+    put(UploadedPhotoFileEmpty, R.string.uploaded_photo_file_empty)
 }
 
 enum class ErrorCode {
@@ -117,6 +123,8 @@ enum class ErrorCode {
     WishlistItemNotFound,
     AlreadyOnWishlist,
     LoveSpotNotFound,
+    InternalServerError,
+    UploadedPhotoFileEmpty,
 
     UNDEFINED
 }

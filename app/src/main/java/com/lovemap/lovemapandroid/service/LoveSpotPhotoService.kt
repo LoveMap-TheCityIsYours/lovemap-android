@@ -3,6 +3,9 @@ package com.lovemap.lovemapandroid.service
 import android.app.Activity
 import android.util.Log
 import com.lovemap.lovemapandroid.R
+import com.lovemap.lovemapandroid.api.ErrorCode
+import com.lovemap.lovemapandroid.api.getErrorCodes
+import com.lovemap.lovemapandroid.api.getErrorMessages
 import com.lovemap.lovemapandroid.api.lovespot.photo.LoveSpotPhoto
 import com.lovemap.lovemapandroid.api.lovespot.photo.LoveSpotPhotoApi
 import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
@@ -12,6 +15,8 @@ import kotlinx.coroutines.withContext
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
+import retrofit2.Response
 import java.io.File
 import java.io.FileNotFoundException
 
@@ -112,6 +117,7 @@ class LoveSpotPhotoService(
                         true
                     } else {
                         toaster.showResponseError(response)
+                        showPermissionDialog(response, activity)
                         Log.e("LoveSpotPhotoService", "Photo upload exception: $response")
                         false
                     }
@@ -123,6 +129,18 @@ class LoveSpotPhotoService(
             }
         } else {
             false
+        }
+    }
+
+    private fun showPermissionDialog(
+        response: Response<ResponseBody>,
+        activity: Activity
+    ) {
+        if (response.getErrorCodes().contains(ErrorCode.UploadedPhotoFileEmpty)) {
+            Log.i("showPermissionDialog", "Showing permissionDialog")
+            activity.runOnUiThread {
+                PhotoUtils.permissionDialog(activity)
+            }
         }
     }
 
@@ -145,6 +163,7 @@ class LoveSpotPhotoService(
                         true
                     } else {
                         toaster.showResponseError(response)
+                        showPermissionDialog(response, activity)
                         Log.e("LoveSpotPhotoService", "Photo upload exception: $response")
                         false
                     }
@@ -162,8 +181,9 @@ class LoveSpotPhotoService(
     private fun showUploadFailedAlert(exception: Exception, activity: Activity) {
         toaster.showToast(R.string.photo_upload_failed)
         if (exception is FileNotFoundException) {
+            Log.i("showUploadFailedAlert", "Showing permissionDialog")
             activity.runOnUiThread {
-                PhotoUtils.permissionDialog(activity).show()
+                PhotoUtils.permissionDialog(activity)
             }
         }
     }

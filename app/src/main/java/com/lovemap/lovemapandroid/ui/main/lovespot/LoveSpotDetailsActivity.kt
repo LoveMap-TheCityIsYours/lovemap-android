@@ -156,33 +156,40 @@ LoveSpotDetailsActivity : AppCompatActivity() {
             if (activityResult.resultCode == RESULT_OK) {
                 val loadingBarShower = LoadingBarShower(this@LoveSpotDetailsActivity)
                     .show(R.string.uploading_photo)
-                val files = PhotoUtils.readResultToFiles(activityResult, contentResolver)
-                Log.i(this@LoveSpotDetailsActivity::class.simpleName, "Starting upload")
-                val result: Boolean = if (photoUploadReviewId != null) {
-                    loveSpotPhotoService.uploadToReview(
-                        loveSpotId,
-                        photoUploadReviewId!!,
-                        files,
-                        this@LoveSpotDetailsActivity
-                    )
-                } else {
-                    loveSpotPhotoService.uploadToLoveSpot(
-                        loveSpotId,
-                        files,
-                        this@LoveSpotDetailsActivity
-                    )
+
+                PhotoUtils.readResultToFiles(activityResult, contentResolver).onSuccess { files ->
+                    Log.i(this@LoveSpotDetailsActivity::class.simpleName, "Starting upload")
+                    val result: Boolean = if (photoUploadReviewId != null) {
+                        loveSpotPhotoService.uploadToReview(
+                            loveSpotId,
+                            photoUploadReviewId!!,
+                            files,
+                            this@LoveSpotDetailsActivity
+                        )
+                    } else {
+                        loveSpotPhotoService.uploadToLoveSpot(
+                            loveSpotId,
+                            files,
+                            this@LoveSpotDetailsActivity
+                        )
+                    }
+                    loadingBarShower.onResponse()
+                    photosLoaded = !result
+                    photosRefreshed = !result
+                    photoUploadReviewId = null
+                    if (result) {
+                        Log.i(
+                            this@LoveSpotDetailsActivity::class.simpleName,
+                            "Upload finished, starting refreshing views."
+                        )
+                        startPhotoRefreshSequence()
+                    }
+                }.onFailure {
+                    Log.e("handlePhotoPickerResult", "Failed to read files")
+                    loadingBarShower.onResponse()
+                    PhotoUtils.permissionDialog(this@LoveSpotDetailsActivity)
                 }
-                loadingBarShower.onResponse()
-                photosLoaded = !result
-                photosRefreshed = !result
-                photoUploadReviewId = null
-                if (result) {
-                    Log.i(
-                        this@LoveSpotDetailsActivity::class.simpleName,
-                        "Upload finished, starting refreshing views."
-                    )
-                    startPhotoRefreshSequence()
-                }
+
             } else {
                 toaster.showToast(R.string.failed_to_access_photos)
             }

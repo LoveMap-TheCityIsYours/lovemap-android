@@ -156,11 +156,17 @@ class AddLoveSpotActivity : AppCompatActivity() {
             if (activityResult.resultCode == RESULT_OK) {
                 val loadingBarShower = LoadingBarShower(this@AddLoveSpotActivity)
                     .show(R.string.processing_photos)
-                val files = PhotoUtils.readResultToFiles(activityResult, contentResolver)
-                filesToUpload.clear()
-                filesToUpload.addAll(files)
-                attachedPhotosCount.text = "${filesToUpload.size}"
-                loadingBarShower.onResponse()
+
+                PhotoUtils.readResultToFiles(activityResult, contentResolver).onSuccess { files ->
+                    filesToUpload.clear()
+                    filesToUpload.addAll(files)
+                    attachedPhotosCount.text = "${filesToUpload.size}"
+                    loadingBarShower.onResponse()
+                }.onFailure {
+                    loadingBarShower.onResponse()
+                    Log.e("handlePhotoPickerResult", "Failed to read files")
+                    PhotoUtils.permissionDialog(this@AddLoveSpotActivity)
+                }
             }
         }
     }

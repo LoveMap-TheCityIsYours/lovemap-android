@@ -21,6 +21,7 @@ import com.lovemap.lovemapandroid.config.AppContext
 import com.squareup.picasso.Picasso
 import linc.com.heifconverter.HeifConverter
 import java.io.File
+import java.io.FileNotFoundException
 
 
 object PhotoUtils {
@@ -88,23 +89,31 @@ object PhotoUtils {
     suspend fun readResultToFiles(
         activityResult: ActivityResult,
         contentResolver: ContentResolver
-    ): List<File> {
+    ): Result<List<File>> {
         val itemCount: Int = activityResult.data?.clipData?.itemCount ?: 0
         val files = ArrayList<File>()
+        var failed = false
         for (i in 0 until itemCount) {
             val clipData = activityResult.data!!.clipData!!
             val uri = clipData.getItemAt(i).uri
             Log.i("uri", "$uri")
-            addToFilesFromUri(uri, files, contentResolver)
+            if (!addToFilesFromUri(uri, files, contentResolver)) {
+                failed = true
+            }
         }
-        return files
+        Log.i("readResultToFiles", "returning failed: $failed")
+        if (failed) {
+            return Result.failure(FileNotFoundException("Failed to read files"))
+        }
+        return Result.success(files)
     }
 
     private suspend fun addToFilesFromUri(
         uri: Uri,
         files: ArrayList<File>,
         contentResolver: ContentResolver
-    ) {
+    ): Boolean {
+        var success = true
         val projection = arrayOf(MediaStore.MediaColumns.DATA)
         contentResolver.query(uri, projection, null, null, null)
             ?.use { cursor ->
@@ -123,13 +132,24 @@ object PhotoUtils {
                                 .withOutputQuality(80)
                                 .convertBlocking()
                             val path = conversionResult[HeifConverter.Key.IMAGE_PATH] as String
-                            files.add(File(path))
+                            val convertedFile = File(path)
+                            Log.i(
+                                "convertedFile",
+                                "convertedFile length: ${convertedFile.length()}"
+                            )
+                            if (convertedFile.length() == 0L) {
+                                Log.i("ConversionFailed", "Conversion Failed")
+                                success = false
+                            }
+                            files.add(convertedFile)
                         } else {
                             files.add(file)
                         }
                     }
                 }
             }
+        Log.i("addToFilesFromUri", "returning success: $success")
+        return success
     }
 
     fun permissionDialog(activity: Activity): AlertDialog {
@@ -163,7 +183,7 @@ object PhotoUtils {
                 )
             )
         }
-
+        alertDialog.show()
         return alertDialog
     }
 
