@@ -134,7 +134,11 @@ class MainActivity : AppCompatActivity() {
             )!!,
             AppCompatResources.getDrawable(
                 applicationContext,
-                R.drawable.ic_baseline_location_on_24
+                android.R.drawable.ic_dialog_map
+            )!!,
+            AppCompatResources.getDrawable(
+                applicationContext,
+                R.drawable.ic_baseline_newspaper_24
             )!!,
             AppCompatResources.getDrawable(
                 applicationContext,

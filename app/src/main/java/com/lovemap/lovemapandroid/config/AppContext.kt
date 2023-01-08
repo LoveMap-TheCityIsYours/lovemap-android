@@ -20,6 +20,7 @@ import com.lovemap.lovemapandroid.api.lovespot.LoveSpotRisks
 import com.lovemap.lovemapandroid.api.lovespot.photo.LoveSpotPhotoApi
 import com.lovemap.lovemapandroid.api.lovespot.report.LoveSpotReportApi
 import com.lovemap.lovemapandroid.api.lovespot.review.LoveSpotReviewApi
+import com.lovemap.lovemapandroid.api.newsfeed.NewsFeedApi
 import com.lovemap.lovemapandroid.api.partnership.PartnershipApi
 import com.lovemap.lovemapandroid.data.AppDatabase
 import com.lovemap.lovemapandroid.data.love.LoveDao
@@ -59,6 +60,7 @@ class AppContext : MultiDexApplication() {
     lateinit var geoLocationService: GeoLocationService
     lateinit var loveSpotPhotoService: LoveSpotPhotoService
     lateinit var wishlistService: WishlistService
+    lateinit var newsFeedService: NewsFeedService
 
     lateinit var loveDao: LoveDao
     lateinit var loveSpotDao: LoveSpotDao
@@ -228,6 +230,10 @@ class AppContext : MultiDexApplication() {
         loveSpotPhotoService = LoveSpotPhotoService(
             loveSpotPhotoApi = authorizingRetrofit.create(LoveSpotPhotoApi::class.java),
             loveSpotService = loveSpotService,
+            toaster = toaster
+        )
+        newsFeedService = NewsFeedService(
+            newsFeedApi = authorizingRetrofit.create(NewsFeedApi::class.java),
             toaster = toaster
         )
         if (metadataStore.isLoggedIn()) {
