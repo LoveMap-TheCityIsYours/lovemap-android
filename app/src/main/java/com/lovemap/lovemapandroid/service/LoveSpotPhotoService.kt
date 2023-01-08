@@ -20,7 +20,6 @@ import retrofit2.Response
 import java.io.File
 import java.io.FileNotFoundException
 
-
 class LoveSpotPhotoService(
     private val loveSpotPhotoApi: LoveSpotPhotoApi,
     private val loveSpotService: LoveSpotService,

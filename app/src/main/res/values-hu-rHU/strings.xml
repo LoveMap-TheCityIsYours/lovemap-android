@@ -323,5 +323,8 @@
     <string name="select_lovespot_type">Válassz ki LoveSpot Típust!</string>
     <string name="internal_server_error">Szerverhiba történt</string>
     <string name="uploaded_photo_file_empty">A feltöltött fájl üres</string>
+    <string name="news_feed_page_not_found">Hírfolyam véget ért</string>
+    <string name="invalid_page_request">Hibás oldal lekérés</string>
+    <string name="failed_to_load_news_feed">Hírfolyam betöltése sikertelen</string>
 
 </resources>

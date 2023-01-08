@@ -8,12 +8,13 @@ import com.lovemap.lovemapandroid.ui.main.pages.map.LoveMapPageFragment
 import com.lovemap.lovemapandroid.ui.main.pages.loves.LoveHistorySubPageFragment
 import com.lovemap.lovemapandroid.ui.main.pages.ProfilePageFragment
 import com.lovemap.lovemapandroid.ui.main.pages.loves.LovePageFragment
+import com.lovemap.lovemapandroid.ui.main.pages.newsfeed.NewsFeedPageFragment
 
 class MainViewPagerAdapter(fragmentActivity: FragmentActivity) :
     FragmentStateAdapter(fragmentActivity) {
 
     override fun getItemCount(): Int {
-        return 4
+        return 5
     }
 
     override fun createFragment(position: Int): Fragment {
@@ -21,7 +22,8 @@ class MainViewPagerAdapter(fragmentActivity: FragmentActivity) :
             0 -> LovePageFragment()
             1 -> DiscoverPageFragment2()
             2 -> LoveMapPageFragment()
-            3 -> ProfilePageFragment()
+            3 -> NewsFeedPageFragment()
+            4 -> ProfilePageFragment()
             else -> throw IllegalArgumentException("Position $position is impossible.")
         }
     }
