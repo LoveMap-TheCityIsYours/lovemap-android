@@ -14,7 +14,6 @@ import com.lovemap.lovemapandroid.ui.data.LoveHolder
 import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
 import com.lovemap.lovemapandroid.ui.utils.setListItemAnimation
 
-
 class LoveRecyclerViewAdapter(
     val values: MutableList<LoveHolder>,
     var isClickable: Boolean

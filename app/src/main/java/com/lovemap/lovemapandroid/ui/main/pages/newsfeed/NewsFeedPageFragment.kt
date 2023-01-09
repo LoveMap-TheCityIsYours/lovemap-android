@@ -12,10 +12,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.newsfeed.NewsFeedItemResponse
 import com.lovemap.lovemapandroid.config.AppContext
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 class NewsFeedPageFragment : Fragment() {
     companion object {
@@ -26,6 +23,7 @@ class NewsFeedPageFragment : Fragment() {
 
     private val newsFeedItems = ArrayList<NewsFeedItemResponse?>()
     private var isLoading = true
+    private var newsFeedEnded = false
     private val size = 15
     private var page = 0
 
@@ -44,7 +42,7 @@ class NewsFeedPageFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_news_feed_page, container, false)
         initViews(view)
-        fetchPage(0)
+        fetchPage()
         addOnScrollListener()
         setOnRefreshListener()
         return view
@@ -58,7 +56,7 @@ class NewsFeedPageFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
 
-    private fun fetchPage(page: Int) {
+    private fun fetchPage() {
         Log.i(TAG, "Fetching page '$page' size '$size'}")
         recyclerView.post {
             newsFeedItems.add(null)
@@ -69,14 +67,18 @@ class NewsFeedPageFragment : Fragment() {
                     newsFeedService.getPage(page, size)
                 }.onSuccess { pageResponse ->
                     removeLastNull()
-                    Log.i(TAG, "Adding newsFeedItems to adapter list: ${pageResponse.size}")
-                    pageResponse.forEach { newsFeedItems.add(it) }
-                    Log.i(TAG, "newsFeedItems.size: ${newsFeedItems.size}")
-                    Log.i(TAG, "newsFeedItems: $newsFeedItems")
-                    newsFeedRecyclerAdapter.notifyDataSetChanged()
-                    recyclerView.invalidate()
-                    newsFeedSwipeRefresh.isRefreshing = false
-                    isLoading = false
+                    if (pageResponse.isEmpty()) {
+                        newsFeedEnded = true
+                    } else {
+                        Log.i(TAG, "Adding newsFeedItems to adapter list: ${pageResponse.size}")
+                        pageResponse.forEach { newsFeedItems.add(it) }
+                        Log.i(TAG, "newsFeedItems.size: ${newsFeedItems.size}")
+                        Log.i(TAG, "newsFeedItems: $newsFeedItems")
+                        newsFeedRecyclerAdapter.notifyDataSetChanged()
+                        newsFeedSwipeRefresh.isRefreshing = false
+                        isLoading = false
+                        page++
+                    }
                 }.onFailure {
                     Log.i(TAG, "Failed to get newsFeedItems")
                     isLoading = false
@@ -103,11 +105,11 @@ class NewsFeedPageFragment : Fragment() {
                 super.onScrolled(recyclerView, dx, dy)
                 Log.i(TAG, "onScrolled! newsFeedItems.size: ${newsFeedItems.size}")
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                if (!isLoading) {
+                if (!isLoading && !newsFeedEnded && page > 0) {
                     if (layoutManager.findLastVisibleItemPosition() == newsFeedItems.size - 1) {
                         isLoading = true
                         Log.i(TAG, "onScrolled! fetching page $page")
-                        fetchPage(++page)
+                        fetchPage()
                     }
                 }
             }
@@ -116,11 +118,32 @@ class NewsFeedPageFragment : Fragment() {
 
     private fun setOnRefreshListener() {
         newsFeedSwipeRefresh.setOnRefreshListener {
-            recyclerView.post {
-                newsFeedItems.clear()
-                newsFeedRecyclerAdapter.notifyDataSetChanged()
-                page = 0
-                fetchPage(page)
+            page = 0
+            newsFeedRecyclerAdapter.lastPosition = -1
+            newsFeedItems.clear()
+
+            MainScope().launch {
+                runCatching {
+                    newsFeedService.getPage(page, size)
+                }.onSuccess { pageResponse ->
+                    Log.i(TAG, "Adding newsFeedItems to adapter list: ${pageResponse.size}")
+                    pageResponse.forEach { newsFeedItems.add(it) }
+                    Log.i(TAG, "newsFeedItems.size: ${newsFeedItems.size}")
+                    Log.i(TAG, "newsFeedItems: $newsFeedItems")
+                    newsFeedRecyclerAdapter.notifyDataSetChanged()
+                    recyclerView.invalidate()
+                    newsFeedSwipeRefresh.isRefreshing = false
+                    isLoading = false
+                    newsFeedEnded = false
+                    page++
+                }.onFailure {
+                    Log.i(TAG, "Failed to get newsFeedItems")
+                    newsFeedRecyclerAdapter.notifyDataSetChanged()
+                    recyclerView.invalidate()
+                    isLoading = false
+                    newsFeedEnded = false
+                    newsFeedSwipeRefresh.isRefreshing = false
+                }
             }
         }
     }

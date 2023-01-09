@@ -8,10 +8,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.newsfeed.NewsFeedItemResponse
+import com.lovemap.lovemapandroid.ui.utils.setListItemAnimation
 
 class NewsFeedRecyclerAdapter(
     private val newsFeedItems: MutableList<NewsFeedItemResponse?>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    var lastPosition: Int = -1
 
     companion object {
         private const val VIEW_TYPE_ITEM = 0
@@ -32,6 +35,10 @@ class NewsFeedRecyclerAdapter(
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         if (viewHolder is ItemViewHolder) {
+            setListItemAnimation(viewHolder.itemView, position, lastPosition)
+            if (position > lastPosition) {
+                lastPosition = position
+            }
             newsFeedItems[position]?.let { item ->
                 viewHolder.newsFeedItemType.text = item.type.name
                 viewHolder.newsFeedItemHappenedAt.text = item.happenedAtFormatted
