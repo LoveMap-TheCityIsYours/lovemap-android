@@ -12,7 +12,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.newsfeed.NewsFeedItemResponse
 import com.lovemap.lovemapandroid.config.AppContext
-import kotlinx.coroutines.*
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 class NewsFeedPageFragment : Fragment() {
     companion object {
@@ -51,7 +52,7 @@ class NewsFeedPageFragment : Fragment() {
     private fun initViews(view: View) {
         newsFeedSwipeRefresh = view.findViewById(R.id.newsFeedSwipeRefresh)
         recyclerView = view.findViewById(R.id.newsFeedRecyclerView)
-        newsFeedRecyclerAdapter = NewsFeedRecyclerAdapter(newsFeedItems)
+        newsFeedRecyclerAdapter = NewsFeedRecyclerAdapter(requireActivity(), newsFeedItems)
         recyclerView.adapter = newsFeedRecyclerAdapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
@@ -103,7 +104,7 @@ class NewsFeedPageFragment : Fragment() {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                Log.i(TAG, "onScrolled! newsFeedItems.size: ${newsFeedItems.size}")
+//                Log.i(TAG, "onScrolled! newsFeedItems.size: ${newsFeedItems.size}")
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                 if (!isLoading && !newsFeedEnded && page > 0) {
                     if (layoutManager.findLastVisibleItemPosition() == newsFeedItems.size - 1) {
@@ -118,31 +119,33 @@ class NewsFeedPageFragment : Fragment() {
 
     private fun setOnRefreshListener() {
         newsFeedSwipeRefresh.setOnRefreshListener {
-            page = 0
-            newsFeedRecyclerAdapter.lastPosition = -1
-            newsFeedItems.clear()
+            isLoading = true
+            recyclerView.post {
+                page = 0
+                newsFeedRecyclerAdapter.lastPosition = -1
+                newsFeedItems.clear()
+                newsFeedRecyclerAdapter.notifyDataSetChanged()
 
-            MainScope().launch {
-                runCatching {
-                    newsFeedService.getPage(page, size)
-                }.onSuccess { pageResponse ->
-                    Log.i(TAG, "Adding newsFeedItems to adapter list: ${pageResponse.size}")
-                    pageResponse.forEach { newsFeedItems.add(it) }
-                    Log.i(TAG, "newsFeedItems.size: ${newsFeedItems.size}")
-                    Log.i(TAG, "newsFeedItems: $newsFeedItems")
-                    newsFeedRecyclerAdapter.notifyDataSetChanged()
-                    recyclerView.invalidate()
-                    newsFeedSwipeRefresh.isRefreshing = false
-                    isLoading = false
-                    newsFeedEnded = false
-                    page++
-                }.onFailure {
-                    Log.i(TAG, "Failed to get newsFeedItems")
-                    newsFeedRecyclerAdapter.notifyDataSetChanged()
-                    recyclerView.invalidate()
-                    isLoading = false
-                    newsFeedEnded = false
-                    newsFeedSwipeRefresh.isRefreshing = false
+                MainScope().launch {
+                    runCatching {
+                        newsFeedService.getPage(page, size)
+                    }.onSuccess { pageResponse ->
+                        Log.i(TAG, "Adding newsFeedItems to adapter list: ${pageResponse.size}")
+                        pageResponse.forEach { newsFeedItems.add(it) }
+                        Log.i(TAG, "newsFeedItems.size: ${newsFeedItems.size}")
+                        Log.i(TAG, "newsFeedItems: $newsFeedItems")
+                        newsFeedRecyclerAdapter.notifyDataSetChanged()
+                        recyclerView.invalidate()
+                        newsFeedSwipeRefresh.isRefreshing = false
+                        isLoading = false
+                        newsFeedEnded = false
+                        page++
+                    }.onFailure {
+                        Log.i(TAG, "Failed to get newsFeedItems")
+                        isLoading = false
+                        newsFeedEnded = false
+                        newsFeedSwipeRefresh.isRefreshing = false
+                    }
                 }
             }
         }

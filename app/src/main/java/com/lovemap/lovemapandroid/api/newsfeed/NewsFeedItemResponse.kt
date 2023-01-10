@@ -9,6 +9,7 @@ data class NewsFeedItemResponse(
     val happenedAt: String,
     val happenedAtFormatted: String,
     val referenceId: Long,
+    val country: String,
     val loveSpot: LoveSpotNewsFeedResponse? = null,
     val love: LoveNewsFeedResponse? = null,
     val loveSpotReview: LoveSpotReviewNewsFeedResponse? = null,
@@ -63,6 +64,7 @@ data class LoveSpotPhotoNewsFeedResponse(
     val uploadedBy: Long,
     val uploadedAt: String,
     val fileName: String,
+    val url: String,
     val loveSpotReviewId: Long?,
     val likes: Int,
     val dislikes: Int,
@@ -72,6 +74,7 @@ data class PhotoLikeNewsFeedResponse(
     val id: Long,
     val loveSpotId: Long,
     val loveSpotPhotoId: Long,
+    val url: String,
     val happenedAt: String,
     val loverId: Long,
     val likeOrDislike: Int
