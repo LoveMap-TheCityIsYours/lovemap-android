@@ -326,5 +326,9 @@
     <string name="news_feed_page_not_found">Hírfolyam véget ért</string>
     <string name="invalid_page_request">Hibás oldal lekérés</string>
     <string name="failed_to_load_news_feed">Hírfolyam betöltése sikertelen</string>
+    <string name="somebody_liked_photo_at">👍 Valakinek tetszett ez a kép itt:</string>
+    <string name="somebody_disliked_photo_at">👎 Valakinek nem tetszett ez a kép itt:</string>
+    <string name="somebody_uploaded_a_photo_to">⬆️ Valaki feltöltött egy fotót ide:</string>
+    <string name="news_feed">Hírfolyam 📰</string>
 
 </resources>

@@ -333,5 +333,9 @@
     <string name="news_feed_page_not_found">End of News Feed</string>
     <string name="invalid_page_request">Invalid page request</string>
     <string name="failed_to_load_news_feed">Failed to load News Feed</string>
+    <string name="somebody_liked_photo_at">👍 Somebody liked a photo at</string>
+    <string name="somebody_disliked_photo_at">👎 Somebody disliked a photo at</string>
+    <string name="somebody_uploaded_a_photo_to">⬆️ Somebody uploaded a photo to</string>
+    <string name="news_feed">News Feed 📰</string>
 
 </resources>

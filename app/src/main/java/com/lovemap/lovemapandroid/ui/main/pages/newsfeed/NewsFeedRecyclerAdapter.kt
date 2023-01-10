@@ -1,6 +1,8 @@
 package com.lovemap.lovemapandroid.ui.main.pages.newsfeed
 
 import android.content.Context
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,14 +10,16 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.newsfeed.NewsFeedItemResponse
 import com.lovemap.lovemapandroid.api.newsfeed.NewsFeedItemType
 import com.lovemap.lovemapandroid.config.AppContext
-import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
+import com.lovemap.lovemapandroid.config.MapContext
+import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
+import com.lovemap.lovemapandroid.ui.utils.PhotoUtils
 import com.lovemap.lovemapandroid.ui.utils.setListItemAnimation
+import com.lovemap.lovemapandroid.utils.instantOfApiString
+import com.lovemap.lovemapandroid.utils.toFormattedString
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
@@ -24,7 +28,8 @@ class NewsFeedRecyclerAdapter(
     private val newsFeedItems: MutableList<NewsFeedItemResponse?>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val loveSpotService = AppContext.INSTANCE.loveSpotService
+    private val appContext = AppContext.INSTANCE
+    private val loveSpotService = appContext.loveSpotService
 
     var lastPosition: Int = -1
 
@@ -80,21 +85,31 @@ class NewsFeedRecyclerAdapter(
                 lastPosition = position
             }
             newsFeedItems[position]?.let { item ->
-                val loveSpotPhoto = item.loveSpotPhoto
-                viewHolder.newsFeedItemType.text = item.type.name
-                viewHolder.newsFeedItemHappenedAt.text = item.happenedAtFormatted
+                val loveSpotPhoto = item.loveSpotPhoto!!
+                viewHolder.itemView.setOnClickListener {
+                    appContext.selectedLoveSpotId = loveSpotPhoto.loveSpotId
+                    MapContext.selectedMarker = null
+                    context.startActivity(
+                        Intent(context, LoveSpotDetailsActivity::class.java)
+                    )
+                }
+                viewHolder.newsFeedText.text =
+                    context.getString(R.string.somebody_uploaded_a_photo_to)
+                viewHolder.newsFeedHappenedAt.text =
+                    instantOfApiString(item.happenedAt).toFormattedString()
 
                 MainScope().launch {
-                    loveSpotPhoto?.let {
-                        loveSpotService.findLocallyOrFetch(loveSpotPhoto.loveSpotId)
-                            ?.let { loveSpot ->
-                                Glide.with(context)
-                                    .load(loveSpotPhoto.url)
-                                    .placeholder(LoveSpotUtils.getTypeImageResource(loveSpot.type))
-                                    .transition(DrawableTransitionOptions.withCrossFade())
-                                    .into(viewHolder.photo)
-                            }
-                    }
+                    loveSpotService.findLocallyOrFetch(loveSpotPhoto.loveSpotId)
+                        ?.let { loveSpot ->
+                            Log.i("ImageViewWidth", "Is: " + viewHolder.photo.width)
+                            viewHolder.newsFeedLoveSpotName.text = loveSpot.name
+                            PhotoUtils.loadSimpleImage(
+                                viewHolder.photo,
+                                loveSpot.type,
+                                loveSpotPhoto.url,
+                                viewHolder.itemView.width
+                            )
+                        }
                 }
             }
         } else if (viewHolder is PhotoLikeViewHolder) {
@@ -103,21 +118,37 @@ class NewsFeedRecyclerAdapter(
                 lastPosition = position
             }
             newsFeedItems[position]?.let { item ->
-                val photoLike = item.photoLike
-                viewHolder.newsFeedItemType.text = item.type.name
-                viewHolder.newsFeedItemHappenedAt.text = item.happenedAtFormatted
+                val photoLike = item.photoLike!!
+                viewHolder.itemView.setOnClickListener {
+                    appContext.selectedLoveSpotId = photoLike.loveSpotId
+                    MapContext.selectedMarker = null
+                    context.startActivity(
+                        Intent(context, LoveSpotDetailsActivity::class.java)
+                    )
+                }
+                if (photoLike.likeOrDislike > 0) {
+                    viewHolder.newsFeedText.text =
+                        context.getString(R.string.somebody_liked_photo_at)
+                } else {
+                    viewHolder.newsFeedText.text =
+                        context.getString(R.string.somebody_disliked_photo_at)
+                }
+
+                viewHolder.newsFeedHappenedAt.text =
+                    instantOfApiString(item.happenedAt).toFormattedString()
 
                 MainScope().launch {
-                    photoLike?.let {
-                        loveSpotService.findLocallyOrFetch(photoLike.loveSpotId)
-                            ?.let { loveSpot ->
-                                Glide.with(context)
-                                    .load(photoLike.url)
-                                    .placeholder(LoveSpotUtils.getTypeImageResource(loveSpot.type))
-                                    .transition(DrawableTransitionOptions.withCrossFade())
-                                    .into(viewHolder.photo)
-                            }
-                    }
+                    loveSpotService.findLocallyOrFetch(photoLike.loveSpotId)
+                        ?.let { loveSpot ->
+                            viewHolder.newsFeedLoveSpotName.text = loveSpot.name
+                            PhotoUtils.loadSimpleImage(
+                                viewHolder.photo,
+                                loveSpot.type,
+                                photoLike.url,
+                                viewHolder.itemView.width
+                            )
+                        }
+
                 }
             }
         } else if (viewHolder is LoadingViewHolder) {
@@ -144,14 +175,16 @@ class NewsFeedRecyclerAdapter(
     }
 
     inner class LoveSpotPhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val newsFeedItemType: TextView = itemView.findViewById(R.id.newsFeedItemType)
-        val newsFeedItemHappenedAt: TextView = itemView.findViewById(R.id.newsFeedItemHappenedAt)
+        val newsFeedText: TextView = itemView.findViewById(R.id.newsFeedText)
+        val newsFeedLoveSpotName: TextView = itemView.findViewById(R.id.newsFeedLoveSpotName)
+        val newsFeedHappenedAt: TextView = itemView.findViewById(R.id.newsFeedHappenedAt)
         val photo: ImageView = itemView.findViewById(R.id.newsFeedPhotoItemPhoto)
     }
 
     inner class PhotoLikeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val newsFeedItemType: TextView = itemView.findViewById(R.id.newsFeedItemType)
-        val newsFeedItemHappenedAt: TextView = itemView.findViewById(R.id.newsFeedItemHappenedAt)
+        val newsFeedText: TextView = itemView.findViewById(R.id.newsFeedText)
+        val newsFeedLoveSpotName: TextView = itemView.findViewById(R.id.newsFeedLoveSpotName)
+        val newsFeedHappenedAt: TextView = itemView.findViewById(R.id.newsFeedHappenedAt)
         val photo: ImageView = itemView.findViewById(R.id.newsFeedPhotoLikePhoto)
     }
 

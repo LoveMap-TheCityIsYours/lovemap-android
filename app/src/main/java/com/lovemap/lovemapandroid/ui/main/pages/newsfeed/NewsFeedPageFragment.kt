@@ -104,7 +104,6 @@ class NewsFeedPageFragment : Fragment() {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-//                Log.i(TAG, "onScrolled! newsFeedItems.size: ${newsFeedItems.size}")
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                 if (!isLoading && !newsFeedEnded && page > 0) {
                     if (layoutManager.findLastVisibleItemPosition() == newsFeedItems.size - 1) {

@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.ContentResolver
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -14,19 +15,19 @@ import android.widget.ImageView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.app.ActivityCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotType
 import com.lovemap.lovemapandroid.api.lovespot.photo.LoveSpotPhoto
 import com.lovemap.lovemapandroid.config.AppContext
-import com.squareup.picasso.Picasso
 import linc.com.heifconverter.HeifConverter
 import java.io.File
 import java.io.FileNotFoundException
 
 
 object PhotoUtils {
-
-    private val picasso = Picasso.get().apply { isLoggingEnabled = true }
 
     private const val REQUEST_EXTERNAL_STORAGE = 1
 
@@ -43,7 +44,6 @@ object PhotoUtils {
         )
         if (permission != PackageManager.PERMISSION_GRANTED) {
             // We don't have permission so prompt the user
-//            AppContext.INSTANCE.toaster.showToast(R.string.allow_access_to_storage)
             ActivityCompat.requestPermissions(
                 activity,
                 PERMISSIONS_STORAGE,
@@ -205,9 +205,11 @@ object PhotoUtils {
             .convert { result ->
                 val path = result[HeifConverter.Key.IMAGE_PATH] as String
                 val file = File(path)
-                picasso
+                Glide.with(activity as Context)
                     .load(file)
-                    .placeholder(LoveSpotUtils.getTypeImageResource(loveSpotType))
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .fitCenter()
+                    .fallback(LoveSpotUtils.getTypeImageResource(loveSpotType))
                     .into(imageView)
             }
     }
@@ -217,9 +219,25 @@ object PhotoUtils {
         loveSpotType: LoveSpotType,
         url: String
     ) {
-        picasso
+        Glide.with(imageView.context)
             .load(url)
-            .placeholder(LoveSpotUtils.getTypeImageResource(loveSpotType))
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .fitCenter()
+            .fallback(LoveSpotUtils.getTypeImageResource(loveSpotType))
+            .into(imageView)
+    }
+
+    fun loadSimpleImage(
+        imageView: ImageView,
+        loveSpotType: LoveSpotType,
+        url: String,
+        overrideSize: Int
+    ) {
+        Glide.with(imageView.context)
+            .load(url)
+            .override(overrideSize)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .fallback(LoveSpotUtils.getTypeImageResource(loveSpotType))
             .into(imageView)
     }
 }
