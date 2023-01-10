@@ -23,15 +23,17 @@
         android:gravity="bottom|center"
         android:orientation="vertical">
 
+<!--        android:layout_height="wrap_content"-->
         <ImageView
             android:id="@+id/loveSpotPhotoItem"
             android:layout_width="300dp"
-            android:layout_height="wrap_content"
+            android:layout_height="500dp"
             android:layout_gravity="top"
             android:layout_marginStart="@dimen/standard_8"
             android:layout_marginEnd="@dimen/standard_8"
             android:layout_weight="10"
-            android:scaleType="centerInside"/>
+            android:scaleType="fitCenter"/>
+<!--            android:scaleType="centerInside"/>-->
 
         <androidx.legacy.widget.Space
             android:layout_width="match_parent"
