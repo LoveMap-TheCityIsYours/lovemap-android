@@ -36,6 +36,10 @@ class LoveSpotService(
         }
     }
 
+    suspend fun findLocallyOrFetch(loveSpotId: Long): LoveSpot? {
+        return findLocally(loveSpotId) ?: refresh(loveSpotId)
+    }
+
     suspend fun getLoveSpotHolderList(): MutableList<LoveSpotHolder> {
         return withContext(Dispatchers.IO) {
             val loveSpots = loveSpotDao.getAllOrderedByRating()
