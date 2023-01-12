@@ -315,7 +315,7 @@
     <string name="wishlisted_at">Kívánságlistázva:</string>
     <string name="open_spot">Spot Megnyitása</string>
     <string name="remove">Eltávolítás</string>
-    <string name="your_wishlist">Kívánságlistád 📝</string>
+    <string name="your_wishlist">Kívánságlistád 😏</string>
     <string name="failed_to_remove_from_wishlist">Nem sikerült a Kívánságlistáról eltávolítani</string>
     <string name="ordering_recent_photos">Új képek</string>
     <string name="remove_from_wishlist_title">Eltávolítás Kívánságlistáról</string>
@@ -326,9 +326,15 @@
     <string name="news_feed_page_not_found">Hírfolyam véget ért</string>
     <string name="invalid_page_request">Hibás oldal lekérés</string>
     <string name="failed_to_load_news_feed">Hírfolyam betöltése sikertelen</string>
-    <string name="somebody_liked_photo_at">👍 Valakinek tetszett ez a kép itt:</string>
-    <string name="somebody_disliked_photo_at">👎 Valakinek nem tetszett ez a kép itt:</string>
-    <string name="somebody_uploaded_a_photo_to">⬆️ Valaki feltöltött egy fotót ide:</string>
+    <string name="somebody_liked_photo_at">👍 Valakinek tetszett ez a kép itt</string>
+    <string name="somebody_disliked_photo_at">👎 Valakinek nem tetszett ez a kép itt</string>
+    <string name="somebody_uploaded_a_photo_to">⬆️ Valaki feltöltött egy fotót ide</string>
     <string name="news_feed">Hírfolyam 📰</string>
+    <string name="somebody_added_a_new_lovespot">📍 Új LoveSpotot vettek fel!</string>
+    <string name="somebody_wishlisted_spot">😏 Valaki Kívánságlistára tette</string>
+    <string name="somebody_reviewed_spot">⭐ Új értékelést írtak ehhez</string>
+    <string name="review_not_found">Értékelés nem található</string>
+    <string name="somebody_made_love_at">💞 Valaki baszott itt 😉</string>
+    <string name="new_lover_joined">🥰 Új szerető csatlakozott❣</string>
 
 </resources>

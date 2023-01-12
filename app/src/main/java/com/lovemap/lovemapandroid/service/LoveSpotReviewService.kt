@@ -29,6 +29,41 @@ class LoveSpotReviewService(
         val riskSelection: Int
     )
 
+    suspend fun findLocallyOrFetch(reviewId: Long): LoveSpotReview? {
+        return findLocally(reviewId) ?: refresh(reviewId, false)
+    }
+
+    suspend fun findLocally(reviewId: Long): LoveSpotReview? {
+        return withContext(Dispatchers.IO) {
+            loveSpotReviewDao.loadSingle(reviewId)
+        }
+    }
+
+    suspend fun refresh(reviewId: Long, showToast: Boolean = true): LoveSpotReview? {
+        return withContext(Dispatchers.IO) {
+            val localSpot = loveSpotReviewDao.loadSingle(reviewId)
+            val call = loveSpotReviewApi.getReviewById(reviewId)
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
+                if (showToast) {
+                    toaster.showToast(R.string.review_not_found)
+                }
+                return@withContext localSpot
+            }
+            if (response.isSuccessful) {
+                val loveSpot = response.body()!!
+                loveSpotReviewDao.insert(loveSpot)
+                loveSpot
+            } else {
+                if (showToast) {
+                    toaster.showResponseError(response)
+                }
+                localSpot
+            }
+        }
+    }
+
     suspend fun submitReview(request: LoveSpotReviewRequest): LoveSpot? {
         return withContext(Dispatchers.IO) {
             val call = loveSpotReviewApi.submitReview(request)

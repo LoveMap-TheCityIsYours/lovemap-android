@@ -37,7 +37,7 @@ class LoveSpotService(
     }
 
     suspend fun findLocallyOrFetch(loveSpotId: Long): LoveSpot? {
-        return findLocally(loveSpotId) ?: refresh(loveSpotId)
+        return findLocally(loveSpotId) ?: refresh(loveSpotId, false)
     }
 
     suspend fun getLoveSpotHolderList(): MutableList<LoveSpotHolder> {
@@ -62,14 +62,16 @@ class LoveSpotService(
         }
     }
 
-    suspend fun refresh(id: Long): LoveSpot? {
+    suspend fun refresh(id: Long, showToast: Boolean = true): LoveSpot? {
         return withContext(Dispatchers.IO) {
             val localSpot = loveSpotDao.loadSingle(id)
             val call = loveSpotApi.find(id)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
-                toaster.showToast(R.string.love_spot_not_available)
+                if (showToast) {
+                    toaster.showToast(R.string.love_spot_not_available)
+                }
                 return@withContext localSpot
             }
             if (response.isSuccessful) {
@@ -77,7 +79,9 @@ class LoveSpotService(
                 loveSpotDao.insert(loveSpot)
                 loveSpot
             } else {
-                toaster.showToast(R.string.love_spot_not_available)
+                if (showToast) {
+                    toaster.showToast(R.string.love_spot_not_available)
+                }
                 localSpot
             }
         }

@@ -322,7 +322,7 @@
     <string name="wishlisted_at">Wishlisted at:</string>
     <string name="open_spot">Open Spot</string>
     <string name="remove">Remove</string>
-    <string name="your_wishlist">Your Wishlist 📝</string>
+    <string name="your_wishlist">Your Wishlist 😏</string>
     <string name="failed_to_remove_from_wishlist">Failed to remove from Wishlist</string>
     <string name="ordering_recent_photos">Recent Photos</string>
     <string name="remove_from_wishlist_title">Remove from Wishlist</string>
@@ -337,5 +337,11 @@
     <string name="somebody_disliked_photo_at">👎 Somebody disliked a photo at</string>
     <string name="somebody_uploaded_a_photo_to">⬆️ Somebody uploaded a photo to</string>
     <string name="news_feed">News Feed 📰</string>
+    <string name="somebody_added_a_new_lovespot">📍 New LoveSpot Added!</string>
+    <string name="somebody_wishlisted_spot">😏 Somebody Wishlisted</string>
+    <string name="somebody_reviewed_spot">⭐ A review was added at</string>
+    <string name="review_not_found">Review not found</string>
+    <string name="somebody_made_love_at">💞 Somebody got lucky here 😉</string>
+    <string name="new_lover_joined">🥰 New Lover joined us❣</string>
 
 </resources>
