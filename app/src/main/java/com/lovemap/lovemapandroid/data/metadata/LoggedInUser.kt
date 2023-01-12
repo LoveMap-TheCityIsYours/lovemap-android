@@ -6,6 +6,8 @@ import com.lovemap.lovemapandroid.api.lover.LoverRelationsDto
 data class LoggedInUser(
     var id: Long = 0,
     var userName: String,
+    var displayName: String? = userName,
+    var publicProfile: Boolean = false,
     var email: String,
     var jwt: String,
     var shareableLink: String? = null,
@@ -15,6 +17,8 @@ data class LoggedInUser(
             return LoggedInUser(
                 id = loverDto.id,
                 userName = loverDto.userName,
+                displayName = loverDto.displayName,
+                publicProfile = loverDto.publicProfile,
                 email = loverDto.email,
                 shareableLink = loverDto.shareableLink,
                 jwt = jwt
@@ -25,6 +29,8 @@ data class LoggedInUser(
             return LoggedInUser(
                 id = loverDto.id,
                 userName = loverDto.userName,
+                displayName = loverDto.displayName,
+                publicProfile = loverDto.publicProfile,
                 email = loverDto.email,
                 shareableLink = loverDto.shareableLink,
                 jwt = jwt

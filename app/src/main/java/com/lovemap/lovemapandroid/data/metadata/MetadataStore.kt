@@ -84,6 +84,10 @@ class MetadataStore(private val context: Context) {
         context.dataStore.edit { dataStore ->
             dataStore[loverKey] = gson.toJson(lover)
         }
+        if (isLoggedIn()) {
+            val loggedInUser = getUser()
+            login(LoggedInUser.of(lover, loggedInUser.jwt))
+        }
         return lover
     }
 

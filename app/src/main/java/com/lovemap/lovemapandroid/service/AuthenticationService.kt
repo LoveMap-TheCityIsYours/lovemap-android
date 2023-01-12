@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Looper
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.authentication.*
+import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.metadata.LoggedInUser
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import kotlinx.coroutines.Dispatchers
@@ -16,6 +17,7 @@ class AuthenticationService(
     private val context: Context
 ) {
     private val mainLooper = Looper.getMainLooper()
+    private val appContext = AppContext.INSTANCE
 
     suspend fun login(email: String, password: String): LoggedInUser? {
         var loggedInUser: LoggedInUser? = null
@@ -46,8 +48,9 @@ class AuthenticationService(
     suspend fun register(userName: String, email: String, password: String): LoggedInUser? {
         var loggedInUser: LoggedInUser? = null
         return withContext(Dispatchers.IO) {
+            val registrationCountry = appContext.userCurrentCountry
             val call = authenticationApi.register(
-                CreateLoverRequest(userName, password, email)
+                CreateLoverRequest(userName, password, email, registrationCountry)
             )
             val response = try {
                 call.execute()
@@ -119,8 +122,9 @@ class AuthenticationService(
     suspend fun facebookLogin(email: String, facebookId: String, token: String): LoggedInUser? {
         var loggedInUser: LoggedInUser? = null
         return withContext(Dispatchers.IO) {
+            val registrationCountry = appContext.userCurrentCountry
             val call = authenticationApi.facebookLogin(
-                FacebookAuthenticationRequest(email, facebookId, token)
+                FacebookAuthenticationRequest(email, facebookId, token, registrationCountry)
             )
             val response = try {
                 call.execute()

@@ -3,6 +3,7 @@ package com.lovemap.lovemapandroid.config
 import android.annotation.SuppressLint
 import android.os.Looper
 import android.telephony.TelephonyManager
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.multidex.MultiDexApplication
@@ -28,6 +29,7 @@ import com.lovemap.lovemapandroid.data.lover.wishlist.WishlistItemDao
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpotDao
 import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReviewDao
+import com.lovemap.lovemapandroid.data.metadata.LoggedInUser
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.data.partnership.PartnershipDao
 import com.lovemap.lovemapandroid.service.*
@@ -48,6 +50,8 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 class AppContext : MultiDexApplication() {
+    private val tag = "AppContext"
+
     lateinit var toaster: Toaster
 
     lateinit var authenticationService: AuthenticationService
@@ -102,6 +106,7 @@ class AppContext : MultiDexApplication() {
         super.onCreate()
         AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
         runBlocking {
+            initCountry()
             initInstance()
             initClients()
         }
@@ -110,7 +115,6 @@ class AppContext : MultiDexApplication() {
                 fetchUserData()
             }
         }
-        initCountry()
     }
 
     private fun initCountry() {
@@ -240,7 +244,10 @@ class AppContext : MultiDexApplication() {
             toaster = toaster
         )
         if (metadataStore.isLoggedIn()) {
-            val user = metadataStore.getUser()
+            val user: LoggedInUser = metadataStore.getUser()
+            Log.i(tag, "LoggedInUser: $user")
+            Log.i(tag, "user.displayName: ${user.displayName}")
+            Log.i(tag, "user.publicProfile: ${user.publicProfile}")
             userId = user.id
             isAdmin = metadataStore.isAdmin(user)
         } else {
@@ -250,6 +257,7 @@ class AppContext : MultiDexApplication() {
 
     private suspend fun fetchUserData() {
         if (userId != 0L) {
+            refetchUserIfNeeded(metadataStore.getUser())
             loverService.getRanks()
             loveSpotRisks = loveSpotService.getRisks()
             loveService.list()
@@ -257,6 +265,17 @@ class AppContext : MultiDexApplication() {
             geoLocationService.getAndFetchCities()
             geoLocationService.getAndFetchCountries()
         }
+    }
+
+    private suspend fun refetchUserIfNeeded(user: LoggedInUser) {
+        if (shouldRefetchUser(user)) {
+            Log.i(tag, "Refetching user")
+            loverService.getMyself()
+        }
+    }
+
+    private fun shouldRefetchUser(user: LoggedInUser): Boolean {
+        return user.displayName == null
     }
 
     private suspend fun authorizingHttpClient(): OkHttpClient {
