@@ -10,7 +10,7 @@ import java.time.Instant
 data class LoverDto(
     val id: Long,
     val userName: String,
-    val displayName: String,
+    val displayName: String = userName,
     val email: String,
     val rank: Int,
     val points: Int,
@@ -40,7 +40,7 @@ data class LoverRelationsDto(
     val id: Long,
     val relations: List<LoverViewDto>,
     val userName: String,
-    val displayName: String,
+    val displayName: String = userName,
     val email: String,
     val rank: Int,
     val points: Int,
