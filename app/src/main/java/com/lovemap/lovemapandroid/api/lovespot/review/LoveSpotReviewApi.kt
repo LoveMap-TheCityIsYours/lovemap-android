@@ -17,4 +17,7 @@ interface LoveSpotReviewApi {
 
     @GET("/lovespots/reviews/byLover/{loverId}")
     fun getReviewsByLover(@Path("loverId") loverId: Long): Call<List<LoveSpotReview>>
+
+    @GET("/lovespots/reviews/{reviewId}")
+    fun getReviewById(@Path("reviewId") reviewId: Long): Call<LoveSpotReview>
 }

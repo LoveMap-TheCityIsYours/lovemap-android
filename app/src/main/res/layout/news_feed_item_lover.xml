@@ -18,17 +18,19 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/newsFeedItemType"
+            android:id="@+id/newsFeedText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/myColorOnBackground"
+            android:textSize="20sp"
             android:layout_marginBottom="8dp"
-            android:text="Item Type" />
+            android:text="text" />
 
         <TextView
-            android:id="@+id/newsFeedItemHappenedAt"
+            android:id="@+id/newsFeedHappenedAt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Happened At" />
+            android:text="date" />
 
     </LinearLayout>
 
