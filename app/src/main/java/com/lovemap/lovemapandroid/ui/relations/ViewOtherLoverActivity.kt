@@ -160,7 +160,7 @@ class ViewOtherLoverActivity : AppCompatActivity() {
     ) {
         otherLover?.let {
             setPointsAndRank(it)
-            profileUserName.text = it.userName
+            profileUserName.text = it.displayName
             if (userId == it.id) {
                 setRelationState(YOURSELF)
             } else {

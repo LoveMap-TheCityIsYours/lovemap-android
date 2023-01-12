@@ -11,12 +11,10 @@ import androidx.fragment.app.Fragment
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.utils.partnersFromRelations
-import com.lovemap.lovemapandroid.utils.timeZone
 import com.lovemap.lovemapandroid.utils.toFormattedString
 import com.lovemap.lovemapandroid.utils.toInstant
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import java.time.Instant
 import java.time.LocalDateTime
 
 class RecordLoveFragment : Fragment(),
@@ -57,8 +55,8 @@ class RecordLoveFragment : Fragment(),
         MainScope().launch {
             loverService.getMyself()?.let { lover ->
                 partners.addAll(partnersFromRelations(lover.relations).map {
-                    partnerIds[it.userName] = it.id
-                    it.userName
+                    partnerIds[it.displayName] = it.id
+                    it.displayName
                 })
                 recordLoveSelectPartnerDropdown.adapter = ArrayAdapter(
                     requireContext(),

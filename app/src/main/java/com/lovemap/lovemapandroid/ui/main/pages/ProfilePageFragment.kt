@@ -158,7 +158,7 @@ class ProfilePageFragment : Fragment() {
                 val partnership = partnerships[0]
                 partner = loverService.getOtherById(partnership.getPartnerId())
                 partner?.let {
-                    profilePartnerName.text = it.userName
+                    profilePartnerName.text = it.displayName
                     profilePartnerRelation.text =
                         I18nUtils.partnershipStatus(
                             partnership.partnershipStatus,
