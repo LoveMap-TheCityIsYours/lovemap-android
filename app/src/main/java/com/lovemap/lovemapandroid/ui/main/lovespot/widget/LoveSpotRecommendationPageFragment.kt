@@ -57,6 +57,7 @@ class LoveSpotRecommendationPageFragment : Fragment() {
             }
             LoveSpotListFilterState.locationName = appContext.country
             getRecommendations()
+            LoveSpotListFilterState.sendFiltersChangedEvent()
         }
         getRecommendationsWhenLocationAccessIsDenied()
         return view
