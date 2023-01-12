@@ -89,7 +89,7 @@ data class WishlistNewsFeedResponse(
 
 data class LoverNewsFeedResponse(
     val id: Long,
-    val userName: String,
+    val displayName: String,
     val publicProfile: Boolean,
     val joinedAt: String,
     val rank: Int,

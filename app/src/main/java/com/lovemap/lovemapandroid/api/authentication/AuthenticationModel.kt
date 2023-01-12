@@ -3,7 +3,8 @@ package com.lovemap.lovemapandroid.api.authentication
 data class CreateLoverRequest(
     val userName: String,
     val password: String,
-    val email: String
+    val email: String,
+    val registrationCountry: String?
 )
 
 data class LoginLoverRequest(
@@ -29,4 +30,5 @@ data class FacebookAuthenticationRequest(
     val email: String,
     val facebookId: String,
     val accessToken: String,
+    val registrationCountry: String?
 )

@@ -23,6 +23,9 @@ interface LoverApi {
     @GET("/lovers/view/{loverId}")
     fun getLoverView(@Path("loverId") loverId: Long): Call<LoverViewDto>
 
+    @PUT("/lovers/{loverId}")
+    fun updateLover(@Path("loverId") loverId: Long, update: UpdateLoverRequest)
+
     @GET("/lovers/ranks")
     fun getRanks(): Call<LoverRanks>
 }
