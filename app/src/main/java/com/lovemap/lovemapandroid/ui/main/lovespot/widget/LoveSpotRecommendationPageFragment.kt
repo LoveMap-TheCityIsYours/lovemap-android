@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.SwitchCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lovespot.RecommendationsRequest
@@ -30,6 +31,7 @@ class LoveSpotRecommendationPageFragment : Fragment() {
     private var lastUpdateWithLocation: Long = 0
 
     private lateinit var recommendationsSwipeRefresh: SwipeRefreshLayout
+    private lateinit var localSwitcher: SwitchCompat
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +45,17 @@ class LoveSpotRecommendationPageFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_love_spot_recommendation_page, container, false)
         recommendationsSwipeRefresh = view.findViewById(R.id.recommendationsSwipeRefresh)
+        localSwitcher = view.findViewById(R.id.localSwitcher)
         recommendationsSwipeRefresh.setOnRefreshListener {
+            getRecommendations()
+        }
+        localSwitcher.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                appContext.country = appContext.userCurrentCountry
+            } else {
+                appContext.country = appContext.countryForGlobal
+            }
+            LoveSpotListFilterState.locationName = appContext.country
             getRecommendations()
         }
         getRecommendationsWhenLocationAccessIsDenied()

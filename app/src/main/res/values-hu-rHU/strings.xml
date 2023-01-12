@@ -336,5 +336,7 @@
     <string name="review_not_found">Értékelés nem található</string>
     <string name="somebody_made_love_at">💞 Valaki baszott itt 😉</string>
     <string name="new_lover_joined">🥰 Új szerető csatlakozott❣</string>
+    <string name="switch_off_is_global">Globális</string>
+    <string name="switch_on_is_local">Helyi</string>
 
 </resources>

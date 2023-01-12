@@ -27,7 +27,9 @@
     <color name="myColorSecondaryVariant">@color/teal_200</color>
     <color name="myColorOnSecondary">@color/black</color>
 
-    <color name="myCardColor">#1A1049</color>
+<!--    <color name="myCardColor">#3F3C50</color>-->
+    <color name="myCardColor">#4E4A68</color>
+
     <color name="myColorOnBackground">#FFFFFF</color>
     <color name="myLinkColor">#69DCFF</color>
 

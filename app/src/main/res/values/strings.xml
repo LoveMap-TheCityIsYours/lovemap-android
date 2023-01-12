@@ -343,5 +343,7 @@
     <string name="review_not_found">Review not found</string>
     <string name="somebody_made_love_at">💞 Somebody got lucky here 😉</string>
     <string name="new_lover_joined">🥰 New Lover joined us❣</string>
+    <string name="switch_off_is_global">Global</string>
+    <string name="switch_on_is_local">Local</string>
 
 </resources>

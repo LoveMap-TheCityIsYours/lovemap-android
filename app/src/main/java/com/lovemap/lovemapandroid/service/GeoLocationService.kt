@@ -12,28 +12,67 @@ class GeoLocationService(
     private val metadataStore: MetadataStore,
     private val toaster: Toaster
 ) {
-    suspend fun getCities(): Cities? {
+    suspend fun getAndFetchCities(): Cities? {
         return withContext(Dispatchers.IO) {
-            val localCities: Cities? = if (metadataStore.isCitiesStored()) {
-                metadataStore.getCities()
+            if (metadataStore.isCitiesStored()) {
+                val localCities: Cities = metadataStore.getCities()
+                val serverCities: Cities? = fetchCities()
+                val cities: Cities = serverCities ?: localCities
+                cities
             } else {
+                fetchCities()
+            }
+        }
+    }
+
+    private suspend fun fetchCities(): Cities? {
+        val call = geoLocationApi.getCities()
+        return try {
+            val response = call.execute()
+            if (response.isSuccessful) {
+                val cities = response.body()!!
+                metadataStore.saveCountries(Countries(cities.cities.map { it.country }.toSet()))
+                metadataStore.saveCities(cities)
+                cities
+            } else {
+                toaster.showResponseError(response)
                 null
             }
-            val call = geoLocationApi.getCities()
-            try {
-                val response = call.execute()
-                if (response.isSuccessful) {
-                    val cities = response.body()!!
-                    metadataStore.saveCountries(Countries(cities.cities.map { it.country }.toSet()))
-                    metadataStore.saveCities(cities)
-                } else {
-                    toaster.showResponseError(response)
-                    localCities
-                }
-            } catch (e: Exception) {
-                toaster.showNoServerToast()
-                localCities
+        } catch (e: Exception) {
+            toaster.showNoServerToast()
+            null
+        }
+    }
+
+
+    suspend fun getAndFetchCountries(): Countries? {
+        return withContext(Dispatchers.IO) {
+            if (metadataStore.isCountriesStored()) {
+                val localCountries: Countries = metadataStore.getCountries()
+                val serverCountries: Countries? = fetchCountries()
+                val countries: Countries = serverCountries ?: localCountries
+                countries
+            } else {
+                fetchCountries()
             }
+        }
+    }
+
+    private suspend fun fetchCountries(): Countries? {
+        val call = geoLocationApi.getCountries()
+        return try {
+            val response = call.execute()
+            if (response.isSuccessful) {
+                val countries = response.body()!!
+                metadataStore.saveCountries(Countries(countries.countries))
+                countries
+            } else {
+                toaster.showResponseError(response)
+                null
+            }
+        } catch (e: Exception) {
+            toaster.showNoServerToast()
+            null
         }
     }
 

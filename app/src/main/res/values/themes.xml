@@ -73,4 +73,8 @@
         </item>
     </style>
 
+    <style name="ToggleSwitchTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorAccent">@color/myColorOnSecondary</item>
+    </style>
+
 </resources>

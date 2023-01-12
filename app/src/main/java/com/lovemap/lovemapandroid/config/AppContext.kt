@@ -89,6 +89,8 @@ class AppContext : MultiDexApplication() {
     @Volatile
     var loveSpotRisks: LoveSpotRisks? = null
 
+    val countryForGlobal = "GLOBAL"
+    lateinit var userCurrentCountry: String
     lateinit var country: String
 
     private lateinit var gsonConverterFactory: GsonConverterFactory
@@ -114,7 +116,8 @@ class AppContext : MultiDexApplication() {
     private fun initCountry() {
         val telephonyManager = getSystemService(TELEPHONY_SERVICE) as TelephonyManager
         val countryCode: String = telephonyManager.networkCountryIso
-        country = Locale("EN", countryCode).getDisplayCountry(Locale("EN"))
+        userCurrentCountry = Locale("EN", countryCode).getDisplayCountry(Locale("EN"))
+        country = countryForGlobal
         LoveSpotListFilterState.locationName = country
     }
 
@@ -251,7 +254,8 @@ class AppContext : MultiDexApplication() {
             loveSpotRisks = loveSpotService.getRisks()
             loveService.list()
             loveSpotReviewService.getReviewsByLover()
-            geoLocationService.getCities()
+            geoLocationService.getAndFetchCities()
+            geoLocationService.getAndFetchCountries()
         }
     }
 

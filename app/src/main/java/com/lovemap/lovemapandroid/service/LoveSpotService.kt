@@ -98,7 +98,7 @@ class LoveSpotService(
                 return@withContext null
             }
             if (response.isSuccessful) {
-                geoLocationService.getCities()
+                geoLocationService.getAndFetchCities()
                 savedCreationState = null
                 val loveSpot = response.body()!!
                 loveSpotDao.insert(loveSpot)

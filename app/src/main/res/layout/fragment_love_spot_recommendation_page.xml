@@ -33,8 +33,23 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/standard_8"
-                android:layout_marginBottom="@dimen/standard_32"
+                android:layout_marginBottom="@dimen/standard_8"
                 android:text="@string/discover_love_spots" />
+
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/localSwitcher"
+                android:theme="@style/ToggleSwitchTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:thumb="@drawable/switch_thumb_selector"
+                app:track="@drawable/switch_track_selector"
+                android:textOff="@string/switch_off_is_global"
+                android:textOn="@string/switch_on_is_local"
+                app:showText="true"
+                />
 
             <fragment
                 android:id="@+id/recentlyActiveSpotsWidget"

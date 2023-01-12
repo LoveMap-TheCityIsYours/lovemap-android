@@ -32,7 +32,8 @@ class DiscoverPageFragment2 : Fragment() {
         super.onCreate(savedInstanceState)
         EventBus.getDefault().register(this)
         MainScope().launch {
-            appContext.geoLocationService.getCities()
+            appContext.geoLocationService.getAndFetchCities()
+            appContext.geoLocationService.getAndFetchCountries()
         }
     }
 
