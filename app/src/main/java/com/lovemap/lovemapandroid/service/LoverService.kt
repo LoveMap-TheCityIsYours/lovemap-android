@@ -1,8 +1,10 @@
 package com.lovemap.lovemapandroid.service
 
 import android.util.Log
+import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.getErrorMessages
 import com.lovemap.lovemapandroid.api.lover.*
+import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.love.LoveDao
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpotDao
 import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReviewDao
@@ -59,6 +61,39 @@ class LoverService(
             } else {
                 toaster.showResponseError(response)
                 localLover
+            }
+        }
+    }
+
+    suspend fun updateDisplayName(displayName: String): LoverDto? {
+        return withContext(Dispatchers.IO) {
+            val loggedInUser = metadataStore.getUser()
+            if (loggedInUser.displayName == displayName) {
+                return@withContext null
+            }
+            val call = loverApi.updateLover(
+                loggedInUser.id,
+                UpdateLoverRequest(displayName = displayName.trim())
+            )
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
+                toaster.showNoServerToast()
+                return@withContext null
+            }
+            if (response.isSuccessful) {
+                val result: LoverDto = response.body()!!
+                if (metadataStore.isLoverStored()) {
+                    val lover = metadataStore.getLover()
+                    metadataStore.saveLover(lover.copy(displayName = result.displayName))
+                    val prefix = AppContext.INSTANCE.getString(R.string.display_name_updated)
+                    val message = "$prefix, ${result.displayName}"
+                    toaster.showToast(message)
+                }
+                result
+            } else {
+                toaster.showResponseError(response)
+                null
             }
         }
     }

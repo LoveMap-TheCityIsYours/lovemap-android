@@ -102,9 +102,6 @@ class LoginActivity : AppCompatActivity() {
             if (loginResult.error != null) {
                 showLoginFailed(loginResult.error)
             }
-            if (loginResult.success != null) {
-                updateUiWithUser(loginResult.success)
-            }
             setResult(RESULT_OK)
 
             //Complete and destroy login activity once successful
@@ -211,7 +208,7 @@ class LoginActivity : AppCompatActivity() {
         )
         if (loggedInUser != null) {
             loadingBarShower.onResponse()
-            appContext.toaster.showToast(getString(R.string.welcome) + "${loggedInUser.userName}!")
+            appContext.toaster.showToast(getString(R.string.welcome) + "${loggedInUser.displayName}!")
             startActivity(
                 Intent(
                     this@LoginActivity,
@@ -239,21 +236,11 @@ class LoginActivity : AppCompatActivity() {
             val loadingBarShower = LoadingBarShower(this@LoginActivity).show()
             val loggedInUser = authenticationService.login(email.trim(), password)
             if (loggedInUser != null) {
-                appContext.toaster.showToast(getString(R.string.welcome_back) + "${loggedInUser.userName}!")
+                appContext.toaster.showToast(getString(R.string.welcome_back) + "${loggedInUser.displayName}!")
                 startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             }
             loadingBarShower.onResponse()
         }
-    }
-
-    private fun updateUiWithUser(model: LoggedInUserView) {
-        val welcome = getString(R.string.welcome)
-        val displayName = model.displayName
-        Toast.makeText(
-            applicationContext,
-            "$welcome $displayName",
-            Toast.LENGTH_LONG
-        ).show()
     }
 
     private fun showLoginFailed(@StringRes errorString: Int) {
