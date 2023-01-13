@@ -12,15 +12,16 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lover.LoverViewDto
 import com.lovemap.lovemapandroid.api.partnership.PartnershipReaction
-import com.lovemap.lovemapandroid.api.partnership.PartnershipStatus.IN_PARTNERSHIP
 import com.lovemap.lovemapandroid.api.partnership.PartnershipStatus.PARTNERSHIP_REQUESTED
 import com.lovemap.lovemapandroid.api.partnership.RespondPartnershipRequest
 import com.lovemap.lovemapandroid.api.relation.RelationStatus
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.partnership.Partnership
 import com.lovemap.lovemapandroid.databinding.ActivityViewOtherLoverBinding
+import com.lovemap.lovemapandroid.service.LoverService
+import com.lovemap.lovemapandroid.service.relations.RelationState
+import com.lovemap.lovemapandroid.service.relations.RelationState.*
 import com.lovemap.lovemapandroid.ui.main.love.lovehistory.LoveListFragment
-import com.lovemap.lovemapandroid.ui.relations.ViewOtherLoverActivity.RelationState.*
 import com.lovemap.lovemapandroid.ui.utils.I18nUtils
 import com.lovemap.lovemapandroid.ui.utils.ProfileUtils
 import com.lovemap.lovemapandroid.utils.LINK_PREFIX_API_CALL
@@ -30,6 +31,7 @@ import kotlinx.coroutines.launch
 
 class ViewOtherLoverActivity : AppCompatActivity() {
 
+    private val tag = "ViewOtherLoverActivity"
     private val appContext = AppContext.INSTANCE
     private val loverService = AppContext.INSTANCE.loverService
     private val partnershipService = AppContext.INSTANCE.partnershipService
@@ -59,7 +61,7 @@ class ViewOtherLoverActivity : AppCompatActivity() {
     private var userId: Long = 0
     private var loverUuid: String? = null
     private var otherLover: LoverViewDto? = null
-    private var partnerships: List<Partnership> = emptyList()
+    private var partnership: Partnership? = null
 
     private var relationState: RelationState = NOTHING
 
@@ -111,7 +113,8 @@ class ViewOtherLoverActivity : AppCompatActivity() {
 
         partnerLoveListFragment =
             supportFragmentManager.findFragmentById(R.id.partnerLoveListFragment) as LoveListFragment
-        (partnerLoveListFragment.view?.findViewById(R.id.loveList) as RecyclerView).isNestedScrollingEnabled = false
+        (partnerLoveListFragment.view?.findViewById(R.id.loveList) as RecyclerView).isNestedScrollingEnabled =
+            false
 
         supportFragmentManager
             .beginTransaction()
@@ -121,64 +124,16 @@ class ViewOtherLoverActivity : AppCompatActivity() {
 
     private fun setViewState() {
         MainScope().launch {
-            val otherLover: LoverViewDto? = getOtherLover()
-            val partnerships = partnershipService.getPartnerships()
-            this@ViewOtherLoverActivity.otherLover = otherLover
-            this@ViewOtherLoverActivity.partnerships = partnerships
-            setTextsBasedOnRelationState(otherLover, partnerships)
-            if (!this@ViewOtherLoverActivity.isFinishing) {
-                if (relationState == PARTNERSHIP) {
-                    partnerViewLoveMakingsText.visibility = View.VISIBLE
-                    supportFragmentManager
-                        .beginTransaction()
-                        .setCustomAnimations(
-                            android.R.anim.slide_in_left,
-                            android.R.anim.slide_out_right
-                        )
-                        .show(partnerLoveListFragment)
-                        .commit()
-                }
-                otherLoverSwipeRefreshLayout.isRefreshing = false
+            getOtherLover()?.let { otherLover ->
+                setPointsAndRank(otherLover)
+                profileUserName.text = otherLover.displayName
+                val partnership = partnershipService.getPartnership()
+                this@ViewOtherLoverActivity.otherLover = otherLover
+                this@ViewOtherLoverActivity.partnership = partnership
+                setRelationWithLover(otherLover, partnership)
+                showLovesWithPartner()
             }
         }
-    }
-
-    private suspend fun getOtherLover(): LoverViewDto? {
-        val otherLover: LoverViewDto? = loverUuid?.let {
-            loverService.getByUuid(it)
-        } ?: loverService.getOtherById(
-            appContext.otherLoverId
-        )?.apply {
-            appContext.otherLoverId = id
-        }
-        return otherLover
-    }
-
-    private fun setTextsBasedOnRelationState(
-        otherLover: LoverViewDto?,
-        partnerships: List<Partnership>
-    ) {
-        otherLover?.let {
-            setPointsAndRank(it)
-            profileUserName.text = it.displayName
-            if (userId == it.id) {
-                setRelationState(YOURSELF)
-            } else {
-                if (hasOtherPartner(partnerships, it)) {
-                    setRelationState(HAS_OTHER_PARTNER)
-                } else {
-                    setStateWithOtherLover(partnerships)
-                }
-            }
-        }
-    }
-
-    private fun hasOtherPartner(
-        partnerships: List<Partnership>,
-        otherLover: LoverViewDto
-    ): Boolean {
-        val anyPartner = partnerships.find { it.partnershipStatus == IN_PARTNERSHIP }
-        return anyPartner != null && (anyPartner.initiatorId != otherLover.id && anyPartner.respondentId != otherLover.id)
     }
 
     private fun setPointsAndRank(otherLover: LoverViewDto) {
@@ -191,56 +146,57 @@ class ViewOtherLoverActivity : AppCompatActivity() {
         )
     }
 
-    private fun setStateWithOtherLover(
-        partnerships: List<Partnership>
-    ) {
-        val iAmInitiator = partnerships.find { partnership -> partnership.initiatorId == userId }
-        if (iAmInitiator != null) {
-            setStateWhenIAmInitiator(iAmInitiator)
-        } else {
-            val iAmRespondent =
-                partnerships.find { partnership -> partnership.respondentId == userId }
-            if (iAmRespondent != null) {
-                setStateWhenIAmRespondent(iAmRespondent)
-            } else {
-                setRelationState(NOTHING)
+    private fun setRelationWithLover(otherLover: LoverViewDto, partnership: Partnership?) {
+        when (otherLover.relation) {
+            RelationStatus.PARTNER -> setRelationState(PARTNERSHIP)
+            RelationStatus.FOLLOWING -> setRelationState(YOU_ARE_FOLLOWING_THEM)
+            RelationStatus.BLOCKED -> setRelationState(YOU_BLOCKED_THEM)
+            RelationStatus.NOTHING -> {
+                val partnershipStatus: RelationState? =
+                    partnershipService.getPartnershipStatus(otherLover, partnership)
+                when (partnershipStatus) {
+                    YOU_REQUESTED_PARTNERSHIP -> setRelationState(YOU_REQUESTED_PARTNERSHIP)
+                    THEY_REQUESTED_PARTNERSHIP -> setRelationState(THEY_REQUESTED_PARTNERSHIP)
+                    YOURSELF -> setRelationState(YOURSELF)
+                    else -> setRelationState(NOTHING)
+                }
             }
         }
     }
 
-    private fun setStateWhenIAmInitiator(iAmInitiator: Partnership) {
-        relationText.text = I18nUtils.partnershipStatus(
-            iAmInitiator.partnershipStatus,
-            applicationContext
-        )
-        when (iAmInitiator.partnershipStatus) {
-            IN_PARTNERSHIP -> {
-                setRelationState(PARTNERSHIP)
+    private fun showLovesWithPartner() {
+        if (!this@ViewOtherLoverActivity.isFinishing) {
+            if (relationState == PARTNERSHIP) {
+                partnerViewLoveMakingsText.visibility = View.VISIBLE
+                supportFragmentManager
+                    .beginTransaction()
+                    .setCustomAnimations(
+                        android.R.anim.slide_in_left,
+                        android.R.anim.slide_out_right
+                    )
+                    .show(partnerLoveListFragment)
+                    .commit()
             }
-            PARTNERSHIP_REQUESTED -> {
-                setRelationState(YOU_REQUESTED)
-            }
+            otherLoverSwipeRefreshLayout.isRefreshing = false
         }
     }
 
-    private fun setStateWhenIAmRespondent(iAmRespondent: Partnership) {
-        when (iAmRespondent.partnershipStatus) {
-            IN_PARTNERSHIP -> {
-                setRelationState(PARTNERSHIP)
+    private suspend fun getOtherLover(): LoverViewDto? {
+        return loverUuid?.let { uuid ->
+            val lover = loverService.getByUuid(uuid)
+            lover?.let {
+                LoverService.otherLover = it
+                LoverService.otherLoverId = it.id
             }
-            PARTNERSHIP_REQUESTED -> {
-                setRelationState(OTHER_REQUESTED)
-            }
-        }
+            lover
+        } ?: loverService.getSelectedLover()
     }
 
     private fun setRequestPartnershipButton() {
         binding.requestPartnershipFab.setOnClickListener {
             MainScope().launch {
                 otherLover?.let {
-                    if (partnerships
-                            .any { it.partnershipStatus == IN_PARTNERSHIP }
-                    ) {
+                    if (partnership != null) {
                         appContext.toaster.showToast(R.string.already_have_a_partner)
                     } else {
                         val partnership = partnershipService.requestPartnership(
@@ -249,7 +205,7 @@ class ViewOtherLoverActivity : AppCompatActivity() {
                         )
                         if (partnership != null) {
                             appContext.toaster.showToast(R.string.partnership_requested)
-                            setRelationState(YOU_REQUESTED)
+                            setRelationState(YOU_REQUESTED_PARTNERSHIP)
                         }
                     }
                 }
@@ -269,12 +225,12 @@ class ViewOtherLoverActivity : AppCompatActivity() {
         acceptPartnershipFab.setOnClickListener {
             MainScope().launch {
                 otherLover?.let {
-                    val partnerships = partnershipService.respondPartnership(
+                    partnership = partnershipService.respondPartnership(
                         RespondPartnershipRequest(
                             it.id, userId, PartnershipReaction.ACCEPT
                         )
                     )
-                    if (partnerships.isNotEmpty()) {
+                    if (partnership != null) {
                         setRelationState(PARTNERSHIP)
                     }
                 }
@@ -315,7 +271,7 @@ class ViewOtherLoverActivity : AppCompatActivity() {
                 hideCancelRequestButton()
                 hideEndButton()
             }
-            YOU_REQUESTED -> {
+            YOU_REQUESTED_PARTNERSHIP -> {
                 relationText.text = I18nUtils.partnershipStatus(
                     PARTNERSHIP_REQUESTED,
                     applicationContext
@@ -325,7 +281,7 @@ class ViewOtherLoverActivity : AppCompatActivity() {
                 showCancelRequestButton()
                 hideEndButton()
             }
-            OTHER_REQUESTED -> {
+            THEY_REQUESTED_PARTNERSHIP -> {
                 relationText.text = I18nUtils.partnershipStatus(
                     PARTNERSHIP_REQUESTED,
                     applicationContext
@@ -346,6 +302,20 @@ class ViewOtherLoverActivity : AppCompatActivity() {
             HAS_OTHER_PARTNER -> {
                 relationText.text =
                     I18nUtils.relationStatus(RelationStatus.NOTHING, applicationContext)
+                disableRequestButton()
+                hideRespondView()
+                hideCancelRequestButton()
+                hideEndButton()
+            }
+            YOU_BLOCKED_THEM -> {
+                relationText.text = getString(R.string.you_blocked_them)
+                disableRequestButton()
+                hideRespondView()
+                hideCancelRequestButton()
+                hideEndButton()
+            }
+            YOU_ARE_FOLLOWING_THEM -> {
+                relationText.text = getString(R.string.you_follow_this_lover)
                 disableRequestButton()
                 hideRespondView()
                 hideCancelRequestButton()
@@ -395,9 +365,5 @@ class ViewOtherLoverActivity : AppCompatActivity() {
 
     private fun hideEndButton() {
         endPartnershipFab.visibility = View.GONE
-    }
-
-    enum class RelationState {
-        YOURSELF, NOTHING, YOU_REQUESTED, OTHER_REQUESTED, PARTNERSHIP, HAS_OTHER_PARTNER
     }
 }

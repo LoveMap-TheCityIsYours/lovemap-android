@@ -1,5 +1,6 @@
 package com.lovemap.lovemapandroid.service
 
+import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.lovemap.lovemapandroid.R
@@ -24,6 +25,8 @@ class LoveSpotService(
     private val metadataStore: MetadataStore,
     private val toaster: Toaster,
 ) {
+    private val tag = "LoveSpotService"
+
     private val fullyQueriedAreas = CopyOnWriteArrayList<LatLngBounds>()
     private var risksQueried = false
 
@@ -255,7 +258,6 @@ class LoveSpotService(
                         val ranks = response.body()!!
                         metadataStore.saveRisks(ranks)
                     } else {
-                        response
                         localRisks
                     }
                 } catch (e: Exception) {
@@ -263,6 +265,24 @@ class LoveSpotService(
                 }
             }
 
+        }
+    }
+
+    suspend fun fetchRisks(): LoveSpotRisks? {
+        return withContext(Dispatchers.IO) {
+            val call = loveSpotApi.getRisks()
+            try {
+                val response = call.execute()
+                if (response.isSuccessful) {
+                    risksQueried = true
+                    val ranks = response.body()!!
+                    metadataStore.saveRisks(ranks)
+                } else {
+                    null
+                }
+            } catch (e: Exception) {
+                null
+            }
         }
     }
 
@@ -310,6 +330,7 @@ class LoveSpotService(
 
     suspend fun getRecommendations(request: RecommendationsRequest): RecommendationsResponse {
         return withContext(Dispatchers.IO) {
+            Log.i(tag, "Recommendations request: $request")
             val call = loveSpotApi.recommendations(request)
             val response = try {
                 call.execute()
@@ -318,11 +339,27 @@ class LoveSpotService(
                 return@withContext RecommendationsResponse.empty()
             }
             if (response.isSuccessful) {
-                val result = response.body()!!
-                loveSpotDao.insert(*result.topRatedSpots.toTypedArray())
-                loveSpotDao.insert(*result.closestSpots.toTypedArray())
-                loveSpotDao.insert(*result.recentlyActiveSpots.toTypedArray())
-                loveSpotDao.insert(*result.popularSpots.toTypedArray())
+                val result: RecommendationsResponse = response.body()!!
+                Log.i(tag, "Recommendations response: $result")
+                Log.i(tag, "Recommendations Raw response: ${response.raw().body()?.contentLength()}")
+                runCatching { loveSpotDao.insert(*result.topRatedSpots.toTypedArray()) }
+                    .onFailure { Log.e(tag, "Error: topRatedSpots: ${result.topRatedSpots}", it) }
+
+                runCatching { loveSpotDao.insert(*result.closestSpots.toTypedArray()) }
+                    .onFailure { Log.e(tag, "Error: closestSpots: ${result.closestSpots}", it) }
+
+                runCatching { loveSpotDao.insert(*result.recentlyActiveSpots.toTypedArray()) }
+                    .onFailure { Log.e(tag, "Error: recentlyActiveSpots: ${result.recentlyActiveSpots}", it) }
+
+                runCatching { loveSpotDao.insert(*result.popularSpots.toTypedArray()) }
+                    .onFailure { Log.e(tag, "Error: popularSpots: ${result.popularSpots}", it) }
+
+                runCatching { loveSpotDao.insert(*result.newestSpots.toTypedArray()) }
+                    .onFailure { Log.e(tag, "Error: newestSpots: ${result.newestSpots}", it) }
+
+                runCatching { loveSpotDao.insert(*result.recentPhotoSpots.toTypedArray()) }
+                    .onFailure { Log.e(tag, "Error: recentPhotoSpots: ${result.recentPhotoSpots}", it) }
+
                 result
             } else {
                 toaster.showResponseError(response)

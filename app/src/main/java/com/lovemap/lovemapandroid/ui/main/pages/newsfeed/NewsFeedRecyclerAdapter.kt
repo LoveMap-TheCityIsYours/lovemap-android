@@ -16,9 +16,12 @@ import com.lovemap.lovemapandroid.api.newsfeed.*
 import com.lovemap.lovemapandroid.api.newsfeed.NewsFeedItemType.*
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.config.MapContext
+import com.lovemap.lovemapandroid.service.LoverService
 import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
+import com.lovemap.lovemapandroid.ui.relations.ViewOtherLoverActivity
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
 import com.lovemap.lovemapandroid.ui.utils.PhotoUtils
+import com.lovemap.lovemapandroid.ui.utils.ProfileUtils
 import com.lovemap.lovemapandroid.ui.utils.setListItemAnimation
 import com.lovemap.lovemapandroid.utils.instantOfApiString
 import com.lovemap.lovemapandroid.utils.toFormattedString
@@ -31,6 +34,7 @@ class NewsFeedRecyclerAdapter(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val appContext = AppContext.INSTANCE
+    private val loverService = appContext.loverService
     private val loveSpotService = appContext.loveSpotService
     private val loveSpotReviewService = appContext.loveSpotReviewService
 
@@ -106,8 +110,7 @@ class NewsFeedRecyclerAdapter(
         if (viewHolder is LoverViewHolder) {
             newsFeedItems[position]?.let { item ->
                 val lover = item.lover!!
-                viewHolder.newsFeedText.text = context.getString(R.string.new_lover_joined)
-                viewHolder.newsFeedHappenedAt.text = instantOfApiString(item.happenedAt).toFormattedString()
+                setLoverView(viewHolder, item, lover)
             }
         } else if (viewHolder is LoveSpotPhotoViewHolder) {
             newsFeedItems[position]?.let { item ->
@@ -151,12 +154,40 @@ class NewsFeedRecyclerAdapter(
         }
     }
 
+    private fun setLoverView(
+        viewHolder: LoverViewHolder,
+        item: NewsFeedItemResponse,
+        lover: LoverNewsFeedResponse
+    ) {
+        viewHolder.itemView.setOnClickListener {
+            LoverService.otherLoverId = lover.id
+            context.startActivity(
+                Intent(context, ViewOtherLoverActivity::class.java)
+            )
+        }
+
+        viewHolder.newsFeedText.text = context.getString(R.string.new_lover_joined)
+        viewHolder.newsFeedHappenedAt.text = instantOfApiString(item.happenedAt).toFormattedString()
+        viewHolder.newsFeedLoverName.text = lover.displayName
+        viewHolder.newsFeedLoverPoints.text = lover.points.toString()
+        ProfileUtils.setRanks(lover.points, viewHolder.newsFeedLoverRank)
+
+        MainScope().launch {
+            loverService.getOtherById(lover.id)?.let {
+                LoverService.otherLover = it
+                viewHolder.newsFeedLoverName.text = it.displayName
+                viewHolder.newsFeedLoverPoints.text = it.points.toString()
+                ProfileUtils.setRanks(it.points, viewHolder.newsFeedLoverRank)
+            }
+        }
+    }
+
     private fun setPhotoLikeView(
         viewHolder: PhotoLikeViewHolder,
         item: NewsFeedItemResponse,
         photoLike: PhotoLikeNewsFeedResponse
     ) {
-        setOnClickListener(viewHolder, photoLike.loveSpotId)
+        setLoveSpotOnClickListener(viewHolder, photoLike.loveSpotId)
         if (photoLike.likeOrDislike > 0) {
             viewHolder.newsFeedText.text = context.getString(R.string.somebody_liked_photo_at)
         } else {
@@ -186,7 +217,7 @@ class NewsFeedRecyclerAdapter(
         item: NewsFeedItemResponse,
         loveSpotPhoto: LoveSpotPhotoNewsFeedResponse
     ) {
-        setOnClickListener(viewHolder, loveSpotPhoto.loveSpotId)
+        setLoveSpotOnClickListener(viewHolder, loveSpotPhoto.loveSpotId)
         viewHolder.newsFeedText.text = context.getString(R.string.somebody_uploaded_a_photo_to)
         viewHolder.newsFeedHappenedAt.text = instantOfApiString(item.happenedAt).toFormattedString()
 
@@ -210,7 +241,7 @@ class NewsFeedRecyclerAdapter(
         item: NewsFeedItemResponse,
         loveSpot: LoveSpotNewsFeedResponse
     ) {
-        setOnClickListener(viewHolder, loveSpot.id)
+        setLoveSpotOnClickListener(viewHolder, loveSpot.id)
         viewHolder.newsFeedText.text = context.getString(R.string.somebody_added_a_new_lovespot)
         viewHolder.newsFeedHappenedAt.text = instantOfApiString(item.happenedAt).toFormattedString()
         viewHolder.newsFeedLoveSpotName.text = loveSpot.name
@@ -245,7 +276,7 @@ class NewsFeedRecyclerAdapter(
         item: NewsFeedItemResponse,
         wishlist: WishlistNewsFeedResponse,
     ) {
-        setOnClickListener(viewHolder, wishlist.loveSpotId)
+        setLoveSpotOnClickListener(viewHolder, wishlist.loveSpotId)
         viewHolder.newsFeedText.text = context.getString(R.string.somebody_wishlisted_spot)
         viewHolder.newsFeedHappenedAt.text = instantOfApiString(item.happenedAt).toFormattedString()
         setLoveSpotViews(wishlist.loveSpotId, viewHolder)
@@ -256,7 +287,7 @@ class NewsFeedRecyclerAdapter(
         item: NewsFeedItemResponse,
         love: LoveNewsFeedResponse,
     ) {
-        setOnClickListener(viewHolder, love.loveSpotId)
+        setLoveSpotOnClickListener(viewHolder, love.loveSpotId)
         viewHolder.newsFeedText.text = context.getString(R.string.somebody_made_love_at)
         viewHolder.newsFeedHappenedAt.text = instantOfApiString(item.happenedAt).toFormattedString()
         setLoveSpotViews(love.loveSpotId, viewHolder)
@@ -267,7 +298,7 @@ class NewsFeedRecyclerAdapter(
         item: NewsFeedItemResponse,
         loveSpotReview: LoveSpotReviewNewsFeedResponse
     ) {
-        setOnClickListener(viewHolder, loveSpotReview.loveSpotId)
+        setLoveSpotOnClickListener(viewHolder, loveSpotReview.loveSpotId)
         viewHolder.newsFeedText.text = context.getString(R.string.somebody_reviewed_spot)
         viewHolder.newsFeedHappenedAt.text = instantOfApiString(item.happenedAt).toFormattedString()
         setLoveSpotReviewViews(loveSpotReview, viewHolder)
@@ -312,7 +343,7 @@ class NewsFeedRecyclerAdapter(
         }
     }
 
-    private fun setOnClickListener(
+    private fun setLoveSpotOnClickListener(
         viewHolder: RecyclerView.ViewHolder,
         loveSpotId: Long
     ) {
@@ -345,6 +376,9 @@ class NewsFeedRecyclerAdapter(
     inner class LoverViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val newsFeedText: TextView = itemView.findViewById(R.id.newsFeedText)
         val newsFeedHappenedAt: TextView = itemView.findViewById(R.id.newsFeedHappenedAt)
+        val newsFeedLoverName: TextView = itemView.findViewById(R.id.newsFeedLoverName)
+        val newsFeedLoverPoints: TextView = itemView.findViewById(R.id.newsFeedLoverPoints)
+        val newsFeedLoverRank: TextView = itemView.findViewById(R.id.newsFeedLoverRank)
     }
 
     inner class LoveSpotPhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

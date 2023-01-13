@@ -176,7 +176,7 @@ class LoveService(
 
     suspend fun getLoveHolderListForPartner(): MutableList<LoveHolder> {
         return getLoveHolderList()
-            .filter { it.partnerId == AppContext.INSTANCE.otherLoverId }
+            .filter { it.partnerId == LoverService.otherLoverId }
             .toMutableList()
     }
 

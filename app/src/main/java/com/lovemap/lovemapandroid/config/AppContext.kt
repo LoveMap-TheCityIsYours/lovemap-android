@@ -33,6 +33,7 @@ import com.lovemap.lovemapandroid.data.metadata.LoggedInUser
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.data.partnership.PartnershipDao
 import com.lovemap.lovemapandroid.service.*
+import com.lovemap.lovemapandroid.service.relations.PartnershipService
 import com.lovemap.lovemapandroid.ui.events.MapInfoWindowShownEvent
 import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotListFilterState
 import com.lovemap.lovemapandroid.utils.AUTHORIZATION_HEADER
@@ -80,9 +81,6 @@ class AppContext : MultiDexApplication() {
 
     @Volatile
     var isAdmin: Boolean = false
-
-    @Volatile
-    var otherLoverId: Long = 0
 
     @Volatile
     var displayDensity: Float = 0f
@@ -257,25 +255,27 @@ class AppContext : MultiDexApplication() {
 
     private suspend fun fetchUserData() {
         if (userId != 0L) {
-            refetchUserIfNeeded(metadataStore.getUser())
-            loverService.getRanks()
-            loveSpotRisks = loveSpotService.getRisks()
-            loveService.list()
+            fetchMetadata()
             loveSpotReviewService.getReviewsByLover()
-            geoLocationService.getAndFetchCities()
-            geoLocationService.getAndFetchCountries()
+            loveService.list()
         }
     }
 
-    private suspend fun refetchUserIfNeeded(user: LoggedInUser) {
-        if (shouldRefetchUser(user)) {
-            Log.i(tag, "Refetching user")
-            loverService.getMyself()
-        }
-    }
-
-    private fun shouldRefetchUser(user: LoggedInUser): Boolean {
-        return user.displayName == null
+    suspend fun fetchMetadata(): Boolean {
+        val myself = loverService.fetchMyself()
+        val ranks = loverService.fetchRanks()
+        loveSpotRisks = loveSpotService.fetchRisks()
+        val cities = geoLocationService.fetchCities()
+        val countries = geoLocationService.fetchCountries()
+        Log.i(
+            tag, "fetchMetadata results: \n"
+                    + "myself: $myself \n"
+                    + "ranks: $ranks \n"
+                    + "loveSpotRisks: $loveSpotRisks \n"
+                    + "cities: $cities \n"
+                    + "countries: $countries \n"
+        )
+        return myself != null && ranks != null && loveSpotRisks != null && cities != null && countries != null
     }
 
     private suspend fun authorizingHttpClient(): OkHttpClient {

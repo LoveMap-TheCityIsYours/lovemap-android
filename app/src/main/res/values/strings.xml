@@ -345,5 +345,10 @@
     <string name="new_lover_joined">🥰 New Lover joined us❣</string>
     <string name="switch_off_is_global">Global</string>
     <string name="switch_on_is_local">Local</string>
+    <string name="points_text">Points:</string>
+    <string name="rank_text">Rank:</string>
+    <string name="you_blocked_them">You blocked this Lover</string>
+    <string name="this_user_blocked_you">This Lover blocked you</string>
+    <string name="you_follow_this_lover">You are following this Lover</string>
 
 </resources>

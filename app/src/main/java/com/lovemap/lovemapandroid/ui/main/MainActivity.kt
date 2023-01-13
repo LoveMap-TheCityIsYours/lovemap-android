@@ -18,7 +18,9 @@ import com.lovemap.lovemapandroid.config.MapContext
 import com.lovemap.lovemapandroid.databinding.ActivityMainBinding
 import com.lovemap.lovemapandroid.ui.events.ShowOnMapClickedEvent
 import com.lovemap.lovemapandroid.ui.utils.AlertDialogUtils
+import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -45,6 +47,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         EventBus.getDefault().register(this)
         initViews()
+
+        MainScope().launch {
+            val sanity = metadataStore.checkSanity()
+            if (!sanity) {
+                val loadingBarShower = LoadingBarShower(this@MainActivity).show()
+                if (appContext.fetchMetadata()) {
+                    metadataStore.updateMetadataVersion()
+                }
+                loadingBarShower.onResponse()
+            }
+        }
 
         TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
             tab.icon = icons[position]

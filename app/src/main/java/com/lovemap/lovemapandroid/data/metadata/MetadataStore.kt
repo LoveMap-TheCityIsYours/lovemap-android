@@ -3,10 +3,8 @@ package com.lovemap.lovemapandroid.data.metadata
 import android.content.Context
 import android.util.Base64
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.dataStore
+import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import com.fasterxml.jackson.databind.JsonNode
 import com.google.gson.GsonBuilder
@@ -25,47 +23,69 @@ import java.nio.charset.StandardCharsets
 class MetadataStore(private val context: Context) {
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "MetadataStore")
     private val gson = GsonBuilder().create()
+    private val currentAppMetadataVersion = 1
 
-    private val userKeyName = "user"
-    private val loverKeyName = "lover"
-    private val riskKeyName = "risks"
-    private val ranksKeyName = "ranks"
-    private val citiesKeyName = "cities"
-    private val countriesKeyName = "countries"
-    private val touAcceptedKeyName = "touAccepted"
+    private val metadataVersionKey = intPreferencesKey("metadataVersion")
+    private val touAcceptedKey = booleanPreferencesKey("touAccepted")
+
+    private val userKey = stringPreferencesKey("user")
+    private val loverKey = stringPreferencesKey("lover")
+    private val risksKey = stringPreferencesKey("risks")
+    private val ranksKey = stringPreferencesKey("ranks")
+    private val citiesKey = stringPreferencesKey("cities")
+    private val countriesKey = stringPreferencesKey("countries")
+
+    suspend fun checkSanity(): Boolean {
+        return if (isMetadataVersionStored()) {
+            getMetadataVersion() == currentAppMetadataVersion
+        } else {
+            false
+        }
+    }
+
+    suspend fun updateMetadataVersion() {
+        context.dataStore.edit { dataStore ->
+            dataStore[metadataVersionKey] = currentAppMetadataVersion
+        }
+    }
+
+    private suspend fun getMetadataVersion(): Int = context.dataStore.data.map { dataStore ->
+        dataStore[metadataVersionKey]
+    }.first()!!
 
     suspend fun login(user: LoggedInUser): LoggedInUser {
-        val userKey = stringPreferencesKey(userKeyName)
-        context.dataStore.edit { dataStore ->
-            dataStore[userKey] = gson.toJson(user)
-        }
+        saveUser(user)
+        updateMetadataVersion()
         AppContext.INSTANCE.onLogin()
         return user
     }
 
+    suspend fun saveUser(user: LoggedInUser): LoggedInUser {
+        context.dataStore.edit { dataStore ->
+            dataStore[userKey] = gson.toJson(user)
+        }
+        return user
+    }
+
     suspend fun isLoggedIn(): Boolean {
-        val userKey = stringPreferencesKey(userKeyName)
         return context.dataStore.data.map { dataStore ->
             dataStore[userKey] != null
         }.first()
     }
 
     suspend fun isTouAccepted(): Boolean {
-        val touAcceptedKey = booleanPreferencesKey(touAcceptedKeyName)
         return context.dataStore.data.map { dataStore ->
             dataStore[touAcceptedKey] == true
         }.first()
     }
 
     suspend fun setTouAccepted(accepted: Boolean) {
-        val touAcceptedKey = booleanPreferencesKey(touAcceptedKeyName)
         context.dataStore.edit { dataStore ->
             dataStore[touAcceptedKey] = accepted
         }
     }
 
     suspend fun getUser(): LoggedInUser {
-        val userKey = stringPreferencesKey(userKeyName)
         return context.dataStore.data.map { dataStore ->
             gson.fromJson(dataStore[userKey], LoggedInUser::class.java)
         }.first()
@@ -80,33 +100,29 @@ class MetadataStore(private val context: Context) {
     }
 
     suspend fun saveLover(lover: LoverRelationsDto): LoverRelationsDto {
-        val loverKey = stringPreferencesKey(loverKeyName)
         context.dataStore.edit { dataStore ->
             dataStore[loverKey] = gson.toJson(lover)
         }
         if (isLoggedIn()) {
             val loggedInUser = getUser()
-            login(LoggedInUser.of(lover, loggedInUser.jwt))
+            saveUser(LoggedInUser.of(lover, loggedInUser.jwt))
         }
         return lover
     }
 
     suspend fun isLoverStored(): Boolean {
-        val loverKey = stringPreferencesKey(loverKeyName)
         return context.dataStore.data.map { dataStore ->
             dataStore[loverKey] != null
         }.first()
     }
 
     suspend fun getLover(): LoverRelationsDto {
-        val loverKey = stringPreferencesKey(loverKeyName)
         return context.dataStore.data.map { dataStore ->
             gson.fromJson(dataStore[loverKey], LoverRelationsDto::class.java)
         }.first()
     }
 
     suspend fun saveRisks(risks: LoveSpotRisks): LoveSpotRisks {
-        val risksKey = stringPreferencesKey(riskKeyName)
         context.dataStore.edit { dataStore ->
             dataStore[risksKey] = gson.toJson(risks)
         }
@@ -114,21 +130,18 @@ class MetadataStore(private val context: Context) {
     }
 
     suspend fun getRisks(): LoveSpotRisks {
-        val risksKey = stringPreferencesKey(riskKeyName)
         return context.dataStore.data.map { dataStore ->
             gson.fromJson(dataStore[risksKey], LoveSpotRisks::class.java)
         }.first()
     }
 
     suspend fun isRisksStored(): Boolean {
-        val riskKeyName = stringPreferencesKey(riskKeyName)
         return context.dataStore.data.map { dataStore ->
-            dataStore[riskKeyName] != null
+            dataStore[risksKey] != null
         }.first()
     }
 
     suspend fun saveRanks(ranks: LoverRanks): LoverRanks {
-        val ranksKey = stringPreferencesKey(ranksKeyName)
         context.dataStore.edit { dataStore ->
             dataStore[ranksKey] = gson.toJson(ranks)
         }
@@ -136,21 +149,18 @@ class MetadataStore(private val context: Context) {
     }
 
     suspend fun getRanks(): LoverRanks {
-        val ranksKey = stringPreferencesKey(ranksKeyName)
         return context.dataStore.data.map { dataStore ->
             gson.fromJson(dataStore[ranksKey], LoverRanks::class.java)
         }.first()
     }
 
     suspend fun isRanksStored(): Boolean {
-        val ranksKey = stringPreferencesKey(ranksKeyName)
         return context.dataStore.data.map { dataStore ->
             dataStore[ranksKey] != null
         }.first()
     }
 
     suspend fun saveCities(cities: Cities): Cities {
-        val citiesKey = stringPreferencesKey(citiesKeyName)
         context.dataStore.edit { dataStore ->
             dataStore[citiesKey] = gson.toJson(cities)
         }
@@ -158,21 +168,24 @@ class MetadataStore(private val context: Context) {
     }
 
     suspend fun getCities(): Cities {
-        val citiesKey = stringPreferencesKey(citiesKeyName)
         return context.dataStore.data.map { dataStore ->
             gson.fromJson(dataStore[citiesKey], Cities::class.java)
         }.first()
     }
 
     suspend fun isCitiesStored(): Boolean {
-        val citiesKey = stringPreferencesKey(citiesKeyName)
         return context.dataStore.data.map { dataStore ->
             dataStore[citiesKey] != null
         }.first()
     }
 
+    suspend fun isMetadataVersionStored(): Boolean {
+        return context.dataStore.data.map { dataStore ->
+            dataStore[metadataVersionKey] != null
+        }.first()
+    }
+
     suspend fun saveCountries(countries: Countries): Countries {
-        val countriesKey = stringPreferencesKey(countriesKeyName)
         context.dataStore.edit { dataStore ->
             dataStore[countriesKey] = gson.toJson(countries)
         }
@@ -180,14 +193,12 @@ class MetadataStore(private val context: Context) {
     }
 
     suspend fun getCountries(): Countries {
-        val countriesKey = stringPreferencesKey(countriesKeyName)
         return context.dataStore.data.map { dataStore ->
             gson.fromJson(dataStore[countriesKey], Countries::class.java)
         }.first()
     }
 
     suspend fun isCountriesStored(): Boolean {
-        val countriesKey = stringPreferencesKey(countriesKeyName)
         return context.dataStore.data.map { dataStore ->
             dataStore[countriesKey] != null
         }.first()

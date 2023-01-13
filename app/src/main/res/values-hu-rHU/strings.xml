@@ -338,5 +338,10 @@
     <string name="new_lover_joined">🥰 Új szerető csatlakozott❣</string>
     <string name="switch_off_is_global">Globális</string>
     <string name="switch_on_is_local">Helyi</string>
+    <string name="points_text">Pontok:</string>
+    <string name="rank_text">Rang:</string>
+    <string name="you_blocked_them">Blokkoltad ezt a Szeretőt</string>
+    <string name="this_user_blocked_you">Ez a Szerető blokkolt téged</string>
+    <string name="you_follow_this_lover">Követed ezt a szeretőt</string>
 
 </resources>

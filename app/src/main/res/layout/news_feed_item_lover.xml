@@ -23,12 +23,68 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/myColorOnBackground"
-            android:textSize="20sp"
             android:layout_marginBottom="8dp"
             android:text="text" />
 
         <TextView
+            android:id="@+id/newsFeedLoverName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/myColorOnBackground"
+            android:textSize="20sp"
+            android:layout_marginBottom="4dp"
+            android:text="Lover" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.Material3.LabelMedium"
+                android:text="@string/points_text"/>
+
+            <TextView
+                android:id="@+id/newsFeedLoverPoints"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standard_8"
+                android:text="0"
+                style="@style/TextAppearance.Material3.LabelLarge" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.Material3.LabelMedium"
+                android:text="@string/rank_text"/>
+
+            <TextView
+                android:id="@+id/newsFeedLoverRank"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standard_8"
+                android:text="Loviner"
+                style="@style/TextAppearance.Material3.LabelLarge" />
+
+        </LinearLayout>
+
+        <TextView
             android:id="@+id/newsFeedHappenedAt"
+            android:layout_marginTop="@dimen/standard_8"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="date" />

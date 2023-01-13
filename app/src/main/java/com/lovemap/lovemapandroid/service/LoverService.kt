@@ -1,5 +1,6 @@
 package com.lovemap.lovemapandroid.service
 
+import android.util.Log
 import com.lovemap.lovemapandroid.api.getErrorMessages
 import com.lovemap.lovemapandroid.api.lover.*
 import com.lovemap.lovemapandroid.data.love.LoveDao
@@ -18,7 +19,24 @@ class LoverService(
     private val metadataStore: MetadataStore,
     private val toaster: Toaster,
 ) {
+    private val tag = "LoverService"
     private var ranksQueried = false
+
+    companion object {
+        @Volatile
+        var otherLoverId: Long = 0
+
+        @Volatile
+        var otherLover: LoverViewDto? = null
+    }
+
+    suspend fun getSelectedLover(): LoverViewDto? {
+        if (otherLover != null && otherLover?.id == otherLoverId) {
+            Log.i(tag, "Retutning getSelectedLover with already set otherLover $otherLover")
+            return otherLover
+        }
+        return getOtherById(otherLoverId)
+    }
 
     suspend fun getMyself(): LoverRelationsDto? {
         return withContext(Dispatchers.IO) {
@@ -45,8 +63,29 @@ class LoverService(
         }
     }
 
+    suspend fun fetchMyself(): LoverRelationsDto? {
+        return withContext(Dispatchers.IO) {
+            val loggedInUser = metadataStore.getUser()
+            val call = loverApi.getById(loggedInUser.id)
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
+                toaster.showNoServerToast()
+                return@withContext null
+            }
+            if (response.isSuccessful) {
+                val result: LoverRelationsDto = response.body()!!
+                metadataStore.saveLover(result)
+            } else {
+                toaster.showResponseError(response)
+                null
+            }
+        }
+    }
+
     suspend fun getOtherById(loverId: Long): LoverViewDto? {
         return withContext(Dispatchers.IO) {
+            Log.i(tag, "Getting otherLover from the server. LoverId: '$loverId'")
             val call = loverApi.getLoverView(loverId)
             val response = try {
                 call.execute()
@@ -174,4 +213,25 @@ class LoverService(
             }
         }
     }
+
+    suspend fun fetchRanks(): LoverRanks? {
+        return withContext(Dispatchers.IO) {
+            val call = loverApi.getRanks()
+            try {
+                val response = call.execute()
+                if (response.isSuccessful) {
+                    ranksQueried = true
+                    val ranks = response.body()!!
+                    metadataStore.saveRanks(ranks)
+                } else {
+                    toaster.showNoServerToast()
+                    null
+                }
+            } catch (e: Exception) {
+                toaster.showNoServerToast()
+                null
+            }
+        }
+    }
+
 }

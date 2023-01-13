@@ -14,6 +14,7 @@ import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lover.LoverRelationsDto
 import com.lovemap.lovemapandroid.api.lover.LoverViewDto
 import com.lovemap.lovemapandroid.config.AppContext
+import com.lovemap.lovemapandroid.service.LoverService
 import com.lovemap.lovemapandroid.ui.login.LoginActivity
 import com.lovemap.lovemapandroid.ui.relations.ViewOtherLoverActivity
 import com.lovemap.lovemapandroid.ui.utils.I18nUtils
@@ -153,9 +154,8 @@ class ProfilePageFragment : Fragment() {
     private fun setPartnerships(context: Context) {
         // TODO: finish this with new /partnerships API call
         MainScope().launch {
-            val partnerships = partnershipService.getPartnerships()
-            if (partnerships.isNotEmpty()) {
-                val partnership = partnerships[0]
+            val partnership = partnershipService.getPartnership()
+            if (partnership != null) {
                 partner = loverService.getOtherById(partnership.getPartnerId())
                 partner?.let {
                     profilePartnerName.text = it.displayName
@@ -213,7 +213,8 @@ class ProfilePageFragment : Fragment() {
 
     private fun onPartnerClicked() {
         partner?.let {
-            appContext.otherLoverId = it.id
+            LoverService.otherLoverId = it.id
+            LoverService.otherLover = it
             startActivity(Intent(requireContext(), ViewOtherLoverActivity::class.java))
         }
     }
