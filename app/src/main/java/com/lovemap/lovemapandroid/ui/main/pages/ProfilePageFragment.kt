@@ -3,6 +3,8 @@ package com.lovemap.lovemapandroid.ui.main.pages
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,12 +16,14 @@ import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lover.LoverRelationsDto
 import com.lovemap.lovemapandroid.api.lover.LoverViewDto
 import com.lovemap.lovemapandroid.config.AppContext
+import com.lovemap.lovemapandroid.data.metadata.LoggedInUser
 import com.lovemap.lovemapandroid.service.LoverService
 import com.lovemap.lovemapandroid.ui.login.LoginActivity
 import com.lovemap.lovemapandroid.ui.relations.ViewOtherLoverActivity
 import com.lovemap.lovemapandroid.ui.utils.I18nUtils
 import com.lovemap.lovemapandroid.ui.utils.InfoPopupShower
 import com.lovemap.lovemapandroid.ui.utils.ProfileUtils
+import com.lovemap.lovemapandroid.ui.utils.hideKeyboard
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -29,7 +33,7 @@ class ProfilePageFragment : Fragment() {
     private lateinit var profileSwipeRefreshLayout: SwipeRefreshLayout
     private lateinit var profilePartnerView: LinearLayout
     private lateinit var profilePartnershipImage: ImageView
-    private lateinit var userNameView: TextView
+    private lateinit var displayNameText: EditText
     private lateinit var profilePartnershipWithText: TextView
     private lateinit var profilePartnerName: TextView
     private lateinit var profilePartnerRelation: TextView
@@ -88,7 +92,7 @@ class ProfilePageFragment : Fragment() {
         profilePartnerRelation = view.findViewById(R.id.profilePartnerRelation)
         profilePartnerRelation.setOnClickListener { onPartnerClicked() }
 
-        userNameView = view.findViewById(R.id.profileUserName)
+        displayNameText = view.findViewById(R.id.profileDisplayName)
         link = view.findViewById(R.id.profileShareableLink)
         linkToggle = view.findViewById(R.id.profileShareableLinkToggle)
         linkToggleText = view.findViewById(R.id.profileShareableLinkToggleText)
@@ -123,7 +127,8 @@ class ProfilePageFragment : Fragment() {
     private fun fillViewWithData() {
         MainScope().launch {
             val user = appContext.metadataStore.getUser()
-            userNameView.text = user.userName
+            setDisplayNameEditText(user)
+
             val lover = loverService.getMyself()
             lover?.let {
                 if (isAdded && !isDetached) {
@@ -139,6 +144,43 @@ class ProfilePageFragment : Fragment() {
                 }
             }
             profileSwipeRefreshLayout.isRefreshing = false
+        }
+    }
+
+    private var editingDisplayName: Boolean = false
+
+    private fun setDisplayNameEditText(user: LoggedInUser) {
+        displayNameText.setText(user.displayName)
+        displayNameText.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
+                if (!editingDisplayName) {
+                    editingDisplayName = true
+                    editDisplayName(v)
+                }
+            }
+        }
+        displayNameText.setOnKeyListener { v, keyCode, event ->
+            return@setOnKeyListener if ((event.action == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                if (!editingDisplayName) {
+                    editingDisplayName = true
+                    editDisplayName(v)
+                }
+                true
+            } else {
+                false
+            }
+        }
+    }
+
+    private fun editDisplayName(view: View) {
+        editingDisplayName = false
+        hideKeyboard(view)
+        Log.i(tag, "Editing DisplayName to '${displayNameText.text}'")
+        MainScope().launch {
+            loverService.updateDisplayName(displayNameText.text.toString().trim())?.let {
+                Log.i(tag, "Setting edited DisplayName to '${it.displayName}'")
+                displayNameText.setText(it.displayName)
+            }
         }
     }
 

@@ -129,7 +129,7 @@ class RegisterActivity : AppCompatActivity() {
                     password = password.text.toString()
                 )
                 if (loggedInUser != null) {
-                    appContext.toaster.showToast(getString(R.string.welcome) + "${loggedInUser.userName}!")
+                    appContext.toaster.showToast(getString(R.string.welcome) + "${loggedInUser.displayName}!")
                     startActivity(Intent(this@RegisterActivity, MainActivity::class.java))
                 }
                 loadingBarShower.onResponse()

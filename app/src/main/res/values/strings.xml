@@ -350,5 +350,6 @@
     <string name="you_blocked_them">You blocked this Lover</string>
     <string name="this_user_blocked_you">This Lover blocked you</string>
     <string name="you_follow_this_lover">You are following this Lover</string>
+    <string name="display_name_updated">Display name updated</string>
 
 </resources>

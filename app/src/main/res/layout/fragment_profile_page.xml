@@ -4,6 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/profileSwipeRefreshLayout"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context="com.lovemap.lovemapandroid.ui.main.pages.ProfilePageFragment">
@@ -36,11 +38,15 @@
                 android:gravity="center_horizontal" />
 
             <LinearLayout
+                android:clickable="true"
+                android:focusableInTouchMode="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:clickable="true"
+                    android:focusableInTouchMode="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
@@ -48,16 +54,16 @@
                     android:minWidth="200dp"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/profileUserName"
+                    <EditText
+                        android:id="@+id/profileDisplayName"
                         style="@style/TextAppearance.AppCompat.Medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/text_margin"
                         android:layout_marginTop="20dp"
                         android:gravity="start"
-                        android:inputType="textMultiLine"
                         android:maxWidth="280dp"
+                        android:inputType="text"
                         android:maxLines="2"
                         android:text="@string/profileUserName"
                         android:textColor="@color/myColorOnBackground" />
@@ -165,11 +171,15 @@
                 </LinearLayout>
 
                 <androidx.legacy.widget.Space
+                    android:clickable="true"
+                    android:focusableInTouchMode="true"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
 
                 <LinearLayout
+                    android:clickable="true"
+                    android:focusableInTouchMode="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
@@ -177,6 +187,8 @@
                     android:orientation="vertical">
 
                     <ImageView
+                        android:clickable="true"
+                        android:focusableInTouchMode="true"
                         android:id="@+id/profilePublicImage"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
@@ -214,11 +226,15 @@
                 android:gravity="center_horizontal" />
 
             <LinearLayout
+                android:clickable="true"
+                android:focusableInTouchMode="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:clickable="true"
+                    android:focusableInTouchMode="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
@@ -243,6 +259,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:clickable="true"
                     android:id="@+id/current_rank"
                     style="@style/TextAppearance.AppCompat.Body2"
                     android:layout_width="wrap_content"
@@ -254,11 +271,15 @@
                     android:text="@string/profileUserLevelText" />
 
                 <androidx.legacy.widget.Space
+                    android:clickable="true"
+                    android:focusableInTouchMode="true"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
 
                 <LinearLayout
+                    android:clickable="true"
+                    android:focusableInTouchMode="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
@@ -298,6 +319,8 @@
             </LinearLayout>
 
             <ProgressBar
+                android:clickable="true"
+                android:focusableInTouchMode="true"
                 android:id="@+id/profileProgressBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -318,23 +341,27 @@
                 android:gravity="center_horizontal" />
 
             <LinearLayout
+                android:clickable="true"
+                android:focusableInTouchMode="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/profilePartnershipImage"
                     android:clickable="true"
+                    android:focusableInTouchMode="true"
+                    android:id="@+id/profilePartnershipImage"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:layout_margin="@dimen/text_margin"
                     android:src="@drawable/ic_two_hearts_purple" />
 
                 <LinearLayout
+                    android:clickable="true"
+                    android:focusableInTouchMode="true"
                     android:id="@+id/profilePartnerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:clickable="true"
                     android:orientation="vertical">
 
                     <TextView
@@ -387,11 +414,15 @@
                 android:gravity="center_horizontal" />
 
             <LinearLayout
+                android:clickable="true"
+                android:focusableInTouchMode="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:clickable="true"
+                    android:focusableInTouchMode="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -440,6 +471,8 @@
                     android:text="@string/profileShareableLink" />
 
                 <androidx.legacy.widget.Space
+                    android:clickable="true"
+                    android:focusableInTouchMode="true"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
@@ -466,6 +499,8 @@
                 android:gravity="center_horizontal" />
 
             <LinearLayout
+                android:clickable="true"
+                android:focusableInTouchMode="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

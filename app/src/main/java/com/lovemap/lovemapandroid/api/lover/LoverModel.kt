@@ -80,6 +80,6 @@ data class LoverRanks(val rankList: List<Rank>) {
 }
 
 data class UpdateLoverRequest(
-    val email: String?,
-    val displayName: String?
+    val email: String? = null,
+    val displayName: String? = null
 )

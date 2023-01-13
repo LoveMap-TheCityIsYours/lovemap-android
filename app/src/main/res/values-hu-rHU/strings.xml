@@ -343,5 +343,6 @@
     <string name="you_blocked_them">Blokkoltad ezt a Szeretőt</string>
     <string name="this_user_blocked_you">Ez a Szerető blokkolt téged</string>
     <string name="you_follow_this_lover">Követed ezt a szeretőt</string>
+    <string name="display_name_updated">Megjelenítési név frissítve</string>
 
 </resources>

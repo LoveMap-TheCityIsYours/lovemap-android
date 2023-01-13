@@ -39,7 +39,7 @@ class ViewOtherLoverActivity : AppCompatActivity() {
     private lateinit var binding: ActivityViewOtherLoverBinding
     private lateinit var otherLoverSwipeRefreshLayout: SwipeRefreshLayout
 
-    private lateinit var profileUserName: TextView
+    private lateinit var profileDisplayName: TextView
     private lateinit var otherLoverPoints: TextView
     private lateinit var otherLoverPointsToNextLevel: TextView
     private lateinit var otherLoverRank: TextView
@@ -94,7 +94,7 @@ class ViewOtherLoverActivity : AppCompatActivity() {
         setContentView(binding.root)
         otherLoverSwipeRefreshLayout = binding.otherLoverSwipeRefreshLayout
         otherLoverSwipeRefreshLayout.setOnRefreshListener(refreshListener)
-        profileUserName = binding.profileUserName
+        profileDisplayName = binding.profileDisplayName
         otherLoverPoints = binding.otherLoverPoints
         otherLoverPointsToNextLevel = binding.otherLoverPointsToNextLevel
         otherLoverRank = binding.otherLoverRank
@@ -126,7 +126,7 @@ class ViewOtherLoverActivity : AppCompatActivity() {
         MainScope().launch {
             getOtherLover()?.let { otherLover ->
                 setPointsAndRank(otherLover)
-                profileUserName.text = otherLover.displayName
+                profileDisplayName.text = otherLover.displayName
                 val partnership = partnershipService.getPartnership()
                 this@ViewOtherLoverActivity.otherLover = otherLover
                 this@ViewOtherLoverActivity.partnership = partnership
