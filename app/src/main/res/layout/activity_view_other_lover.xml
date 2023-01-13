@@ -160,6 +160,7 @@
                 style="@style/TextAppearance.AppCompat.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/standard_8"
                 android:layout_marginStart="@dimen/standard_16"
                 android:layout_marginTop="@dimen/standard_16"
                 android:text="@string/yourRelationWith" />
@@ -175,10 +176,21 @@
                 android:text=" - " />
 
             <TextView
+                style="?android:attr/weekSeparatorLineColor"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/standard_16"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="@dimen/standard_16"
+                android:background="@color/separatorLine"
+                android:gravity="center_horizontal" />
+
+
+            <TextView
                 android:id="@+id/partnerViewLoveMakingsText"
                 style="@style/TextAppearance.AppCompat.Large"
                 android:visibility="gone"
-                android:layout_marginTop="@dimen/standard_16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

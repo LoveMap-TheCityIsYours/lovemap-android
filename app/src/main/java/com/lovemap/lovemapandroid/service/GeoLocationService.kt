@@ -1,5 +1,6 @@
 package com.lovemap.lovemapandroid.service
 
+import android.util.Log
 import com.lovemap.lovemapandroid.api.geolocation.Cities
 import com.lovemap.lovemapandroid.api.geolocation.Countries
 import com.lovemap.lovemapandroid.api.geolocation.GeoLocationApi
@@ -12,6 +13,8 @@ class GeoLocationService(
     private val metadataStore: MetadataStore,
     private val toaster: Toaster
 ) {
+    private val tag = "GeoLocationService"
+
     suspend fun getAndFetchCities(): Cities? {
         return withContext(Dispatchers.IO) {
             if (metadataStore.isCitiesStored()) {
@@ -25,22 +28,24 @@ class GeoLocationService(
         }
     }
 
-    private suspend fun fetchCities(): Cities? {
-        val call = geoLocationApi.getCities()
-        return try {
-            val response = call.execute()
-            if (response.isSuccessful) {
-                val cities = response.body()!!
-                metadataStore.saveCountries(Countries(cities.cities.map { it.country }.toSet()))
-                metadataStore.saveCities(cities)
-                cities
-            } else {
-                toaster.showResponseError(response)
+    suspend fun fetchCities(): Cities? {
+        return withContext(Dispatchers.IO) {
+            val call = geoLocationApi.getCities()
+            try {
+                val response = call.execute()
+                if (response.isSuccessful) {
+                    val cities = response.body()!!
+                    metadataStore.saveCountries(Countries(cities.cities.map { it.country }.toSet()))
+                    metadataStore.saveCities(cities)
+                    cities
+                } else {
+                    Log.e(tag, "Failed to fetch cities. Response: [$response]")
+                    null
+                }
+            } catch (e: Exception) {
+                Log.e(tag, "Failed to fetch cities.", e)
                 null
             }
-        } catch (e: Exception) {
-            toaster.showNoServerToast()
-            null
         }
     }
 
@@ -58,21 +63,23 @@ class GeoLocationService(
         }
     }
 
-    private suspend fun fetchCountries(): Countries? {
-        val call = geoLocationApi.getCountries()
-        return try {
-            val response = call.execute()
-            if (response.isSuccessful) {
-                val countries = response.body()!!
-                metadataStore.saveCountries(Countries(countries.countries))
-                countries
-            } else {
-                toaster.showResponseError(response)
+    suspend fun fetchCountries(): Countries? {
+        return withContext(Dispatchers.IO) {
+            val call = geoLocationApi.getCountries()
+            try {
+                val response = call.execute()
+                if (response.isSuccessful) {
+                    val countries = response.body()!!
+                    metadataStore.saveCountries(Countries(countries.countries))
+                    countries
+                } else {
+                    Log.e(tag, "Failed to fetch countries. Response: [$response]")
+                    null
+                }
+            } catch (e: Exception) {
+                Log.e(tag, "Failed to fetch countries.", e)
                 null
             }
-        } catch (e: Exception) {
-            toaster.showNoServerToast()
-            null
         }
     }
 

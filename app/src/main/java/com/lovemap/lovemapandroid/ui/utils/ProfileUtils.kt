@@ -14,8 +14,8 @@ object ProfileUtils {
     fun setRanks(
         points: Int,
         currentRank: TextView,
-        pointsToNextLevel: TextView,
-        progressBar: ProgressBar
+        pointsToNextLevel: TextView? = null,
+        progressBar: ProgressBar? = null
     ) {
         MainScope().launch {
             val ranks = AppContext.INSTANCE.loverService.getRanks()
@@ -34,17 +34,17 @@ object ProfileUtils {
                 val rank = rankList[levelIndex - 1]
                 if (levelIndex < rankList.size) {
                     val nextRank = rankList[levelIndex]
-                    pointsToNextLevel.text = nextRank.pointsNeeded.toString()
-                    progressBar.max = nextRank.pointsNeeded - rank.pointsNeeded
-                    progressBar.setProgress(points - rank.pointsNeeded, true)
+                    pointsToNextLevel?.text = nextRank.pointsNeeded.toString()
+                    progressBar?.max = nextRank.pointsNeeded - rank.pointsNeeded
+                    progressBar?.setProgress(points - rank.pointsNeeded, true)
                 } else {
-                    pointsToNextLevel.text = AppContext.INSTANCE.getString(R.string.max_level_reached)
-                    progressBar.max = points
-                    progressBar.setProgress(points, true)
+                    pointsToNextLevel?.text = AppContext.INSTANCE.getString(R.string.max_level_reached)
+                    progressBar?.max = points
+                    progressBar?.setProgress(points, true)
                 }
                 // TODO: translation
                 currentRank.text = rank.nameEN
-                progressBar.min = 0
+                progressBar?.min = 0
             }
         }
 

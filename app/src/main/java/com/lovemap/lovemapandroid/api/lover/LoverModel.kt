@@ -67,7 +67,7 @@ data class LoverViewDto(
     val rank: Int,
     val createdAt: String,
     val relation: RelationStatus,
-    val publicProfile: Boolean = false,
+    val publicProfile: Boolean,
 )
 
 data class LoverRanks(val rankList: List<Rank>) {
