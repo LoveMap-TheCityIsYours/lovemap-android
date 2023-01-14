@@ -7,6 +7,11 @@ data class RequestPartnershipRequest(
     val respondentId: Long,
 )
 
+data class CancelPartnershipRequest(
+    val initiatorId: Long,
+    val respondentId: Long,
+)
+
 data class RespondPartnershipRequest(
     val initiatorId: Long,
     val respondentId: Long,
@@ -17,9 +22,9 @@ enum class PartnershipReaction {
     ACCEPT, DENY
 }
 
-data class LoverPartnershipsResponse(
+data class LoverPartnershipV2Response(
     val loverId: Long,
-    val partnerships: List<Partnership>
+    val partnership: Partnership?
 )
 
 enum class PartnershipStatus {

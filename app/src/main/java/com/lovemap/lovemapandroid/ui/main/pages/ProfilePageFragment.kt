@@ -194,7 +194,6 @@ class ProfilePageFragment : Fragment() {
     }
 
     private fun setPartnerships(context: Context) {
-        // TODO: finish this with new /partnerships API call
         MainScope().launch {
             val partnership = partnershipService.getPartnership()
             if (partnership != null) {

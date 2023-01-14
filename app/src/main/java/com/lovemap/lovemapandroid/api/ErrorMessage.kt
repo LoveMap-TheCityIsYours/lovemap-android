@@ -81,6 +81,9 @@ private val errorCodeMessageMap = HashMap<ErrorCode, Int>().apply {
     put(UploadedPhotoFileEmpty, R.string.uploaded_photo_file_empty)
     put(NewsFeedPageNotFound, R.string.news_feed_page_not_found)
     put(InvalidPageRequest, R.string.invalid_page_request)
+    put(AlreadyHavePartner, R.string.already_have_a_partner)
+    put(Forbidden, R.string.not_allowed_to_do_that)
+    put(PartnershipNotFound, R.string.partnershipNotFound)
 }
 
 enum class ErrorCode {
@@ -129,6 +132,7 @@ enum class ErrorCode {
     UploadedPhotoFileEmpty,
     NewsFeedPageNotFound,
     InvalidPageRequest,
+    AlreadyHavePartner,
 
     UNDEFINED
 }

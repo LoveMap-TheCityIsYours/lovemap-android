@@ -11,6 +11,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lover.LoverViewDto
+import com.lovemap.lovemapandroid.api.partnership.CancelPartnershipRequest
 import com.lovemap.lovemapandroid.api.partnership.PartnershipReaction
 import com.lovemap.lovemapandroid.api.partnership.PartnershipStatus.PARTNERSHIP_REQUESTED
 import com.lovemap.lovemapandroid.api.partnership.RespondPartnershipRequest
@@ -214,7 +215,20 @@ class ViewOtherLoverActivity : AppCompatActivity() {
     }
 
     private fun setCancelRequestPartnershipButton() {
-
+        cancelRequestPartnershipFab.setOnClickListener {
+            MainScope().launch {
+                otherLover?.let {
+                    partnership = partnershipService.cancelPartnershipRequest(
+                        CancelPartnershipRequest(
+                            userId, it.id
+                        )
+                    )
+                    if (partnership == null) {
+                        setRelationState(NOTHING)
+                    }
+                }
+            }
+        }
     }
 
     private fun setEndPartnershipButton() {

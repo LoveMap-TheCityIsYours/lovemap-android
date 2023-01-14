@@ -16,4 +16,7 @@ interface PartnershipDao {
 
     @Delete
     fun delete(vararg partnership: Partnership)
+
+    @Query("DELETE FROM partnership")
+    fun deleteAll()
 }

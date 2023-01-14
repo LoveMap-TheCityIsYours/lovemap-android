@@ -1,13 +1,9 @@
 package com.lovemap.lovemapandroid.service.relations
 
 import android.app.Activity
-import com.lovemap.lovemapandroid.api.ErrorMessage
-import com.lovemap.lovemapandroid.api.getErrorMessages
+import android.util.Log
 import com.lovemap.lovemapandroid.api.lover.LoverViewDto
-import com.lovemap.lovemapandroid.api.partnership.LoverPartnershipsResponse
-import com.lovemap.lovemapandroid.api.partnership.PartnershipApi
-import com.lovemap.lovemapandroid.api.partnership.RequestPartnershipRequest
-import com.lovemap.lovemapandroid.api.partnership.RespondPartnershipRequest
+import com.lovemap.lovemapandroid.api.partnership.*
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.data.partnership.Partnership
@@ -23,6 +19,7 @@ class PartnershipService(
     private val metadataStore: MetadataStore,
     private val toaster: Toaster,
 ) {
+    private val tag = "PartnershipService"
 
     suspend fun getPartnershipLocally(): Partnership? {
         return withContext(Dispatchers.IO) {
@@ -44,36 +41,29 @@ class PartnershipService(
         }
     }
 
-    suspend fun getPartnershipStatus(otherLover: LoverViewDto): RelationState? {
-        return getPartnership()?.let { partnership ->
-            if (otherLover.id == partnership.initiatorId) {
-                RelationState.THEY_REQUESTED_PARTNERSHIP
-            } else if (otherLover.id == partnership.respondentId) {
-                RelationState.YOU_REQUESTED_PARTNERSHIP
-            } else {
-                null
-            }
-        }
-    }
-
     suspend fun getPartnership(): Partnership? {
         return withContext(Dispatchers.IO) {
             if (metadataStore.isLoggedIn()) {
                 val localPartnership = getPartnershipLocally()
-                val call = partnershipApi.getLoverPartnerships(metadataStore.getUser().id)
+                val call = partnershipApi.getLoverPartnership(metadataStore.getUser().id)
                 val response = try {
                     call.execute()
                 } catch (e: Exception) {
+                    Log.e(tag, "getPartnership ERROR", e)
                     toaster.showNoServerToast()
                     return@withContext localPartnership
                 }
                 if (response.isSuccessful) {
-                    val partnershipsResponse: LoverPartnershipsResponse = response.body()!!
-                    val partnerships = partnershipsResponse.partnerships
-                    partnershipDao.insert(*partnerships.toTypedArray())
-                    partnerships.firstOrNull()
+                    val partnershipResponse: LoverPartnershipV2Response = response.body()!!
+                    Log.i(tag, "partnershipResponse: $partnershipResponse")
+                    val partnership = partnershipResponse.partnership
+                    partnership?.let {
+                        partnershipDao.insert(it)
+                        metadataStore
+                    } ?: run { partnershipDao.deleteAll() }
+                    partnership
                 } else {
-                    toaster.showNoServerToast()
+                    toaster.showResponseError(response)
                     localPartnership
                 }
             } else {
@@ -88,9 +78,10 @@ class PartnershipService(
             if (localPartnership != null) {
                 null
             } else {
+                val initiatorId = metadataStore.getUser().id
                 val call = partnershipApi.requestPartnership(
-                    RequestPartnershipRequest(
-                        metadataStore.getUser().id,
+                    initiatorId, RequestPartnershipRequest(
+                        initiatorId,
                         respondentId
                     )
                 )
@@ -109,8 +100,7 @@ class PartnershipService(
                     partnership
                 } else {
                     loadingBarShower.onResponse()
-                    val errorMessage: ErrorMessage = response.getErrorMessages()[0]
-                    toaster.showToast(errorMessage.translatedString(AppContext.INSTANCE.applicationContext))
+                    toaster.showResponseError(response)
                     null
                 }
             }
@@ -120,7 +110,8 @@ class PartnershipService(
     suspend fun respondPartnership(request: RespondPartnershipRequest): Partnership? {
         return withContext(Dispatchers.IO) {
             val localPartnership = getPartnershipLocally()
-            val call = partnershipApi.respondPartnership(request)
+            val initiatorId = metadataStore.getUser().id
+            val call = partnershipApi.respondPartnership(initiatorId, request)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
@@ -128,12 +119,37 @@ class PartnershipService(
                 return@withContext localPartnership
             }
             if (response.isSuccessful) {
-                val partnershipsResponse = response.body()!!
-                val partnerships = partnershipsResponse.partnerships
-                partnershipDao.insert(*partnerships.toTypedArray())
-                partnerships.firstOrNull()
+                val partnershipResponse = response.body()!!
+                val partnership = partnershipResponse.partnership
+                partnership?.let { partnershipDao.insert(it) }
+                    ?: run { partnershipDao.deleteAll() }
+                partnership
             } else {
+                toaster.showResponseError(response)
+                localPartnership
+            }
+        }
+    }
+
+    suspend fun cancelPartnershipRequest(request: CancelPartnershipRequest): Partnership? {
+        return withContext(Dispatchers.IO) {
+            val localPartnership = getPartnershipLocally()
+            val initiatorId = metadataStore.getUser().id
+            val call = partnershipApi.cancelPartnershipRequest(initiatorId, request)
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
                 toaster.showNoServerToast()
+                return@withContext localPartnership
+            }
+            if (response.isSuccessful) {
+                val partnershipResponse = response.body()!!
+                val partnership = partnershipResponse.partnership
+                partnership?.let { partnershipDao.insert(it) }
+                    ?: run { partnershipDao.deleteAll() }
+                partnership
+            } else {
+                toaster.showResponseError(response)
                 localPartnership
             }
         }

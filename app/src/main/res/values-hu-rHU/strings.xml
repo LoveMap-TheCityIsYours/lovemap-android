@@ -51,7 +51,7 @@
     <string name="linkShareOff">Megosztható link kikapcsolása</string>
     <string name="linkShareOn">Megosztható link bekapcsolása</string>
     <string name="privateProfile">Privát profil</string>
-    <string name="profileInPartnershipWith">Kapcsolatban vele:</string>
+    <string name="profileInPartnershipWith">Kapcsolati státusz:</string>
     <string name="profilePartnersEmpty">Még nincs kapcsolatban</string>
     <string name="profileRank">Jelenlegi rang:</string>
     <string name="userOccupied">A felhasználónév foglalt</string>
@@ -178,7 +178,7 @@
     <string name="love_making_deleted">Hancúr törölve</string>
     <string name="love_making_updated">Hancúr frissítve</string>
     <string name="editLoveMakingTitle">Hancúr szerkesztése</string>
-    <string name="partnershipNotFound">Közted és e felhasználó közt nincs kapcsolat</string>
+    <string name="partnershipNotFound">Partnerség nem található</string>
     <string name="editLoveSpotTitle">Love Spot szerkesztése</string>
     <string name="love_spot_updated">Love Spot frissítve</string>
     <string name="edit_spot">Love Spot szerkesztése</string>
@@ -344,5 +344,6 @@
     <string name="this_user_blocked_you">Ez a Szerető blokkolt téged</string>
     <string name="you_follow_this_lover">Követed ezt a szeretőt</string>
     <string name="display_name_updated">Megjelenítési név frissítve</string>
+    <string name="not_allowed_to_do_that">Ehhez nincs felhatalmazásod</string>
 
 </resources>
