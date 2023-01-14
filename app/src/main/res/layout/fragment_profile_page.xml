@@ -62,8 +62,9 @@
                         android:layout_marginStart="@dimen/text_margin"
                         android:layout_marginTop="20dp"
                         android:gravity="start"
+                        android:textSize="20sp"
                         android:maxWidth="280dp"
-                        android:inputType="text"
+                        android:inputType="text|textCapWords"
                         android:maxLines="2"
                         android:text="@string/profileUserName"
                         android:textColor="@color/myColorOnBackground" />

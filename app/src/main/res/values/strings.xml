@@ -59,7 +59,7 @@
     <string name="linkShareOff">Link Sharing Off</string>
     <string name="linkShareOn">Link Sharing On</string>
     <string name="privateProfile">Private Profile</string>
-    <string name="profileInPartnershipWith">In partnership with:</string>
+    <string name="profileInPartnershipWith">Partnership status:</string>
     <string name="profilePartnersEmpty">No partner yet</string>
     <string name="profileRank">Current rank:</string>
     <string name="userOccupied">Username is occupied</string>
@@ -186,7 +186,7 @@
     <string name="love_making_deleted">Love-making deleted</string>
     <string name="love_making_updated">Love-making updated</string>
     <string name="editLoveMakingTitle">Edit Love-making</string>
-    <string name="partnershipNotFound">No Partnership between you and the user</string>
+    <string name="partnershipNotFound">Partnership not found</string>
     <string name="editLoveSpotTitle">Edit Love Spot</string>
     <string name="love_spot_updated">Love Spot updated</string>
     <string name="edit_spot">Edit Spot</string>
@@ -351,5 +351,6 @@
     <string name="this_user_blocked_you">This Lover blocked you</string>
     <string name="you_follow_this_lover">You are following this Lover</string>
     <string name="display_name_updated">Display name updated</string>
+    <string name="not_allowed_to_do_that">You are not allowed to do that</string>
 
 </resources>

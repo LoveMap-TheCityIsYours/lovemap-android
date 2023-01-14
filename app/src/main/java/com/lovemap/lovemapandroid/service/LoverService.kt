@@ -57,6 +57,7 @@ class LoverService(
             }
             if (response.isSuccessful) {
                 val result: LoverRelationsDto = response.body()!!
+                Log.i(tag, "getMyself response: $result")
                 metadataStore.saveLover(result)
             } else {
                 toaster.showResponseError(response)

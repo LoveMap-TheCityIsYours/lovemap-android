@@ -22,6 +22,7 @@ class RecordLoveFragment : Fragment(),
 
     private val appContext = AppContext.INSTANCE
     private val loverService = appContext.loverService
+    private val partnershipService = appContext.partnershipService
 
     lateinit var datePicker: DatePickerDialog
     lateinit var timePicker: TimePickerDialog
