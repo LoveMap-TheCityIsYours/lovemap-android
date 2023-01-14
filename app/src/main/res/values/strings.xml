@@ -135,7 +135,7 @@
     <string name="following">Following</string>
     <string name="partner">Partner</string>
     <string name="blocked">Blocked</string>
-    <string name="already_have_a_partner">Already have a partner</string>
+    <string name="already_have_a_partner">You already have a partner</string>
     <string name="partnership_already_requested">Partnership already requested</string>
     <string name="invalid_operation_on_yourself">Invalid operation on yourself</string>
     <string name="link_sharing_hint">
@@ -352,5 +352,6 @@
     <string name="you_follow_this_lover">You are following this Lover</string>
     <string name="display_name_updated">Display name updated</string>
     <string name="not_allowed_to_do_that">You are not allowed to do that</string>
+    <string name="respondent_already_has_a_partner">This Lover already has a partner</string>
 
 </resources>

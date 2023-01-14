@@ -20,4 +20,7 @@ interface PartnershipApi {
 
     @PUT("/v2/lovers/{loverId}/partnerships/cancelPartnershipRequest")
     fun cancelPartnershipRequest(@Path("loverId") loverId: Long, @Body request: CancelPartnershipRequest): Call<LoverPartnershipV2Response>
+
+    @PUT("/v2/lovers/{loverId}/partnerships/endPartnership/{partnerLoverId}")
+    fun endPartnership(@Path("loverId") loverId: Long, @Path("partnerLoverId") partnerLoverId: Long): Call<LoverPartnershipV2Response>
 }

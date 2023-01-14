@@ -28,10 +28,11 @@ class PartnershipService(
     }
 
     fun getPartnershipStatus(otherLover: LoverViewDto, partnership: Partnership?): RelationState? {
+        if (otherLover.id == AppContext.INSTANCE.userId) {
+            return RelationState.YOURSELF
+        }
         return partnership?.let {
-            if (otherLover.id == AppContext.INSTANCE.userId) {
-                RelationState.YOURSELF
-            } else if (otherLover.id == partnership.respondentId) {
+            if (otherLover.id == partnership.respondentId) {
                 RelationState.YOU_REQUESTED_PARTNERSHIP
             } else if (otherLover.id == partnership.initiatorId) {
                 RelationState.THEY_REQUESTED_PARTNERSHIP
@@ -59,7 +60,6 @@ class PartnershipService(
                     val partnership = partnershipResponse.partnership
                     partnership?.let {
                         partnershipDao.insert(it)
-                        metadataStore
                     } ?: run { partnershipDao.deleteAll() }
                     partnership
                 } else {
@@ -136,6 +136,30 @@ class PartnershipService(
             val localPartnership = getPartnershipLocally()
             val initiatorId = metadataStore.getUser().id
             val call = partnershipApi.cancelPartnershipRequest(initiatorId, request)
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
+                toaster.showNoServerToast()
+                return@withContext localPartnership
+            }
+            if (response.isSuccessful) {
+                val partnershipResponse = response.body()!!
+                val partnership = partnershipResponse.partnership
+                partnership?.let { partnershipDao.insert(it) }
+                    ?: run { partnershipDao.deleteAll() }
+                partnership
+            } else {
+                toaster.showResponseError(response)
+                localPartnership
+            }
+        }
+    }
+
+    suspend fun endPartnership(partnerLoverId: Long): Partnership? {
+        return withContext(Dispatchers.IO) {
+            val localPartnership = getPartnershipLocally()
+            val loverId = metadataStore.getUser().id
+            val call = partnershipApi.endPartnership(loverId, partnerLoverId)
             val response = try {
                 call.execute()
             } catch (e: Exception) {
