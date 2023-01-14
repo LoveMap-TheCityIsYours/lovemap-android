@@ -14,6 +14,7 @@ import com.lovemap.lovemapandroid.api.lover.LoverRanks
 import com.lovemap.lovemapandroid.api.lover.LoverRelationsDto
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotRisks
 import com.lovemap.lovemapandroid.config.AppContext
+import com.lovemap.lovemapandroid.data.partnership.Partnership
 import com.lovemap.lovemapandroid.utils.ROLE_ADMIN
 import com.lovemap.lovemapandroid.utils.objectMapper
 import kotlinx.coroutines.flow.first

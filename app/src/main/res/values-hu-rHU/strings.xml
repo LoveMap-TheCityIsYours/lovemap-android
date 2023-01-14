@@ -127,7 +127,7 @@
     <string name="following">Követések</string>
     <string name="partner">Partner</string>
     <string name="blocked">Letiltások</string>
-    <string name="already_have_a_partner">Mar van partnerkapcsolat</string>
+    <string name="already_have_a_partner">Már van partnered</string>
     <string name="partnership_already_requested">Kapcsolat korábban kérvényezve</string>
     <string name="invalid_operation_on_yourself">Érvénytelen művelet önmagadon</string>
     <string name="link_sharing_hint">
@@ -345,5 +345,6 @@
     <string name="you_follow_this_lover">Követed ezt a szeretőt</string>
     <string name="display_name_updated">Megjelenítési név frissítve</string>
     <string name="not_allowed_to_do_that">Ehhez nincs felhatalmazásod</string>
+    <string name="respondent_already_has_a_partner">Ennek a Lovernek van már partnere</string>
 
 </resources>

@@ -24,6 +24,7 @@ data class LoverDto(
     val publicProfile: Boolean = false,
     val shareableLink: String? = null,
     val isAdmin: Boolean = false,
+    val partnerId: Long?
 ) {
     fun getCreatedAt(): Instant {
         return instantOfApiString(createdAt)
@@ -54,6 +55,7 @@ data class LoverRelationsDto(
     val publicProfile: Boolean = false,
     val shareableLink: String? = null,
     val isAdmin: Boolean = false,
+    val partnerId: Long?
 ) {
     fun getCreatedAt(): Instant {
         return instantOfApiString(createdAt)
@@ -68,6 +70,7 @@ data class LoverViewDto(
     val createdAt: String,
     val relation: RelationStatus,
     val publicProfile: Boolean,
+    val partnerId: Long?
 )
 
 data class LoverRanks(val rankList: List<Rank>) {

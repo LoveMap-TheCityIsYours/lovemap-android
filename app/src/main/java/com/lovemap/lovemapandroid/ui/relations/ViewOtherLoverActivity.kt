@@ -1,6 +1,7 @@
 package com.lovemap.lovemapandroid.ui.relations
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.ProgressBar
@@ -68,7 +69,13 @@ class ViewOtherLoverActivity : AppCompatActivity() {
 
     private val refreshListener = SwipeRefreshLayout.OnRefreshListener {
         otherLoverSwipeRefreshLayout.isRefreshing = true
-        setViewState()
+        MainScope().launch {
+            otherLover?.let {
+                otherLover = loverService.getOtherById(it.id)
+                setViews(it)
+            }
+            otherLoverSwipeRefreshLayout.isRefreshing = false
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -126,15 +133,18 @@ class ViewOtherLoverActivity : AppCompatActivity() {
     private fun setViewState() {
         MainScope().launch {
             getOtherLover()?.let { otherLover ->
-                setPointsAndRank(otherLover)
-                profileDisplayName.text = otherLover.displayName
-                val partnership = partnershipService.getPartnership()
-                this@ViewOtherLoverActivity.otherLover = otherLover
-                this@ViewOtherLoverActivity.partnership = partnership
-                setRelationWithLover(otherLover, partnership)
-                showLovesWithPartner()
+                setViews(otherLover)
             }
         }
+    }
+
+    private suspend fun setViews(otherLover: LoverViewDto) {
+        setPointsAndRank(otherLover)
+        profileDisplayName.text = otherLover.displayName
+        val partnership = partnershipService.getPartnership()
+        this@ViewOtherLoverActivity.partnership = partnership
+        setRelationWithLover(otherLover, partnership)
+        showLovesWithPartner()
     }
 
     private fun setPointsAndRank(otherLover: LoverViewDto) {
@@ -155,6 +165,7 @@ class ViewOtherLoverActivity : AppCompatActivity() {
             RelationStatus.NOTHING -> {
                 val partnershipStatus: RelationState? =
                     partnershipService.getPartnershipStatus(otherLover, partnership)
+                Log.i(tag, "PartnershipStatus is: $partnershipStatus")
                 when (partnershipStatus) {
                     YOU_REQUESTED_PARTNERSHIP -> setRelationState(YOU_REQUESTED_PARTNERSHIP)
                     THEY_REQUESTED_PARTNERSHIP -> setRelationState(THEY_REQUESTED_PARTNERSHIP)
@@ -183,7 +194,7 @@ class ViewOtherLoverActivity : AppCompatActivity() {
     }
 
     private suspend fun getOtherLover(): LoverViewDto? {
-        return loverUuid?.let { uuid ->
+        val loverViewDto = loverUuid?.let { uuid ->
             val lover = loverService.getByUuid(uuid)
             lover?.let {
                 LoverService.otherLover = it
@@ -191,6 +202,8 @@ class ViewOtherLoverActivity : AppCompatActivity() {
             }
             lover
         } ?: loverService.getSelectedLover()
+        this.otherLover = loverViewDto
+        return loverViewDto
     }
 
     private fun setRequestPartnershipButton() {
@@ -232,7 +245,16 @@ class ViewOtherLoverActivity : AppCompatActivity() {
     }
 
     private fun setEndPartnershipButton() {
-
+        endPartnershipFab.setOnClickListener {
+            MainScope().launch {
+                otherLover?.let {
+                    partnership = partnershipService.endPartnership(it.id)
+                    if (partnership == null) {
+                        setRelationState(NOTHING)
+                    }
+                }
+            }
+        }
     }
 
     private fun setAcceptPartnershipButton() {
@@ -277,6 +299,9 @@ class ViewOtherLoverActivity : AppCompatActivity() {
                 hideRespondView()
                 hideCancelRequestButton()
                 hideEndButton()
+//                if (otherLover?.partnerId != null) {
+//                    hideRequestButton()
+//                }
             }
             YOURSELF -> {
                 relationText.text = getString(R.string.itIsYou)
