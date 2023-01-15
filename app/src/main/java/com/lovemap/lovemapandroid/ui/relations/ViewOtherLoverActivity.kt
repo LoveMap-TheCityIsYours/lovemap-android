@@ -24,6 +24,7 @@ import com.lovemap.lovemapandroid.service.LoverService
 import com.lovemap.lovemapandroid.service.relations.RelationState
 import com.lovemap.lovemapandroid.service.relations.RelationState.*
 import com.lovemap.lovemapandroid.ui.main.love.lovehistory.LoveListFragment
+import com.lovemap.lovemapandroid.ui.utils.AlertDialogUtils
 import com.lovemap.lovemapandroid.ui.utils.I18nUtils
 import com.lovemap.lovemapandroid.ui.utils.ProfileUtils
 import com.lovemap.lovemapandroid.utils.LINK_PREFIX_API_CALL
@@ -90,6 +91,7 @@ class ViewOtherLoverActivity : AppCompatActivity() {
         }
         userId = appContext.userId
         setViewState()
+        setFollowButton()
         setRequestPartnershipButton()
         setAcceptPartnershipButton()
         setDenyPartnershipButton()
@@ -124,6 +126,10 @@ class ViewOtherLoverActivity : AppCompatActivity() {
         (partnerLoveListFragment.view?.findViewById(R.id.loveList) as RecyclerView).isNestedScrollingEnabled =
             false
 
+        hideLoveListFragment()
+    }
+
+    private fun hideLoveListFragment() {
         supportFragmentManager
             .beginTransaction()
             .hide(partnerLoveListFragment)
@@ -206,8 +212,14 @@ class ViewOtherLoverActivity : AppCompatActivity() {
         return loverViewDto
     }
 
+    private fun setFollowButton() {
+        followFab.setOnClickListener {
+            AppContext.INSTANCE.toaster.showToast(R.string.not_yet_implemented)
+        }
+    }
+
     private fun setRequestPartnershipButton() {
-        binding.requestPartnershipFab.setOnClickListener {
+        requestPartnershipFab.setOnClickListener {
             MainScope().launch {
                 otherLover?.let {
                     if (partnership != null) {
@@ -246,14 +258,22 @@ class ViewOtherLoverActivity : AppCompatActivity() {
 
     private fun setEndPartnershipButton() {
         endPartnershipFab.setOnClickListener {
-            MainScope().launch {
-                otherLover?.let {
-                    partnership = partnershipService.endPartnership(it.id)
-                    if (partnership == null) {
-                        setRelationState(NOTHING)
+            otherLover?.let {
+                AlertDialogUtils.newDialog(
+                    activity = this@ViewOtherLoverActivity,
+                    R.string.end_partnership_title,
+                    R.string.end_partnership_message,
+                    {
+                        MainScope().launch {
+                            partnership = partnershipService.endPartnership(it.id)
+                            if (partnership == null) {
+                                setRelationState(NOTHING)
+                            }
+                        }
                     }
-                }
+                )
             }
+
         }
     }
 
@@ -299,9 +319,7 @@ class ViewOtherLoverActivity : AppCompatActivity() {
                 hideRespondView()
                 hideCancelRequestButton()
                 hideEndButton()
-//                if (otherLover?.partnerId != null) {
-//                    hideRequestButton()
-//                }
+                hideLoveListFragment()
             }
             YOURSELF -> {
                 relationText.text = getString(R.string.itIsYou)

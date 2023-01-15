@@ -25,9 +25,10 @@ class MetadataStore(private val context: Context) {
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "MetadataStore")
     private val gson = GsonBuilder().create()
     private val currentAppMetadataVersion = 1
+    private val currentTouVersion = 2
 
     private val metadataVersionKey = intPreferencesKey("metadataVersion")
-    private val touAcceptedKey = booleanPreferencesKey("touAccepted")
+    private val touAcceptedKey = intPreferencesKey("touAccepted")
 
     private val userKey = stringPreferencesKey("user")
     private val loverKey = stringPreferencesKey("lover")
@@ -75,14 +76,18 @@ class MetadataStore(private val context: Context) {
     }
 
     suspend fun isTouAccepted(): Boolean {
-        return context.dataStore.data.map { dataStore ->
-            dataStore[touAcceptedKey] == true
-        }.first()
+        return runCatching { context.dataStore.data.map { dataStore ->
+            dataStore[touAcceptedKey] == currentTouVersion
+        }.first() }.getOrNull() ?: false
     }
 
     suspend fun setTouAccepted(accepted: Boolean) {
         context.dataStore.edit { dataStore ->
-            dataStore[touAcceptedKey] = accepted
+            dataStore[touAcceptedKey] = if (accepted) {
+                currentTouVersion
+            } else {
+                0
+            }
         }
     }
 
