@@ -208,6 +208,7 @@ class ProfilePageFragment : Fragment() {
                     profilePartnerRelation.visibility = View.VISIBLE
                 }
             } else {
+                partner = null
                 profilePartnerName.text = getString(R.string.profilePartnersEmpty)
                 profilePartnerRelation.visibility = View.INVISIBLE
             }
