@@ -346,5 +346,7 @@
     <string name="display_name_updated">Megjelenítési név frissítve</string>
     <string name="not_allowed_to_do_that">Ehhez nincs felhatalmazásod</string>
     <string name="respondent_already_has_a_partner">Ennek a Lovernek van már partnere</string>
+    <string name="end_partnership_title">Partnerség lezárása?</string>
+    <string name="end_partnership_message">Biztos vagy benne hogy le akarod zárni a partnerséged e szeretővel?</string>
 
 </resources>

@@ -353,5 +353,7 @@
     <string name="display_name_updated">Display name updated</string>
     <string name="not_allowed_to_do_that">You are not allowed to do that</string>
     <string name="respondent_already_has_a_partner">This Lover already has a partner</string>
+    <string name="end_partnership_title">End Partnership?</string>
+    <string name="end_partnership_message">Are you sure you want to end partnership with this Lover?</string>
 
 </resources>
