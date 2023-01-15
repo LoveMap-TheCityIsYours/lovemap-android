@@ -45,7 +45,7 @@
     <string name="your_loves">Hancúrjaid 💞</string>
     <string name="discover_love_spots">Love Spotok felfedezése 🧭</string>
     <string name="love_map">Love Map 💖</string>
-    <string name="profileUserName"> - </string>
+    <string name="profileUserName"> -------- </string>
     <string name="profileUserLevelText"> - </string>
     <string name="profileShareableLink">Megosztható link mutatása</string>
     <string name="linkShareOff">Megosztható link kikapcsolása</string>
@@ -58,7 +58,7 @@
     <string name="emailOccupied">Ezzel az email címmel már létezik felhasználó</string>
     <string name="invalidCredentials">Érvénytelen hitelesítő adatok</string>
     <string name="invalidEmail">Érvénytelen email cím</string>
-    <string name="invalidUsername">Érvénytelen felhasználónév</string>
+    <string name="invalidUsername">Felhasználónév karakterszámnak &gt;=3, &lt;=32 kell lennie</string>
     <string name="invalidPassword">Érvénytelen jelszó</string>
     <string name="noServer">Nem lehet csatlakozni a kiszolgálóhoz</string>
     <string name="points_to_next_level">Pontok a következő szintig</string>

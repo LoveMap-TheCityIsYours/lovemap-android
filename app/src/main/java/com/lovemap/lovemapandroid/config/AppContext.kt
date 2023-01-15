@@ -257,6 +257,7 @@ class AppContext : MultiDexApplication() {
         if (userId != 0L) {
             fetchMetadata()
             loveSpotReviewService.getReviewsByLover()
+            wishlistService.list()
             loveService.list()
         }
     }
@@ -322,7 +323,7 @@ class AppContext : MultiDexApplication() {
 
     private fun getTimeoutClientBuilder() = OkHttpClient.Builder()
         .callTimeout(Duration.ofMinutes(5))
-        .connectTimeout(60, TimeUnit.SECONDS)
+        .connectTimeout(15, TimeUnit.SECONDS)
         .readTimeout(Duration.ofMinutes(5))
         .writeTimeout(Duration.ofMinutes(5))
 

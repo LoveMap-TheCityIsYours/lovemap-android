@@ -279,7 +279,8 @@
             android:id="@+id/detailsReviewListFragment"
             android:name="com.lovemap.lovemapandroid.ui.main.lovespot.review.LoveSpotReviewListFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:layout="@layout/fragment_review_list" />
 
         <Button
             android:id="@+id/detailsSeeAllReviewsButton"
@@ -332,7 +333,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standard_16"
                 app:is_clickable="false"
-                app:love_spot_based="true" />
+                app:love_spot_based="true"
+                tools:layout="@layout/fragment_love_list" />
 
             <Button
                 android:id="@+id/detailsSeeAllLovesButton"
@@ -380,7 +382,8 @@
             android:id="@+id/detailsReviewLoveSpotFragment"
             android:name="com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewLoveSpotFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:layout="@layout/fragment_review_love_spot" />
 
         <LinearLayout
             android:id="@+id/detailsReviewButtons"
