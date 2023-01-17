@@ -73,6 +73,16 @@ data class LoverViewDto(
     val partnerId: Long?
 )
 
+data class LoverViewWithoutRelationDto(
+    val id: Long,
+    val displayName: String,
+    val points: Int,
+    val rank: Int,
+    val createdAt: String,
+    val publicProfile: Boolean,
+    val partnerId: Long?,
+)
+
 data class LoverRanks(val rankList: List<Rank>) {
     data class Rank(
         val rank: Int,

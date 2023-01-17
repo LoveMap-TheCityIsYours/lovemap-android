@@ -351,5 +351,13 @@
     <string name="set_profile_public_title">Publikus legyen a profilod?</string>
     <string name="set_profile_public_message">Szeretnéd hogy publikus legyen a profilod? Ha a profilod publikus, más szeretők tudnak követni és láthatják az aktivitásod LoveMapen. Ezen felül a profilod bekerülhet a Hírességek Csarnokába.</string>
     <string name="public_profile">Publikus Profil</string>
+    <string name="lover_not_found">Szerető nem található</string>
+    <string name="public_actor_reviewed_spot">- %1$s -\n\t\t⭐ Új értékelést írt</string>
+    <string name="public_actor_liked_photo_at">- %1$s -\n\t\t👍 Lájkolta ezt a képet</string>
+    <string name="public_actor_disliked_photo_at">- %1$s -\n\t\t👎 Utálja ezt a képet</string>
+    <string name="public_actor_uploaded_a_photo_to">- %1$s -\n\t\t⬆️ Feltöltött egy fotót</string>
+    <string name="public_actor_added_a_new_lovespot">- %1$s -\n\t\t📍 Új LoveSpotot vett fel!</string>
+    <string name="public_actor_wishlisted_spot">- %1$s -\n\t\t😏 Kívánságlistára tette</string>
+    <string name="public_actor_made_love_at">- %1$s -\n\t\t💞 Baszott itt 😉</string>
 
 </resources>

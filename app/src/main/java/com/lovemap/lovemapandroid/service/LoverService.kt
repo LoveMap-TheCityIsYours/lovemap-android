@@ -167,6 +167,27 @@ class LoverService(
         }
     }
 
+    suspend fun getOtherByIdWithoutRelation(loverId: Long): LoverViewWithoutRelationDto? {
+        return withContext(Dispatchers.IO) {
+            Log.i(tag, "Getting otherLover from the server. LoverId: '$loverId'")
+            val call = loverApi.getCachedLoverView(loverId)
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
+                toaster.showNoServerToast()
+                return@withContext null
+            }
+            if (response.isSuccessful) {
+                val result: LoverViewWithoutRelationDto = response.body()!!
+                result
+            } else {
+                val errorMessages = response.getErrorMessages()
+                toaster.showToast(errorMessages.toString())
+                null
+            }
+        }
+    }
+
     suspend fun generateLink(): LoverDto? {
         return withContext(Dispatchers.IO) {
             val loggedInUser = metadataStore.getUser()

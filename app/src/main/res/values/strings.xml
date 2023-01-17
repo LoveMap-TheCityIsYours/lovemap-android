@@ -358,5 +358,13 @@
     <string name="set_profile_public_title">Set profile public?</string>
     <string name="set_profile_public_message">Do you want to set your profile to public? If your profile is public, other Lovers can follow you and see your activities on LoveMap. Your profile can also get into the Hall of Fame.</string>
     <string name="public_profile">Public Profile</string>
+    <string name="lover_not_found">Lover not found</string>
+    <string name="public_actor_reviewed_spot">- %1$s -\n\t\t⭐ Reviewed</string>
+    <string name="public_actor_liked_photo_at">- %1$s -\n\t\t👍 Liked this photo</string>
+    <string name="public_actor_disliked_photo_at">- %1$s -\n\t\t👎 Disliked this photo</string>
+    <string name="public_actor_uploaded_a_photo_to">- %1$s -\n\t\t⬆️ Uploaded a photo to</string>
+    <string name="public_actor_added_a_new_lovespot">- %1$s -\n\t\t📍 Added a new LoveSpot!</string>
+    <string name="public_actor_wishlisted_spot">- %1$s -\n\t\t😏 Wishlisted</string>
+    <string name="public_actor_made_love_at">- %1$s -\n\t\t💞 Got lucky here 😉</string>
 
 </resources>

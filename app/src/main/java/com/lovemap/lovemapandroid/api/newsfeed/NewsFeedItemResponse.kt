@@ -1,5 +1,6 @@
 package com.lovemap.lovemapandroid.api.newsfeed
 
+import com.lovemap.lovemapandroid.api.lover.LoverViewWithoutRelationDto
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotType
 
 data class NewsFeedItemResponse(
@@ -10,6 +11,7 @@ data class NewsFeedItemResponse(
     val happenedAtFormatted: String,
     val referenceId: Long,
     val loverId: Long,
+    val publicLover: LoverViewWithoutRelationDto?,
     val country: String,
     val loveSpot: LoveSpotNewsFeedResponse? = null,
     val love: LoveNewsFeedResponse? = null,

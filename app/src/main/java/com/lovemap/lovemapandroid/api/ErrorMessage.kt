@@ -85,6 +85,7 @@ private val errorCodeMessageMap = HashMap<ErrorCode, Int>().apply {
     put(Forbidden, R.string.not_allowed_to_do_that)
     put(PartnershipNotFound, R.string.partnershipNotFound)
     put(RespondentAlreadyHasPartner, R.string.respondent_already_has_a_partner)
+    put(LoverNotFound, R.string.lover_not_found)
 }
 
 enum class ErrorCode {
@@ -135,6 +136,7 @@ enum class ErrorCode {
     InvalidPageRequest,
     AlreadyHasPartner,
     RespondentAlreadyHasPartner,
+    LoverNotFound,
 
     UNDEFINED
 }

@@ -23,6 +23,9 @@ interface LoverApi {
     @GET("/lovers/view/{loverId}")
     fun getLoverView(@Path("loverId") loverId: Long): Call<LoverViewDto>
 
+    @GET("/lovers/cachedView/{loverId}")
+    fun getCachedLoverView(@Path("loverId") loverId: Long): Call<LoverViewWithoutRelationDto>
+
     @PUT("/lovers/{loverId}")
     fun updateLover(@Path("loverId") loverId: Long, @Body update: UpdateLoverRequest): Call<LoverDto>
 
