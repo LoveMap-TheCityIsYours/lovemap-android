@@ -23,6 +23,7 @@ import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
 import com.lovemap.lovemapandroid.ui.utils.PhotoUtils
 import com.lovemap.lovemapandroid.ui.utils.ProfileUtils
 import com.lovemap.lovemapandroid.ui.utils.setListItemAnimation
+import com.lovemap.lovemapandroid.utils.EmojiUtils
 import com.lovemap.lovemapandroid.utils.instantOfApiString
 import com.lovemap.lovemapandroid.utils.toFormattedString
 import kotlinx.coroutines.MainScope
@@ -165,13 +166,10 @@ class NewsFeedRecyclerAdapter(
                 Intent(context, ViewOtherLoverActivity::class.java)
             )
         }
-
-        viewHolder.newsFeedText.text = context.getString(R.string.new_lover_joined)
-        viewHolder.newsFeedHappenedAt.text = instantOfApiString(item.happenedAt).toFormattedString()
+        viewHolder.setTexts(R.string.new_lover_joined, item.happenedAt, item.country)
         viewHolder.newsFeedLoverName.text = lover.displayName
         viewHolder.newsFeedLoverPoints.text = lover.points.toString()
         ProfileUtils.setRanks(lover.points, viewHolder.newsFeedLoverRank)
-
         MainScope().launch {
             loverService.getOtherById(lover.id)?.let {
                 LoverService.otherLover = it
@@ -188,14 +186,12 @@ class NewsFeedRecyclerAdapter(
         photoLike: PhotoLikeNewsFeedResponse
     ) {
         setLoveSpotOnClickListener(viewHolder, photoLike.loveSpotId)
-        if (photoLike.likeOrDislike > 0) {
-            viewHolder.newsFeedText.text = context.getString(R.string.somebody_liked_photo_at)
+        val textResId = if (photoLike.likeOrDislike > 0) {
+            R.string.somebody_liked_photo_at
         } else {
-            viewHolder.newsFeedText.text = context.getString(R.string.somebody_disliked_photo_at)
+            R.string.somebody_disliked_photo_at
         }
-
-        viewHolder.newsFeedHappenedAt.text =
-            instantOfApiString(item.happenedAt).toFormattedString()
+        viewHolder.setTexts(textResId, item.happenedAt, item.country)
 
         MainScope().launch {
             loveSpotService.findLocallyOrFetch(photoLike.loveSpotId)
@@ -218,8 +214,7 @@ class NewsFeedRecyclerAdapter(
         loveSpotPhoto: LoveSpotPhotoNewsFeedResponse
     ) {
         setLoveSpotOnClickListener(viewHolder, loveSpotPhoto.loveSpotId)
-        viewHolder.newsFeedText.text = context.getString(R.string.somebody_uploaded_a_photo_to)
-        viewHolder.newsFeedHappenedAt.text = instantOfApiString(item.happenedAt).toFormattedString()
+        viewHolder.setTexts(R.string.somebody_uploaded_a_photo_to, item.happenedAt, item.country)
 
         MainScope().launch {
             loveSpotService.findLocallyOrFetch(loveSpotPhoto.loveSpotId)
@@ -242,8 +237,8 @@ class NewsFeedRecyclerAdapter(
         loveSpot: LoveSpotNewsFeedResponse
     ) {
         setLoveSpotOnClickListener(viewHolder, loveSpot.id)
-        viewHolder.newsFeedText.text = context.getString(R.string.somebody_added_a_new_lovespot)
-        viewHolder.newsFeedHappenedAt.text = instantOfApiString(item.happenedAt).toFormattedString()
+        viewHolder.setTexts(R.string.somebody_added_a_new_lovespot, item.happenedAt, item.country)
+
         viewHolder.newsFeedLoveSpotName.text = loveSpot.name
         LoveSpotUtils.setTypeImage(loveSpot.type, viewHolder.newsFeedSpotTypeImage)
         LoveSpotUtils.setType(loveSpot.type, viewHolder.newsFeedSpotType)
@@ -277,8 +272,7 @@ class NewsFeedRecyclerAdapter(
         wishlist: WishlistNewsFeedResponse,
     ) {
         setLoveSpotOnClickListener(viewHolder, wishlist.loveSpotId)
-        viewHolder.newsFeedText.text = context.getString(R.string.somebody_wishlisted_spot)
-        viewHolder.newsFeedHappenedAt.text = instantOfApiString(item.happenedAt).toFormattedString()
+        viewHolder.setTexts(R.string.somebody_wishlisted_spot, item.happenedAt, item.country)
         setLoveSpotViews(wishlist.loveSpotId, viewHolder)
     }
 
@@ -288,8 +282,7 @@ class NewsFeedRecyclerAdapter(
         love: LoveNewsFeedResponse,
     ) {
         setLoveSpotOnClickListener(viewHolder, love.loveSpotId)
-        viewHolder.newsFeedText.text = context.getString(R.string.somebody_made_love_at)
-        viewHolder.newsFeedHappenedAt.text = instantOfApiString(item.happenedAt).toFormattedString()
+        viewHolder.setTexts(R.string.somebody_made_love_at, item.happenedAt, item.country)
         setLoveSpotViews(love.loveSpotId, viewHolder)
     }
 
@@ -299,8 +292,7 @@ class NewsFeedRecyclerAdapter(
         loveSpotReview: LoveSpotReviewNewsFeedResponse
     ) {
         setLoveSpotOnClickListener(viewHolder, loveSpotReview.loveSpotId)
-        viewHolder.newsFeedText.text = context.getString(R.string.somebody_reviewed_spot)
-        viewHolder.newsFeedHappenedAt.text = instantOfApiString(item.happenedAt).toFormattedString()
+        viewHolder.setTexts(R.string.somebody_reviewed_spot, item.happenedAt, item.country)
         setLoveSpotReviewViews(loveSpotReview, viewHolder)
     }
 
@@ -373,32 +365,41 @@ class NewsFeedRecyclerAdapter(
         }
     }
 
-    inner class LoverViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    open inner class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val newsFeedText: TextView = itemView.findViewById(R.id.newsFeedText)
         val newsFeedHappenedAt: TextView = itemView.findViewById(R.id.newsFeedHappenedAt)
+        val newsFeedCountry: TextView = itemView.findViewById(R.id.newsFeedCountry)
+
+        fun setTexts(newsFeedTextResId: Int, happenedAt: String, country: String) {
+            newsFeedText.text = context.getString(newsFeedTextResId)
+            newsFeedHappenedAt.text = instantOfApiString(happenedAt).toFormattedString()
+            val countryText = if (country.equals(appContext.countryForGlobal, true)) {
+                "Global"
+            } else {
+                country
+            }
+            newsFeedCountry.text = "$countryText ${EmojiUtils.getFlagEmoji(country)}"
+        }
+    }
+
+    inner class LoverViewHolder(itemView: View) : BaseViewHolder(itemView) {
         val newsFeedLoverName: TextView = itemView.findViewById(R.id.newsFeedLoverName)
         val newsFeedLoverPoints: TextView = itemView.findViewById(R.id.newsFeedLoverPoints)
         val newsFeedLoverRank: TextView = itemView.findViewById(R.id.newsFeedLoverRank)
     }
 
-    inner class LoveSpotPhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val newsFeedText: TextView = itemView.findViewById(R.id.newsFeedText)
+    inner class LoveSpotPhotoViewHolder(itemView: View) : BaseViewHolder(itemView) {
         val newsFeedLoveSpotName: TextView = itemView.findViewById(R.id.newsFeedLoveSpotName)
-        val newsFeedHappenedAt: TextView = itemView.findViewById(R.id.newsFeedHappenedAt)
         val photo: ImageView = itemView.findViewById(R.id.newsFeedPhotoItemPhoto)
     }
 
-    inner class PhotoLikeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val newsFeedText: TextView = itemView.findViewById(R.id.newsFeedText)
+    inner class PhotoLikeViewHolder(itemView: View) : BaseViewHolder(itemView) {
         val newsFeedLoveSpotName: TextView = itemView.findViewById(R.id.newsFeedLoveSpotName)
-        val newsFeedHappenedAt: TextView = itemView.findViewById(R.id.newsFeedHappenedAt)
         val photo: ImageView = itemView.findViewById(R.id.newsFeedPhotoLikePhoto)
     }
 
-    inner class LoveSpotViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val newsFeedText: TextView = itemView.findViewById(R.id.newsFeedText)
+    inner class LoveSpotViewHolder(itemView: View) : BaseViewHolder(itemView) {
         val newsFeedLoveSpotName: TextView = itemView.findViewById(R.id.newsFeedLoveSpotName)
-        val newsFeedHappenedAt: TextView = itemView.findViewById(R.id.newsFeedHappenedAt)
         val newsFeedSpotTypeImage: ImageView = itemView.findViewById(R.id.newsFeedSpotTypeImage)
         val newsFeedSpotRating: RatingBar = itemView.findViewById(R.id.newsFeedSpotRating)
         val newsFeedSpotType: TextView = itemView.findViewById(R.id.newsFeedSpotType)
@@ -408,10 +409,8 @@ class NewsFeedRecyclerAdapter(
         val newsFeedSpotDistance: TextView = itemView.findViewById(R.id.newsFeedSpotDistance)
     }
 
-    inner class LoveSpotReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val newsFeedText: TextView = itemView.findViewById(R.id.newsFeedText)
+    inner class LoveSpotReviewViewHolder(itemView: View) : BaseViewHolder(itemView) {
         val newsFeedLoveSpotName: TextView = itemView.findViewById(R.id.newsFeedLoveSpotName)
-        val newsFeedHappenedAt: TextView = itemView.findViewById(R.id.newsFeedHappenedAt)
         val newsFeedSpotTypeImage: ImageView = itemView.findViewById(R.id.newsFeedSpotTypeImage)
         val newsFeedSpotRating: RatingBar = itemView.findViewById(R.id.newsFeedSpotRating)
         val newsFeedSpotRisk: TextView = itemView.findViewById(R.id.newsFeedSpotRisk)

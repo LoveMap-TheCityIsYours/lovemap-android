@@ -1,45 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/myCardColor"
     android:animateLayoutChanges="true"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/myCardColor"
     app:cardElevation="8dp"
     app:cardUseCompatPadding="true">
 
     <LinearLayout
-        android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/newsFeedText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/myColorOnBackground"
             android:layout_marginBottom="8dp"
-            android:text="text" />
+            android:text="text"
+            android:textColor="@color/myColorOnBackground" />
 
         <TextView
             android:id="@+id/newsFeedLoveSpotName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="LoveSpotName"
             android:textAlignment="center"
             android:textColor="@color/myColorOnBackground"
-            android:textSize="20sp"
-            android:layout_marginBottom="4dp"
-            android:text="LoveSpotName" />
+            android:textSize="20sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -50,28 +48,26 @@
                 <androidx.legacy.widget.Space
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    />
+                    android:layout_weight="1" />
 
                 <ImageView
                     android:id="@+id/newsFeedSpotTypeImage"
-                    android:layout_weight="0"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
+                    android:layout_weight="0"
                     android:src="@drawable/ic_public_space_3" />
 
                 <androidx.legacy.widget.Space
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    />
+                    android:layout_weight="3" />
 
                 <LinearLayout
-                    android:layout_weight="8"
-                    android:gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    android:gravity="center"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -81,10 +77,10 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            style="@style/TextAppearance.Material3.LabelMedium"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/TextAppearance.Material3.LabelMedium"
-                            android:text="@string/rating"/>
+                            android:text="@string/rating" />
 
                         <RatingBar
                             android:id="@+id/newsFeedSpotRating"
@@ -105,18 +101,18 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            style="@style/TextAppearance.Material3.LabelMedium"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/TextAppearance.Material3.LabelMedium"
-                            android:text="@string/type"/>
+                            android:text="@string/type" />
 
                         <TextView
                             android:id="@+id/newsFeedSpotType"
+                            style="@style/TextAppearance.Material3.LabelLarge"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/standard_8"
-                            android:text="Public Space"
-                            style="@style/TextAppearance.Material3.LabelLarge" />
+                            android:text="Public Space" />
 
                     </LinearLayout>
 
@@ -127,18 +123,18 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            style="@style/TextAppearance.Material3.LabelMedium"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/TextAppearance.Material3.LabelMedium"
-                            android:text="@string/availability"/>
+                            android:text="@string/availability" />
 
                         <TextView
                             android:id="@+id/newsFeedSpotAvailability"
+                            style="@style/TextAppearance.Material3.LabelLarge"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/standard_8"
-                            android:text="All day"
-                            style="@style/TextAppearance.Material3.LabelLarge" />
+                            android:text="All day" />
 
                     </LinearLayout>
 
@@ -149,19 +145,19 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            style="@style/TextAppearance.Material3.LabelMedium"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            style="@style/TextAppearance.Material3.LabelMedium"
-                            android:text="@string/risk"/>
+                            android:text="@string/risk" />
 
                         <TextView
                             android:id="@+id/newsFeedSpotRisk"
+                            style="@style/TextAppearance.Material3.LabelLarge"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/standard_8"
-                            android:text="Very risky"
-                            style="@style/TextAppearance.Material3.LabelLarge" />
+                            android:text="Very risky" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -169,31 +165,47 @@
                 <androidx.legacy.widget.Space
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    />
+                    android:layout_weight="3" />
 
                 <TextView
                     android:id="@+id/newsFeedSpotDistance"
+                    style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_gravity="center"
-                    android:text="15 km"/>
+                    android:text="15 km" />
 
                 <androidx.legacy.widget.Space
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    />
+                    android:layout_weight="1" />
 
             </LinearLayout>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/newsFeedHappenedAt"
+        <LinearLayout
+            android:layout_marginTop="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="date" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/newsFeedHappenedAt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="date" />
+
+            <androidx.legacy.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/newsFeedCountry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Country" />
+        </LinearLayout>
 
     </LinearLayout>
 

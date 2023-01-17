@@ -107,7 +107,7 @@
     <string name="update">Frissít</string>
     <string name="your_review">Értékelésed:</string>
     <string name="user_reviews">Felhasználói értékelések:</string>
-    <string name="your_love_makings_here">Ittmlévő hancúrjaid:</string>
+    <string name="your_love_makings_here">Itteni hancúrjaid:</string>
     <string name="happened_at">Itt történt:</string>
     <string name="change">Megváltoztatás</string>
     <string name="select_partners">Partner(ek) felvétele:</string>
@@ -136,7 +136,7 @@
             <li>A fenti link megosztásával profilodat megoszthatod másokkal.</li><br>
             <li>A másik személy a megosztott linkre kattintva felvehet téged partnernek vagy követheti tevékenységeidet.</li><br>
             <li>Ha partnerekké váltok, közös tevékenységeitek automatikusan megjelennek mindkettőtöknél, így közösen szerkeszthetitek hancúrjaitokat.</li><br>
-            <li>Ha a music a követőddé válik, láthatja tevékenységeidet. (Ez a funkció még fejlesztés alatt). </li><br>
+            <li>Ha a másik a követőddé válik, láthatja tevékenységeidet. (Ez a funkció még fejlesztés alatt). </li><br>
             <li>Ha kikapcsolod a linkmegosztást, a megosztott link használhatatlanná válik. Bármikor kérhetsz új linket.</li>
         </ul>
         ]]>

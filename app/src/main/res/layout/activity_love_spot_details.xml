@@ -243,6 +243,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="@dimen/standard_16"
+                android:textAlignment="center"
                 android:text="@string/no_photo_for_this_lovespot_yet" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

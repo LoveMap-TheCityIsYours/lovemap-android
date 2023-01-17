@@ -1,5 +1,7 @@
 package com.lovemap.lovemapandroid
 
+import com.lovemap.lovemapandroid.utils.EmojiUtils
+import com.vdurmont.emoji.EmojiManager
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -12,6 +14,10 @@ import org.junit.Assert.*
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
+        val usFlag = EmojiUtils.getFlagEmoji("United States ")
+        val huFlag = EmojiUtils.getFlagEmoji("Hungary")
+        println(usFlag)
+        println(huFlag)
         assertEquals(4, 2 + 2)
     }
 }
