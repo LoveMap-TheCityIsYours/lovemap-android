@@ -200,10 +200,12 @@
 
                     <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/profilePublicToggle"
+                        android:theme="@style/ToggleSwitchTheme"
+                        android:thumb="@drawable/switch_thumb_selector_small"
+                        app:track="@drawable/switch_track_selector_small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:enabled="false"
                         android:src="@drawable/ic_baseline_toggle_off_24" />
 
                     <TextView

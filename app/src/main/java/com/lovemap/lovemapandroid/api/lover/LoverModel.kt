@@ -84,5 +84,6 @@ data class LoverRanks(val rankList: List<Rank>) {
 
 data class UpdateLoverRequest(
     val email: String? = null,
-    val displayName: String? = null
+    val displayName: String? = null,
+    val publicProfile: Boolean? = null,
 )

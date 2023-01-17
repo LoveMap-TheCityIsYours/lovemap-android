@@ -39,11 +39,11 @@
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/localSwitcher"
-                android:theme="@style/ToggleSwitchTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="8dp"
+                android:theme="@style/ToggleSwitchTheme"
                 android:thumb="@drawable/switch_thumb_selector"
                 app:track="@drawable/switch_track_selector"
                 android:textOff="@string/switch_off_is_global"
@@ -57,7 +57,8 @@
                 app:spot_widget_type="RECENTLY_ACTIVE"
                 android:layout_marginBottom="@dimen/standard_32"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                tools:layout="@layout/fragment_love_spot_widget" />
 
             <fragment
                 android:id="@+id/popularSpotsWidget"
@@ -65,7 +66,8 @@
                 app:spot_widget_type="POPULAR"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/standard_32"/>
+                android:layout_marginBottom="@dimen/standard_32"
+                tools:layout="@layout/fragment_love_spot_widget" />
 
             <fragment
                 android:id="@+id/closestSpotsWidget"
@@ -73,7 +75,8 @@
                 app:spot_widget_type="CLOSEST"
                 android:layout_marginBottom="@dimen/standard_32"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                tools:layout="@layout/fragment_love_spot_widget" />
 
             <fragment
                 android:id="@+id/topRatedSpotsWidget"
@@ -81,7 +84,8 @@
                 app:spot_widget_type="TOP_RATED"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/standard_32"/>
+                android:layout_marginBottom="@dimen/standard_32"
+                tools:layout="@layout/fragment_love_spot_widget" />
 
             <fragment
                 android:id="@+id/recentPhotoSpotsWidget"
@@ -89,7 +93,8 @@
                 app:spot_widget_type="RECENT_PHOTOS"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/standard_32"/>
+                android:layout_marginBottom="@dimen/standard_32"
+                tools:layout="@layout/fragment_love_spot_widget" />
 
             <fragment
                 android:id="@+id/newestSpotsWidget"
@@ -97,7 +102,8 @@
                 app:spot_widget_type="NEWEST"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/standard_32"/>
+                android:layout_marginBottom="@dimen/standard_32"
+                tools:layout="@layout/fragment_love_spot_widget" />
 
         </LinearLayout>
     </ScrollView>

@@ -14,6 +14,7 @@ object ProfileUtils {
     fun setRanks(
         points: Int,
         currentRank: TextView,
+        animateText: Boolean = false,
         pointsToNextLevel: TextView? = null,
         progressBar: ProgressBar? = null
     ) {
@@ -34,16 +35,37 @@ object ProfileUtils {
                 val rank = rankList[levelIndex - 1]
                 if (levelIndex < rankList.size) {
                     val nextRank = rankList[levelIndex]
-                    pointsToNextLevel?.text = nextRank.pointsNeeded.toString()
+                    if (animateText) {
+                        pointsToNextLevel?.animate()?.alpha(0f)?.setDuration(250)?.withEndAction {
+                            pointsToNextLevel.text = nextRank.pointsNeeded.toString()
+                            pointsToNextLevel.animate().alpha(1f).duration = 250
+                        }
+                    } else {
+                        pointsToNextLevel?.text = nextRank.pointsNeeded.toString()
+                    }
                     progressBar?.max = nextRank.pointsNeeded - rank.pointsNeeded
                     progressBar?.setProgress(points - rank.pointsNeeded, true)
                 } else {
-                    pointsToNextLevel?.text = AppContext.INSTANCE.getString(R.string.max_level_reached)
+                    if (animateText) {
+                        pointsToNextLevel?.animate()?.alpha(0f)?.setDuration(250)?.withEndAction {
+                            pointsToNextLevel.text = AppContext.INSTANCE.getString(R.string.max_level_reached)
+                            pointsToNextLevel.animate().alpha(1f).duration = 250
+                        }
+                    } else {
+                        pointsToNextLevel?.text = AppContext.INSTANCE.getString(R.string.max_level_reached)
+                    }
                     progressBar?.max = points
                     progressBar?.setProgress(points, true)
                 }
-                // TODO: translation
-                currentRank.text = rank.nameEN
+                if (animateText) {
+                    currentRank.animate().alpha(0f).setDuration(250).withEndAction {
+                        // TODO: translation
+                        currentRank.text = rank.nameEN
+                        currentRank.animate().alpha(1f).duration = 250
+                    }
+                } else {
+                    currentRank.text = rank.nameEN
+                }
                 progressBar?.min = 0
             }
         }

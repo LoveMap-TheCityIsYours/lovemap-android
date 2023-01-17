@@ -12,6 +12,7 @@ import android.widget.*
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.bumptech.glide.Glide
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lover.LoverRelationsDto
 import com.lovemap.lovemapandroid.api.lover.LoverViewDto
@@ -20,10 +21,7 @@ import com.lovemap.lovemapandroid.data.metadata.LoggedInUser
 import com.lovemap.lovemapandroid.service.LoverService
 import com.lovemap.lovemapandroid.ui.login.LoginActivity
 import com.lovemap.lovemapandroid.ui.relations.ViewOtherLoverActivity
-import com.lovemap.lovemapandroid.ui.utils.I18nUtils
-import com.lovemap.lovemapandroid.ui.utils.InfoPopupShower
-import com.lovemap.lovemapandroid.ui.utils.ProfileUtils
-import com.lovemap.lovemapandroid.ui.utils.hideKeyboard
+import com.lovemap.lovemapandroid.ui.utils.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -52,6 +50,9 @@ class ProfilePageFragment : Fragment() {
     private lateinit var profileShareDescription: TextView
     private lateinit var profileProgressBar: ProgressBar
     private lateinit var linkSharingInfoButton: ImageButton
+    private lateinit var profilePublicImage: ImageView
+    private lateinit var profilePublicToggle: SwitchCompat
+    private lateinit var profilePublicToggleText: TextView
 
     private val appContext = AppContext.INSTANCE
     private val loverService = appContext.loverService
@@ -91,6 +92,7 @@ class ProfilePageFragment : Fragment() {
         profilePartnerName.setOnClickListener { onPartnerClicked() }
         profilePartnerRelation = view.findViewById(R.id.profilePartnerRelation)
         profilePartnerRelation.setOnClickListener { onPartnerClicked() }
+        profilePublicToggle = view.findViewById(R.id.profilePublicToggle)
 
         displayNameText = view.findViewById(R.id.profileDisplayName)
         link = view.findViewById(R.id.profileShareableLink)
@@ -106,6 +108,8 @@ class ProfilePageFragment : Fragment() {
         pointsToNextLevel = view.findViewById(R.id.profilePointsToNextLevel)
         currentRank = view.findViewById(R.id.current_rank)
         profileProgressBar = view.findViewById(R.id.profileProgressBar)
+        profilePublicImage = view.findViewById(R.id.profilePublicImage)
+        profilePublicToggleText = view.findViewById(R.id.profilePublicToggleText)
 
         linkSharingInfoButton = view.findViewById(R.id.linkSharingInfoButton)
         linkSharingInfoButton.setOnClickListener {
@@ -133,18 +137,37 @@ class ProfilePageFragment : Fragment() {
             lover?.let {
                 if (isAdded && !isDetached) {
                     ProfileUtils.setRanks(
-                        lover.points,
-                        currentRank,
-                        pointsToNextLevel,
-                        profileProgressBar
+                        points = lover.points,
+                        currentRank = currentRank,
+                        animateText = true,
+                        pointsToNextLevel = pointsToNextLevel,
+                        progressBar = profileProgressBar
                     )
                     setTexts(lover)
                     setPartnerships(requireContext())
                     setLinkSharing(lover)
+                    setPublicProfileViews(lover.publicProfile)
                 }
             }
             profileSwipeRefreshLayout.isRefreshing = false
         }
+    }
+
+    private fun setPublicProfileViews(publicProfile: Boolean) {
+        if (publicProfile) {
+            Glide.with(this@ProfilePageFragment)
+                .load(R.drawable.ic_baseline_public_24)
+                .into(profilePublicImage)
+            profilePublicToggle.isChecked = true
+            profilePublicToggleText.text = requireContext().getString(R.string.public_profile)
+        } else {
+            Glide.with(this@ProfilePageFragment)
+                .load(R.drawable.ic_baseline_public_off_24)
+                .into(profilePublicImage)
+            profilePublicToggle.isChecked = false
+            profilePublicToggleText.text = requireContext().getString(R.string.privateProfile)
+        }
+        setProfileToggleChanged()
     }
 
     private var editingDisplayName: Boolean = false
@@ -258,6 +281,31 @@ class ProfilePageFragment : Fragment() {
             LoverService.otherLoverId = it.id
             LoverService.otherLover = it
             startActivity(Intent(requireContext(), ViewOtherLoverActivity::class.java))
+        }
+    }
+
+    private fun setProfileToggleChanged() {
+        profilePublicToggle.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                AlertDialogUtils.newDialog(requireActivity(),
+                    R.string.set_profile_public_title,
+                    R.string.set_profile_public_message, {
+                        MainScope().launch {
+                            loverService.updatePublicProfile(true)?.let {
+                                setPublicProfileViews(true)
+                            }
+                        }
+                    }, {
+                        profilePublicToggle.isChecked = false
+                    })
+            }
+            if (!isChecked) {
+                MainScope().launch {
+                    loverService.updatePublicProfile(false)?.let {
+                        setPublicProfileViews(false)
+                    }
+                }
+            }
         }
     }
 

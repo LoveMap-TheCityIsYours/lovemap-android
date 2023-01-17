@@ -50,7 +50,7 @@
     <string name="profileShareableLink">Megosztható link mutatása</string>
     <string name="linkShareOff">Megosztható link kikapcsolása</string>
     <string name="linkShareOn">Megosztható link bekapcsolása</string>
-    <string name="privateProfile">Privát profil</string>
+    <string name="privateProfile">Privát Profil</string>
     <string name="profileInPartnershipWith">Kapcsolati státusz:</string>
     <string name="profilePartnersEmpty">Még nincs kapcsolatban</string>
     <string name="profileRank">Jelenlegi rang:</string>
@@ -348,5 +348,8 @@
     <string name="respondent_already_has_a_partner">Ennek a Lovernek van már partnere</string>
     <string name="end_partnership_title">Partnerség lezárása?</string>
     <string name="end_partnership_message">Biztos vagy benne hogy le akarod zárni a partnerséged e szeretővel?</string>
+    <string name="set_profile_public_title">Publikus legyen a profilod?</string>
+    <string name="set_profile_public_message">Szeretnéd hogy publikus legyen a profilod? Ha a profilod publikus, más szeretők tudnak követni és láthatják az aktivitásod LoveMapen. Ezen felül a profilod bekerülhet a Hírességek Csarnokába.</string>
+    <string name="public_profile">Publikus Profil</string>
 
 </resources>

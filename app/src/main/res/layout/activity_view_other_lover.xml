@@ -302,6 +302,7 @@
                 android:layout_marginTop="@dimen/standard_16"
                 android:layout_marginBottom="@dimen/standard_16"
                 android:text="@string/follow"
+                android:enabled="false"
                 android:textSize="12sp"
                 app:icon="@drawable/ic_baseline_follow_the_signs_24" />
 

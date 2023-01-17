@@ -9,6 +9,7 @@ data class NewsFeedItemResponse(
     val happenedAt: String,
     val happenedAtFormatted: String,
     val referenceId: Long,
+    val loverId: Long,
     val country: String,
     val loveSpot: LoveSpotNewsFeedResponse? = null,
     val love: LoveNewsFeedResponse? = null,

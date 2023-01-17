@@ -3,12 +3,14 @@ package com.lovemap.lovemapandroid.ui.relations
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lover.LoverViewDto
@@ -49,6 +51,8 @@ class ViewOtherLoverActivity : AppCompatActivity() {
     private lateinit var otherLoverProgressBar: ProgressBar
     private lateinit var relationText: TextView
     private lateinit var partnerViewLoveMakingsText: TextView
+    private lateinit var profilePublicImage: ImageView
+    private lateinit var profilePublicToggleText: TextView
 
     private lateinit var followFab: ExtendedFloatingActionButton
     private lateinit var requestPartnershipFab: ExtendedFloatingActionButton
@@ -111,6 +115,8 @@ class ViewOtherLoverActivity : AppCompatActivity() {
         otherLoverProgressBar = binding.otherLoverProgressBar
         relationText = binding.relationText
         partnerViewLoveMakingsText = binding.partnerViewLoveMakingsText
+        profilePublicImage = binding.profilePublicImage
+        profilePublicToggleText = binding.profilePublicToggleText
 
         followFab = binding.followFab
         requestPartnershipFab = binding.requestPartnershipFab
@@ -145,21 +151,43 @@ class ViewOtherLoverActivity : AppCompatActivity() {
     }
 
     private suspend fun setViews(otherLover: LoverViewDto) {
+        setPublicProfileViews(otherLover.publicProfile)
         setPointsAndRank(otherLover)
-        profileDisplayName.text = otherLover.displayName
+        profileDisplayName.animate().alpha(0f).setDuration(250).withEndAction {
+            profileDisplayName.text = otherLover.displayName
+            profileDisplayName.animate().alpha(1f).duration = 250
+        }
         val partnership = partnershipService.getPartnership()
         this@ViewOtherLoverActivity.partnership = partnership
         setRelationWithLover(otherLover, partnership)
         showLovesWithPartner()
     }
 
+    private fun setPublicProfileViews(publicProfile: Boolean) {
+        if (publicProfile) {
+            Glide.with(this)
+                .load(R.drawable.ic_baseline_public_24)
+                .into(profilePublicImage)
+            profilePublicToggleText.text = getString(R.string.public_profile)
+        } else {
+            Glide.with(this)
+                .load(R.drawable.ic_baseline_public_off_24)
+                .into(profilePublicImage)
+            profilePublicToggleText.text =getString(R.string.privateProfile)
+        }
+    }
+
     private fun setPointsAndRank(otherLover: LoverViewDto) {
-        otherLoverPoints.text = otherLover.points.toString()
+        otherLoverPoints.animate().alpha(0f).setDuration(250).withEndAction {
+            otherLoverPoints.text = otherLover.points.toString()
+            otherLoverPoints.animate().alpha(1f).duration = 250
+        }
         ProfileUtils.setRanks(
-            otherLover.points,
-            otherLoverRank,
-            otherLoverPointsToNextLevel,
-            otherLoverProgressBar
+            points = otherLover.points,
+            currentRank = otherLoverRank,
+            animateText = false,
+            pointsToNextLevel = otherLoverPointsToNextLevel,
+            progressBar = otherLoverProgressBar
         )
     }
 
@@ -313,66 +341,88 @@ class ViewOtherLoverActivity : AppCompatActivity() {
         relationState = state
         when (state) {
             NOTHING -> {
-                relationText.text =
-                    I18nUtils.relationStatus(RelationStatus.NOTHING, applicationContext)
+                relationText.animate().alpha(0f).setDuration(250).withEndAction {
+                    relationText.text = I18nUtils.relationStatus(RelationStatus.NOTHING, applicationContext)
+                    relationText.animate().alpha(1f).duration = 250
+                }
                 enableRequestButton()
                 hideRespondView()
                 hideCancelRequestButton()
                 hideEndButton()
                 hideLoveListFragment()
+                enableFollowButton()
             }
             YOURSELF -> {
-                relationText.text = getString(R.string.itIsYou)
+                relationText.animate().alpha(0f).setDuration(250).withEndAction {
+                    relationText.text = getString(R.string.itIsYou)
+                    relationText.animate().alpha(1f).duration = 250
+                }
                 disableRequestButton()
                 hideRespondView()
                 hideCancelRequestButton()
                 hideEndButton()
             }
             YOU_REQUESTED_PARTNERSHIP -> {
-                relationText.text = I18nUtils.partnershipStatus(
-                    PARTNERSHIP_REQUESTED,
-                    applicationContext
-                )
+                relationText.animate().alpha(0f).setDuration(250).withEndAction {
+                    relationText.text = I18nUtils.partnershipStatus(
+                        PARTNERSHIP_REQUESTED,
+                        applicationContext
+                    )
+                    relationText.animate().alpha(1f).duration = 250
+                }
                 hideRequestButton()
                 hideRespondView()
                 showCancelRequestButton()
                 hideEndButton()
             }
             THEY_REQUESTED_PARTNERSHIP -> {
-                relationText.text = I18nUtils.partnershipStatus(
-                    PARTNERSHIP_REQUESTED,
-                    applicationContext
-                )
+                relationText.animate().alpha(0f).setDuration(250).withEndAction {
+                    relationText.text = I18nUtils.partnershipStatus(
+                        PARTNERSHIP_REQUESTED,
+                        applicationContext
+                    )
+                    relationText.animate().alpha(1f).duration = 250
+                }
                 hideRequestButton()
                 showRespondView()
                 hideCancelRequestButton()
                 hideEndButton()
             }
             PARTNERSHIP -> {
-                relationText.text =
-                    I18nUtils.relationStatus(RelationStatus.PARTNER, applicationContext)
+                relationText.animate().alpha(0f).setDuration(250).withEndAction {
+                    relationText.text = I18nUtils.relationStatus(RelationStatus.PARTNER, applicationContext)
+                    relationText.animate().alpha(1f).duration = 250
+                }
                 hideRequestButton()
                 hideRespondView()
                 hideCancelRequestButton()
                 showEndButton()
             }
             HAS_OTHER_PARTNER -> {
-                relationText.text =
-                    I18nUtils.relationStatus(RelationStatus.NOTHING, applicationContext)
+                relationText.animate().alpha(0f).setDuration(250).withEndAction {
+                    relationText.text = I18nUtils.relationStatus(RelationStatus.NOTHING, applicationContext)
+                    relationText.animate().alpha(1f).duration = 250
+                }
                 disableRequestButton()
                 hideRespondView()
                 hideCancelRequestButton()
                 hideEndButton()
             }
             YOU_BLOCKED_THEM -> {
-                relationText.text = getString(R.string.you_blocked_them)
+                relationText.animate().alpha(0f).setDuration(250).withEndAction {
+                    relationText.text = getString(R.string.you_blocked_them)
+                    relationText.animate().alpha(1f).duration = 250
+                }
                 disableRequestButton()
                 hideRespondView()
                 hideCancelRequestButton()
                 hideEndButton()
             }
             YOU_ARE_FOLLOWING_THEM -> {
-                relationText.text = getString(R.string.you_follow_this_lover)
+                relationText.animate().alpha(0f).setDuration(250).withEndAction {
+                    relationText.text = getString(R.string.you_follow_this_lover)
+                    relationText.animate().alpha(1f).duration = 250
+                }
                 disableRequestButton()
                 hideRespondView()
                 hideCancelRequestButton()
@@ -422,5 +472,14 @@ class ViewOtherLoverActivity : AppCompatActivity() {
 
     private fun hideEndButton() {
         endPartnershipFab.visibility = View.GONE
+    }
+
+    private fun enableFollowButton() {
+        otherLover?.let {
+            if (it.publicProfile) {
+                followFab.visibility = View.VISIBLE
+                followFab.isEnabled = true
+            }
+        }
     }
 }

@@ -99,6 +99,33 @@ class LoverService(
         }
     }
 
+    suspend fun updatePublicProfile(publicProfile: Boolean): LoverDto? {
+        return withContext(Dispatchers.IO) {
+            val loggedInUser = metadataStore.getUser()
+            val call = loverApi.updateLover(
+                loggedInUser.id,
+                UpdateLoverRequest(publicProfile = publicProfile)
+            )
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
+                toaster.showNoServerToast()
+                return@withContext null
+            }
+            if (response.isSuccessful) {
+                val result: LoverDto = response.body()!!
+                if (metadataStore.isLoverStored()) {
+                    val lover = metadataStore.getLover()
+                    metadataStore.saveLover(lover.copy(publicProfile = result.publicProfile))
+                }
+                result
+            } else {
+                toaster.showResponseError(response)
+                null
+            }
+        }
+    }
+
     suspend fun fetchMyself(): LoverRelationsDto? {
         return withContext(Dispatchers.IO) {
             val loggedInUser = metadataStore.getUser()

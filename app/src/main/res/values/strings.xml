@@ -355,5 +355,8 @@
     <string name="respondent_already_has_a_partner">This Lover already has a partner</string>
     <string name="end_partnership_title">End Partnership?</string>
     <string name="end_partnership_message">Are you sure you want to end partnership with this Lover?</string>
+    <string name="set_profile_public_title">Set profile public?</string>
+    <string name="set_profile_public_message">Do you want to set your profile to public? If your profile is public, other Lovers can follow you and see your activities on LoveMap. Your profile can also get into the Hall of Fame.</string>
+    <string name="public_profile">Public Profile</string>
 
 </resources>
