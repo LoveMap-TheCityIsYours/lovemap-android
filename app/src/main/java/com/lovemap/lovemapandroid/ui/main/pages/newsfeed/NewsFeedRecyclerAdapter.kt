@@ -319,13 +319,46 @@ class NewsFeedRecyclerAdapter(
         love: LoveNewsFeedResponse,
     ) {
         setLoveSpotOnClickListener(viewHolder, love.loveSpotId)
-        viewHolder.setTexts(
-            item.publicLover,
-            R.string.somebody_made_love_at,
-            R.string.public_actor_made_love_at,
-            item.happenedAt,
-            item.country
-        )
+        val publicLover: LoverViewWithoutRelationDto? = item.publicLover
+
+        publicLover?.let { lover ->
+            love.publicLoverPartner?.let { partner ->
+                val publicLoverText = String.format(
+                    context.getString(R.string.public_actor_with_partner_made_love_at),
+                    lover.displayName,
+                    partner.displayName
+                )
+                viewHolder.setTexts(
+                    publicLover = lover,
+                    publicLoverText = publicLoverText,
+                    unknownActorText = R.string.somebody_made_love_at,
+                    happenedAt = item.happenedAt,
+                    country = item.country
+                )
+            } ?: run {
+                val publicLoverText = String.format(
+                    context.getString(R.string.public_actor_made_love_at),
+                    lover.displayName
+                )
+                viewHolder.setTexts(
+                    publicLover = lover,
+                    publicLoverText = publicLoverText,
+                    unknownActorText = R.string.somebody_made_love_at,
+                    happenedAt = item.happenedAt,
+                    country = item.country
+                )
+            }
+
+
+        } ?: run {
+            viewHolder.setTexts(
+                publicLover = null,
+                unknownActorText = R.string.somebody_made_love_at,
+                publicActorText = R.string.public_actor_made_love_at,
+                happenedAt = item.happenedAt,
+                country = item.country
+            )
+        }
         setLoveSpotViews(love.loveSpotId, viewHolder)
     }
 
@@ -354,7 +387,12 @@ class NewsFeedRecyclerAdapter(
             viewHolder.newsFeedSpotRating
         )
         LoveSpotUtils.setRisk(loveSpotReview.riskLevel.toDouble(), viewHolder.newsFeedSpotRisk)
-        viewHolder.newsFeedSpotReviewText.text = loveSpotReview.reviewText
+        if (loveSpotReview.reviewText.isEmpty()) {
+            viewHolder.newsFeedSpotReviewText.visibility = View.GONE
+        } else {
+            viewHolder.newsFeedSpotReviewText.text = loveSpotReview.reviewText
+            viewHolder.newsFeedSpotReviewText.visibility = View.VISIBLE
+        }
         MainScope().launch {
             loveSpotReviewService.findLocallyOrFetch(loveSpotReview.id)?.let { review ->
                 LoveSpotUtils.setRating(
@@ -362,7 +400,12 @@ class NewsFeedRecyclerAdapter(
                     viewHolder.newsFeedSpotRating
                 )
                 LoveSpotUtils.setRisk(review.riskLevel.toDouble(), viewHolder.newsFeedSpotRisk)
-                viewHolder.newsFeedSpotReviewText.text = review.reviewText
+                if (review.reviewText.isEmpty()) {
+                    viewHolder.newsFeedSpotReviewText.visibility = View.GONE
+                } else {
+                    viewHolder.newsFeedSpotReviewText.text = review.reviewText
+                    viewHolder.newsFeedSpotReviewText.visibility = View.VISIBLE
+                }
             }
             loveSpotService.findLocallyOrFetch(loveSpotReview.loveSpotId)?.let { loveSpot ->
                 viewHolder.newsFeedLoveSpotName.text = loveSpot.name
@@ -428,9 +471,24 @@ class NewsFeedRecyclerAdapter(
             happenedAt: String,
             country: String
         ) {
+            val publicLoverText = publicLover?.let {
+                String.format(
+                    context.getString(publicActorText),
+                    it.displayName
+                )
+            } ?: ""
+            setTexts(publicLover, publicLoverText, unknownActorText, happenedAt, country)
+        }
+
+        fun setTexts(
+            publicLover: LoverViewWithoutRelationDto?,
+            publicLoverText: String,
+            unknownActorText: Int,
+            happenedAt: String,
+            country: String
+        ) {
             publicLover?.let {
-                newsFeedText.text =
-                    String.format(context.getString(publicActorText), it.displayName)
+                newsFeedText.text = publicLoverText
                 newsFeedText.textSize = 16f
                 newsFeedTextLayout.isClickable = true
                 newsFeedTextLayout.focusable = View.FOCUSABLE
@@ -454,6 +512,7 @@ class NewsFeedRecyclerAdapter(
             newsFeedCountry.text = "$countryText ${EmojiUtils.getFlagEmoji(country)}"
         }
     }
+
 
     inner class LoverViewHolder(itemView: View) : BaseViewHolder(itemView) {
         val newsFeedLoverName: TextView = itemView.findViewById(R.id.newsFeedLoverName)

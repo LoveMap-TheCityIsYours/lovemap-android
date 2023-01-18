@@ -100,6 +100,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/standard_4"
                     android:layout_weight="8"
+                    android:layout_gravity="center"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -159,6 +160,7 @@
                     android:layout_weight="3" />
 
                 <TextView
+                    android:layout_gravity="center"
                     android:id="@+id/newsFeedSpotDistance"
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
@@ -186,7 +188,7 @@
         <LinearLayout
             android:layout_marginBottom="16dp"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="12dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">

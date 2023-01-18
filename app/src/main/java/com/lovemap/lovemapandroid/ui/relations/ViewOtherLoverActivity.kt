@@ -164,16 +164,20 @@ class ViewOtherLoverActivity : AppCompatActivity() {
     }
 
     private fun setPublicProfileViews(publicProfile: Boolean) {
-        if (publicProfile) {
-            Glide.with(this)
-                .load(R.drawable.ic_baseline_public_24)
-                .into(profilePublicImage)
-            profilePublicToggleText.text = getString(R.string.public_profile)
-        } else {
-            Glide.with(this)
-                .load(R.drawable.ic_baseline_public_off_24)
-                .into(profilePublicImage)
-            profilePublicToggleText.text =getString(R.string.privateProfile)
+        try {
+            if (publicProfile) {
+                Glide.with(this)
+                    .load(R.drawable.ic_baseline_public_24)
+                    .into(profilePublicImage)
+                profilePublicToggleText.text = getString(R.string.public_profile)
+            } else {
+                Glide.with(this)
+                    .load(R.drawable.ic_baseline_public_off_24)
+                    .into(profilePublicImage)
+                profilePublicToggleText.text = getString(R.string.privateProfile)
+            }
+        } catch (e: Exception) {
+            Log.i(tag, "Glide fucked up", e)
         }
     }
 

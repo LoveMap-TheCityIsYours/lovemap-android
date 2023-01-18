@@ -359,5 +359,6 @@
     <string name="public_actor_added_a_new_lovespot">- %1$s -\n\t\t📍 Új LoveSpotot vett fel!</string>
     <string name="public_actor_wishlisted_spot">- %1$s -\n\t\t😏 Kívánságlistára tette</string>
     <string name="public_actor_made_love_at">- %1$s -\n\t\t💞 Baszott itt 😉</string>
+    <string name="public_actor_with_partner_made_love_at">- %1$s -\n\t\t💞 Baszott itt partnerével 😉\n- %2$s -</string>
 
 </resources>
