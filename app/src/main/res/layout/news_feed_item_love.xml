@@ -40,7 +40,7 @@
                 android:layout_toStartOf="@+id/newsFeedOpenLoverImage"
                 android:layout_alignParentStart="true"
                 android:lineSpacingExtra="8sp"
-                android:text="text asfsaf asda as \n adasdaddsas"
+                android:text="text"
                 android:textColor="@color/myColorOnBackground" />
 
             <ImageView
