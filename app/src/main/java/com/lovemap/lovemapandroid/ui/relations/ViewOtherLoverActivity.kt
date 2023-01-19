@@ -136,10 +136,14 @@ class ViewOtherLoverActivity : AppCompatActivity() {
     }
 
     private fun hideLoveListFragment() {
-        supportFragmentManager
-            .beginTransaction()
-            .hide(partnerLoveListFragment)
-            .commit()
+        runCatching {
+            supportFragmentManager
+                .beginTransaction()
+                .hide(partnerLoveListFragment)
+                .commit()
+        }.onFailure { e ->
+            Log.e(tag, "supportFragmentManager shitted itself", e)
+        }
     }
 
     private fun setViewState() {
@@ -151,16 +155,20 @@ class ViewOtherLoverActivity : AppCompatActivity() {
     }
 
     private suspend fun setViews(otherLover: LoverViewDto) {
-        setPublicProfileViews(otherLover.publicProfile)
-        setPointsAndRank(otherLover)
-        profileDisplayName.animate().alpha(0f).setDuration(250).withEndAction {
-            profileDisplayName.text = otherLover.displayName
-            profileDisplayName.animate().alpha(1f).duration = 250
+        try {
+            setPublicProfileViews(otherLover.publicProfile)
+            setPointsAndRank(otherLover)
+            profileDisplayName.animate().alpha(0f).setDuration(250).withEndAction {
+                profileDisplayName.text = otherLover.displayName
+                profileDisplayName.animate().alpha(1f).duration = 250
+            }
+            val partnership = partnershipService.getPartnership()
+            this@ViewOtherLoverActivity.partnership = partnership
+            setRelationWithLover(otherLover, partnership)
+            showLovesWithPartner()
+        } catch (e: Exception) {
+            Log.e(tag, "setViews shitted itself", e)
         }
-        val partnership = partnershipService.getPartnership()
-        this@ViewOtherLoverActivity.partnership = partnership
-        setRelationWithLover(otherLover, partnership)
-        showLovesWithPartner()
     }
 
     private fun setPublicProfileViews(publicProfile: Boolean) {
@@ -215,19 +223,23 @@ class ViewOtherLoverActivity : AppCompatActivity() {
     }
 
     private fun showLovesWithPartner() {
-        if (!this@ViewOtherLoverActivity.isFinishing) {
-            if (relationState == PARTNERSHIP) {
-                partnerViewLoveMakingsText.visibility = View.VISIBLE
-                supportFragmentManager
-                    .beginTransaction()
-                    .setCustomAnimations(
-                        android.R.anim.slide_in_left,
-                        android.R.anim.slide_out_right
-                    )
-                    .show(partnerLoveListFragment)
-                    .commit()
+        try {
+            if (!this@ViewOtherLoverActivity.isFinishing) {
+                if (relationState == PARTNERSHIP) {
+                    partnerViewLoveMakingsText.visibility = View.VISIBLE
+                    supportFragmentManager
+                        .beginTransaction()
+                        .setCustomAnimations(
+                            android.R.anim.slide_in_left,
+                            android.R.anim.slide_out_right
+                        )
+                        .show(partnerLoveListFragment)
+                        .commit()
+                }
+                otherLoverSwipeRefreshLayout.isRefreshing = false
             }
-            otherLoverSwipeRefreshLayout.isRefreshing = false
+        } catch (e: Exception) {
+            Log.e(tag, "showLovesWithPartner shitted itself", e)
         }
     }
 
@@ -342,96 +354,103 @@ class ViewOtherLoverActivity : AppCompatActivity() {
     }
 
     private fun setRelationState(state: RelationState) {
-        relationState = state
-        when (state) {
-            NOTHING -> {
-                relationText.animate().alpha(0f).setDuration(250).withEndAction {
-                    relationText.text = I18nUtils.relationStatus(RelationStatus.NOTHING, applicationContext)
-                    relationText.animate().alpha(1f).duration = 250
+        try {
+            relationState = state
+            when (state) {
+                NOTHING -> {
+                    relationText.animate().alpha(0f).setDuration(250).withEndAction {
+                        relationText.text =
+                            I18nUtils.relationStatus(RelationStatus.NOTHING, applicationContext)
+                        relationText.animate().alpha(1f).duration = 250
+                    }
+                    enableRequestButton()
+                    hideRespondView()
+                    hideCancelRequestButton()
+                    hideEndButton()
+                    hideLoveListFragment()
+                    enableFollowButton()
                 }
-                enableRequestButton()
-                hideRespondView()
-                hideCancelRequestButton()
-                hideEndButton()
-                hideLoveListFragment()
-                enableFollowButton()
-            }
-            YOURSELF -> {
-                relationText.animate().alpha(0f).setDuration(250).withEndAction {
-                    relationText.text = getString(R.string.itIsYou)
-                    relationText.animate().alpha(1f).duration = 250
+                YOURSELF -> {
+                    relationText.animate().alpha(0f).setDuration(250).withEndAction {
+                        relationText.text = getString(R.string.itIsYou)
+                        relationText.animate().alpha(1f).duration = 250
+                    }
+                    disableRequestButton()
+                    hideRespondView()
+                    hideCancelRequestButton()
+                    hideEndButton()
                 }
-                disableRequestButton()
-                hideRespondView()
-                hideCancelRequestButton()
-                hideEndButton()
-            }
-            YOU_REQUESTED_PARTNERSHIP -> {
-                relationText.animate().alpha(0f).setDuration(250).withEndAction {
-                    relationText.text = I18nUtils.partnershipStatus(
-                        PARTNERSHIP_REQUESTED,
-                        applicationContext
-                    )
-                    relationText.animate().alpha(1f).duration = 250
+                YOU_REQUESTED_PARTNERSHIP -> {
+                    relationText.animate().alpha(0f).setDuration(250).withEndAction {
+                        relationText.text = I18nUtils.partnershipStatus(
+                            PARTNERSHIP_REQUESTED,
+                            applicationContext
+                        )
+                        relationText.animate().alpha(1f).duration = 250
+                    }
+                    hideRequestButton()
+                    hideRespondView()
+                    showCancelRequestButton()
+                    hideEndButton()
                 }
-                hideRequestButton()
-                hideRespondView()
-                showCancelRequestButton()
-                hideEndButton()
-            }
-            THEY_REQUESTED_PARTNERSHIP -> {
-                relationText.animate().alpha(0f).setDuration(250).withEndAction {
-                    relationText.text = I18nUtils.partnershipStatus(
-                        PARTNERSHIP_REQUESTED,
-                        applicationContext
-                    )
-                    relationText.animate().alpha(1f).duration = 250
+                THEY_REQUESTED_PARTNERSHIP -> {
+                    relationText.animate().alpha(0f).setDuration(250).withEndAction {
+                        relationText.text = I18nUtils.partnershipStatus(
+                            PARTNERSHIP_REQUESTED,
+                            applicationContext
+                        )
+                        relationText.animate().alpha(1f).duration = 250
+                    }
+                    hideRequestButton()
+                    showRespondView()
+                    hideCancelRequestButton()
+                    hideEndButton()
                 }
-                hideRequestButton()
-                showRespondView()
-                hideCancelRequestButton()
-                hideEndButton()
-            }
-            PARTNERSHIP -> {
-                relationText.animate().alpha(0f).setDuration(250).withEndAction {
-                    relationText.text = I18nUtils.relationStatus(RelationStatus.PARTNER, applicationContext)
-                    relationText.animate().alpha(1f).duration = 250
+                PARTNERSHIP -> {
+                    relationText.animate().alpha(0f).setDuration(250).withEndAction {
+                        relationText.text =
+                            I18nUtils.relationStatus(RelationStatus.PARTNER, applicationContext)
+                        relationText.animate().alpha(1f).duration = 250
+                    }
+                    hideRequestButton()
+                    hideRespondView()
+                    hideCancelRequestButton()
+                    showEndButton()
                 }
-                hideRequestButton()
-                hideRespondView()
-                hideCancelRequestButton()
-                showEndButton()
-            }
-            HAS_OTHER_PARTNER -> {
-                relationText.animate().alpha(0f).setDuration(250).withEndAction {
-                    relationText.text = I18nUtils.relationStatus(RelationStatus.NOTHING, applicationContext)
-                    relationText.animate().alpha(1f).duration = 250
+                HAS_OTHER_PARTNER -> {
+                    relationText.animate().alpha(0f).setDuration(250).withEndAction {
+                        relationText.text =
+                            I18nUtils.relationStatus(RelationStatus.NOTHING, applicationContext)
+                        relationText.animate().alpha(1f).duration = 250
+                    }
+                    disableRequestButton()
+                    hideRespondView()
+                    hideCancelRequestButton()
+                    hideEndButton()
                 }
-                disableRequestButton()
-                hideRespondView()
-                hideCancelRequestButton()
-                hideEndButton()
-            }
-            YOU_BLOCKED_THEM -> {
-                relationText.animate().alpha(0f).setDuration(250).withEndAction {
-                    relationText.text = getString(R.string.you_blocked_them)
-                    relationText.animate().alpha(1f).duration = 250
+                YOU_BLOCKED_THEM -> {
+                    relationText.animate().alpha(0f).setDuration(250).withEndAction {
+                        relationText.text = getString(R.string.you_blocked_them)
+                        relationText.animate().alpha(1f).duration = 250
+                    }
+                    disableRequestButton()
+                    hideRespondView()
+                    hideCancelRequestButton()
+                    hideEndButton()
                 }
-                disableRequestButton()
-                hideRespondView()
-                hideCancelRequestButton()
-                hideEndButton()
-            }
-            YOU_ARE_FOLLOWING_THEM -> {
-                relationText.animate().alpha(0f).setDuration(250).withEndAction {
-                    relationText.text = getString(R.string.you_follow_this_lover)
-                    relationText.animate().alpha(1f).duration = 250
+                YOU_ARE_FOLLOWING_THEM -> {
+                    relationText.animate().alpha(0f).setDuration(250).withEndAction {
+                        relationText.text = getString(R.string.you_follow_this_lover)
+                        relationText.animate().alpha(1f).duration = 250
+                    }
+                    disableRequestButton()
+                    hideRespondView()
+                    hideCancelRequestButton()
+                    hideEndButton()
                 }
-                disableRequestButton()
-                hideRespondView()
-                hideCancelRequestButton()
-                hideEndButton()
             }
+        } catch (e: Exception) {
+            Log.e(tag, "setRelationState shitted itself", e)
         }
     }
 

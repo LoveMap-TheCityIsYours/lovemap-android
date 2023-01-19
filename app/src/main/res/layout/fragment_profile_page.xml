@@ -66,6 +66,7 @@
                         android:textAlignment="center"
                         android:inputType="textMultiLine|textCapWords"
                         android:scrollbars="vertical"
+                        android:lines="2"
                         android:maxLines="2"
                         android:text="@string/profileUserName"
                         android:textColor="@color/myColorOnBackground" />

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -41,7 +42,8 @@ class NewsFeedPageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_news_feed_page, container, false)
+        val view = inflater.inflate(R.layout.fragment_news_feed_page, container, false) as LinearLayout
+        view.layoutTransition.setAnimateParentHierarchy(false)
         initViews(view)
         fetchPage()
         addOnScrollListener()

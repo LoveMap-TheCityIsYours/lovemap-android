@@ -3,6 +3,7 @@ package com.lovemap.lovemapandroid.ui.main.pages
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.widget.SwitchCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
@@ -25,6 +27,10 @@ import com.lovemap.lovemapandroid.ui.utils.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.checkerframework.checker.units.qual.s
+
+
+
 
 class ProfilePageFragment : Fragment() {
 
@@ -174,6 +180,21 @@ class ProfilePageFragment : Fragment() {
 
     private fun setDisplayNameEditText(user: LoggedInUser) {
         displayNameText.setText(user.displayName)
+        displayNameText.addTextChangedListener { editable: Editable? ->
+            editable?.let {
+                for (i in it.length - 1 downTo 0) {
+                    if (editable[i] == '\n') {
+                        editable.delete(i, i + 1)
+                        Log.i(tag, "Enter pressed")
+                        if (!editingDisplayName) {
+                            editingDisplayName = true
+                            editDisplayName(displayNameText)
+                        }
+                        break
+                    }
+                }
+            }
+        }
         displayNameText.setOnFocusChangeListener { v, hasFocus ->
             if (!hasFocus) {
                 if (!editingDisplayName) {
@@ -184,6 +205,7 @@ class ProfilePageFragment : Fragment() {
         }
         displayNameText.setOnKeyListener { v, keyCode, event ->
             return@setOnKeyListener if ((event.action == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                Log.i(tag, "Enter pressed")
                 if (!editingDisplayName) {
                     editingDisplayName = true
                     editDisplayName(v)

@@ -34,6 +34,7 @@ class NewsFeedRecyclerAdapter(
 
     private val appContext = AppContext.INSTANCE
     private val loverService = appContext.loverService
+    private val metadataStore = appContext.metadataStore
     private val loveSpotService = appContext.loveSpotService
     private val loveSpotReviewService = appContext.loveSpotReviewService
 
@@ -172,9 +173,14 @@ class NewsFeedRecyclerAdapter(
         viewHolder.newsFeedLoverPoints.text = lover.points.toString()
         ProfileUtils.setRanks(lover.points, viewHolder.newsFeedLoverRank)
         MainScope().launch {
-            loverService.getOtherById(lover.id)?.let {
-                LoverService.otherLover = it
-                viewHolder.newsFeedLoverName.text = it.displayName
+            if (lover.id == appContext.userId) {
+                viewHolder.newsFeedLoverName.text = metadataStore.getLover().displayName
+            }
+            loverService.getOtherByIdWithoutRelation(lover.id)?.let {
+                LoverService.otherLoverId = it.id
+                if (lover.id != appContext.userId) {
+                    viewHolder.newsFeedLoverName.text = it.displayName
+                }
                 viewHolder.newsFeedLoverPoints.text = it.points.toString()
                 ProfileUtils.setRanks(it.points, viewHolder.newsFeedLoverRank)
             }

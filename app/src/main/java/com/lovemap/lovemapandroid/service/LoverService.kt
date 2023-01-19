@@ -1,6 +1,8 @@
 package com.lovemap.lovemapandroid.service
 
 import android.util.Log
+import com.google.common.cache.Cache
+import com.google.common.cache.CacheBuilder
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.getErrorMessages
 import com.lovemap.lovemapandroid.api.lover.*
@@ -12,6 +14,9 @@ import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.utils.LINK_PREFIX_API_CALL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.time.Duration
+import java.util.concurrent.TimeUnit
+import kotlin.math.max
 
 class LoverService(
     private val loverApi: LoverApi,
@@ -21,9 +26,6 @@ class LoverService(
     private val metadataStore: MetadataStore,
     private val toaster: Toaster,
 ) {
-    private val tag = "LoverService"
-    private var ranksQueried = false
-
     companion object {
         @Volatile
         var otherLoverId: Long = 0
@@ -31,6 +33,16 @@ class LoverService(
         @Volatile
         var otherLover: LoverViewDto? = null
     }
+
+    private val tag = "LoverService"
+    private var ranksQueried = false
+
+    private val loverCache: Cache<Long, LoverViewWithoutRelationDto> = CacheBuilder.newBuilder()
+        .initialCapacity(50)
+        .expireAfterWrite(5, TimeUnit.MINUTES)
+        .concurrencyLevel(2)
+        .maximumSize(200)
+        .build()
 
     suspend fun getSelectedLover(): LoverViewDto? {
         if (otherLover != null && otherLover?.id == otherLoverId) {
@@ -169,21 +181,27 @@ class LoverService(
 
     suspend fun getOtherByIdWithoutRelation(loverId: Long): LoverViewWithoutRelationDto? {
         return withContext(Dispatchers.IO) {
-            Log.i(tag, "Getting otherLover from the server. LoverId: '$loverId'")
-            val call = loverApi.getCachedLoverView(loverId)
-            val response = try {
-                call.execute()
-            } catch (e: Exception) {
-                toaster.showNoServerToast()
-                return@withContext null
-            }
-            if (response.isSuccessful) {
-                val result: LoverViewWithoutRelationDto = response.body()!!
-                result
-            } else {
-                val errorMessages = response.getErrorMessages()
-                toaster.showToast(errorMessages.toString())
-                null
+            loverCache.getIfPresent(loverId)?.let { lover ->
+                Log.i(tag, "Lover found in Cache '$loverId'.")
+                lover
+            } ?: run {
+                Log.i(tag, "Lover not found in Cache '$loverId'. Getting from Server.")
+                val call = loverApi.getCachedLoverView(loverId)
+                val response = try {
+                    call.execute()
+                } catch (e: Exception) {
+                    toaster.showNoServerToast()
+                    return@withContext null
+                }
+                if (response.isSuccessful) {
+                    val result: LoverViewWithoutRelationDto = response.body()!!
+                    loverCache.put(loverId, result)
+                    result
+                } else {
+                    val errorMessages = response.getErrorMessages()
+                    toaster.showToast(errorMessages.toString())
+                    null
+                }
             }
         }
     }
