@@ -130,7 +130,13 @@ class NewsFeedRecyclerAdapter(
         } else if (viewHolder is MultiLoverViewHolder) {
             newsFeedItems[position].let { item ->
                 val multiLover = item.multiLover!!
-                runCatching { setMultiLoverView(viewHolder, item, multiLover) }.onFailure { e ->
+                runCatching {
+                    setMultiLoverView(
+                        viewHolder,
+                        item,
+                        multiLover.copy(lovers = multiLover.lovers.take(viewHolder.maxMultiLovers))
+                    )
+                }.onFailure { e ->
                     Log.e(tag, "setMultiLoverView shitted itself", e)
                 }
             }
@@ -232,7 +238,7 @@ class NewsFeedRecyclerAdapter(
         MainScope().launch {
             multiLover.lovers.forEachIndexed { index, lover ->
                 if (lover.id == appContext.userId) {
-                    viewHolder.loverNames[index].text= metadataStore.getLover().displayName
+                    viewHolder.loverNames[index].text = metadataStore.getLover().displayName
                 }
                 loverService.getOtherByIdWithoutRelation(lover.id)?.let {
                     LoverService.otherLoverId = it.id
@@ -249,6 +255,7 @@ class NewsFeedRecyclerAdapter(
         multiLover: MultiLoverNewsFeedResponse
     ) {
         val hideLastN = viewHolder.maxMultiLovers - multiLover.lovers.size
+
         viewHolder.layouts.forEachIndexed { index, relativeLayout ->
             if (hideLastN - index <= hideLastN) {
                 relativeLayout.visibility = View.GONE
