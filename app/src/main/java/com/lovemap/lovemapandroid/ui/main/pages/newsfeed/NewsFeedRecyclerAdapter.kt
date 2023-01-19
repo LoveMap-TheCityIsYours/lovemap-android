@@ -29,9 +29,10 @@ import kotlinx.coroutines.launch
 
 class NewsFeedRecyclerAdapter(
     private val context: Context,
-    private val newsFeedItems: MutableList<NewsFeedItemResponse?>
+    private val newsFeedItems: MutableList<NewsFeedItemResponse>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    private val tag = "NewsFeedRecyclerAdapter"
     private val appContext = AppContext.INSTANCE
     private val loverService = appContext.loverService
     private val metadataStore = appContext.metadataStore
@@ -49,6 +50,8 @@ class NewsFeedRecyclerAdapter(
         private const val VIEW_TYPE_LOVE_SPOT_REVIEW = 5
         private const val VIEW_TYPE_LOVE = 6
         private const val VIEW_TYPE_LOVER = 7
+        private const val VIEW_TYPE_MULTI_LOVER = 8
+        private const val VIEW_TYPE_UNSUPPORTED = 9
         private const val VIEW_TYPE_LOADING = 10
     }
 
@@ -71,6 +74,12 @@ class NewsFeedRecyclerAdapter(
                     LayoutInflater.from(parent.context)
                         .inflate(R.layout.news_feed_item_lover, parent, false)
                 LoverViewHolder(view)
+            }
+            VIEW_TYPE_MULTI_LOVER -> {
+                val view: View =
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.news_feed_item_multi_lover, parent, false)
+                MultiLoverViewHolder(view)
             }
             VIEW_TYPE_LOVE_SPOT -> {
                 val view: View =
@@ -96,11 +105,17 @@ class NewsFeedRecyclerAdapter(
                         .inflate(R.layout.news_feed_item_lovespot_review, parent, false)
                 LoveSpotReviewViewHolder(view)
             }
-            else -> {
+            VIEW_TYPE_LOADING -> {
                 val view: View =
                     LayoutInflater.from(parent.context)
                         .inflate(R.layout.item_loading, parent, false)
                 LoadingViewHolder(view)
+            }
+            else -> {
+                val view: View =
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.news_feed_item_unsupported, parent, false)
+                UnsupportedViewHolder(view)
             }
         }
     }
@@ -108,22 +123,29 @@ class NewsFeedRecyclerAdapter(
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         setItemAnimation(viewHolder, position)
         if (viewHolder is LoverViewHolder) {
-            newsFeedItems[position]?.let { item ->
+            newsFeedItems[position].let { item ->
                 val lover = item.lover!!
                 setLoverView(viewHolder, item, lover)
             }
+        } else if (viewHolder is MultiLoverViewHolder) {
+            newsFeedItems[position].let { item ->
+                val multiLover = item.multiLover!!
+                runCatching { setMultiLoverView(viewHolder, item, multiLover) }.onFailure { e ->
+                    Log.e(tag, "setMultiLoverView shitted itself", e)
+                }
+            }
         } else if (viewHolder is LoveSpotPhotoViewHolder) {
-            newsFeedItems[position]?.let { item ->
+            newsFeedItems[position].let { item ->
                 val loveSpotPhoto = item.loveSpotPhoto!!
                 setLoveSpotPhotoView(viewHolder, item, loveSpotPhoto)
             }
         } else if (viewHolder is PhotoLikeViewHolder) {
-            newsFeedItems[position]?.let { item ->
+            newsFeedItems[position].let { item ->
                 val photoLike = item.photoLike!!
                 setPhotoLikeView(viewHolder, item, photoLike)
             }
         } else if (viewHolder is LoveSpotViewHolder) {
-            newsFeedItems[position]?.let { item ->
+            newsFeedItems[position].let { item ->
                 when (item.type) {
                     LOVE_SPOT -> {
                         val loveSpot = item.loveSpot!!
@@ -144,7 +166,7 @@ class NewsFeedRecyclerAdapter(
 
             }
         } else if (viewHolder is LoveSpotReviewViewHolder) {
-            newsFeedItems[position]?.let { item ->
+            newsFeedItems[position].let { item ->
                 val loveSpotReview = item.loveSpotReview!!
                 setLoveSpotReviewView(viewHolder, item, loveSpotReview)
             }
@@ -183,6 +205,53 @@ class NewsFeedRecyclerAdapter(
                 }
                 viewHolder.newsFeedLoverPoints.text = it.points.toString()
                 ProfileUtils.setRanks(it.points, viewHolder.newsFeedLoverRank)
+            }
+        }
+    }
+
+    private fun setMultiLoverView(
+        viewHolder: MultiLoverViewHolder,
+        item: NewsFeedItemResponse,
+        multiLover: MultiLoverNewsFeedResponse
+    ) {
+        hideLastRows(viewHolder, multiLover)
+        multiLover.lovers.forEachIndexed { index, lover ->
+            viewHolder.loverNames[index].text = lover.displayName
+            viewHolder.layouts[index].visibility = View.VISIBLE
+            viewHolder.layouts[index].setOnClickListener {
+                openOtherLoverView(lover.id)
+            }
+        }
+        viewHolder.setTexts(
+            publicLover = null,
+            unknownActorText = R.string.new_multi_lover_joined,
+            publicActorText = R.string.new_lover_joined,
+            happenedAt = item.happenedAt,
+            country = item.country
+        )
+        MainScope().launch {
+            multiLover.lovers.forEachIndexed { index, lover ->
+                if (lover.id == appContext.userId) {
+                    viewHolder.loverNames[index].text= metadataStore.getLover().displayName
+                }
+                loverService.getOtherByIdWithoutRelation(lover.id)?.let {
+                    LoverService.otherLoverId = it.id
+                    if (lover.id != appContext.userId) {
+                        viewHolder.loverNames[index].text = it.displayName
+                    }
+                }
+            }
+        }
+    }
+
+    private fun hideLastRows(
+        viewHolder: MultiLoverViewHolder,
+        multiLover: MultiLoverNewsFeedResponse
+    ) {
+        val hideLastN = viewHolder.maxMultiLovers - multiLover.lovers.size
+        viewHolder.layouts.forEachIndexed { index, relativeLayout ->
+            if (hideLastN - index <= hideLastN) {
+                relativeLayout.visibility = View.GONE
             }
         }
     }
@@ -451,7 +520,7 @@ class NewsFeedRecyclerAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (newsFeedItems[position]?.type) {
+        return when (newsFeedItems[position].type) {
             LOVE_SPOT_PHOTO -> VIEW_TYPE_LOVE_SPOT_PHOTO
             LOVE_SPOT_PHOTO_LIKE -> VIEW_TYPE_PHOTO_LIKE
             LOVE_SPOT -> VIEW_TYPE_LOVE_SPOT
@@ -459,7 +528,9 @@ class NewsFeedRecyclerAdapter(
             LOVE_SPOT_REVIEW -> VIEW_TYPE_LOVE_SPOT_REVIEW
             LOVE -> VIEW_TYPE_LOVE
             LOVER -> VIEW_TYPE_LOVER
-            null -> VIEW_TYPE_LOADING
+            MULTI_LOVER -> VIEW_TYPE_MULTI_LOVER
+            LOADING -> VIEW_TYPE_LOADING
+            else -> VIEW_TYPE_UNSUPPORTED
         }
     }
 
@@ -519,11 +590,44 @@ class NewsFeedRecyclerAdapter(
         }
     }
 
-
     inner class LoverViewHolder(itemView: View) : BaseViewHolder(itemView) {
         val newsFeedLoverName: TextView = itemView.findViewById(R.id.newsFeedLoverName)
         val newsFeedLoverPoints: TextView = itemView.findViewById(R.id.newsFeedLoverPoints)
         val newsFeedLoverRank: TextView = itemView.findViewById(R.id.newsFeedLoverRank)
+    }
+
+    inner class MultiLoverViewHolder(itemView: View) : BaseViewHolder(itemView) {
+        val maxMultiLovers = 6
+
+        val newsFeedLoverLayout1: RelativeLayout = itemView.findViewById(R.id.newsFeedLoverLayout1)
+        val newsFeedLoverLayout2: RelativeLayout = itemView.findViewById(R.id.newsFeedLoverLayout2)
+        val newsFeedLoverLayout3: RelativeLayout = itemView.findViewById(R.id.newsFeedLoverLayout3)
+        val newsFeedLoverLayout4: RelativeLayout = itemView.findViewById(R.id.newsFeedLoverLayout4)
+        val newsFeedLoverLayout5: RelativeLayout = itemView.findViewById(R.id.newsFeedLoverLayout5)
+        val newsFeedLoverLayout6: RelativeLayout = itemView.findViewById(R.id.newsFeedLoverLayout6)
+        val layouts: List<RelativeLayout> = listOf(
+            newsFeedLoverLayout1,
+            newsFeedLoverLayout2,
+            newsFeedLoverLayout3,
+            newsFeedLoverLayout4,
+            newsFeedLoverLayout5,
+            newsFeedLoverLayout6
+        )
+
+        val newsFeedLoverName1: TextView = itemView.findViewById(R.id.newsFeedLoverName1)
+        val newsFeedLoverName2: TextView = itemView.findViewById(R.id.newsFeedLoverName2)
+        val newsFeedLoverName3: TextView = itemView.findViewById(R.id.newsFeedLoverName3)
+        val newsFeedLoverName4: TextView = itemView.findViewById(R.id.newsFeedLoverName4)
+        val newsFeedLoverName5: TextView = itemView.findViewById(R.id.newsFeedLoverName5)
+        val newsFeedLoverName6: TextView = itemView.findViewById(R.id.newsFeedLoverName6)
+        val loverNames: List<TextView> = listOf(
+            newsFeedLoverName1,
+            newsFeedLoverName2,
+            newsFeedLoverName3,
+            newsFeedLoverName4,
+            newsFeedLoverName5,
+            newsFeedLoverName6
+        )
     }
 
     inner class LoveSpotPhotoViewHolder(itemView: View) : BaseViewHolder(itemView) {
@@ -557,10 +661,18 @@ class NewsFeedRecyclerAdapter(
     }
 
     inner class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var progressBar: ProgressBar
+        private var progressBar: ProgressBar
 
         init {
             progressBar = itemView.findViewById(R.id.itemLoadingProgressBar)
+        }
+    }
+
+    inner class UnsupportedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val newsFeedItemUnsupported: TextView
+
+        init {
+            newsFeedItemUnsupported = itemView.findViewById(R.id.newsFeedItemUnsupported)
         }
     }
 }

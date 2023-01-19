@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/myCardColor"
+    app:cardElevation="8dp"
+    app:cardUseCompatPadding="true">
+
+        <TextView
+            android:layout_margin="16dp"
+            android:id="@+id/newsFeedItemUnsupported"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/unsupported_newsfeed_item"
+            android:textAlignment="center"
+            android:textColor="@color/myColorOnBackground"
+            android:textSize="16sp" />
+
+</androidx.cardview.widget.CardView>

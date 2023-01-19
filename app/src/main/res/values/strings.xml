@@ -367,5 +367,7 @@
     <string name="public_actor_wishlisted_spot">- %1$s -\n\t\t😏 Wishlisted</string>
     <string name="public_actor_made_love_at">- %1$s -\n\t\t💞 Got lucky here 😉</string>
     <string name="public_actor_with_partner_made_love_at">- %1$s -\n\t\t💞 Got lucky with their partner 😉\n- %2$s -</string>
+    <string name="unsupported_newsfeed_item">Unsupported Item, update LoveMap!</string>
+    <string name="new_multi_lover_joined">🥰 New Lovers joined us❣</string>
 
 </resources>

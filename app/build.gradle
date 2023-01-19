@@ -15,8 +15,8 @@ android {
         applicationId "com.lovemap.lovemapandroid"
         minSdk 26
         targetSdk 33
-        versionCode 70
-        versionName "1.8.7"
+        versionCode 72
+        versionName "1.8.9"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

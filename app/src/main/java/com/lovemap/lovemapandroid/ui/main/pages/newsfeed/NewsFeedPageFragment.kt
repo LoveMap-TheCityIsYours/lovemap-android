@@ -23,7 +23,7 @@ class NewsFeedPageFragment : Fragment() {
 
     private val newsFeedService = AppContext.INSTANCE.newsFeedService
 
-    private val newsFeedItems = ArrayList<NewsFeedItemResponse?>()
+    private val newsFeedItems = ArrayList<NewsFeedItemResponse>()
     private var isLoading = true
     private var newsFeedEnded = false
     private val size = 15
@@ -62,14 +62,14 @@ class NewsFeedPageFragment : Fragment() {
     private fun fetchPage() {
         Log.i(TAG, "Fetching page '$page' size '$size'}")
         recyclerView.post {
-            newsFeedItems.add(null)
+            newsFeedItems.add(NewsFeedItemResponse.LOADING)
             newsFeedRecyclerAdapter.notifyItemInserted(newsFeedItems.size - 1)
 
             MainScope().launch {
                 runCatching {
                     newsFeedService.getPage(page, size)
                 }.onSuccess { pageResponse ->
-                    removeLastNull()
+                    removeLastLoading()
                     if (pageResponse.isEmpty()) {
                         newsFeedEnded = true
                     } else {
@@ -86,18 +86,18 @@ class NewsFeedPageFragment : Fragment() {
                     Log.i(TAG, "Failed to get newsFeedItems")
                     isLoading = false
                     newsFeedSwipeRefresh.isRefreshing = false
-                    removeLastNull()
+                    removeLastLoading()
                 }
             }
         }
 
     }
 
-    private fun removeLastNull() {
-        val index = newsFeedItems.lastIndexOf(null)
+    private fun removeLastLoading() {
+        val index = newsFeedItems.lastIndexOf(NewsFeedItemResponse.LOADING)
         if (index >= 0) {
             val removed = newsFeedItems.removeAt(index)
-            Log.i(TAG, "removeLastNull called. index: '$index', removed: '$removed'")
+            Log.i(TAG, "removeLastLoading called. index: '$index', removed: '$removed'")
             newsFeedRecyclerAdapter.notifyItemRemoved(index)
         }
     }
