@@ -6,11 +6,11 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.widget.addTextChangedListener
+import com.bumptech.glide.Glide
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.metadata.LoggedInUser
@@ -20,6 +20,7 @@ import com.lovemap.lovemapandroid.data.validator.validatePasswordAgain
 import com.lovemap.lovemapandroid.data.validator.validateUsername
 import com.lovemap.lovemapandroid.databinding.ActivityRegisterBinding
 import com.lovemap.lovemapandroid.ui.main.MainActivity
+import com.lovemap.lovemapandroid.ui.utils.InfoPopupShower
 import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -37,18 +38,24 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var register: Button
     private lateinit var loading: ProgressBar
 
+    private lateinit var registerPublicImage: ImageView
+    private lateinit var registerPublicToggle: SwitchCompat
+    private lateinit var registerPublicToggleText: TextView
+    private lateinit var registerPublicProfileInfoButton: ImageButton
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-        initFields()
+        val rootView = initFields()
         addEmailListener()
         addUsernameListener()
         addPasswordListener()
         addPasswordAgainListener()
         addRegisterListener()
+        initPublicProfileViews(rootView)
     }
 
-    private fun initFields() {
+    private fun initFields(): ScrollView {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
         email = binding.regEmail
@@ -57,6 +64,41 @@ class RegisterActivity : AppCompatActivity() {
         passwordAgain = binding.regPasswordAgain
         register = binding.regRegister
         loading = binding.regLoading
+        registerPublicImage = binding.registerPublicImage
+        registerPublicToggle = binding.registerPublicToggle
+        registerPublicToggleText = binding.registerPublicToggleText
+        registerPublicProfileInfoButton = binding.registerPublicProfileInfoButton
+        return binding.root
+    }
+
+
+    private fun initPublicProfileViews(rootView: View) {
+        registerPublicProfileInfoButton.setOnClickListener {
+            val infoPopupShower = InfoPopupShower(R.string.register_public_profile_info)
+            infoPopupShower.show(rootView)
+        }
+        registerPublicToggle.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                onPublicProfileSwitchChanged(true)
+            }
+            if (!isChecked) {
+                onPublicProfileSwitchChanged(false)
+            }
+        }
+    }
+
+    private fun onPublicProfileSwitchChanged(publicProfile: Boolean) {
+        if (publicProfile) {
+            Glide.with(this)
+                .load(R.drawable.ic_baseline_public_24)
+                .into(registerPublicImage)
+            registerPublicToggleText.text = getString(R.string.public_profile)
+        } else {
+            Glide.with(this)
+                .load(R.drawable.ic_baseline_public_off_24)
+                .into(registerPublicImage)
+            registerPublicToggleText.text = getString(R.string.privateProfile)
+        }
     }
 
     private fun addEmailListener() {
@@ -126,7 +168,8 @@ class RegisterActivity : AppCompatActivity() {
                 val loggedInUser: LoggedInUser? = authenticationService.register(
                     userName = username.text.toString().trim(),
                     email = email.text.toString().trim(),
-                    password = password.text.toString()
+                    password = password.text.toString(),
+                    publicProfile = registerPublicToggle.isChecked
                 )
                 if (loggedInUser != null) {
                     appContext.toaster.showToast(getString(R.string.welcome) + "${loggedInUser.displayName}!")

@@ -45,8 +45,8 @@
             android:inputType="text|textCapWords"
             android:lines="1"
             android:maxLines="1"
-            android:singleLine="true"
             android:selectAllOnFocus="true"
+            android:singleLine="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.781"
             app:layout_constraintTop_toBottomOf="@+id/reg_email" />
@@ -80,6 +80,63 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/reg_password" />
 
+
+        <LinearLayout
+            android:id="@+id/publicProfileViewGroup"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reg_password_again">
+
+            <ImageView
+                android:id="@+id/registerPublicImage"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_baseline_public_off_24" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="32dp"
+                android:clickable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/registerPublicToggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_toggle_off_24"
+                    android:theme="@style/ToggleSwitchTheme"
+                    android:thumb="@drawable/switch_thumb_selector_small"
+                    app:track="@drawable/switch_track_selector_small" />
+
+                <TextView
+                    android:id="@+id/registerPublicToggleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/privateProfile" />
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/registerPublicProfileInfoButton"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="32dp"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/background_color"
+                android:src="@drawable/ic_baseline_info_24" />
+
+        </LinearLayout>
+
         <Button
             android:id="@+id/reg_register"
             android:layout_width="165dp"
@@ -87,14 +144,14 @@
             android:layout_gravity="start"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="64dp"
-            android:textColor="@color/myColorOnPrimary"
             android:backgroundTint="@color/myColorPrimary"
             android:enabled="false"
             android:text="@string/action_register"
+            android:textColor="@color/myColorOnPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/reg_password_again"
+            app:layout_constraintTop_toBottomOf="@+id/publicProfileViewGroup"
             app:layout_constraintVertical_bias="0.2" />
 
         <ProgressBar

@@ -356,7 +356,7 @@
     <string name="end_partnership_title">End Partnership?</string>
     <string name="end_partnership_message">Are you sure you want to end partnership with this Lover?</string>
     <string name="set_profile_public_title">Set profile public?</string>
-    <string name="set_profile_public_message">Do you want to set your profile to public? If your profile is public, other Lovers can follow you and see your activities on LoveMap. Your profile can also get into the Hall of Fame.</string>
+    <string name="set_profile_public_message">Do you want to set your profile to public? If your profile is public, other Lovers can by your followers and see your activities on LoveMap. Your profile can also get into the Hall of Fame.</string>
     <string name="public_profile">Public Profile</string>
     <string name="lover_not_found">Lover not found</string>
     <string name="public_actor_reviewed_spot">- %1$s -\n\t\t⭐ Reviewed</string>
@@ -369,5 +369,6 @@
     <string name="public_actor_with_partner_made_love_at">- %1$s -\n\t\t💞 Got lucky with their partner 😉\n- %2$s -</string>
     <string name="unsupported_newsfeed_item">Unsupported Item, update LoveMap!</string>
     <string name="new_multi_lover_joined">🥰 New Lovers joined us❣</string>
+    <string name="register_public_profile_info">If your profile is public, other Lovers can be your followers and see your activities on LoveMap. Your profile can also get into the Hall of Fame.</string>
 
 </resources>

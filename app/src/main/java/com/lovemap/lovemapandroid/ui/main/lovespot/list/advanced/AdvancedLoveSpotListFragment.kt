@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.HorizontalScrollView
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
@@ -40,17 +41,33 @@ class AdvancedLoveSpotListFragment : Fragment() {
 
         val layoutTransition: LayoutTransition = view.layoutTransition
         layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
+        layoutTransition.setAnimateParentHierarchy(false)
+
+        val locationConfigurationView = view.findViewById<LinearLayout>(R.id.locationConfigurationView)
+        locationConfigurationView.layoutTransition.setAnimateParentHierarchy(false)
+
+        val countryFilterViewGroup = view.findViewById<LinearLayout>(R.id.countryFilterViewGroup)
+        countryFilterViewGroup.layoutTransition.setAnimateParentHierarchy(false)
+
+        val cityFilterViewGroup = view.findViewById<LinearLayout>(R.id.cityFilterViewGroup)
+        cityFilterViewGroup.layoutTransition.setAnimateParentHierarchy(false)
+
+        val nearbyFilterViewGroup = view.findViewById<LinearLayout>(R.id.nearbyFilterViewGroup)
+        nearbyFilterViewGroup.layoutTransition.setAnimateParentHierarchy(false)
+
+        val typeFilterScrollView = view.findViewById<HorizontalScrollView>(R.id.typeFilterScrollView)
+        typeFilterScrollView.layoutTransition.setAnimateParentHierarchy(false)
 
         locationFilterViewLogic = SpotListLocationFilterViewLogic(
             spotOrderingSpinner = view.findViewById(R.id.spotOrderingSpinner),
             locationSelectorButton = view.findViewById(R.id.locationSelectorButton),
-            locationConfigurationView = view.findViewById(R.id.locationConfigurationView),
+            locationConfigurationView = locationConfigurationView,
             countryFilterButton = view.findViewById(R.id.countryFilterButton),
-            countryFilterViewGroup = view.findViewById(R.id.countryFilterViewGroup),
+            countryFilterViewGroup = countryFilterViewGroup,
             cityFilterButton = view.findViewById(R.id.cityFilterButton),
-            cityFilterViewGroup = view.findViewById(R.id.cityFilterViewGroup),
+            cityFilterViewGroup = cityFilterViewGroup,
             nearbyFilterButton = view.findViewById(R.id.nearbyFilterButton),
-            nearbyFilterViewGroup = view.findViewById(R.id.nearbyFilterViewGroup)
+            nearbyFilterViewGroup = nearbyFilterViewGroup
         )
 
         countryFilterViewLogic = SpotListCountryFilterViewLogic(
@@ -66,7 +83,7 @@ class AdvancedLoveSpotListFragment : Fragment() {
         )
 
         typeFilterViewLogic = SpotListTypeFilterViewLogic(
-            typeFilterScrollView = view.findViewById(R.id.typeFilterScrollView),
+            typeFilterScrollView = typeFilterScrollView,
             typeFilterAll = view.findViewById(R.id.typeFilterAll),
             typeFilterPublicSpace = view.findViewById(R.id.typeFilterPublicSpace),
             typeFilterSwingerClub = view.findViewById(R.id.typeFilterSwingerClub),

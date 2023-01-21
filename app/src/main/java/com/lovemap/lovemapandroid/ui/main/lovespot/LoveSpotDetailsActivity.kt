@@ -44,6 +44,8 @@ import org.greenrobot.eventbus.ThreadMode
 class
 LoveSpotDetailsActivity : AppCompatActivity() {
 
+    private val tag = "LoveSpotDetailsActivity"
+
     @Volatile
     var photoUploadReviewId: Long? = null
 
@@ -461,16 +463,20 @@ LoveSpotDetailsActivity : AppCompatActivity() {
 
     private fun setDynamicTexts() {
         MainScope().launch {
-            if (loveService.madeLoveAlready(loveSpotId)) {
-                detailsReviewLoveSpotFragment?.view?.visibility = View.VISIBLE
-                detailsReviewButtons.visibility = View.VISIBLE
-                haveNotMadeLoveReviewText.visibility = View.GONE
-                haveNotMadeLoveText.visibility = View.GONE
-            } else {
-                detailsReviewLoveSpotFragment?.view?.visibility = View.GONE
-                detailsReviewButtons.visibility = View.GONE
-                haveNotMadeLoveReviewText.visibility = View.VISIBLE
-                haveNotMadeLoveText.visibility = View.VISIBLE
+            runCatching {
+                if (loveService.madeLoveAlready(loveSpotId)) {
+                    detailsReviewLoveSpotFragment?.view?.visibility = View.VISIBLE
+                    detailsReviewButtons.visibility = View.VISIBLE
+                    haveNotMadeLoveReviewText.visibility = View.GONE
+                    haveNotMadeLoveText.visibility = View.GONE
+                } else {
+                    detailsReviewLoveSpotFragment?.view?.visibility = View.GONE
+                    detailsReviewButtons.visibility = View.GONE
+                    haveNotMadeLoveReviewText.visibility = View.VISIBLE
+                    haveNotMadeLoveText.visibility = View.VISIBLE
+                }
+            }.onFailure { e ->
+                Log.e(tag, "setDynamicTexts shitted itself", e)
             }
         }
     }

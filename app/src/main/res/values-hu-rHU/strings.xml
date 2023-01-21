@@ -349,7 +349,7 @@
     <string name="end_partnership_title">Partnerség lezárása?</string>
     <string name="end_partnership_message">Biztos vagy benne hogy le akarod zárni a partnerséged e szeretővel?</string>
     <string name="set_profile_public_title">Publikus legyen a profilod?</string>
-    <string name="set_profile_public_message">Szeretnéd hogy publikus legyen a profilod? Ha a profilod publikus, más szeretők tudnak követni és láthatják az aktivitásod LoveMapen. Ezen felül a profilod bekerülhet a Hírességek Csarnokába.</string>
+    <string name="set_profile_public_message">Szeretnéd hogy publikus legyen a profilod? Ha a profilod publikus, más Szeretők követőid lehetnek és láthatják az aktivitásod LoveMapen. Ezen felül a profilod bekerülhet a Hírességek Csarnokába.</string>
     <string name="public_profile">Publikus Profil</string>
     <string name="lover_not_found">Szerető nem található</string>
     <string name="public_actor_reviewed_spot">- %1$s -\n\t\t⭐ Új értékelést írt</string>
@@ -362,5 +362,6 @@
     <string name="public_actor_with_partner_made_love_at">- %1$s -\n\t\t💞 Baszott itt partnerével 😉\n- %2$s -</string>
     <string name="unsupported_newsfeed_item">Nem támogatott elem, frissítsd a LoveMapet!</string>
     <string name="new_multi_lover_joined">🥰 Új Szeretők csatlakoztak❣</string>
+    <string name="register_public_profile_info"> Ha a profilod publikus, más Szeretők követőid lehetnek és láthatják az aktivitásod LoveMapen. Ezen felül a profilod bekerülhet a Hírességek Csarnokába.</string>
 
 </resources>

@@ -45,12 +45,23 @@ class AuthenticationService(
         }
     }
 
-    suspend fun register(userName: String, email: String, password: String): LoggedInUser? {
+    suspend fun register(
+        userName: String,
+        email: String,
+        password: String,
+        publicProfile: Boolean
+    ): LoggedInUser? {
         var loggedInUser: LoggedInUser? = null
         return withContext(Dispatchers.IO) {
             val registrationCountry = appContext.userCurrentCountry
             val call = authenticationApi.register(
-                CreateLoverRequest(userName, password, email, registrationCountry)
+                CreateLoverRequest(
+                    userName = userName,
+                    password = password,
+                    email = email,
+                    publicProfile = publicProfile,
+                    registrationCountry = registrationCountry
+                )
             )
             val response = try {
                 call.execute()

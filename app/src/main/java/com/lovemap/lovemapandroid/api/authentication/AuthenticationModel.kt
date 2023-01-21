@@ -4,6 +4,7 @@ data class CreateLoverRequest(
     val userName: String,
     val password: String,
     val email: String,
+    val publicProfile: Boolean,
     val registrationCountry: String?
 )
 

@@ -40,6 +40,7 @@ class WishlistFragment : Fragment() {
         // Inflate the layout for this fragment
         val linearLayout =
             inflater.inflate(R.layout.fragment_wishlist, container, false) as LinearLayout
+        linearLayout.layoutTransition.setAnimateParentHierarchy(false)
         progressBar = linearLayout.findViewById(R.id.wishlistProgressBar)
         initializeRecyclerView(linearLayout)
         initializeData()

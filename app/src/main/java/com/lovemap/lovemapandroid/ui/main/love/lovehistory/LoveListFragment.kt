@@ -61,6 +61,7 @@ class LoveListFragment : Fragment() {
     ): View {
         val linearLayout =
             inflater.inflate(R.layout.fragment_love_list, container, false) as LinearLayout
+        linearLayout.layoutTransition.setAnimateParentHierarchy(false)
         progressBar = linearLayout.findViewById(R.id.loveListProgressBar)
         initializeRecyclerView(linearLayout)
         initializeData()

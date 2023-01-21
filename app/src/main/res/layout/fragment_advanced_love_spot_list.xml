@@ -415,6 +415,7 @@
         android:name="com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotListFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/standard_8" />
+        android:layout_marginTop="@dimen/standard_8"
+        tools:layout="@layout/fragment_love_spot_list" />
 
 </LinearLayout>
