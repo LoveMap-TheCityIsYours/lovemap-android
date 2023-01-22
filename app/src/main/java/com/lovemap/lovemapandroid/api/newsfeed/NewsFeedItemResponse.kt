@@ -20,7 +20,8 @@ data class NewsFeedItemResponse(
     val photoLike: PhotoLikeNewsFeedResponse? = null,
     val wishlist: WishlistNewsFeedResponse? = null,
     val lover: LoverNewsFeedResponse? = null,
-    val multiLover: MultiLoverNewsFeedResponse? = null
+    val multiLover: MultiLoverNewsFeedResponse? = null,
+    val privateLovers: PrivateLoversNewsFeedResponse? = null,
 ) {
     companion object {
         val LOADING = NewsFeedItemResponse(
@@ -39,6 +40,7 @@ enum class NewsFeedItemType {
     WISHLIST_ITEM,
     LOVER,
     MULTI_LOVER,
+    PRIVATE_LOVERS,
     LOADING
 }
 
@@ -112,5 +114,9 @@ data class LoverNewsFeedResponse(
 )
 
 data class MultiLoverNewsFeedResponse(
+    val lovers: List<LoverNewsFeedResponse>
+)
+
+data class PrivateLoversNewsFeedResponse(
     val lovers: List<LoverNewsFeedResponse>
 )

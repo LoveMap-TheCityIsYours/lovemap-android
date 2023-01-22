@@ -335,7 +335,7 @@
     <string name="somebody_reviewed_spot">⭐ Új értékelést írtak ehhez</string>
     <string name="review_not_found">Értékelés nem található</string>
     <string name="somebody_made_love_at">💞 Valaki baszott itt 😉</string>
-    <string name="new_lover_joined">🥰 Új Szerető csatlakozott❣</string>
+    <string name="new_lover_joined">🥰 Új publikus Szerető csatlakozott❣</string>
     <string name="switch_off_is_global">Globális</string>
     <string name="switch_on_is_local">Helyi</string>
     <string name="points_text">Pontok:</string>
@@ -361,7 +361,8 @@
     <string name="public_actor_made_love_at">- %1$s -\n\t\t💞 Baszott itt 😉</string>
     <string name="public_actor_with_partner_made_love_at">- %1$s -\n\t\t💞 Baszott itt partnerével 😉\n- %2$s -</string>
     <string name="unsupported_newsfeed_item">Nem támogatott elem, frissítsd a LoveMapet!</string>
-    <string name="new_multi_lover_joined">🥰 Új Szeretők csatlakoztak❣</string>
+    <string name="new_multi_lover_joined">🥰 Új publikus Szeretők csatlakoztak❣</string>
     <string name="register_public_profile_info"> Ha a profilod publikus, más Szeretők követőid lehetnek és láthatják az aktivitásod LoveMapen. Ezen felül a profilod bekerülhet a Hírességek Csarnokába.</string>
+    <string name="new_private_lovers_joined">🥰 Új privát Szeretők csatlakoztak❣</string>
 
 </resources>

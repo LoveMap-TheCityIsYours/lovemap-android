@@ -342,7 +342,7 @@
     <string name="somebody_reviewed_spot">⭐ A review was added at</string>
     <string name="review_not_found">Review not found</string>
     <string name="somebody_made_love_at">💞 Somebody got lucky here 😉</string>
-    <string name="new_lover_joined">🥰 New Lover joined us❣</string>
+    <string name="new_lover_joined">🥰 New public Lover joined us❣</string>
     <string name="switch_off_is_global">Global</string>
     <string name="switch_on_is_local">Local</string>
     <string name="points_text">Points:</string>
@@ -368,7 +368,8 @@
     <string name="public_actor_made_love_at">- %1$s -\n\t\t💞 Got lucky here 😉</string>
     <string name="public_actor_with_partner_made_love_at">- %1$s -\n\t\t💞 Got lucky with their partner 😉\n- %2$s -</string>
     <string name="unsupported_newsfeed_item">Unsupported Item, update LoveMap!</string>
-    <string name="new_multi_lover_joined">🥰 New Lovers joined us❣</string>
+    <string name="new_multi_lover_joined">🥰 New public Lovers joined us❣</string>
     <string name="register_public_profile_info">If your profile is public, other Lovers can be your followers and see your activities on LoveMap. Your profile can also get into the Hall of Fame.</string>
+    <string name="new_private_lovers_joined">🥰 New private Lover(s) joined us❣</string>
 
 </resources>

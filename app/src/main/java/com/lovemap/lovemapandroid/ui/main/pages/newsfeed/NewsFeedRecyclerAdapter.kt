@@ -51,8 +51,9 @@ class NewsFeedRecyclerAdapter(
         private const val VIEW_TYPE_LOVE = 6
         private const val VIEW_TYPE_LOVER = 7
         private const val VIEW_TYPE_MULTI_LOVER = 8
-        private const val VIEW_TYPE_UNSUPPORTED = 9
-        private const val VIEW_TYPE_LOADING = 10
+        private const val VIEW_TYPE_PRIVATE_LOVERS = 9
+        private const val VIEW_TYPE_UNSUPPORTED = 19
+        private const val VIEW_TYPE_LOADING = 20
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -75,6 +76,12 @@ class NewsFeedRecyclerAdapter(
                         .inflate(R.layout.news_feed_item_lover, parent, false)
                 LoverViewHolder(view)
             }
+            VIEW_TYPE_PRIVATE_LOVERS -> {
+                val view: View =
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.news_feed_item_private_lovers, parent, false)
+                PrivateLoversViewHolder(view)
+            }
             VIEW_TYPE_MULTI_LOVER -> {
                 val view: View =
                     LayoutInflater.from(parent.context)
@@ -91,13 +98,13 @@ class NewsFeedRecyclerAdapter(
                 val view: View =
                     LayoutInflater.from(parent.context)
                         .inflate(R.layout.news_feed_item_wishlist, parent, false)
-                LoveSpotViewHolder(view)
+                BaseLoveSpotViewHolder(view)
             }
             VIEW_TYPE_LOVE -> {
                 val view: View =
                     LayoutInflater.from(parent.context)
                         .inflate(R.layout.news_feed_item_love, parent, false)
-                LoveSpotViewHolder(view)
+                BaseLoveSpotViewHolder(view)
             }
             VIEW_TYPE_LOVE_SPOT_REVIEW -> {
                 val view: View =
@@ -127,6 +134,19 @@ class NewsFeedRecyclerAdapter(
                 val lover = item.lover!!
                 setLoverView(viewHolder, item, lover)
             }
+        } else if (viewHolder is PrivateLoversViewHolder) {
+            newsFeedItems[position].let { item ->
+                val privateLovers = item.privateLovers!!
+                runCatching {
+                    setPrivateLoversView(
+                        viewHolder,
+                        item,
+                        privateLovers
+                    )
+                }.onFailure { e ->
+                    Log.e(tag, "setPrivateLoversView shitted itself", e)
+                }
+            }
         } else if (viewHolder is MultiLoverViewHolder) {
             newsFeedItems[position].let { item ->
                 val multiLover = item.multiLover!!
@@ -150,13 +170,14 @@ class NewsFeedRecyclerAdapter(
                 val photoLike = item.photoLike!!
                 setPhotoLikeView(viewHolder, item, photoLike)
             }
-        } else if (viewHolder is LoveSpotViewHolder) {
+        }   else if (viewHolder is LoveSpotViewHolder) {
+            newsFeedItems[position].let { item ->
+                val loveSpot = item.loveSpot!!
+                setLoveSpotView(viewHolder, item, loveSpot)
+            }
+        } else if (viewHolder is BaseLoveSpotViewHolder) {
             newsFeedItems[position].let { item ->
                 when (item.type) {
-                    LOVE_SPOT -> {
-                        val loveSpot = item.loveSpot!!
-                        setLoveSpotView(viewHolder, item, loveSpot)
-                    }
                     WISHLIST_ITEM -> {
                         val wishlist = item.wishlist!!
                         setWishlistView(viewHolder, item, wishlist)
@@ -213,6 +234,23 @@ class NewsFeedRecyclerAdapter(
                 ProfileUtils.setRanks(it.points, viewHolder.newsFeedLoverRank)
             }
         }
+    }
+
+    private fun setPrivateLoversView(
+        viewHolder: PrivateLoversViewHolder,
+        item: NewsFeedItemResponse,
+        privateLovers: PrivateLoversNewsFeedResponse
+    ) {
+        viewHolder.setTexts(
+            publicLover = null,
+            unknownActorText = R.string.new_private_lovers_joined,
+            publicActorText = R.string.new_lover_joined,
+            happenedAt = item.happenedAt,
+            country = item.country
+        )
+
+        viewHolder.newsFeedPrivateLoverNames.text =
+            privateLovers.lovers.joinToString(",    ") { it.displayName }
     }
 
     private fun setMultiLoverView(
@@ -353,6 +391,7 @@ class NewsFeedRecyclerAdapter(
         )
 
         viewHolder.newsFeedLoveSpotName.text = loveSpot.name
+        viewHolder.newsFeedSpotDescription.text = loveSpot.description
         LoveSpotUtils.setTypeImage(loveSpot.type, viewHolder.newsFeedSpotTypeImage)
         LoveSpotUtils.setType(loveSpot.type, viewHolder.newsFeedSpotType)
         setLoveSpotViews(loveSpot.id, viewHolder)
@@ -360,7 +399,7 @@ class NewsFeedRecyclerAdapter(
 
     private fun setLoveSpotViews(
         loveSpotId: Long,
-        viewHolder: LoveSpotViewHolder
+        viewHolder: BaseLoveSpotViewHolder
     ) {
         MainScope().launch {
             loveSpotService.findLocallyOrFetch(loveSpotId)
@@ -375,12 +414,15 @@ class NewsFeedRecyclerAdapter(
                     )
                     LoveSpotUtils.setRisk(loveSpot.averageDanger, viewHolder.newsFeedSpotRisk)
                     LoveSpotUtils.setDistance(loveSpot, viewHolder.newsFeedSpotDistance)
+                    if (viewHolder is LoveSpotViewHolder) {
+                        viewHolder.newsFeedSpotDescription.text = loveSpot.description
+                    }
                 }
         }
     }
 
     private fun setWishlistView(
-        viewHolder: LoveSpotViewHolder,
+        viewHolder: BaseLoveSpotViewHolder,
         item: NewsFeedItemResponse,
         wishlist: WishlistNewsFeedResponse,
     ) {
@@ -396,7 +438,7 @@ class NewsFeedRecyclerAdapter(
     }
 
     private fun setLoveView(
-        viewHolder: LoveSpotViewHolder,
+        viewHolder: BaseLoveSpotViewHolder,
         item: NewsFeedItemResponse,
         love: LoveNewsFeedResponse,
     ) {
@@ -527,18 +569,23 @@ class NewsFeedRecyclerAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (newsFeedItems[position].type) {
-            LOVE_SPOT_PHOTO -> VIEW_TYPE_LOVE_SPOT_PHOTO
-            LOVE_SPOT_PHOTO_LIKE -> VIEW_TYPE_PHOTO_LIKE
-            LOVE_SPOT -> VIEW_TYPE_LOVE_SPOT
-            WISHLIST_ITEM -> VIEW_TYPE_WISHLIST
-            LOVE_SPOT_REVIEW -> VIEW_TYPE_LOVE_SPOT_REVIEW
-            LOVE -> VIEW_TYPE_LOVE
-            LOVER -> VIEW_TYPE_LOVER
-            MULTI_LOVER -> VIEW_TYPE_MULTI_LOVER
-            LOADING -> VIEW_TYPE_LOADING
-            else -> VIEW_TYPE_UNSUPPORTED
-        }
+        return runCatching {
+            when (newsFeedItems[position].type) {
+                LOVE_SPOT_PHOTO -> VIEW_TYPE_LOVE_SPOT_PHOTO
+                LOVE_SPOT_PHOTO_LIKE -> VIEW_TYPE_PHOTO_LIKE
+                LOVE_SPOT -> VIEW_TYPE_LOVE_SPOT
+                WISHLIST_ITEM -> VIEW_TYPE_WISHLIST
+                LOVE_SPOT_REVIEW -> VIEW_TYPE_LOVE_SPOT_REVIEW
+                LOVE -> VIEW_TYPE_LOVE
+                LOVER -> VIEW_TYPE_LOVER
+                MULTI_LOVER -> VIEW_TYPE_MULTI_LOVER
+                LOADING -> VIEW_TYPE_LOADING
+                PRIVATE_LOVERS -> VIEW_TYPE_PRIVATE_LOVERS
+                else -> VIEW_TYPE_UNSUPPORTED
+            }
+        }.onFailure { e ->
+            Log.e(tag, "getItemViewType shitted itself", e)
+        }.getOrNull() ?: VIEW_TYPE_UNSUPPORTED
     }
 
     open inner class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -603,6 +650,10 @@ class NewsFeedRecyclerAdapter(
         val newsFeedLoverRank: TextView = itemView.findViewById(R.id.newsFeedLoverRank)
     }
 
+    inner class PrivateLoversViewHolder(itemView: View): BaseViewHolder(itemView) {
+        val newsFeedPrivateLoverNames: TextView = itemView.findViewById(R.id.newsFeedPrivateLoverNames)
+    }
+
     inner class MultiLoverViewHolder(itemView: View) : BaseViewHolder(itemView) {
         val maxMultiLovers = 6
 
@@ -647,7 +698,7 @@ class NewsFeedRecyclerAdapter(
         val photo: ImageView = itemView.findViewById(R.id.newsFeedPhotoLikePhoto)
     }
 
-    inner class LoveSpotViewHolder(itemView: View) : BaseViewHolder(itemView) {
+    open inner class BaseLoveSpotViewHolder(itemView: View) : BaseViewHolder(itemView) {
         val newsFeedLoveSpotName: TextView = itemView.findViewById(R.id.newsFeedLoveSpotName)
         val newsFeedSpotTypeImage: ImageView = itemView.findViewById(R.id.newsFeedSpotTypeImage)
         val newsFeedSpotRating: RatingBar = itemView.findViewById(R.id.newsFeedSpotRating)
@@ -656,6 +707,10 @@ class NewsFeedRecyclerAdapter(
             itemView.findViewById(R.id.newsFeedSpotAvailability)
         val newsFeedSpotRisk: TextView = itemView.findViewById(R.id.newsFeedSpotRisk)
         val newsFeedSpotDistance: TextView = itemView.findViewById(R.id.newsFeedSpotDistance)
+    }
+
+    inner class LoveSpotViewHolder(itemView: View): BaseLoveSpotViewHolder(itemView) {
+        val newsFeedSpotDescription: TextView = itemView.findViewById(R.id.newsFeedSpotDescription)
     }
 
     inner class LoveSpotReviewViewHolder(itemView: View) : BaseViewHolder(itemView) {
