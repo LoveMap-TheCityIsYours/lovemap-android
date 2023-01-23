@@ -2,7 +2,7 @@ package com.lovemap.lovemapandroid.utils
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.lovemap.lovemapandroid.api.lover.LoverViewDto
-import com.lovemap.lovemapandroid.api.relation.RelationStatus
+import com.lovemap.lovemapandroid.api.lover.relation.RelationStatus
 import com.lovemap.lovemapandroid.config.AppContext
 import java.time.Instant
 import java.time.LocalDateTime

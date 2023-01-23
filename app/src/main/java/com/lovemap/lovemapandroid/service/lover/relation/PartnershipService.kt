@@ -1,4 +1,4 @@
-package com.lovemap.lovemapandroid.service.relations
+package com.lovemap.lovemapandroid.service.lover.relation
 
 import android.app.Activity
 import android.util.Log

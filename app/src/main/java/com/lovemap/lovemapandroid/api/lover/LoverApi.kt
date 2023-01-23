@@ -1,5 +1,6 @@
 package com.lovemap.lovemapandroid.api.lover
 
+import com.lovemap.lovemapandroid.api.newsfeed.NewsFeedItemResponse
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -7,9 +8,6 @@ interface LoverApi {
 
     @GET("/lovers/{loverId}")
     fun getById(@Path("loverId") loverId: Long): Call<LoverRelationsDto>
-
-    @GET("/lovers/contributions/{loverId}")
-    fun contributions(@Path("loverId") loverId: Long): Call<LoverContributionsDto>
 
     @POST("/lovers/{loverId}/shareableLink")
     fun generateLink(@Path("loverId") loverId: Long): Call<LoverDto>
@@ -31,4 +29,7 @@ interface LoverApi {
 
     @GET("/lovers/ranks")
     fun getRanks(): Call<LoverRanks>
+
+    @GET("/lovers/{loverId}/activities")
+    fun getLoverActivities(@Path("loverId") loverId: Long): Call<List<NewsFeedItemResponse>>
 }

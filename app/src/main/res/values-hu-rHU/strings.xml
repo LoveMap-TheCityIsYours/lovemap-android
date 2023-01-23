@@ -364,5 +364,10 @@
     <string name="new_multi_lover_joined">🥰 Új publikus Szeretők csatlakoztak❣</string>
     <string name="register_public_profile_info"> Ha a profilod publikus, más Szeretők követőid lehetnek és láthatják az aktivitásod LoveMapen. Ezen felül a profilod bekerülhet a Hírességek Csarnokába.</string>
     <string name="new_private_lovers_joined">🥰 Új privát Szeretők csatlakoztak❣</string>
+    <string name="lover_is_not_public">Ennek a Szeretőnek privát a profilja</string>
+    <string name="failed_to_follow_lover">Szerető bekövetése sikertelen</string>
+    <string name="failed_to_unfollow_lover">Szerető kikövetése sikertelen</string>
+    <string name="failed_to_get_followers">Követők lekérése sikertelen</string>
+    <string name="failed_to_remove_follower">Követő eltávolítása sikertelen</string>
 
 </resources>

@@ -1,4 +1,4 @@
-package com.lovemap.lovemapandroid.service
+package com.lovemap.lovemapandroid.service.lover
 
 import android.util.Log
 import com.google.common.cache.Cache
@@ -6,17 +6,17 @@ import com.google.common.cache.CacheBuilder
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.getErrorMessages
 import com.lovemap.lovemapandroid.api.lover.*
+import com.lovemap.lovemapandroid.api.newsfeed.NewsFeedItemResponse
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.love.LoveDao
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpotDao
 import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReviewDao
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
+import com.lovemap.lovemapandroid.service.Toaster
 import com.lovemap.lovemapandroid.utils.LINK_PREFIX_API_CALL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.time.Duration
 import java.util.concurrent.TimeUnit
-import kotlin.math.max
 
 class LoverService(
     private val loverApi: LoverApi,
@@ -244,28 +244,6 @@ class LoverService(
         }
     }
 
-    suspend fun contributions(): LoverContributionsDto? {
-        return withContext(Dispatchers.IO) {
-            val call = loverApi.contributions(metadataStore.getUser().id)
-            val response = try {
-                call.execute()
-            } catch (e: Exception) {
-                toaster.showNoServerToast()
-                return@withContext null
-            }
-            if (response.isSuccessful) {
-                val loveListDto = response.body()!!
-                loveDao.insert(*loveListDto.loves.toTypedArray())
-                loveSpotDao.insert(*loveListDto.loveSpots.toTypedArray())
-                loveSpotReviewDao.insert(*loveListDto.loveSpotReviews.toTypedArray())
-                loveListDto
-            } else {
-                toaster.showNoServerToast()
-                null
-            }
-        }
-    }
-
     suspend fun getByUuid(uuid: String): LoverViewDto? {
         return withContext(Dispatchers.IO) {
             val call = loverApi.getByUuid(uuid.substringAfter(LINK_PREFIX_API_CALL))
@@ -336,4 +314,21 @@ class LoverService(
         }
     }
 
+    suspend fun getLoverActivities(loverId: Long): List<NewsFeedItemResponse> {
+        return withContext(Dispatchers.IO) {
+            val call = loverApi.getLoverActivities(loverId)
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
+                toaster.showToast(R.string.failed_to_load_news_feed)
+                return@withContext emptyList()
+            }
+            if (response.isSuccessful) {
+                response.body()!!
+            } else {
+                toaster.showResponseError(response)
+                emptyList()
+            }
+        }
+    }
 }

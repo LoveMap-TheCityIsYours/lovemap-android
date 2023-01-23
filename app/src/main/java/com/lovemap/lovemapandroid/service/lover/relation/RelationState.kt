@@ -1,4 +1,4 @@
-package com.lovemap.lovemapandroid.service.relations
+package com.lovemap.lovemapandroid.service.lover.relation
 
 enum class RelationState {
     YOURSELF, NOTHING, YOU_REQUESTED_PARTNERSHIP, THEY_REQUESTED_PARTNERSHIP, PARTNERSHIP, HAS_OTHER_PARTNER, YOU_BLOCKED_THEM, YOU_ARE_FOLLOWING_THEM

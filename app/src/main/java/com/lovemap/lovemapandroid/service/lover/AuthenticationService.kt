@@ -1,4 +1,4 @@
-package com.lovemap.lovemapandroid.service
+package com.lovemap.lovemapandroid.service.lover
 
 import android.content.Context
 import android.os.Looper
@@ -7,6 +7,7 @@ import com.lovemap.lovemapandroid.api.authentication.*
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.metadata.LoggedInUser
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
+import com.lovemap.lovemapandroid.service.Toaster
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

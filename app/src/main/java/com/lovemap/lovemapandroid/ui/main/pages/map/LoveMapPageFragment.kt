@@ -29,8 +29,8 @@ import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.config.MapContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
-import com.lovemap.lovemapandroid.service.LoveService
-import com.lovemap.lovemapandroid.service.LoveSpotService
+import com.lovemap.lovemapandroid.service.love.LoveService
+import com.lovemap.lovemapandroid.service.lovespot.LoveSpotService
 import com.lovemap.lovemapandroid.ui.events.MapMarkerEventListener
 import com.lovemap.lovemapandroid.ui.main.MAP_PAGE
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity

@@ -1,4 +1,4 @@
-package com.lovemap.lovemapandroid.service
+package com.lovemap.lovemapandroid.service.lovespot
 
 import android.util.Log
 import com.google.android.gms.maps.model.LatLng
@@ -12,6 +12,8 @@ import com.lovemap.lovemapandroid.config.MapContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpotDao
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
+import com.lovemap.lovemapandroid.service.GeoLocationService
+import com.lovemap.lovemapandroid.service.Toaster
 import com.lovemap.lovemapandroid.ui.data.LoveSpotHolder
 import kotlinx.coroutines.*
 import java.util.concurrent.CopyOnWriteArrayList

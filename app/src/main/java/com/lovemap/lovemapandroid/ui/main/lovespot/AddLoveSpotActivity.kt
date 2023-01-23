@@ -26,8 +26,8 @@ import com.lovemap.lovemapandroid.config.MapContext
 import com.lovemap.lovemapandroid.data.love.Love
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.databinding.ActivityAddLoveSpotBinding
-import com.lovemap.lovemapandroid.service.LoveService
-import com.lovemap.lovemapandroid.service.LoveSpotReviewService
+import com.lovemap.lovemapandroid.service.love.LoveService
+import com.lovemap.lovemapandroid.service.lovespot.LoveSpotReviewService
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveFragment
 import com.lovemap.lovemapandroid.ui.main.lovespot.review.ReviewLoveSpotFragment

@@ -15,6 +15,7 @@ import com.lovemap.lovemapandroid.api.authentication.AuthenticationApi
 import com.lovemap.lovemapandroid.api.geolocation.GeoLocationApi
 import com.lovemap.lovemapandroid.api.love.LoveApi
 import com.lovemap.lovemapandroid.api.lover.LoverApi
+import com.lovemap.lovemapandroid.api.lover.relation.RelationApi
 import com.lovemap.lovemapandroid.api.lover.wishlist.WishlistApi
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotApi
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotRisks
@@ -33,7 +34,16 @@ import com.lovemap.lovemapandroid.data.metadata.LoggedInUser
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
 import com.lovemap.lovemapandroid.data.partnership.PartnershipDao
 import com.lovemap.lovemapandroid.service.*
-import com.lovemap.lovemapandroid.service.relations.PartnershipService
+import com.lovemap.lovemapandroid.service.love.LoveService
+import com.lovemap.lovemapandroid.service.love.WishlistService
+import com.lovemap.lovemapandroid.service.lover.AuthenticationService
+import com.lovemap.lovemapandroid.service.lover.LoverService
+import com.lovemap.lovemapandroid.service.lover.relation.PartnershipService
+import com.lovemap.lovemapandroid.service.lover.relation.RelationService
+import com.lovemap.lovemapandroid.service.lovespot.LoveSpotPhotoService
+import com.lovemap.lovemapandroid.service.lovespot.LoveSpotReportService
+import com.lovemap.lovemapandroid.service.lovespot.LoveSpotReviewService
+import com.lovemap.lovemapandroid.service.lovespot.LoveSpotService
 import com.lovemap.lovemapandroid.ui.events.MapInfoWindowShownEvent
 import com.lovemap.lovemapandroid.ui.main.lovespot.list.LoveSpotListFilterState
 import com.lovemap.lovemapandroid.utils.AUTHORIZATION_HEADER
@@ -46,6 +56,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import java.time.Duration
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -66,6 +77,7 @@ class AppContext : MultiDexApplication() {
     lateinit var loveSpotPhotoService: LoveSpotPhotoService
     lateinit var wishlistService: WishlistService
     lateinit var newsFeedService: NewsFeedService
+    lateinit var relationService: RelationService
 
     lateinit var loveDao: LoveDao
     lateinit var loveSpotDao: LoveSpotDao
@@ -239,6 +251,11 @@ class AppContext : MultiDexApplication() {
         )
         newsFeedService = NewsFeedService(
             newsFeedApi = authorizingRetrofit.create(NewsFeedApi::class.java),
+            toaster = toaster
+        )
+        relationService = RelationService(
+            relationApi = authorizingRetrofit.create(RelationApi::class.java),
+            metadataStore = metadataStore,
             toaster = toaster
         )
         if (metadataStore.isLoggedIn()) {

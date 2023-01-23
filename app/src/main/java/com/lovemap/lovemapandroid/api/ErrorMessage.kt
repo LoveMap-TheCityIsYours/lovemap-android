@@ -86,6 +86,7 @@ private val errorCodeMessageMap = HashMap<ErrorCode, Int>().apply {
     put(PartnershipNotFound, R.string.partnershipNotFound)
     put(RespondentAlreadyHasPartner, R.string.respondent_already_has_a_partner)
     put(LoverNotFound, R.string.lover_not_found)
+    put(LoverIsNotPublic, R.string.lover_is_not_public)
 }
 
 enum class ErrorCode {
@@ -137,6 +138,7 @@ enum class ErrorCode {
     AlreadyHasPartner,
     RespondentAlreadyHasPartner,
     LoverNotFound,
+    LoverIsNotPublic,
 
     UNDEFINED
 }

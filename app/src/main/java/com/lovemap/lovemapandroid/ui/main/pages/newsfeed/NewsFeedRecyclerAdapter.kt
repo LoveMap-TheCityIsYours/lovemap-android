@@ -14,7 +14,7 @@ import com.lovemap.lovemapandroid.api.newsfeed.*
 import com.lovemap.lovemapandroid.api.newsfeed.NewsFeedItemType.*
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.config.MapContext
-import com.lovemap.lovemapandroid.service.LoverService
+import com.lovemap.lovemapandroid.service.lover.LoverService
 import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
 import com.lovemap.lovemapandroid.ui.relations.ViewOtherLoverActivity
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils

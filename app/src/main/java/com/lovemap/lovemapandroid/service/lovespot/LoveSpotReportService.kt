@@ -1,14 +1,16 @@
-package com.lovemap.lovemapandroid.service
+package com.lovemap.lovemapandroid.service.lovespot
 
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.admin.AdminApi
 import com.lovemap.lovemapandroid.api.lovespot.report.LoveSpotReportApi
 import com.lovemap.lovemapandroid.api.lovespot.report.LoveSpotReportRequest
-import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.config.MapContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReview
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
+import com.lovemap.lovemapandroid.service.love.LoveService
+import com.lovemap.lovemapandroid.service.Toaster
+import com.lovemap.lovemapandroid.service.lover.LoverService
 import com.lovemap.lovemapandroid.ui.events.WishlistUpdatedEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

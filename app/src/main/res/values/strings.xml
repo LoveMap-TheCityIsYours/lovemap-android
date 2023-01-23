@@ -371,5 +371,10 @@
     <string name="new_multi_lover_joined">🥰 New public Lovers joined us❣</string>
     <string name="register_public_profile_info">If your profile is public, other Lovers can be your followers and see your activities on LoveMap. Your profile can also get into the Hall of Fame.</string>
     <string name="new_private_lovers_joined">🥰 New private Lover(s) joined us❣</string>
+    <string name="lover_is_not_public">This Lover has a private profile</string>
+    <string name="failed_to_follow_lover">Failed to follow Lover</string>
+    <string name="failed_to_unfollow_lover">Failed to unfollow Lover</string>
+    <string name="failed_to_get_followers">Failed to get followers</string>
+    <string name="failed_to_remove_follower">Failed to remove follower</string>
 
 </resources>

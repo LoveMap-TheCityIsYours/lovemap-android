@@ -1,6 +1,6 @@
 package com.lovemap.lovemapandroid.api.lover
 
-import com.lovemap.lovemapandroid.api.relation.RelationStatus
+import com.lovemap.lovemapandroid.api.lover.relation.RelationStatus
 import com.lovemap.lovemapandroid.data.love.Love
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReview
@@ -30,12 +30,6 @@ data class LoverDto(
         return instantOfApiString(createdAt)
     }
 }
-
-data class LoverContributionsDto(
-    val loves: List<Love>,
-    val loveSpots: List<LoveSpot>,
-    val loveSpotReviews: List<LoveSpotReview>
-)
 
 data class LoverRelationsDto(
     val id: Long,

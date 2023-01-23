@@ -18,13 +18,13 @@ import com.lovemap.lovemapandroid.api.partnership.CancelPartnershipRequest
 import com.lovemap.lovemapandroid.api.partnership.PartnershipReaction
 import com.lovemap.lovemapandroid.api.partnership.PartnershipStatus.PARTNERSHIP_REQUESTED
 import com.lovemap.lovemapandroid.api.partnership.RespondPartnershipRequest
-import com.lovemap.lovemapandroid.api.relation.RelationStatus
+import com.lovemap.lovemapandroid.api.lover.relation.RelationStatus
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.partnership.Partnership
 import com.lovemap.lovemapandroid.databinding.ActivityViewOtherLoverBinding
-import com.lovemap.lovemapandroid.service.LoverService
-import com.lovemap.lovemapandroid.service.relations.RelationState
-import com.lovemap.lovemapandroid.service.relations.RelationState.*
+import com.lovemap.lovemapandroid.service.lover.LoverService
+import com.lovemap.lovemapandroid.service.lover.relation.RelationState
+import com.lovemap.lovemapandroid.service.lover.relation.RelationState.*
 import com.lovemap.lovemapandroid.ui.main.love.lovehistory.LoveListFragment
 import com.lovemap.lovemapandroid.ui.utils.AlertDialogUtils
 import com.lovemap.lovemapandroid.ui.utils.I18nUtils

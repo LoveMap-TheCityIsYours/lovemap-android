@@ -20,16 +20,13 @@ import com.lovemap.lovemapandroid.api.lover.LoverRelationsDto
 import com.lovemap.lovemapandroid.api.lover.LoverViewDto
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.metadata.LoggedInUser
-import com.lovemap.lovemapandroid.service.LoverService
+import com.lovemap.lovemapandroid.service.lover.LoverService
 import com.lovemap.lovemapandroid.ui.login.LoginActivity
 import com.lovemap.lovemapandroid.ui.relations.ViewOtherLoverActivity
 import com.lovemap.lovemapandroid.ui.utils.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.checkerframework.checker.units.qual.s
-
-
 
 
 class ProfilePageFragment : Fragment() {

@@ -1,14 +1,13 @@
-package com.lovemap.lovemapandroid.service
+package com.lovemap.lovemapandroid.service.lovespot
 
 import android.app.Activity
 import android.util.Log
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.ErrorCode
 import com.lovemap.lovemapandroid.api.getErrorCodes
-import com.lovemap.lovemapandroid.api.getErrorMessages
 import com.lovemap.lovemapandroid.api.lovespot.photo.LoveSpotPhoto
 import com.lovemap.lovemapandroid.api.lovespot.photo.LoveSpotPhotoApi
-import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
+import com.lovemap.lovemapandroid.service.Toaster
 import com.lovemap.lovemapandroid.ui.utils.PhotoUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

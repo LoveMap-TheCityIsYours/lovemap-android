@@ -1,4 +1,4 @@
-package com.lovemap.lovemapandroid.service
+package com.lovemap.lovemapandroid.service.love
 
 import android.content.Context
 import com.lovemap.lovemapandroid.R
@@ -9,6 +9,9 @@ import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.love.Love
 import com.lovemap.lovemapandroid.data.love.LoveDao
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
+import com.lovemap.lovemapandroid.service.Toaster
+import com.lovemap.lovemapandroid.service.lover.LoverService
+import com.lovemap.lovemapandroid.service.lovespot.LoveSpotReviewService
 import com.lovemap.lovemapandroid.ui.data.LoveHolder
 import com.lovemap.lovemapandroid.ui.events.LoveListUpdatedEvent
 import kotlinx.coroutines.Dispatchers

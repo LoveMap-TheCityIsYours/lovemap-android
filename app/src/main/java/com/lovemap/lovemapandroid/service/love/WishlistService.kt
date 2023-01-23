@@ -1,4 +1,4 @@
-package com.lovemap.lovemapandroid.service
+package com.lovemap.lovemapandroid.service.love
 
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lover.wishlist.WishlistApi
@@ -7,6 +7,8 @@ import com.lovemap.lovemapandroid.data.lover.wishlist.WishlistItem
 import com.lovemap.lovemapandroid.data.lover.wishlist.WishlistItemDao
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
+import com.lovemap.lovemapandroid.service.Toaster
+import com.lovemap.lovemapandroid.service.lovespot.LoveSpotService
 import com.lovemap.lovemapandroid.ui.data.WishlistItemDto
 import com.lovemap.lovemapandroid.ui.data.WishlistItemHolder
 import com.lovemap.lovemapandroid.ui.events.WishlistUpdatedEvent
