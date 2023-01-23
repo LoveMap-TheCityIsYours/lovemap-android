@@ -58,6 +58,7 @@ class NewsFeedFragment : Fragment() {
         initViews(view)
         if (newsFeedType == GLOBAL) {
             fetchPage()
+            recyclerView.smoothScrollToPosition(0)
             addOnScrollListener()
             setOnRefreshPageListener()
         } else {
@@ -176,6 +177,7 @@ class NewsFeedFragment : Fragment() {
     private fun fetchAll() {
         Log.i(TAG, "fetchAll")
         recyclerView.post {
+            recyclerView.smoothScrollToPosition(0)
             newsFeedItems.add(NewsFeedItemResponse.LOADING)
             newsFeedRecyclerAdapter.notifyItemInserted(newsFeedItems.size - 1)
 

@@ -27,7 +27,8 @@
             android:name="com.lovemap.lovemapandroid.ui.main.love.lovehistory.LoveListFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:love_spot_based="false" />
+            app:love_spot_based="false"
+            tools:layout="@layout/fragment_love_list" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

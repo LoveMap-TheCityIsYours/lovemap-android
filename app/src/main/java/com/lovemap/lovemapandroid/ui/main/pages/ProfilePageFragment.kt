@@ -57,6 +57,7 @@ class ProfilePageFragment : Fragment() {
     private lateinit var profilePublicImage: ImageView
     private lateinit var profilePublicToggle: SwitchCompat
     private lateinit var profilePublicToggleText: TextView
+    private lateinit var profileNewsFeedContainer: LinearLayout
 
     private val appContext = AppContext.INSTANCE
     private val loverService = appContext.loverService
@@ -114,6 +115,7 @@ class ProfilePageFragment : Fragment() {
         profileProgressBar = view.findViewById(R.id.profileProgressBar)
         profilePublicImage = view.findViewById(R.id.profilePublicImage)
         profilePublicToggleText = view.findViewById(R.id.profilePublicToggleText)
+        profileNewsFeedContainer = view.findViewById(R.id.profileNewsFeedContainer)
 
         linkSharingInfoButton = view.findViewById(R.id.linkSharingInfoButton)
         linkSharingInfoButton.setOnClickListener {
