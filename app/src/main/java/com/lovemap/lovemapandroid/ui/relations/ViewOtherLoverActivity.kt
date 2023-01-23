@@ -40,6 +40,7 @@ class ViewOtherLoverActivity : AppCompatActivity() {
     private val tag = "ViewOtherLoverActivity"
     private val appContext = AppContext.INSTANCE
     private val loverService = AppContext.INSTANCE.loverService
+    private val relationService = AppContext.INSTANCE.relationService
     private val partnershipService = AppContext.INSTANCE.partnershipService
 
     private lateinit var binding: ActivityViewOtherLoverBinding
@@ -56,6 +57,7 @@ class ViewOtherLoverActivity : AppCompatActivity() {
     private lateinit var profilePublicToggleText: TextView
 
     private lateinit var followFab: ExtendedFloatingActionButton
+    private lateinit var unfollowFab: ExtendedFloatingActionButton
     private lateinit var requestPartnershipFab: ExtendedFloatingActionButton
     private lateinit var acceptPartnershipFab: ExtendedFloatingActionButton
     private lateinit var denyPartnershipFab: ExtendedFloatingActionButton
@@ -96,6 +98,7 @@ class ViewOtherLoverActivity : AppCompatActivity() {
         userId = appContext.userId
         setViewState()
         setFollowButton()
+        setUnfollowButton()
         setRequestPartnershipButton()
         setAcceptPartnershipButton()
         setDenyPartnershipButton()
@@ -119,6 +122,7 @@ class ViewOtherLoverActivity : AppCompatActivity() {
         profilePublicToggleText = binding.profilePublicToggleText
 
         followFab = binding.followFab
+        unfollowFab = binding.unfollowFab
         requestPartnershipFab = binding.requestPartnershipFab
         acceptPartnershipFab = binding.acceptPartnershipFab
         denyPartnershipFab = binding.denyPartnershipFab
@@ -275,7 +279,25 @@ class ViewOtherLoverActivity : AppCompatActivity() {
 
     private fun setFollowButton() {
         followFab.setOnClickListener {
-            AppContext.INSTANCE.toaster.showToast(R.string.not_yet_implemented)
+            MainScope().launch {
+                otherLover?.let {
+                    relationService.followLover(it.id)?.let {
+                        setRelationState(YOU_ARE_FOLLOWING_THEM)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setUnfollowButton() {
+        unfollowFab.setOnClickListener {
+            MainScope().launch {
+                otherLover?.let {
+                    relationService.unfollowLover(it.id)?.let {
+                        setRelationState(NOTHING)
+                    }
+                }
+            }
         }
     }
 
@@ -386,6 +408,7 @@ class ViewOtherLoverActivity : AppCompatActivity() {
                     hideEndButton()
                     hideLoveListFragment()
                     enableFollowButton()
+                    hideUnfollowButton()
                 }
                 YOURSELF -> {
                     relationText.animate().alpha(0f).setDuration(250).withEndAction {
@@ -396,6 +419,8 @@ class ViewOtherLoverActivity : AppCompatActivity() {
                     hideRespondView()
                     hideCancelRequestButton()
                     hideEndButton()
+                    hideFollowButton()
+                    hideUnfollowButton()
                 }
                 YOU_REQUESTED_PARTNERSHIP -> {
                     relationText.animate().alpha(0f).setDuration(250).withEndAction {
@@ -409,6 +434,8 @@ class ViewOtherLoverActivity : AppCompatActivity() {
                     hideRespondView()
                     showCancelRequestButton()
                     hideEndButton()
+                    hideFollowButton()
+                    hideUnfollowButton()
                 }
                 THEY_REQUESTED_PARTNERSHIP -> {
                     relationText.animate().alpha(0f).setDuration(250).withEndAction {
@@ -422,6 +449,8 @@ class ViewOtherLoverActivity : AppCompatActivity() {
                     showRespondView()
                     hideCancelRequestButton()
                     hideEndButton()
+                    hideFollowButton()
+                    hideUnfollowButton()
                 }
                 PARTNERSHIP -> {
                     relationText.animate().alpha(0f).setDuration(250).withEndAction {
@@ -433,17 +462,8 @@ class ViewOtherLoverActivity : AppCompatActivity() {
                     hideRespondView()
                     hideCancelRequestButton()
                     showEndButton()
-                }
-                HAS_OTHER_PARTNER -> {
-                    relationText.animate().alpha(0f).setDuration(250).withEndAction {
-                        relationText.text =
-                            I18nUtils.relationStatus(RelationStatus.NOTHING, applicationContext)
-                        relationText.animate().alpha(1f).duration = 250
-                    }
-                    disableRequestButton()
-                    hideRespondView()
-                    hideCancelRequestButton()
-                    hideEndButton()
+                    hideFollowButton()
+                    hideUnfollowButton()
                 }
                 YOU_BLOCKED_THEM -> {
                     relationText.animate().alpha(0f).setDuration(250).withEndAction {
@@ -454,6 +474,8 @@ class ViewOtherLoverActivity : AppCompatActivity() {
                     hideRespondView()
                     hideCancelRequestButton()
                     hideEndButton()
+                    hideFollowButton()
+                    hideUnfollowButton()
                 }
                 YOU_ARE_FOLLOWING_THEM -> {
                     relationText.animate().alpha(0f).setDuration(250).withEndAction {
@@ -464,6 +486,8 @@ class ViewOtherLoverActivity : AppCompatActivity() {
                     hideRespondView()
                     hideCancelRequestButton()
                     hideEndButton()
+                    hideFollowButton()
+                    showUnfollowButton()
                 }
             }
         } catch (e: Exception) {
@@ -512,6 +536,18 @@ class ViewOtherLoverActivity : AppCompatActivity() {
 
     private fun hideEndButton() {
         endPartnershipFab.visibility = View.GONE
+    }
+
+    private fun hideFollowButton() {
+        followFab.visibility = View.GONE
+    }
+
+    private fun showUnfollowButton() {
+        unfollowFab.visibility = View.VISIBLE
+    }
+
+    private fun hideUnfollowButton() {
+        unfollowFab.visibility = View.GONE
     }
 
     private fun enableFollowButton() {

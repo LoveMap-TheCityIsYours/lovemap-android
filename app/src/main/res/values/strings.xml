@@ -378,5 +378,17 @@
     <string name="failed_to_remove_follower">Failed to remove follower</string>
     <string name="activities_of_lover">Activities of Lover</string>
     <string name="your_activities">Your Activities</string>
+    <string name="newsfeed_switch_off_is_global">Global</string>
+    <string name="newsfeed_switch_on_is_personal">Personal</string>
+    <string name="personal_news_feed_info">
+        <![CDATA[
+        <b>News Feed Switch</b>:<br><br>
+        <ul>
+            <li><b> Global</b>: You can see everything that is happening in LoveMap.</li><br>
+            <li><b> Personal</b>: You can see the activities of the Lovers you are following.</li><br>
+        </ul>
+        ]]>
+    </string>
+    <string name="unfollow">Unfollow</string>
 
 </resources>

@@ -371,5 +371,17 @@
     <string name="failed_to_remove_follower">Követő eltávolítása sikertelen</string>
     <string name="activities_of_lover">A Szerető aktivitása</string>
     <string name="your_activities">Aktivitásod</string>
+    <string name="newsfeed_switch_off_is_global">Globális</string>
+    <string name="newsfeed_switch_on_is_personal">Személyes</string>
+    <string name="personal_news_feed_info">
+        <![CDATA[
+        <b>Hírfolyam Kapcsoló</b>:<br><br>
+        <ul>
+            <li><b> Globális</b>: Mindent láthatsz, ami a LoveMapen történik.</li><br>
+            <li><b> Személyes</b>: Csak azon Szeretők aktivitását látod, akiket követsz.</li><br>
+        </ul>
+        ]]>
+    </string>
+    <string name="unfollow">Kikövetés</string>
 
 </resources>

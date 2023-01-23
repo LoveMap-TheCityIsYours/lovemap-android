@@ -170,6 +170,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:textAlignment="center"
                 android:maxWidth="280dp"
                 android:maxLines="2"
                 android:text=" - " />
@@ -319,6 +320,17 @@
                 android:text="@string/follow"
                 android:textSize="12sp"
                 app:icon="@drawable/ic_baseline_follow_the_signs_24" />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/unfollowFab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/standard_8"
+                android:visibility="gone"
+                android:text="@string/unfollow"
+                android:textSize="12sp"
+                app:icon="@drawable/baseline_unfollow_24" />
 
             <TextView
                 style="?android:attr/weekSeparatorLineColor"

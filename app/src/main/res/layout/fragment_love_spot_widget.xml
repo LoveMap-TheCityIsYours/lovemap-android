@@ -38,14 +38,16 @@
         android:name="com.lovemap.lovemapandroid.ui.main.lovespot.widget.LoveSpotWidgetItemFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/standard_8" />
+        android:layout_marginBottom="@dimen/standard_8"
+        tools:layout="@layout/fragment_love_spot_widget_item" />
 
     <fragment
         android:id="@+id/loveSpotWidgetItem2"
         android:name="com.lovemap.lovemapandroid.ui.main.lovespot.widget.LoveSpotWidgetItemFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/standard_8"/>
+        android:layout_marginBottom="@dimen/standard_8"
+        tools:layout="@layout/fragment_love_spot_widget_item" />
 
     <TextView
         android:id="@+id/loveSpotWidgetNoResultsText"

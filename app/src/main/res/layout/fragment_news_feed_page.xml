@@ -31,18 +31,53 @@
             android:background="@color/separatorLine"
             android:gravity="center_horizontal" />
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/newsFeedPersonalToggle"
+                android:theme="@style/ToggleSwitchTheme"
+                android:thumb="@drawable/switch_thumb_selector"
+                app:track="@drawable/switch_track_selector"
+                android:textOff="@string/newsfeed_switch_off_is_global"
+                android:textOn="@string/newsfeed_switch_on_is_personal"
+                app:showText="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_baseline_toggle_off_24" />
+
+            <ImageButton
+                android:id="@+id/newsFeedInfoButton"
+                android:layout_marginStart="32dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="@dimen/standard_16"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:backgroundTint="@color/background_color"
+                android:src="@drawable/ic_baseline_info_24" />
+
+        </RelativeLayout>
+
+        <TextView
+            style="?android:attr/weekSeparatorLineColor"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@color/separatorLine"
+            android:gravity="center_horizontal" />
+
         <LinearLayout
             android:id="@+id/newsFeedFragmentContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"/>
-
-<!--        <fragment-->
-<!--            android:id="@+id/fragmentNewsFeedPageFragment"-->
-<!--            android:name="com.lovemap.lovemapandroid.ui.main.newsfeed.NewsFeedFragment"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            tools:layout="@layout/fragment_news_feed" />-->
     </LinearLayout>
 
 </LinearLayout>
