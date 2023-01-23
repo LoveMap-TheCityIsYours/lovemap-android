@@ -22,6 +22,7 @@ import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.metadata.LoggedInUser
 import com.lovemap.lovemapandroid.service.lover.LoverService
 import com.lovemap.lovemapandroid.ui.login.LoginActivity
+import com.lovemap.lovemapandroid.ui.main.newsfeed.NewsFeedFragment
 import com.lovemap.lovemapandroid.ui.relations.ViewOtherLoverActivity
 import com.lovemap.lovemapandroid.ui.utils.*
 import kotlinx.coroutines.MainScope
@@ -120,6 +121,8 @@ class ProfilePageFragment : Fragment() {
             infoPopupShower.show(view)
         }
 
+        showActivitiesFragment()
+
         return view
     }
 
@@ -153,6 +156,22 @@ class ProfilePageFragment : Fragment() {
                 }
             }
             profileSwipeRefreshLayout.isRefreshing = false
+        }
+    }
+
+    private fun showActivitiesFragment() {
+        runCatching {
+            Log.i(tag, "showActivitiesFragment started")
+            val newsFeedFragment = NewsFeedFragment
+                .newInstance(NewsFeedFragment.NewsFeedType.LOVER_ACTIVITIES, appContext.userId)
+
+            childFragmentManager.beginTransaction()
+                .add(R.id.profileNewsFeedContainer, newsFeedFragment)
+                .commitAllowingStateLoss()
+
+            Log.i(tag, "showActivitiesFragment finished")
+        }.onFailure { e ->
+            Log.e(tag, "showActivitiesFragment shitted itself", e)
         }
     }
 

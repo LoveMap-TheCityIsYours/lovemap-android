@@ -377,5 +377,6 @@
     <string name="failed_to_get_followers">Failed to get followers</string>
     <string name="failed_to_remove_follower">Failed to remove follower</string>
     <string name="activities_of_lover">Activities of Lover</string>
+    <string name="your_activities">Your Activities</string>
 
 </resources>

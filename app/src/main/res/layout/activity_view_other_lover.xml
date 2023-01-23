@@ -343,7 +343,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="600dp"
                 android:layout_marginTop="@dimen/standard_16"
-                android:layout_marginBottom="@dimen/standard_100"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                 <LinearLayout
@@ -351,8 +350,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical" />
-
             </com.lovemap.lovemapandroid.ui.customviews.NestedScrollableHost>
+
+            <TextView
+                style="?android:attr/weekSeparatorLineColor"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="@dimen/standard_16"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="@dimen/standard_100"
+                android:background="@color/separatorLine"
+                android:gravity="center_horizontal" />
 
         </LinearLayout>
 

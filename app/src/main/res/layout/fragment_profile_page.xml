@@ -505,6 +505,49 @@
                 android:background="@color/separatorLine"
                 android:gravity="center_horizontal" />
 
+            <TextView
+                android:text="@string/your_activities"
+                android:layout_marginTop="@dimen/standard_16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.AppCompat.Large"
+                android:layout_gravity="center_horizontal"
+                />
+
+            <com.lovemap.lovemapandroid.ui.customviews.NestedScrollableHost
+                android:layout_width="match_parent"
+                android:layout_height="600dp"
+                android:layout_marginTop="@dimen/standard_16"
+                android:layout_marginBottom="@dimen/standard_16"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <LinearLayout
+                    android:id="@+id/profileNewsFeedContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+            </com.lovemap.lovemapandroid.ui.customviews.NestedScrollableHost>
+
+            <TextView
+                style="?android:attr/weekSeparatorLineColor"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="@dimen/standard_50"
+                android:background="@color/separatorLine"
+                android:gravity="center_horizontal" />
+
+            <TextView
+                style="?android:attr/weekSeparatorLineColor"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/separatorLine"
+                android:gravity="center_horizontal" />
+
             <LinearLayout
                 android:clickable="true"
                 android:focusableInTouchMode="true"

@@ -26,11 +26,11 @@ class NewsFeedPageFragment : Fragment() {
         val view =
             inflater.inflate(R.layout.fragment_news_feed_page, container, false) as LinearLayout
         view.layoutTransition.setAnimateParentHierarchy(false)
-        val transaction = childFragmentManager.beginTransaction()
         val newsFeedFragment =
             NewsFeedFragment.newInstance(NewsFeedFragment.NewsFeedType.GLOBAL, null)
-        transaction.add(R.id.newsFeedFragmentContainer, newsFeedFragment)
-        transaction.commitAllowingStateLoss()
+        childFragmentManager.beginTransaction()
+            .add(R.id.newsFeedFragmentContainer, newsFeedFragment)
+            .commitAllowingStateLoss()
         return view
     }
 }

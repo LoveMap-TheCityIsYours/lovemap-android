@@ -370,5 +370,6 @@
     <string name="failed_to_get_followers">Követők lekérése sikertelen</string>
     <string name="failed_to_remove_follower">Követő eltávolítása sikertelen</string>
     <string name="activities_of_lover">A Szerető aktivitása</string>
+    <string name="your_activities">Aktivitásod</string>
 
 </resources>
