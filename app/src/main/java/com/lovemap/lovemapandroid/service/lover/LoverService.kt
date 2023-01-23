@@ -32,6 +32,12 @@ class LoverService(
 
         @Volatile
         var otherLover: LoverViewDto? = null
+            set(value) {
+                field = value
+                value?.let {
+                    otherLoverId = it.id
+                }
+            }
     }
 
     private val tag = "LoverService"

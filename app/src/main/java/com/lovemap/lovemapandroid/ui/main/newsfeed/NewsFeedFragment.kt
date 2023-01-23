@@ -142,12 +142,15 @@ class NewsFeedFragment : Fragment() {
                 newsFeedRecyclerAdapter.lastPosition = -1
                 newsFeedItems.clear()
                 newsFeedRecyclerAdapter.notifyDataSetChanged()
+                newsFeedItems.add(NewsFeedItemResponse.LOADING)
+                newsFeedRecyclerAdapter.notifyItemInserted(newsFeedItems.size - 1)
 
                 MainScope().launch {
                     runCatching {
                         newsFeedService.getPage(page, size)
                     }.onSuccess { pageResponse ->
                         Log.i(TAG, "Adding newsFeedItems to adapter list: ${pageResponse.size}")
+                        removeLastLoading()
                         pageResponse.forEach { newsFeedItems.add(it) }
                         Log.i(TAG, "newsFeedItems.size: ${newsFeedItems.size}")
                         Log.i(TAG, "newsFeedItems: $newsFeedItems")
@@ -159,6 +162,7 @@ class NewsFeedFragment : Fragment() {
                         page++
                     }.onFailure {
                         Log.i(TAG, "Failed to get newsFeedItems")
+                        removeLastLoading()
                         isLoading = false
                         newsFeedEnded = false
                         newsFeedSwipeRefresh.isRefreshing = false
@@ -170,7 +174,7 @@ class NewsFeedFragment : Fragment() {
 
 
     private fun fetchAll() {
-        Log.i(TAG, "Fetching page '$page' size '$size'}")
+        Log.i(TAG, "fetchAll")
         recyclerView.post {
             newsFeedItems.add(NewsFeedItemResponse.LOADING)
             newsFeedRecyclerAdapter.notifyItemInserted(newsFeedItems.size - 1)

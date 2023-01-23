@@ -26,6 +26,7 @@ import com.lovemap.lovemapandroid.service.lover.LoverService
 import com.lovemap.lovemapandroid.service.lover.relation.RelationState
 import com.lovemap.lovemapandroid.service.lover.relation.RelationState.*
 import com.lovemap.lovemapandroid.ui.main.love.lovehistory.LoveListFragment
+import com.lovemap.lovemapandroid.ui.main.newsfeed.NewsFeedFragment
 import com.lovemap.lovemapandroid.ui.utils.AlertDialogUtils
 import com.lovemap.lovemapandroid.ui.utils.I18nUtils
 import com.lovemap.lovemapandroid.ui.utils.ProfileUtils
@@ -75,8 +76,7 @@ class ViewOtherLoverActivity : AppCompatActivity() {
     private val refreshListener = SwipeRefreshLayout.OnRefreshListener {
         otherLoverSwipeRefreshLayout.isRefreshing = true
         MainScope().launch {
-            otherLover?.let {
-                otherLover = loverService.getOtherById(it.id)
+            getOtherLover()?.let {
                 setViews(it)
             }
             otherLoverSwipeRefreshLayout.isRefreshing = false
@@ -129,8 +129,6 @@ class ViewOtherLoverActivity : AppCompatActivity() {
 
         partnerLoveListFragment =
             supportFragmentManager.findFragmentById(R.id.partnerLoveListFragment) as LoveListFragment
-        (partnerLoveListFragment.view?.findViewById(R.id.loveList) as RecyclerView).isNestedScrollingEnabled =
-            false
 
         hideLoveListFragment()
     }
@@ -166,8 +164,27 @@ class ViewOtherLoverActivity : AppCompatActivity() {
             this@ViewOtherLoverActivity.partnership = partnership
             setRelationWithLover(otherLover, partnership)
             showLovesWithPartner()
+            showLoverActivitiesFragment(otherLover.id)
         } catch (e: Exception) {
             Log.e(tag, "setViews shitted itself", e)
+        }
+    }
+
+    private fun showLoverActivitiesFragment(loverId: Long) {
+        runCatching {
+            Log.i(tag, "showLoverActivitiesFragment started")
+            val newsFeedFragment = NewsFeedFragment
+                .newInstance(NewsFeedFragment.NewsFeedType.LOVER_ACTIVITIES, loverId)
+
+            supportFragmentManager
+                .beginTransaction()
+                .add(R.id.viewOtherLoverNewsFeedContainer, newsFeedFragment)
+                .disallowAddToBackStack()
+                .commit()
+
+            Log.i(tag, "showLoverActivitiesFragment finished")
+        }.onFailure { e ->
+            Log.e(tag, "showLoverActivitiesFragment shitted itself", e)
         }
     }
 
