@@ -65,6 +65,7 @@ class HallOfFameRecyclerViewAdapter(
             }
             View.VISIBLE
         } else {
+            holder.itemView.setOnClickListener {}
             View.GONE
         }
 
