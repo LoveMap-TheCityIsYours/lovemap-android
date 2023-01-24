@@ -383,5 +383,8 @@
         ]]>
     </string>
     <string name="unfollow">Kikövetés</string>
+    <string name="failed_to_load_hall_of_fame">Hírességek Csarnokának lekérése sikertelen</string>
+    <string name="hall_of_fame">Hírességek Csarnoka</string>
+    <string name="hall_of_fame_title">Hírességek Csarnoka 🏛️</string>
 
 </resources>

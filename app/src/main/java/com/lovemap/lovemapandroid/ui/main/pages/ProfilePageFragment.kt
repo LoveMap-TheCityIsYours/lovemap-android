@@ -15,6 +15,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lover.LoverRelationsDto
 import com.lovemap.lovemapandroid.api.lover.LoverViewDto
@@ -22,6 +23,7 @@ import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.metadata.LoggedInUser
 import com.lovemap.lovemapandroid.service.lover.LoverService
 import com.lovemap.lovemapandroid.ui.login.LoginActivity
+import com.lovemap.lovemapandroid.ui.main.HallOfFameActivity
 import com.lovemap.lovemapandroid.ui.main.newsfeed.NewsFeedFragment
 import com.lovemap.lovemapandroid.ui.relations.ViewOtherLoverActivity
 import com.lovemap.lovemapandroid.ui.utils.*
@@ -58,6 +60,7 @@ class ProfilePageFragment : Fragment() {
     private lateinit var profilePublicToggle: SwitchCompat
     private lateinit var profilePublicToggleText: TextView
     private lateinit var profileNewsFeedContainer: LinearLayout
+    private lateinit var profileHallOfFameFab: ExtendedFloatingActionButton
 
     private val appContext = AppContext.INSTANCE
     private val loverService = appContext.loverService
@@ -116,11 +119,16 @@ class ProfilePageFragment : Fragment() {
         profilePublicImage = view.findViewById(R.id.profilePublicImage)
         profilePublicToggleText = view.findViewById(R.id.profilePublicToggleText)
         profileNewsFeedContainer = view.findViewById(R.id.profileNewsFeedContainer)
+        profileHallOfFameFab = view.findViewById(R.id.profileHallOfFameFab)
 
         linkSharingInfoButton = view.findViewById(R.id.linkSharingInfoButton)
         linkSharingInfoButton.setOnClickListener {
             val infoPopupShower = InfoPopupShower(R.string.link_sharing_hint)
             infoPopupShower.show(view)
+        }
+
+        profileHallOfFameFab.setOnClickListener {
+            startActivity(Intent(requireContext(), HallOfFameActivity::class.java))
         }
 
         showActivitiesFragment()

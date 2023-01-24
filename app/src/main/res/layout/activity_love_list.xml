@@ -31,6 +31,7 @@
         android:name="com.lovemap.lovemapandroid.ui.main.love.lovehistory.LoveListFragment"
         app:love_spot_based="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:layout="@layout/fragment_love_list" />
 
 </LinearLayout>

@@ -336,6 +336,16 @@
                 style="@android:style/Widget.Material.ProgressBar.Horizontal"
                 />
 
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/profileHallOfFameFab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/hall_of_fame"
+                android:layout_marginBottom="@dimen/standard_8"
+                app:icon="@drawable/podium_svgrepo_com_2"
+                app:iconGravity="start" />
+
             <TextView
                 style="?android:attr/weekSeparatorLineColor"
                 android:layout_width="match_parent"

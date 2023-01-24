@@ -337,4 +337,22 @@ class LoverService(
             }
         }
     }
+
+    suspend fun getHallOfFame(): List<LoverViewWithoutRelationDto> {
+        return withContext(Dispatchers.IO) {
+            val call = loverApi.getHallOfFame()
+            val response = try {
+                call.execute()
+            } catch (e: Exception) {
+                toaster.showToast(R.string.failed_to_load_hall_of_fame)
+                return@withContext emptyList()
+            }
+            if (response.isSuccessful) {
+                response.body()!!
+            } else {
+                toaster.showResponseError(response)
+                emptyList()
+            }
+        }
+    }
 }

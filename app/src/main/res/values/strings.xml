@@ -390,5 +390,8 @@
         ]]>
     </string>
     <string name="unfollow">Unfollow</string>
+    <string name="failed_to_load_hall_of_fame">Failed to load Hall of Fame</string>
+    <string name="hall_of_fame">Hall of Fame</string>
+    <string name="hall_of_fame_title">Hall of Fame 🏛️</string>
 
 </resources>

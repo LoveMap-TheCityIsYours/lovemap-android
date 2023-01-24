@@ -25,11 +25,17 @@ interface LoverApi {
     fun getCachedLoverView(@Path("loverId") loverId: Long): Call<LoverViewWithoutRelationDto>
 
     @PUT("/lovers/{loverId}")
-    fun updateLover(@Path("loverId") loverId: Long, @Body update: UpdateLoverRequest): Call<LoverDto>
+    fun updateLover(
+        @Path("loverId") loverId: Long,
+        @Body update: UpdateLoverRequest
+    ): Call<LoverDto>
 
     @GET("/lovers/ranks")
     fun getRanks(): Call<LoverRanks>
 
     @GET("/lovers/{loverId}/activities")
     fun getLoverActivities(@Path("loverId") loverId: Long): Call<List<NewsFeedItemResponse>>
+
+    @GET("/lovers/hallOfFame")
+    fun getHallOfFame(): Call<List<LoverViewWithoutRelationDto>>
 }
