@@ -24,7 +24,7 @@ import java.nio.charset.StandardCharsets
 class MetadataStore(private val context: Context) {
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "MetadataStore")
     private val gson = GsonBuilder().create()
-    private val currentAppMetadataVersion = 1
+    private val currentAppMetadataVersion = 2
     private val currentTouVersion = 2
 
     private val metadataVersionKey = intPreferencesKey("metadataVersion")

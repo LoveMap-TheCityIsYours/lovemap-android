@@ -58,7 +58,7 @@
     <string name="profileShareableLink">Get shareable link</string>
     <string name="linkShareOff">Link Sharing Off</string>
     <string name="linkShareOn">Link Sharing On</string>
-    <string name="privateProfile">Private Profile</string>
+    <string name="privateProfile">Private Profile 🤫</string>
     <string name="profileInPartnershipWith">Partnership status:</string>
     <string name="profilePartnersEmpty">No partner yet</string>
     <string name="profileRank">Current rank:</string>
@@ -342,7 +342,7 @@
     <string name="somebody_reviewed_spot">⭐ A review was added at</string>
     <string name="review_not_found">Review not found</string>
     <string name="somebody_made_love_at">💞 Somebody got lucky here 😉</string>
-    <string name="new_lover_joined">🥰 New public Lover joined us❣</string>
+    <string name="new_lover_joined">🤭 New public Lover joined us❣</string>
     <string name="switch_off_is_global">Global</string>
     <string name="switch_on_is_local">Local</string>
     <string name="points_text">Points:</string>
@@ -357,7 +357,7 @@
     <string name="end_partnership_message">Are you sure you want to end partnership with this Lover?</string>
     <string name="set_profile_public_title">Set profile public?</string>
     <string name="set_profile_public_message">Do you want to set your profile to public? If your profile is public, other Lovers can by your followers and see your activities on LoveMap. Your profile can also get into the Hall of Fame.</string>
-    <string name="public_profile">Public Profile</string>
+    <string name="public_profile">Public Profile 🤭</string>
     <string name="lover_not_found">Lover not found</string>
     <string name="public_actor_reviewed_spot">- %1$s -\n\t\t⭐ Reviewed</string>
     <string name="public_actor_liked_photo_at">- %1$s -\n\t\t👍 Liked this photo</string>
@@ -368,10 +368,10 @@
     <string name="public_actor_made_love_at">- %1$s -\n\t\t💞 Got lucky here 😉</string>
     <string name="public_actor_with_partner_made_love_at">- %1$s -\n\t\t💞 Got lucky with their partner 😉\n- %2$s -</string>
     <string name="unsupported_newsfeed_item">Unsupported Item, update LoveMap!</string>
-    <string name="new_multi_lover_joined">🥰 New public Lovers joined us❣</string>
+    <string name="new_multi_lover_joined">🤭 New public Lovers joined us❣</string>
     <string name="register_public_profile_info">If your profile is public, other Lovers can be your followers and see your activities on LoveMap. Your profile can also get into the Hall of Fame.</string>
-    <string name="new_private_lovers_joined">🥰 New private Lover(s) joined us❣</string>
-    <string name="lover_is_not_public">This Lover has a private profile</string>
+    <string name="new_private_lovers_joined">🤫 New private Lover(s) joined us❣</string>
+    <string name="lover_is_not_public">This Lover has a private profile 🤫</string>
     <string name="failed_to_follow_lover">Failed to follow Lover</string>
     <string name="failed_to_unfollow_lover">Failed to unfollow Lover</string>
     <string name="failed_to_get_followers">Failed to get followers</string>

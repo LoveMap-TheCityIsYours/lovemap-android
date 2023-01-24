@@ -50,7 +50,7 @@
     <string name="profileShareableLink">Megosztható link mutatása</string>
     <string name="linkShareOff">Megosztható link kikapcsolása</string>
     <string name="linkShareOn">Megosztható link bekapcsolása</string>
-    <string name="privateProfile">Privát Profil</string>
+    <string name="privateProfile">Privát Profil 🤫</string>
     <string name="profileInPartnershipWith">Kapcsolati státusz:</string>
     <string name="profilePartnersEmpty">Még nincs kapcsolatban</string>
     <string name="profileRank">Jelenlegi rang:</string>
@@ -335,7 +335,7 @@
     <string name="somebody_reviewed_spot">⭐ Új értékelést írtak ehhez</string>
     <string name="review_not_found">Értékelés nem található</string>
     <string name="somebody_made_love_at">💞 Valaki baszott itt 😉</string>
-    <string name="new_lover_joined">🥰 Új publikus Szerető csatlakozott❣</string>
+    <string name="new_lover_joined">🤭 Új publikus Szerető csatlakozott❣</string>
     <string name="switch_off_is_global">Globális</string>
     <string name="switch_on_is_local">Helyi</string>
     <string name="points_text">Pontok:</string>
@@ -350,7 +350,7 @@
     <string name="end_partnership_message">Biztos vagy benne hogy le akarod zárni a partnerséged e szeretővel?</string>
     <string name="set_profile_public_title">Publikus legyen a profilod?</string>
     <string name="set_profile_public_message">Szeretnéd hogy publikus legyen a profilod? Ha a profilod publikus, más Szeretők követőid lehetnek és láthatják az aktivitásod LoveMapen. Ezen felül a profilod bekerülhet a Hírességek Csarnokába.</string>
-    <string name="public_profile">Publikus Profil</string>
+    <string name="public_profile">Publikus Profil 🤭</string>
     <string name="lover_not_found">Szerető nem található</string>
     <string name="public_actor_reviewed_spot">- %1$s -\n\t\t⭐ Új értékelést írt</string>
     <string name="public_actor_liked_photo_at">- %1$s -\n\t\t👍 Lájkolta ezt a képet</string>
@@ -361,10 +361,10 @@
     <string name="public_actor_made_love_at">- %1$s -\n\t\t💞 Baszott itt 😉</string>
     <string name="public_actor_with_partner_made_love_at">- %1$s -\n\t\t💞 Baszott itt partnerével 😉\n- %2$s -</string>
     <string name="unsupported_newsfeed_item">Nem támogatott elem, frissítsd a LoveMapet!</string>
-    <string name="new_multi_lover_joined">🥰 Új publikus Szeretők csatlakoztak❣</string>
+    <string name="new_multi_lover_joined">🤭 Új publikus Szeretők csatlakoztak❣</string>
     <string name="register_public_profile_info"> Ha a profilod publikus, más Szeretők követőid lehetnek és láthatják az aktivitásod LoveMapen. Ezen felül a profilod bekerülhet a Hírességek Csarnokába.</string>
-    <string name="new_private_lovers_joined">🥰 Új privát Szeretők csatlakoztak❣</string>
-    <string name="lover_is_not_public">Ennek a Szeretőnek privát a profilja</string>
+    <string name="new_private_lovers_joined">🤫 Új privát Szeretők csatlakoztak❣</string>
+    <string name="lover_is_not_public">Ennek a Szeretőnek privát a profilja 🤫</string>
     <string name="failed_to_follow_lover">Szerető bekövetése sikertelen</string>
     <string name="failed_to_unfollow_lover">Szerető kikövetése sikertelen</string>
     <string name="failed_to_get_followers">Követők lekérése sikertelen</string>
