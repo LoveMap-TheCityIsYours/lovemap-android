@@ -18,7 +18,7 @@ class ExampleUnitTest {
         val map = EmojiManager.getForTag("flag")
             .filter { it.tags.firstOrNull { tag -> tag != "flag" } != null }
             .associateBy({ it.tags.firstOrNull { tag -> tag != "flag" } }, { it.unicode })
-        TreeMap(map)
+        val treeMap = TreeMap(map)
         val usFlag = EmojiUtils.getFlagEmoji("United States ")
         val huFlag = EmojiUtils.getFlagEmoji("Hungary")
         println(usFlag)

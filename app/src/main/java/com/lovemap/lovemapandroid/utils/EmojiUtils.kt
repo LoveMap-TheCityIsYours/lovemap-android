@@ -20,7 +20,11 @@ object EmojiUtils {
     }
 
     private fun normalize(country: String): String {
-        return when (val normalized = country.lowercase().trim()) {
+        val normalized = country.lowercase().trim()
+        if (normalized.contains("myanmar")) {
+            return "myanmar"
+        }
+        return when (normalized) {
             "united states" -> "united states of america"
             "czechia" -> "czech republic"
             else -> normalized
