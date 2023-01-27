@@ -3,6 +3,7 @@ package com.lovemap.lovemapandroid.ui.main.lovespot.widget
 import android.content.Context
 import android.os.Bundle
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -86,17 +87,21 @@ class LoveSpotWidgetFragment : Fragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onRecommendationsUpdated(event: RecommendationsUpdated) {
-        transitionOutItems()
-        val loveSpots: List<LoveSpot> = getLoveSpots(event)
-        showNewItems(loveSpots.size)
-        loveSpotWidgetProgressBar.visibility = View.GONE
+        try {
+            transitionOutItems()
+            val loveSpots: List<LoveSpot> = getLoveSpots(event)
+            showNewItems(loveSpots.size)
+            loveSpotWidgetProgressBar.visibility = View.GONE
 
 
-        if (loveSpots.isNotEmpty()) {
-            loveSpotWidgetItem1.setLoveSpot(loveSpots[0])
-            if (loveSpots.size > 1) {
-                loveSpotWidgetItem2.setLoveSpot(loveSpots[1])
+            if (loveSpots.isNotEmpty()) {
+                loveSpotWidgetItem1.setLoveSpot(loveSpots[0])
+                if (loveSpots.size > 1) {
+                    loveSpotWidgetItem2.setLoveSpot(loveSpots[1])
+                }
             }
+        } catch (e: Exception) {
+            Log.e(tag, "onRecommendationsUpdated shitted itself", e)
         }
     }
 
