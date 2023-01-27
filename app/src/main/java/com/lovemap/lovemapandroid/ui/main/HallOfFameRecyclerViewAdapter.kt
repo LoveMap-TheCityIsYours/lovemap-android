@@ -8,8 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lover.LoverViewWithoutRelationDto
-import com.lovemap.lovemapandroid.config.AppContext
-import com.lovemap.lovemapandroid.databinding.FragmentLoveItemBinding
 import com.lovemap.lovemapandroid.databinding.HallOfFameItemBinding
 import com.lovemap.lovemapandroid.service.lover.LoverService
 import com.lovemap.lovemapandroid.ui.relations.ViewOtherLoverActivity
@@ -49,7 +47,7 @@ class HallOfFameRecyclerViewAdapter(
         holder.lover = lover
         holder.hallOfFameItemPosition.text = "${position + 1}."
         holder.hallOfFameItemLoverName.text = lover.displayName.takeIf { lover.publicProfile }
-            ?: context.getString(R.string.privateProfile)
+            ?: context.getString(R.string.private_profile)
 
         ProfileUtils.setRanks(
             points = lover.points,

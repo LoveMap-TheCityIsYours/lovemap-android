@@ -14,7 +14,6 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lover.LoverRelationsDto
@@ -145,27 +144,31 @@ class ProfilePageFragment : Fragment() {
     }
 
     private fun fillViewWithData() {
-        MainScope().launch {
-            val user = appContext.metadataStore.getUser()
-            setDisplayNameEditText(user)
+        try {
+            MainScope().launch {
+                val user = appContext.metadataStore.getUser()
+                setDisplayNameEditText(user)
 
-            val lover = loverService.getMyself()
-            lover?.let {
-                if (isAdded && !isDetached) {
-                    ProfileUtils.setRanks(
-                        points = lover.points,
-                        currentRank = currentRank,
-                        animateText = true,
-                        pointsToNextLevel = pointsToNextLevel,
-                        progressBar = profileProgressBar
-                    )
-                    setTexts(lover)
-                    setPartnerships(requireContext())
-                    setLinkSharing(lover)
-                    setPublicProfileViews(lover.publicProfile)
+                val lover = loverService.getMyself()
+                lover?.let {
+                    if (isAdded && !isDetached) {
+                        ProfileUtils.setRanks(
+                            points = lover.points,
+                            currentRank = currentRank,
+                            animateText = true,
+                            pointsToNextLevel = pointsToNextLevel,
+                            progressBar = profileProgressBar
+                        )
+                        setTexts(lover)
+                        setPartnerships(requireContext())
+                        setLinkSharing(lover)
+                        setPublicProfileViews(lover.publicProfile)
+                    }
                 }
+                profileSwipeRefreshLayout.isRefreshing = false
             }
-            profileSwipeRefreshLayout.isRefreshing = false
+        } catch (e: Exception) {
+            Log.e(tag, "fillViewWithData shitted itself", e)
         }
     }
 
@@ -186,19 +189,12 @@ class ProfilePageFragment : Fragment() {
     }
 
     private fun setPublicProfileViews(publicProfile: Boolean) {
-        if (publicProfile) {
-            Glide.with(this@ProfilePageFragment)
-                .load(R.drawable.ic_baseline_public_24)
-                .into(profilePublicImage)
-            profilePublicToggle.isChecked = true
-            profilePublicToggleText.text = requireContext().getString(R.string.public_profile)
-        } else {
-            Glide.with(this@ProfilePageFragment)
-                .load(R.drawable.ic_baseline_public_off_24)
-                .into(profilePublicImage)
-            profilePublicToggle.isChecked = false
-            profilePublicToggleText.text = requireContext().getString(R.string.privateProfile)
-        }
+        profilePublicToggle.isChecked = publicProfile
+        ProfileUtils.setPublicPrivateProfileImage(
+            publicProfile,
+            profilePublicImage,
+            profilePublicToggleText
+        )
         setProfileToggleChanged()
     }
 
@@ -244,14 +240,18 @@ class ProfilePageFragment : Fragment() {
     }
 
     private fun editDisplayName(view: View) {
-        editingDisplayName = false
-        hideKeyboard(view)
-        Log.i(tag, "Editing DisplayName to '${displayNameText.text}'")
-        MainScope().launch {
-            loverService.updateDisplayName(displayNameText.text.toString().trim())?.let {
-                Log.i(tag, "Setting edited DisplayName to '${it.displayName}'")
-                displayNameText.setText(it.displayName)
+        try {
+            editingDisplayName = false
+            hideKeyboard(view)
+            Log.i(tag, "Editing DisplayName to '${displayNameText.text}'")
+            MainScope().launch {
+                loverService.updateDisplayName(displayNameText.text.toString().trim())?.let {
+                    Log.i(tag, "Setting edited DisplayName to '${it.displayName}'")
+                    displayNameText.setText(it.displayName)
+                }
             }
+        } catch (e: Exception) {
+            Log.e(tag, "editDisplayName shitted itself", e)
         }
     }
 

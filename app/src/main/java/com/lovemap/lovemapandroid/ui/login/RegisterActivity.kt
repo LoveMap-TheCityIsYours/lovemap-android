@@ -10,7 +10,6 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.widget.addTextChangedListener
-import com.bumptech.glide.Glide
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.metadata.LoggedInUser
@@ -22,6 +21,7 @@ import com.lovemap.lovemapandroid.databinding.ActivityRegisterBinding
 import com.lovemap.lovemapandroid.ui.main.MainActivity
 import com.lovemap.lovemapandroid.ui.utils.InfoPopupShower
 import com.lovemap.lovemapandroid.ui.utils.LoadingBarShower
+import com.lovemap.lovemapandroid.ui.utils.ProfileUtils
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
@@ -88,17 +88,11 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun onPublicProfileSwitchChanged(publicProfile: Boolean) {
-        if (publicProfile) {
-            Glide.with(this)
-                .load(R.drawable.ic_baseline_public_24)
-                .into(registerPublicImage)
-            registerPublicToggleText.text = getString(R.string.public_profile)
-        } else {
-            Glide.with(this)
-                .load(R.drawable.ic_baseline_public_off_24)
-                .into(registerPublicImage)
-            registerPublicToggleText.text = getString(R.string.privateProfile)
-        }
+        ProfileUtils.setPublicPrivateProfileImage(
+            publicProfile,
+            registerPublicImage,
+            registerPublicToggleText
+        )
     }
 
     private fun addEmailListener() {

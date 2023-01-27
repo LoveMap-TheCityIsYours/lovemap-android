@@ -29,6 +29,7 @@ import java.io.FileNotFoundException
 
 object PhotoUtils {
 
+    private const val TAG = "PhotoUtils"
     private const val REQUEST_EXTERNAL_STORAGE = 1
 
     private val PERMISSIONS_STORAGE = arrayOf(
@@ -198,20 +199,24 @@ object PhotoUtils {
         loveSpotType: LoveSpotType,
         url: String
     ) {
-        imageView.setImageResource(LoveSpotUtils.getTypeImageResource(loveSpotType))
-        HeifConverter.useContext(activity)
-            .fromUrl(url)
-            .withOutputFormat(HeifConverter.Format.JPEG)
-            .convert { result ->
-                val path = result[HeifConverter.Key.IMAGE_PATH] as String
-                val file = File(path)
-                Glide.with(activity as Context)
-                    .load(file)
-                    .transition(DrawableTransitionOptions.withCrossFade())
-                    .fitCenter()
-                    .fallback(LoveSpotUtils.getTypeImageResource(loveSpotType))
-                    .into(imageView)
-            }
+        try {
+            imageView.setImageResource(LoveSpotUtils.getTypeImageResource(loveSpotType))
+            HeifConverter.useContext(activity)
+                .fromUrl(url)
+                .withOutputFormat(HeifConverter.Format.JPEG)
+                .convert { result ->
+                    val path = result[HeifConverter.Key.IMAGE_PATH] as String
+                    val file = File(path)
+                    Glide.with(activity as Context)
+                        .load(file)
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .fitCenter()
+                        .fallback(LoveSpotUtils.getTypeImageResource(loveSpotType))
+                        .into(imageView)
+                }
+        } catch (e: Exception) {
+            Log.e(TAG, "loadHeif shitted itself", e)
+        }
     }
 
     fun loadSimpleImage(
@@ -219,12 +224,16 @@ object PhotoUtils {
         loveSpotType: LoveSpotType,
         url: String
     ) {
-        Glide.with(imageView.context)
-            .load(url)
-            .transition(DrawableTransitionOptions.withCrossFade())
-            .fitCenter()
-            .fallback(LoveSpotUtils.getTypeImageResource(loveSpotType))
-            .into(imageView)
+        try {
+            Glide.with(imageView.context)
+                .load(url)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .fitCenter()
+                .fallback(LoveSpotUtils.getTypeImageResource(loveSpotType))
+                .into(imageView)
+        } catch (e: Exception) {
+            Log.e(TAG, "loadSimpleImage shitted itself", e)
+        }
     }
 
     fun loadSimpleImage(
@@ -233,11 +242,15 @@ object PhotoUtils {
         url: String,
         overrideSize: Int
     ) {
-        Glide.with(imageView.context)
-            .load(url)
-            .override(overrideSize)
-            .transition(DrawableTransitionOptions.withCrossFade())
-            .fallback(LoveSpotUtils.getTypeImageResource(loveSpotType))
-            .into(imageView)
+        try {
+            Glide.with(imageView.context)
+                .load(url)
+                .override(overrideSize)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .fallback(LoveSpotUtils.getTypeImageResource(loveSpotType))
+                .into(imageView)
+        } catch (e: Exception) {
+            Log.e(TAG, "loadSimpleImage shitted itself", e)
+        }
     }
 }

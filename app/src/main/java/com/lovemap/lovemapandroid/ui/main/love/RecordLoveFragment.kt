@@ -3,6 +3,7 @@ package com.lovemap.lovemapandroid.ui.main.love
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,20 +55,25 @@ class RecordLoveFragment : Fragment(),
         partnerIds[getString(R.string.not_app_user)] = null
         recordLoveSelectPartnerDropdown.setSelection(0)
         MainScope().launch {
-            loverService.getMyself()?.let { lover ->
-                partners.addAll(partnersFromRelations(lover.relations).map {
-                    partnerIds[it.displayName] = it.id
-                    it.displayName
-                })
-                recordLoveSelectPartnerDropdown.adapter = ArrayAdapter(
-                    requireContext(),
-                    android.R.layout.simple_spinner_dropdown_item,
-                    partners.toTypedArray()
-                )
-                if (partners.size > 1) {
-                    recordLoveSelectPartnerDropdown.setSelection(1)
+            try {
+                loverService.getMyself()?.let { lover ->
+                    partners.addAll(partnersFromRelations(lover.relations).map {
+                        partnerIds[it.displayName] = it.id
+                        it.displayName
+                    })
+                    recordLoveSelectPartnerDropdown.adapter = ArrayAdapter(
+                        requireContext(),
+                        android.R.layout.simple_spinner_dropdown_item,
+                        partners.toTypedArray()
+                    )
+                    if (partners.size > 1) {
+                        recordLoveSelectPartnerDropdown.setSelection(1)
+                    }
                 }
+            } catch (e: Exception) {
+                Log.e(tag, "initPartnerDropdown shitted itself", e)
             }
+
         }
     }
 

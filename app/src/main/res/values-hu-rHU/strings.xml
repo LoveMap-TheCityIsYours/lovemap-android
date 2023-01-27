@@ -50,7 +50,7 @@
     <string name="profileShareableLink">Megosztható link mutatása</string>
     <string name="linkShareOff">Megosztható link kikapcsolása</string>
     <string name="linkShareOn">Megosztható link bekapcsolása</string>
-    <string name="privateProfile">Privát Profil 🤫</string>
+    <string name="private_profile">Privát Profil 🤫</string>
     <string name="profileInPartnershipWith">Kapcsolati státusz:</string>
     <string name="profilePartnersEmpty">Még nincs kapcsolatban</string>
     <string name="profileRank">Jelenlegi rang:</string>

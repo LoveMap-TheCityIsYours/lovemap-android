@@ -8,17 +8,15 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lover.LoverViewDto
+import com.lovemap.lovemapandroid.api.lover.relation.RelationStatus
 import com.lovemap.lovemapandroid.api.partnership.CancelPartnershipRequest
 import com.lovemap.lovemapandroid.api.partnership.PartnershipReaction
 import com.lovemap.lovemapandroid.api.partnership.PartnershipStatus.PARTNERSHIP_REQUESTED
 import com.lovemap.lovemapandroid.api.partnership.RespondPartnershipRequest
-import com.lovemap.lovemapandroid.api.lover.relation.RelationStatus
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.partnership.Partnership
 import com.lovemap.lovemapandroid.databinding.ActivityViewOtherLoverBinding
@@ -193,21 +191,11 @@ class ViewOtherLoverActivity : AppCompatActivity() {
     }
 
     private fun setPublicProfileViews(publicProfile: Boolean) {
-        try {
-            if (publicProfile) {
-                Glide.with(this)
-                    .load(R.drawable.ic_baseline_public_24)
-                    .into(profilePublicImage)
-                profilePublicToggleText.text = getString(R.string.public_profile)
-            } else {
-                Glide.with(this)
-                    .load(R.drawable.ic_baseline_public_off_24)
-                    .into(profilePublicImage)
-                profilePublicToggleText.text = getString(R.string.privateProfile)
-            }
-        } catch (e: Exception) {
-            Log.i(tag, "Glide fucked up", e)
-        }
+        ProfileUtils.setPublicPrivateProfileImage(
+            publicProfile,
+            profilePublicImage,
+            profilePublicToggleText
+        )
     }
 
     private fun setPointsAndRank(otherLover: LoverViewDto) {

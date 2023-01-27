@@ -1,15 +1,38 @@
 package com.lovemap.lovemapandroid.ui.utils
 
+import android.util.Log
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlin.math.max
-import kotlin.math.min
 
 object ProfileUtils {
+
+    private const val TAG = "ProfileUtils"
+
+    fun setPublicPrivateProfileImage(public: Boolean, imageView: ImageView, textView: TextView) {
+        try {
+            val context = imageView.context
+            if (public) {
+                Glide.with(context)
+                    .load(R.drawable.ic_baseline_public_24)
+                    .into(imageView)
+                textView.text = context.getString(R.string.public_profile)
+            } else {
+                Glide.with(context)
+                    .load(R.drawable.ic_baseline_public_off_24)
+                    .into(imageView)
+                textView.text = context.getString(R.string.private_profile)
+            }
+        } catch (e: Exception) {
+            Log.i(TAG, "Glide fucked up", e)
+        }
+    }
 
     fun setRanks(
         points: Int,
