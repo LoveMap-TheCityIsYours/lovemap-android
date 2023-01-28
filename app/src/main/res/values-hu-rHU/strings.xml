@@ -119,7 +119,7 @@
     <string name="my_lovemap_profile_link">LoveMap profilom</string>
     <string name="share_subject">A linkkel tekintsd meg LoveMap profilom ;)</string>
     <string name="filter_view_other_lover">Tekintsd meg a Lover profilját</string>
-    <string name="yourRelationWith">Kapcsolatod ezzel a felhasználóval:</string>
+    <string name="yourRelationWith">Kapcsolatotok:</string>
     <string name="relationPlaceholder">Semmi</string>
     <string name="follow">Követés</string>
     <string name="requestPartnership">Kapcsolat kérvényezése</string>
@@ -393,5 +393,9 @@
     <string name="photo_likes">Fotó lájkok:</string>
     <string name="photo_dislikes">Fotó diszlájkok:</string>
     <string name="joined_at">Csatlakoztál:</string>
+    <string name="your_followings">Követett Szeretők</string>
+    <string name="your_followers">Követők</string>
+    <string name="remove_follower_title">Követő eltávolítása</string>
+    <string name="remove_follower_message">Biztos hogy el akarod távolítani ezt a követőt?</string>
 
 </resources>

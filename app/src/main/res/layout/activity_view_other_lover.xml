@@ -5,7 +5,7 @@
     android:id="@+id/otherLoverSwipeRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.relations.ViewOtherLoverActivity">
+    tools:context=".ui.lover.ViewOtherLoverActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -60,7 +60,8 @@
                         android:layout_gravity="center"
                         android:maxWidth="150dp"
                         android:maxLines="2"
-                        android:text="@string/profileUserLevelText" />
+                        android:text="@string/profileUserLevelText"
+                        android:textColor="@color/myColorOnBackground" />
 
                     <ImageView
                         android:id="@+id/profileUserLevelImage"
@@ -97,9 +98,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/text_margin"
-                        android:text=" - " />
+                        android:text=" - "
+                        android:textColor="@color/myColorOnBackground" />
 
-<!--                    @string/points_to_next_level-->
+                    <!--                    @string/points_to_next_level-->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -111,7 +113,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/text_margin"
-                        android:text=" - " />
+                        android:text=" - "
+                        android:textColor="@color/myColorOnBackground" />
 
                 </LinearLayout>
 
@@ -155,6 +158,95 @@
                 android:layout_marginEnd="@dimen/standard_50"
                 android:layout_marginBottom="@dimen/standard_8" />
 
+
+            <LinearLayout
+                android:id="@+id/otherLoverPublicViews"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                        android:id="@+id/followingFab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginHorizontal="@dimen/standard_32"
+                        android:layout_marginTop="@dimen/standard_8"
+                        android:layout_marginBottom="@dimen/standard_4"
+                        app:icon="@drawable/follow"
+                        app:iconGravity="start" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/standard_4"
+                            android:text="@string/followings" />
+
+                        <TextView
+                            android:id="@+id/otherLoverFollowings"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" - "
+                            android:textColor="@color/myColorOnBackground" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginStart="@dimen/standard_16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                        android:id="@+id/followersFab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginHorizontal="@dimen/standard_32"
+                        android:layout_marginTop="@dimen/standard_8"
+                        android:layout_marginBottom="@dimen/standard_4"
+                        app:icon="@drawable/followers1"
+                        app:iconGravity="start" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/standard_4"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/standard_4"
+                            android:text="@string/followers" />
+
+                        <TextView
+                            android:id="@+id/otherLoverFollowers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" - "
+                            android:textColor="@color/myColorOnBackground" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
             <TextView
                 style="@style/TextAppearance.AppCompat.Small"
                 android:layout_width="wrap_content"
@@ -170,10 +262,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textAlignment="center"
                 android:maxWidth="280dp"
                 android:maxLines="2"
-                android:text=" - " />
+                android:text=" - "
+                android:textAlignment="center" />
 
             <TextView
                 style="?android:attr/weekSeparatorLineColor"
@@ -189,9 +281,9 @@
 
             <TextView
                 android:id="@+id/partnerViewLoveMakingsText"
+                style="@style/TextAppearance.AppCompat.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/TextAppearance.AppCompat.Large"
                 android:layout_gravity="center_horizontal"
                 android:text="@string/your_love_makings_together"
                 android:visibility="gone" />
@@ -327,9 +419,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/standard_8"
-                android:visibility="gone"
                 android:text="@string/unfollow"
                 android:textSize="12sp"
+                android:visibility="gone"
                 app:icon="@drawable/baseline_unfollow_24" />
 
             <TextView
@@ -344,12 +436,11 @@
                 android:gravity="center_horizontal" />
 
             <TextView
-                android:text="@string/activities_of_lover"
+                style="@style/TextAppearance.AppCompat.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/TextAppearance.AppCompat.Large"
                 android:layout_gravity="center_horizontal"
-                />
+                android:text="@string/activities_of_lover" />
 
             <com.lovemap.lovemapandroid.ui.customviews.NestedScrollableHost
                 android:layout_width="match_parent"

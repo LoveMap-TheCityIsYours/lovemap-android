@@ -10,7 +10,7 @@ import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lover.LoverViewWithoutRelationDto
 import com.lovemap.lovemapandroid.databinding.HallOfFameItemBinding
 import com.lovemap.lovemapandroid.service.lover.LoverService
-import com.lovemap.lovemapandroid.ui.relations.ViewOtherLoverActivity
+import com.lovemap.lovemapandroid.ui.lover.ViewOtherLoverActivity
 import com.lovemap.lovemapandroid.ui.utils.ProfileUtils
 import com.lovemap.lovemapandroid.ui.utils.setListItemAnimation
 

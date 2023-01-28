@@ -1,5 +1,6 @@
-package com.lovemap.lovemapandroid.ui.relations
+package com.lovemap.lovemapandroid.ui.lover
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -21,8 +22,11 @@ import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.partnership.Partnership
 import com.lovemap.lovemapandroid.databinding.ActivityViewOtherLoverBinding
 import com.lovemap.lovemapandroid.service.lover.LoverService
+import com.lovemap.lovemapandroid.service.lover.relation.RelationService
 import com.lovemap.lovemapandroid.service.lover.relation.RelationState
 import com.lovemap.lovemapandroid.service.lover.relation.RelationState.*
+import com.lovemap.lovemapandroid.ui.lover.LoverRecyclerViewAdapter.Type.FOLLOWERS
+import com.lovemap.lovemapandroid.ui.lover.LoverRecyclerViewAdapter.Type.FOLLOWINGS
 import com.lovemap.lovemapandroid.ui.main.love.lovehistory.LoveListFragment
 import com.lovemap.lovemapandroid.ui.main.newsfeed.NewsFeedFragment
 import com.lovemap.lovemapandroid.ui.utils.AlertDialogUtils
@@ -63,6 +67,11 @@ class ViewOtherLoverActivity : AppCompatActivity() {
     private lateinit var cancelRequestPartnershipFab: ExtendedFloatingActionButton
 
     private lateinit var respondPartnershipViews: LinearLayout
+    private lateinit var otherLoverPublicViews: LinearLayout
+    private lateinit var otherLoverFollowings: TextView
+    private lateinit var otherLoverFollowers: TextView
+    private lateinit var followingFab: ExtendedFloatingActionButton
+    private lateinit var followersFab: ExtendedFloatingActionButton
 
     private lateinit var partnerLoveListFragment: LoveListFragment
 
@@ -128,6 +137,11 @@ class ViewOtherLoverActivity : AppCompatActivity() {
         cancelRequestPartnershipFab = binding.cancelRequestPartnershipFab
 
         respondPartnershipViews = binding.respondPartnershipViews
+        otherLoverPublicViews = binding.otherLoverPublicViews
+        otherLoverFollowings = binding.otherLoverFollowings
+        otherLoverFollowers = binding.otherLoverFollowers
+        followingFab = binding.followingFab
+        followersFab = binding.followersFab
 
         partnerLoveListFragment =
             supportFragmentManager.findFragmentById(R.id.partnerLoveListFragment) as LoveListFragment
@@ -167,8 +181,31 @@ class ViewOtherLoverActivity : AppCompatActivity() {
             setRelationWithLover(otherLover, partnership)
             showLovesWithPartner()
             showLoverActivitiesFragment(otherLover.id)
+            setPublicLoverViews(otherLover)
         } catch (e: Exception) {
             Log.e(tag, "setViews shitted itself", e)
+        }
+    }
+
+    private fun setPublicLoverViews(otherLover: LoverViewDto) {
+        if (otherLover.publicProfile) {
+            otherLoverPublicViews.visibility = View.VISIBLE
+            otherLoverFollowings.text = otherLover.numberOfFollowings.toString()
+            otherLoverFollowers.text = otherLover.numberOfFollowers.toString()
+            followingFab.setOnClickListener {
+                RelationService.LOVER_LIST_TYPE = FOLLOWINGS
+                RelationService.LOVER_ID = otherLover.id
+                startActivity(Intent(this@ViewOtherLoverActivity, LoverListActivity::class.java))
+            }
+            followersFab.setOnClickListener {
+                RelationService.LOVER_LIST_TYPE = FOLLOWERS
+                RelationService.LOVER_ID = otherLover.id
+                startActivity(Intent(this@ViewOtherLoverActivity, LoverListActivity::class.java))
+            }
+        } else {
+            otherLoverPublicViews.visibility = View.GONE
+            followingFab.setOnClickListener {}
+            followersFab.setOnClickListener {}
         }
     }
 

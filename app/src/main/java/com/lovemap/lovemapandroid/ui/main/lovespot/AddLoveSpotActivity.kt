@@ -40,7 +40,7 @@ import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils.typeToPosition
 import com.lovemap.lovemapandroid.ui.utils.PhotoUtils
 import com.lovemap.lovemapandroid.utils.timeZone
 import com.lovemap.lovemapandroid.utils.toApiString
-import com.lovemap.lovemapandroid.utils.toFormattedString
+import com.lovemap.lovemapandroid.utils.toFormattedDateTime
 import com.lovemap.lovemapandroid.utils.toInstant
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -252,7 +252,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
             )
             recordLoveFragment.selectedDateTime =
                 LocalDateTime.ofInstant(it.happenedAt, timeZone.toZoneId())
-            recordLoveFragment.recordLoveHappenedAt.text = it.happenedAt.toFormattedString()
+            recordLoveFragment.recordLoveHappenedAt.text = it.happenedAt.toFormattedDateTime()
         }
         loveService.savedCreationState = null
 

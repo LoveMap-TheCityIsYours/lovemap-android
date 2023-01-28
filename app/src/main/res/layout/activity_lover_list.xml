@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/standard_16"
+    tools:context=".ui.lover.LoverListActivity">
+
+    <TextView
+        android:id="@+id/followersDisplayName"
+        style="@style/TextAppearance.Material3.HeadlineMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/standard_16"
+        android:inputType="textMultiLine"
+        android:maxWidth="280dp"
+        android:maxLines="2"
+        android:text="@string/profileUserName"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/loverActivityTitle"
+        style="@style/TextAppearance.AppCompat.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/standard_16"
+        android:text="Followers" />
+
+    <fragment
+        android:id="@+id/loverListFragment"
+        android:name="com.lovemap.lovemapandroid.ui.lover.LoverListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/fragment_lover_list" />
+
+</LinearLayout>

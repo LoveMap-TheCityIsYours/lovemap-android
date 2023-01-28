@@ -256,6 +256,7 @@ class AppContext : MultiDexApplication() {
         relationService = RelationService(
             relationApi = authorizingRetrofit.create(RelationApi::class.java),
             metadataStore = metadataStore,
+            loverService = loverService,
             toaster = toaster
         )
         if (metadataStore.isLoggedIn()) {

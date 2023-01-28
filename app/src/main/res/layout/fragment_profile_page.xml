@@ -86,6 +86,7 @@
                             android:text="@string/number_of_loves" />
 
                         <TextView
+                            android:textColor="@color/myColorOnBackground"
                             android:id="@+id/profileNumberOfLoves"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -107,6 +108,7 @@
 
                         <TextView
                             android:id="@+id/profileNumberOfLoveSpots"
+                            android:textColor="@color/myColorOnBackground"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text=" - " />
@@ -127,6 +129,7 @@
 
                         <TextView
                             android:id="@+id/profileReportsSubmitted"
+                            android:textColor="@color/myColorOnBackground"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text=" - " />
@@ -147,6 +150,7 @@
 
                         <TextView
                             android:id="@+id/profileReportsReceived"
+                            android:textColor="@color/myColorOnBackground"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text=" - " />
@@ -167,6 +171,7 @@
 
                         <TextView
                             android:id="@+id/profileMeaningfulReviews"
+                            android:textColor="@color/myColorOnBackground"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text=" - " />
@@ -187,6 +192,7 @@
 
                         <TextView
                             android:id="@+id/profileHofPosition"
+                            android:textColor="@color/myColorOnBackground"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text=" - " />
@@ -207,6 +213,7 @@
 
                         <TextView
                             android:id="@+id/profilePhotosUploaded"
+                            android:textColor="@color/myColorOnBackground"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text=" - " />
@@ -227,6 +234,7 @@
 
                         <TextView
                             android:id="@+id/profilePhotoLikes"
+                            android:textColor="@color/myColorOnBackground"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text=" - " />
@@ -247,6 +255,7 @@
 
                         <TextView
                             android:id="@+id/profilePhotoDislikes"
+                            android:textColor="@color/myColorOnBackground"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text=" - " />
@@ -267,6 +276,7 @@
 
                         <TextView
                             android:id="@+id/profileCreatedAt"
+                            android:textColor="@color/myColorOnBackground"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text=" - " />
@@ -329,6 +339,7 @@
 
                     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                         android:id="@+id/followingFab"
+                        android:layout_marginTop="@dimen/standard_8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -350,6 +361,7 @@
 
                         <TextView
                             android:id="@+id/profileNumberOfFollowings"
+                            android:textColor="@color/myColorOnBackground"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text=" - " />
@@ -366,6 +378,7 @@
 
                     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                         android:id="@+id/followersFab"
+                        android:layout_marginTop="@dimen/standard_8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -388,6 +401,7 @@
 
                         <TextView
                             android:id="@+id/profileNumberOfFollowers"
+                            android:textColor="@color/myColorOnBackground"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text=" - " />
@@ -447,6 +461,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:textColor="@color/myColorOnBackground"
                     android:inputType="textMultiLine"
                     android:maxWidth="150dp"
                     android:maxLines="2"
@@ -477,6 +492,7 @@
 
                     <TextView
                         android:id="@+id/profilePoints"
+                        android:textColor="@color/myColorOnBackground"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/text_margin"
@@ -491,6 +507,7 @@
 
                     <TextView
                         android:id="@+id/profilePointsToNextLevel"
+                        android:textColor="@color/myColorOnBackground"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/text_margin"

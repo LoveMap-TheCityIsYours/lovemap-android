@@ -101,7 +101,7 @@ class LoveSpotWidgetFragment : Fragment() {
                 }
             }
         } catch (e: Exception) {
-            Log.e(tag, "onRecommendationsUpdated shitted itself", e)
+            Log.e(tag, "onRecommendationsUpdated shitted itself")
         }
     }
 

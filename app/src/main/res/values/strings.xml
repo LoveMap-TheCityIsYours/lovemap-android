@@ -127,7 +127,7 @@
     <string name="my_lovemap_profile_link">My LoveMap profile</string>
     <string name="share_subject">View my LoveMap profile with this link ;)</string>
     <string name="filter_view_other_lover">View Lover profile</string>
-    <string name="yourRelationWith">Your Relation with the user:</string>
+    <string name="yourRelationWith">Your Relation:</string>
     <string name="relationPlaceholder">Nothing</string>
     <string name="follow">Follow</string>
     <string name="requestPartnership">Request Partnership</string>
@@ -400,5 +400,9 @@
     <string name="photo_likes">Photo likes:</string>
     <string name="photo_dislikes">Photo dislikes:</string>
     <string name="joined_at">Joined at:</string>
+    <string name="your_followings">Followed Lovers</string>
+    <string name="your_followers">Followers</string>
+    <string name="remove_follower_title">Remove follower</string>
+    <string name="remove_follower_message">Are you sure you want to remove this follower?</string>
 
 </resources>

@@ -7,7 +7,6 @@ import com.lovemap.lovemapandroid.config.AppContext
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.time.ZoneOffset
 import java.time.chrono.Chronology
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
@@ -48,10 +47,16 @@ fun Instant.toApiString(): String {
     return "$epochSecond.$nano"
 }
 
-fun Instant.toFormattedString(): String {
+fun Instant.toFormattedDateTime(): String {
     val timeZone = TimeZone.getDefault()
     val zonedDateTime = this.atZone(timeZone.toZoneId())
     return zonedDateTime.format(dateTimeFormatter)
+}
+
+fun Instant.toFormattedDate(): String {
+    val timeZone = TimeZone.getDefault()
+    val localDate = this.atZone(timeZone.toZoneId()).toLocalDate()
+    return localDate.format(DateTimeFormatter.ofPattern("yyyy MMM dd"))
 }
 
 fun LocalDateTime.toInstant(): Instant {

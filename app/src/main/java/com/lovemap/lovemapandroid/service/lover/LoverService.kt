@@ -212,6 +212,10 @@ class LoverService(
         }
     }
 
+    fun putIntoCache(lover: LoverViewWithoutRelationDto) {
+        loverCache.put(lover.id, lover)
+    }
+
     suspend fun generateLink(): LoverDto? {
         return withContext(Dispatchers.IO) {
             val loggedInUser = metadataStore.getUser()

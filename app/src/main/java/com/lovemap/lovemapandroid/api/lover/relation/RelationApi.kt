@@ -32,6 +32,9 @@ interface RelationApi {
     @GET("/lovers/{loverId}/relations/followers")
     fun getFollowers(@Path("loverId") loverId: Long): Call<List<LoverViewWithoutRelationDto>>
 
+    @GET("/lovers/{loverId}/relations/followings")
+    fun getFollowings(@Path("loverId") loverId: Long): Call<List<LoverViewWithoutRelationDto>>
+
     @DELETE("/lovers/{loverId}/relations/{targetLoverId}/removeFollower")
     fun removeFollower(
         @Path("loverId") loverId: Long,

@@ -9,7 +9,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RatingBar
 import android.widget.TextView
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.lovemap.lovemapandroid.R
@@ -23,7 +22,7 @@ import com.lovemap.lovemapandroid.ui.utils.AlertDialogUtils
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
 import com.lovemap.lovemapandroid.ui.utils.setListItemAnimation
 import com.lovemap.lovemapandroid.utils.instantOfApiString
-import com.lovemap.lovemapandroid.utils.toFormattedString
+import com.lovemap.lovemapandroid.utils.toFormattedDateTime
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
@@ -69,7 +68,7 @@ class WishlistItemRecyclerAdapter(
         )
 
         viewHolder.addedAt.text =
-            instantOfApiString(item.wishlistItem.addedAt).toFormattedString()
+            instantOfApiString(item.wishlistItem.addedAt).toFormattedDateTime()
         viewHolder.item = item
         viewHolder.itemCounter.text = "${item.number}."
 

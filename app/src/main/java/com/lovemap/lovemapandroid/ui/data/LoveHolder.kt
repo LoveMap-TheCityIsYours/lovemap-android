@@ -4,7 +4,7 @@ import android.content.Context
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.data.love.Love
 import com.lovemap.lovemapandroid.utils.instantOfApiString
-import com.lovemap.lovemapandroid.utils.toFormattedString
+import com.lovemap.lovemapandroid.utils.toFormattedDateTime
 
 data class LoveHolder(
     val id: Long,
@@ -33,7 +33,7 @@ data class LoveHolder(
                 partner = love.partnerName ?: context.getString(R.string.not_app_user),
                 partnerId = partnerId,
                 note = love.note ?: "",
-                happenedAt = instantOfApiString(love.happenedAt).toFormattedString(),
+                happenedAt = instantOfApiString(love.happenedAt).toFormattedDateTime(),
                 happenedAtLong = instantOfApiString(love.happenedAt).epochSecond,
                 number = number,
             )

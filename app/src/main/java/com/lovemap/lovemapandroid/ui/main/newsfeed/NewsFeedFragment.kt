@@ -15,7 +15,6 @@ import com.lovemap.lovemapandroid.api.newsfeed.NewsFeedItemResponse
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.ui.main.newsfeed.NewsFeedFragment.NewsFeedType.FOLLOWING
 import com.lovemap.lovemapandroid.ui.main.newsfeed.NewsFeedFragment.NewsFeedType.GLOBAL
-import com.lovemap.lovemapandroid.ui.main.pages.newsfeed.NewsFeedRecyclerAdapter
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 

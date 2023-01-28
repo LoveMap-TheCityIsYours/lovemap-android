@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.utils.partnersFromRelations
-import com.lovemap.lovemapandroid.utils.toFormattedString
+import com.lovemap.lovemapandroid.utils.toFormattedDateTime
 import com.lovemap.lovemapandroid.utils.toInstant
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -80,7 +80,7 @@ class RecordLoveFragment : Fragment(),
     private fun initHappenedAtViews(view: View) {
         recordLoveChangeDateTime = view.findViewById(R.id.recordLoveChangeDateTime)
         recordLoveHappenedAt = view.findViewById(R.id.recordLoveHappenedAt)
-        recordLoveHappenedAt.text = selectedDateTime.toInstant().toFormattedString()
+        recordLoveHappenedAt.text = selectedDateTime.toInstant().toFormattedDateTime()
         datePicker = DatePickerDialog(
             requireActivity(),
             this,
@@ -119,7 +119,7 @@ class RecordLoveFragment : Fragment(),
             selectedDateTime.hour,
             selectedDateTime.minute
         )
-        recordLoveHappenedAt.text = selectedDateTime.toInstant().toFormattedString()
+        recordLoveHappenedAt.text = selectedDateTime.toInstant().toFormattedDateTime()
         timePicker.updateTime(selectedDateTime.hour, selectedDateTime.minute)
         timePicker.show()
     }
@@ -132,6 +132,6 @@ class RecordLoveFragment : Fragment(),
             hourOfDay,
             minute
         )
-        recordLoveHappenedAt.text = selectedDateTime.toInstant().toFormattedString()
+        recordLoveHappenedAt.text = selectedDateTime.toInstant().toFormattedDateTime()
     }
 }

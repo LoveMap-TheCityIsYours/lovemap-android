@@ -110,7 +110,7 @@ class RecordLoveActivity : AppCompatActivity() {
                 val happenedAt = instantOfApiString(it.happenedAt)
                 recordLoveFragment.selectedDateTime = LocalDateTime.ofInstant(happenedAt, timeZone.toZoneId())
                 recordLoveFragment.recordLoveHappenedAt.text =
-                    happenedAt.toFormattedString()
+                    happenedAt.toFormattedDateTime()
                 recordLoveFragment.addPrivateNote.text = it.note
             }
         }

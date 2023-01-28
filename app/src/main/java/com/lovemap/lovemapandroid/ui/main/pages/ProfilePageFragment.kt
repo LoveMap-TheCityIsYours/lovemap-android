@@ -21,17 +21,21 @@ import com.lovemap.lovemapandroid.api.lover.LoverViewDto
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.data.metadata.LoggedInUser
 import com.lovemap.lovemapandroid.service.lover.LoverService
+import com.lovemap.lovemapandroid.service.lover.relation.RelationService
 import com.lovemap.lovemapandroid.ui.login.LoginActivity
+import com.lovemap.lovemapandroid.ui.lover.LoverListActivity
+import com.lovemap.lovemapandroid.ui.lover.LoverRecyclerViewAdapter
+import com.lovemap.lovemapandroid.ui.lover.LoverRecyclerViewAdapter.Type.FOLLOWERS
+import com.lovemap.lovemapandroid.ui.lover.LoverRecyclerViewAdapter.Type.FOLLOWINGS
 import com.lovemap.lovemapandroid.ui.main.HallOfFameActivity
 import com.lovemap.lovemapandroid.ui.main.newsfeed.NewsFeedFragment
-import com.lovemap.lovemapandroid.ui.relations.ViewOtherLoverActivity
+import com.lovemap.lovemapandroid.ui.lover.ViewOtherLoverActivity
 import com.lovemap.lovemapandroid.ui.utils.*
 import com.lovemap.lovemapandroid.utils.instantOfApiString
-import com.lovemap.lovemapandroid.utils.toFormattedString
+import com.lovemap.lovemapandroid.utils.toFormattedDate
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.w3c.dom.Text
 
 
 class ProfilePageFragment : Fragment() {
@@ -62,6 +66,8 @@ class ProfilePageFragment : Fragment() {
     private lateinit var profilePublicToggleText: TextView
     private lateinit var profileNewsFeedContainer: LinearLayout
     private lateinit var profileHallOfFameFab: ExtendedFloatingActionButton
+    private lateinit var followingFab: ExtendedFloatingActionButton
+    private lateinit var followersFab: ExtendedFloatingActionButton
 
     private lateinit var profileHofPosition: TextView
     private lateinit var profilePhotosUploaded: TextView
@@ -138,6 +144,8 @@ class ProfilePageFragment : Fragment() {
         profileNumberOfFollowers = view.findViewById(R.id.profileNumberOfFollowers)
 
         profileHallOfFameFab = view.findViewById(R.id.profileHallOfFameFab)
+        followingFab = view.findViewById(R.id.followingFab)
+        followersFab = view.findViewById(R.id.followersFab)
 
         linkSharingInfoButton = view.findViewById(R.id.linkSharingInfoButton)
         linkSharingInfoButton.setOnClickListener {
@@ -147,6 +155,18 @@ class ProfilePageFragment : Fragment() {
 
         profileHallOfFameFab.setOnClickListener {
             startActivity(Intent(requireContext(), HallOfFameActivity::class.java))
+        }
+
+        followingFab.setOnClickListener {
+            RelationService.LOVER_LIST_TYPE = FOLLOWINGS
+            RelationService.LOVER_ID = AppContext.INSTANCE.userId
+            startActivity(Intent(requireContext(), LoverListActivity::class.java))
+        }
+
+        followersFab.setOnClickListener {
+            RelationService.LOVER_LIST_TYPE = FOLLOWERS
+            RelationService.LOVER_ID = AppContext.INSTANCE.userId
+            startActivity(Intent(requireContext(), LoverListActivity::class.java))
         }
 
         showActivitiesFragment()
@@ -288,7 +308,7 @@ class ProfilePageFragment : Fragment() {
         profilePhotoDislikes.text = lover.photoDislikesReceived.toString()
         profileNumberOfFollowings.text = lover.numberOfFollowings.toString()
         profileNumberOfFollowers.text = lover.numberOfFollowers.toString()
-        profileCreatedAt.text = instantOfApiString(lover.createdAt).toFormattedString()
+        profileCreatedAt.text = instantOfApiString(lover.createdAt).toFormattedDate()
     }
 
     private fun setPartnerships(context: Context) {
