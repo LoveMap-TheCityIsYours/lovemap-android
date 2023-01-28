@@ -403,7 +403,7 @@ class ViewOtherLoverActivity : AppCompatActivity() {
                         relationText.text = getString(R.string.itIsYou)
                         relationText.animate().alpha(1f).duration = 250
                     }
-                    disableRequestButton()
+                    hideRequestButton()
                     hideRespondView()
                     hideCancelRequestButton()
                     hideEndButton()
@@ -458,7 +458,7 @@ class ViewOtherLoverActivity : AppCompatActivity() {
                         relationText.text = getString(R.string.you_blocked_them)
                         relationText.animate().alpha(1f).duration = 250
                     }
-                    disableRequestButton()
+                    hideRequestButton()
                     hideRespondView()
                     hideCancelRequestButton()
                     hideEndButton()
@@ -470,7 +470,7 @@ class ViewOtherLoverActivity : AppCompatActivity() {
                         relationText.text = getString(R.string.you_follow_this_lover)
                         relationText.animate().alpha(1f).duration = 250
                     }
-                    disableRequestButton()
+                    hideRequestButton()
                     hideRespondView()
                     hideCancelRequestButton()
                     hideEndButton()

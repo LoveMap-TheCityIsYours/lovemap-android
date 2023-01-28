@@ -26,9 +26,12 @@ import com.lovemap.lovemapandroid.ui.main.HallOfFameActivity
 import com.lovemap.lovemapandroid.ui.main.newsfeed.NewsFeedFragment
 import com.lovemap.lovemapandroid.ui.relations.ViewOtherLoverActivity
 import com.lovemap.lovemapandroid.ui.utils.*
+import com.lovemap.lovemapandroid.utils.instantOfApiString
+import com.lovemap.lovemapandroid.utils.toFormattedString
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.w3c.dom.Text
 
 
 class ProfilePageFragment : Fragment() {
@@ -52,7 +55,6 @@ class ProfilePageFragment : Fragment() {
     private lateinit var points: TextView
     private lateinit var pointsToNextLevel: TextView
     private lateinit var currentRank: TextView
-    private lateinit var profileShareDescription: TextView
     private lateinit var profileProgressBar: ProgressBar
     private lateinit var linkSharingInfoButton: ImageButton
     private lateinit var profilePublicImage: ImageView
@@ -60,6 +62,14 @@ class ProfilePageFragment : Fragment() {
     private lateinit var profilePublicToggleText: TextView
     private lateinit var profileNewsFeedContainer: LinearLayout
     private lateinit var profileHallOfFameFab: ExtendedFloatingActionButton
+
+    private lateinit var profileHofPosition: TextView
+    private lateinit var profilePhotosUploaded: TextView
+    private lateinit var profilePhotoLikes: TextView
+    private lateinit var profilePhotoDislikes: TextView
+    private lateinit var profileCreatedAt: TextView
+    private lateinit var profileNumberOfFollowings: TextView
+    private lateinit var profileNumberOfFollowers: TextView
 
     private val appContext = AppContext.INSTANCE
     private val loverService = appContext.loverService
@@ -118,6 +128,15 @@ class ProfilePageFragment : Fragment() {
         profilePublicImage = view.findViewById(R.id.profilePublicImage)
         profilePublicToggleText = view.findViewById(R.id.profilePublicToggleText)
         profileNewsFeedContainer = view.findViewById(R.id.profileNewsFeedContainer)
+
+        profileHofPosition = view.findViewById(R.id.profileHofPosition)
+        profilePhotosUploaded = view.findViewById(R.id.profilePhotosUploaded)
+        profilePhotoLikes = view.findViewById(R.id.profilePhotoLikes)
+        profilePhotoDislikes = view.findViewById(R.id.profilePhotoDislikes)
+        profileCreatedAt = view.findViewById(R.id.profileCreatedAt)
+        profileNumberOfFollowings = view.findViewById(R.id.profileNumberOfFollowings)
+        profileNumberOfFollowers = view.findViewById(R.id.profileNumberOfFollowers)
+
         profileHallOfFameFab = view.findViewById(R.id.profileHallOfFameFab)
 
         linkSharingInfoButton = view.findViewById(R.id.linkSharingInfoButton)
@@ -262,6 +281,14 @@ class ProfilePageFragment : Fragment() {
         reportsReceived.text = lover.reportsReceived.toString()
         meaningfulReviews.text = lover.reviewsSubmitted.toString()
         points.text = lover.points.toString()
+
+        profileHofPosition.text = lover.hallOfFamePosition?.toString() ?: "1000+"
+        profilePhotosUploaded.text = lover.photosUploaded.toString()
+        profilePhotoLikes.text = lover.photoLikesReceived.toString()
+        profilePhotoDislikes.text = lover.photoDislikesReceived.toString()
+        profileNumberOfFollowings.text = lover.numberOfFollowings.toString()
+        profileNumberOfFollowers.text = lover.numberOfFollowers.toString()
+        profileCreatedAt.text = instantOfApiString(lover.createdAt).toFormattedString()
     }
 
     private fun setPartnerships(context: Context) {

@@ -393,5 +393,12 @@
     <string name="failed_to_load_hall_of_fame">Failed to load Hall of Fame</string>
     <string name="hall_of_fame">Hall of Fame</string>
     <string name="hall_of_fame_title">Hall of Fame 🏛️</string>
+    <string name="followings">Following:</string>
+    <string name="followers">Followers:</string>
+    <string name="hof_position">HoF Position:</string>
+    <string name="photos_uploaded">Photos uploaded:</string>
+    <string name="photo_likes">Photo likes:</string>
+    <string name="photo_dislikes">Photo dislikes:</string>
+    <string name="joined_at">Joined at:</string>
 
 </resources>

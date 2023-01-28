@@ -99,7 +99,7 @@
                         android:layout_marginStart="@dimen/text_margin"
                         android:text=" - " />
 
-
+<!--                    @string/points_to_next_level-->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -319,7 +319,7 @@
                 android:enabled="false"
                 android:text="@string/follow"
                 android:textSize="12sp"
-                app:icon="@drawable/ic_baseline_follow_the_signs_24" />
+                app:icon="@drawable/follow" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/unfollowFab"

@@ -64,7 +64,7 @@
     <string name="points_to_next_level">Pontok a következő szintig</string>
     <string name="points">Pontok</string>
     <string name="reports_submitted">Jelentések beküldve:</string>
-    <string name="love_spots_added">Hozzáadott Love Spotok:</string>
+    <string name="love_spots_added">Hozzáadott Spotok:</string>
     <string name="number_of_loves">Hancúrok száma:</string>
     <string name="marker_rating">Értékelés:</string>
     <string name="marker_availability">Elérhetőság:</string>
@@ -386,5 +386,12 @@
     <string name="failed_to_load_hall_of_fame">Hírességek Csarnokának lekérése sikertelen</string>
     <string name="hall_of_fame">Hírességek Csarnoka</string>
     <string name="hall_of_fame_title">Hírességek Csarnoka 🏛️</string>
+    <string name="followings">Követsz:</string>
+    <string name="followers">Követők:</string>
+    <string name="hof_position">HCS Pozíció:</string>
+    <string name="photos_uploaded">Feltöltött képek:</string>
+    <string name="photo_likes">Fotó lájkok:</string>
+    <string name="photo_dislikes">Fotó diszlájkok:</string>
+    <string name="joined_at">Csatlakoztál:</string>
 
 </resources>

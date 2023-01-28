@@ -51,6 +51,7 @@
                     android:layout_weight="6"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
+                    android:layout_marginBottom="@dimen/standard_8"
                     android:layout_marginEnd="@dimen/text_margin"
                     android:minWidth="200dp"
                     android:orientation="vertical">
@@ -61,7 +62,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/text_margin"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="@dimen/standard_8"
                         android:textSize="20sp"
                         android:textAlignment="center"
                         android:inputType="textMultiLine|textCapWords"
@@ -171,6 +172,106 @@
                             android:text=" - " />
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/standard_4"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/text_margin"
+                            android:layout_marginEnd="@dimen/standard_8"
+                            android:text="@string/hof_position" />
+
+                        <TextView
+                            android:id="@+id/profileHofPosition"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" - " />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/standard_4"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/text_margin"
+                            android:layout_marginEnd="@dimen/standard_8"
+                            android:text="@string/photos_uploaded" />
+
+                        <TextView
+                            android:id="@+id/profilePhotosUploaded"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" - " />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/standard_4"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/text_margin"
+                            android:layout_marginEnd="@dimen/standard_8"
+                            android:text="@string/photo_likes" />
+
+                        <TextView
+                            android:id="@+id/profilePhotoLikes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" - " />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/standard_4"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/text_margin"
+                            android:layout_marginEnd="@dimen/standard_8"
+                            android:text="@string/photo_dislikes" />
+
+                        <TextView
+                            android:id="@+id/profilePhotoDislikes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" - " />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/standard_4"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/text_margin"
+                            android:layout_marginEnd="@dimen/standard_8"
+                            android:text="@string/joined_at" />
+
+                        <TextView
+                            android:id="@+id/profileCreatedAt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" - " />
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <androidx.legacy.widget.Space
@@ -178,7 +279,7 @@
                     android:focusableInTouchMode="true"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1" />
+                    android:layout_weight="0.5" />
 
                 <LinearLayout
                     android:clickable="true"
@@ -196,7 +297,8 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:layout_gravity="center"
-                        android:layout_margin="@dimen/text_margin"
+                        android:layout_marginTop="@dimen/standard_8"
+                        android:layout_marginHorizontal="@dimen/standard_8"
                         android:src="@drawable/ic_baseline_public_off_24" />
 
                     <androidx.appcompat.widget.SwitchCompat
@@ -215,6 +317,81 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="@string/private_profile" />
+
+                    <TextView
+                        style="?android:attr/weekSeparatorLineColor"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/standard_8"
+                        android:layout_marginBottom="@dimen/standard_8"
+                        android:layout_height="1dp"
+                        android:background="@color/separatorLine"
+                        android:gravity="center_horizontal" />
+
+                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                        android:id="@+id/followingFab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="@dimen/standard_4"
+                        app:icon="@drawable/follow"
+                        app:iconGravity="start" />
+
+                    <LinearLayout
+                        android:gravity="center_horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/standard_4"
+                            android:text="@string/followings" />
+
+                        <TextView
+                            android:id="@+id/profileNumberOfFollowings"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" - " />
+                    </LinearLayout>
+
+                    <TextView
+                        style="?android:attr/weekSeparatorLineColor"
+                        android:layout_marginTop="@dimen/standard_8"
+                        android:layout_marginBottom="@dimen/standard_8"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/separatorLine"
+                        android:gravity="center_horizontal" />
+
+                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                        android:id="@+id/followersFab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="@dimen/standard_4"
+                        app:icon="@drawable/followers1"
+                        app:iconGravity="start" />
+
+                    <LinearLayout
+                        android:gravity="center_horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/standard_4"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/standard_4"
+                            android:text="@string/followers" />
+
+                        <TextView
+                            android:id="@+id/profileNumberOfFollowers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" - " />
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -280,7 +457,7 @@
                     android:focusableInTouchMode="true"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1" />
+                    android:layout_weight="0.5" />
 
                 <LinearLayout
                     android:clickable="true"

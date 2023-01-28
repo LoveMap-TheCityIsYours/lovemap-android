@@ -14,15 +14,17 @@ import java.util.*
  */
 class ExampleUnitTest {
     @Test
-    fun addition_isCorrect() {
+    fun flagEmojiTest() {
         val map = EmojiManager.getForTag("flag")
             .filter { it.tags.firstOrNull { tag -> tag != "flag" } != null }
             .associateBy({ it.tags.firstOrNull { tag -> tag != "flag" } }, { it.unicode })
         val treeMap = TreeMap(map)
         val usFlag = EmojiUtils.getFlagEmoji("United States ")
         val huFlag = EmojiUtils.getFlagEmoji("Hungary")
+        val mmFlag = EmojiUtils.getFlagEmoji(" Myanmar (Burma) ")
         println(usFlag)
         println(huFlag)
+        println(mmFlag)
         assertEquals(4, 2 + 2)
     }
 }
