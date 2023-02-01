@@ -3,8 +3,10 @@ package com.lovemap.lovemapandroid.data.metadata
 import android.content.Context
 import android.util.Base64
 import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
-import androidx.datastore.preferences.core.*
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.fasterxml.jackson.databind.JsonNode
 import com.google.gson.GsonBuilder
@@ -14,7 +16,6 @@ import com.lovemap.lovemapandroid.api.lover.LoverRanks
 import com.lovemap.lovemapandroid.api.lover.LoverRelationsDto
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotRisks
 import com.lovemap.lovemapandroid.config.AppContext
-import com.lovemap.lovemapandroid.data.partnership.Partnership
 import com.lovemap.lovemapandroid.utils.ROLE_ADMIN
 import com.lovemap.lovemapandroid.utils.objectMapper
 import kotlinx.coroutines.flow.first

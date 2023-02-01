@@ -45,7 +45,7 @@ class DiscoverPageFragment2 : Fragment() {
         val view = inflater.inflate(R.layout.fragment_discover_page2, container, false)
         viewPager2 = view.findViewById(R.id.discoverViewPager)
         tabLayout = view.findViewById(R.id.discoverTabLayout)
-        viewPager2.adapter = DiscoverViewPagerAdapter(requireActivity())
+        viewPager2.adapter = DiscoverViewPagerAdapter(childFragmentManager, viewLifecycleOwner.lifecycle)
 
         TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
             tab.text = when (position) {
@@ -56,6 +56,11 @@ class DiscoverPageFragment2 : Fragment() {
         }.attach()
 
         return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewPager2.adapter = null
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

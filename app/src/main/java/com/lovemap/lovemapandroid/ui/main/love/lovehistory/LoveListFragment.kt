@@ -8,8 +8,8 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.ProgressBar
+import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -59,13 +59,13 @@ class LoveListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val linearLayout =
-            inflater.inflate(R.layout.fragment_love_list, container, false) as LinearLayout
-        linearLayout.layoutTransition.setAnimateParentHierarchy(false)
-        progressBar = linearLayout.findViewById(R.id.loveListProgressBar)
-        initializeRecyclerView(linearLayout)
+        val layout =
+            inflater.inflate(R.layout.fragment_love_list, container, false) as RelativeLayout
+        layout.layoutTransition.setAnimateParentHierarchy(false)
+        progressBar = layout.findViewById(R.id.loveListProgressBar)
+        initializeRecyclerView(layout)
         initializeData()
-        return linearLayout
+        return layout
     }
 
     override fun onDestroy() {
@@ -75,7 +75,7 @@ class LoveListFragment : Fragment() {
         }
     }
 
-    private fun initializeRecyclerView(linearLayout: LinearLayout) {
+    private fun initializeRecyclerView(linearLayout: RelativeLayout) {
         recyclerView = linearLayout.findViewById(R.id.loveList)
         recyclerView.isClickable = isClickable
         adapter = LoveRecyclerViewAdapter(ArrayList(), isClickable)

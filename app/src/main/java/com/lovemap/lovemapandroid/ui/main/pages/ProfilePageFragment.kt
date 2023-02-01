@@ -24,12 +24,11 @@ import com.lovemap.lovemapandroid.service.lover.LoverService
 import com.lovemap.lovemapandroid.service.lover.relation.RelationService
 import com.lovemap.lovemapandroid.ui.login.LoginActivity
 import com.lovemap.lovemapandroid.ui.lover.LoverListActivity
-import com.lovemap.lovemapandroid.ui.lover.LoverRecyclerViewAdapter
 import com.lovemap.lovemapandroid.ui.lover.LoverRecyclerViewAdapter.Type.FOLLOWERS
 import com.lovemap.lovemapandroid.ui.lover.LoverRecyclerViewAdapter.Type.FOLLOWINGS
+import com.lovemap.lovemapandroid.ui.lover.ViewOtherLoverActivity
 import com.lovemap.lovemapandroid.ui.main.HallOfFameActivity
 import com.lovemap.lovemapandroid.ui.main.newsfeed.NewsFeedFragment
-import com.lovemap.lovemapandroid.ui.lover.ViewOtherLoverActivity
 import com.lovemap.lovemapandroid.ui.utils.*
 import com.lovemap.lovemapandroid.utils.instantOfApiString
 import com.lovemap.lovemapandroid.utils.toFormattedDate

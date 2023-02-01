@@ -8,8 +8,8 @@ import com.lovemap.lovemapandroid.config.MapContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReview
 import com.lovemap.lovemapandroid.data.metadata.MetadataStore
-import com.lovemap.lovemapandroid.service.love.LoveService
 import com.lovemap.lovemapandroid.service.Toaster
+import com.lovemap.lovemapandroid.service.love.LoveService
 import com.lovemap.lovemapandroid.service.lover.LoverService
 import com.lovemap.lovemapandroid.ui.events.WishlistUpdatedEvent
 import kotlinx.coroutines.Dispatchers

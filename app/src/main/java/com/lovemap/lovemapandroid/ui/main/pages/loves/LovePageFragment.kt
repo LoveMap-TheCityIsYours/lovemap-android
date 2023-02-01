@@ -1,16 +1,15 @@
 package com.lovemap.lovemapandroid.ui.main.pages.loves
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
-import com.lovemap.lovemapandroid.ui.main.pages.discover.DiscoverViewPagerAdapter
 
 class LovePageFragment : Fragment() {
     private lateinit var viewPager2: ViewPager2
@@ -30,7 +29,7 @@ class LovePageFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_love_page, container, false)
         viewPager2 = view.findViewById(R.id.lovePageViewPager)
         tabLayout = view.findViewById(R.id.lovePageTabLayout)
-        viewPager2.adapter = LovePagePagerAdapter(requireActivity())
+        viewPager2.adapter = LovePagePagerAdapter(childFragmentManager, viewLifecycleOwner.lifecycle)
         viewPager2.setCurrentItem(1, false)
 
         TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
@@ -42,6 +41,11 @@ class LovePageFragment : Fragment() {
         }.attach()
 
         return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewPager2.adapter = null
     }
 
 }

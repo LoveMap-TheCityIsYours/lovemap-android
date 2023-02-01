@@ -1,9 +1,6 @@
 package com.lovemap.lovemapandroid.api.lover
 
 import com.lovemap.lovemapandroid.api.lover.relation.RelationStatus
-import com.lovemap.lovemapandroid.data.love.Love
-import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
-import com.lovemap.lovemapandroid.data.lovespot.review.LoveSpotReview
 import com.lovemap.lovemapandroid.utils.instantOfApiString
 import java.time.Instant
 

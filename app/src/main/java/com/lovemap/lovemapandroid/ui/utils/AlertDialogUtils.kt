@@ -6,8 +6,6 @@ import android.content.Context
 import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import com.lovemap.lovemapandroid.R
 

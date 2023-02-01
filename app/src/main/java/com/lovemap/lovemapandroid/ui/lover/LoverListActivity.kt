@@ -1,13 +1,11 @@
 package com.lovemap.lovemapandroid.ui.lover
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
-import com.lovemap.lovemapandroid.databinding.ActivityLoveListBinding
 import com.lovemap.lovemapandroid.databinding.ActivityLoverListBinding
-import com.lovemap.lovemapandroid.service.lover.LoverService
 import com.lovemap.lovemapandroid.service.lover.relation.RelationService
 import com.lovemap.lovemapandroid.ui.lover.LoverRecyclerViewAdapter.Type.FOLLOWERS
 import com.lovemap.lovemapandroid.ui.lover.LoverRecyclerViewAdapter.Type.FOLLOWINGS

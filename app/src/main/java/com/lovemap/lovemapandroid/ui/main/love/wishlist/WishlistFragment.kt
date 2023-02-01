@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.ProgressBar
+import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -38,13 +38,13 @@ class WishlistFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        val linearLayout =
-            inflater.inflate(R.layout.fragment_wishlist, container, false) as LinearLayout
-        linearLayout.layoutTransition.setAnimateParentHierarchy(false)
-        progressBar = linearLayout.findViewById(R.id.wishlistProgressBar)
-        initializeRecyclerView(linearLayout)
+        val layout =
+            inflater.inflate(R.layout.fragment_wishlist, container, false) as RelativeLayout
+        layout.layoutTransition.setAnimateParentHierarchy(false)
+        progressBar = layout.findViewById(R.id.wishlistProgressBar)
+        initializeRecyclerView(layout)
         initializeData()
-        return linearLayout
+        return layout
     }
 
     override fun onDestroy() {
@@ -59,8 +59,8 @@ class WishlistFragment : Fragment() {
         }
     }
 
-    private fun initializeRecyclerView(linearLayout: LinearLayout) {
-        recyclerView = linearLayout.findViewById(R.id.wishlistRecyclerView)
+    private fun initializeRecyclerView(layout: RelativeLayout) {
+        recyclerView = layout.findViewById(R.id.wishlistRecyclerView)
         adapter = WishlistItemRecyclerAdapter(ArrayList(), recyclerView, this.requireActivity())
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)

@@ -2,7 +2,6 @@ package com.lovemap.lovemapandroid.ui.utils
 
 import android.app.Activity
 import android.app.ProgressDialog
-import android.app.ProgressDialog.STYLE_SPINNER
 import android.view.WindowManager
 import com.lovemap.lovemapandroid.R
 import kotlinx.coroutines.Dispatchers

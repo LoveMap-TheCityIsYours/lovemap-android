@@ -13,7 +13,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.api.lover.LoverViewWithoutRelationDto
 import com.lovemap.lovemapandroid.config.AppContext
-import com.lovemap.lovemapandroid.service.lover.relation.RelationService
 import com.lovemap.lovemapandroid.service.lover.relation.RelationService.Companion.LOVER_LIST_TYPE
 import com.lovemap.lovemapandroid.ui.lover.LoverRecyclerViewAdapter.Type.FOLLOWERS
 import com.lovemap.lovemapandroid.ui.lover.LoverRecyclerViewAdapter.Type.FOLLOWINGS

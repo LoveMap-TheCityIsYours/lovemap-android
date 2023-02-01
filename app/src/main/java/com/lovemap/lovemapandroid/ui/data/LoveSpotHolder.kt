@@ -1,12 +1,7 @@
 package com.lovemap.lovemapandroid.ui.data
 
-import com.javadocmd.simplelatlng.LatLng
-import com.javadocmd.simplelatlng.LatLngTool
-import com.javadocmd.simplelatlng.util.LengthUnit
 import com.lovemap.lovemapandroid.api.lovespot.Availability
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotType
-import com.lovemap.lovemapandroid.config.AppContext
-import com.lovemap.lovemapandroid.config.MapContext
 import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
 

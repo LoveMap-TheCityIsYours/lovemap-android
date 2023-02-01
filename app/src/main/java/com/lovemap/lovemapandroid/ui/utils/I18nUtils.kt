@@ -2,11 +2,11 @@ package com.lovemap.lovemapandroid.ui.utils
 
 import android.content.Context
 import com.lovemap.lovemapandroid.R
+import com.lovemap.lovemapandroid.api.lover.relation.RelationStatus
+import com.lovemap.lovemapandroid.api.lover.relation.RelationStatus.*
 import com.lovemap.lovemapandroid.api.partnership.PartnershipStatus
 import com.lovemap.lovemapandroid.api.partnership.PartnershipStatus.IN_PARTNERSHIP
 import com.lovemap.lovemapandroid.api.partnership.PartnershipStatus.PARTNERSHIP_REQUESTED
-import com.lovemap.lovemapandroid.api.lover.relation.RelationStatus
-import com.lovemap.lovemapandroid.api.lover.relation.RelationStatus.*
 import java.util.*
 
 object I18nUtils {
