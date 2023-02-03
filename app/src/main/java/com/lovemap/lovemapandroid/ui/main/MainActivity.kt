@@ -1,17 +1,24 @@
 package com.lovemap.lovemapandroid.ui.main
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.messaging.FirebaseMessaging
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.config.MapContext
@@ -29,11 +36,23 @@ import kotlin.system.exitProcess
 
 const val MAP_PAGE = 2
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
 
     private val appContext = AppContext.INSTANCE
     private val loveSpotService = appContext.loveSpotService
     private val metadataStore = appContext.metadataStore
+
+    private val notificationPermissionCode = 117
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            // FCM SDK (and your app) can post notifications.
+            getFirebaseToken()
+        } else {
+            // Inform user that that your app will not show notifications.
+        }
+    }
 
     private lateinit var binding: ActivityMainBinding
 
@@ -85,7 +104,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         MainScope().launch {
-            if (!metadataStore.isTouAccepted())
+            if (!metadataStore.isTouAccepted()) {
                 AlertDialogUtils.newDialog(
                     this@MainActivity,
                     R.string.terms_of_use_title,
@@ -93,6 +112,7 @@ class MainActivity : AppCompatActivity() {
                     {
                         MainScope().launch {
                             metadataStore.setTouAccepted(true)
+                            askNotificationPermission()
                         }
                     },
                     {
@@ -104,6 +124,58 @@ class MainActivity : AppCompatActivity() {
                     },
                     true
                 )
+            } else {
+                askNotificationPermission()
+                getFirebaseToken()
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == notificationPermissionCode) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getFirebaseToken()
+            }
+        }
+    }
+
+    private fun getFirebaseToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                MainScope().launch {
+                    AppContext.INSTANCE.loverService.registerFirebaseToken(task.result)
+                }
+            }
+        }
+    }
+
+    private fun askNotificationPermission() {
+        // This is only necessary for API level >= 33 (TIRAMISU)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
+                PackageManager.PERMISSION_GRANTED
+            ) {
+                // FCM SDK (and your app) can post notifications.
+            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                // display an educational UI explaining to the user the features that will be enabled
+                //       by them granting the POST_NOTIFICATION permission. This UI should provide the user
+                //       "OK" and "No thanks" buttons. If the user selects "OK," directly request the permission.
+                //       If the user selects "No thanks," allow the user to continue without notifications.
+
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    notificationPermissionCode
+                )
+            } else {
+                // Directly ask for the permission
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
         }
     }
 

@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
 }
 
 def localProperties = new Properties()
@@ -15,8 +16,8 @@ android {
         applicationId "com.lovemap.lovemapandroid"
         minSdk 26
         targetSdk 33
-        versionCode 80
-        versionName "1.9.6"
+        versionCode 81
+        versionName "1.9.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -60,6 +61,8 @@ android {
 }
 
 dependencies {
+    implementation platform('com.google.firebase:firebase-bom:31.2.0')
+
     implementation 'androidx.multidex:multidex:2.0.1'
 
     implementation 'androidx.core:core-ktx:1.9.0'
@@ -94,6 +97,8 @@ dependencies {
     implementation 'com.vdurmont:emoji-java:5.1.1'
     implementation("com.google.guava:guava:31.1-android")
 
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-messaging-ktx'
 
     implementation 'com.facebook.android:facebook-login:latest.release'
 

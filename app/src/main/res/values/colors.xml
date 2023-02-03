@@ -7,6 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="lovemap_main_color">#332F4A</color>
 
     <color name="background_color">#ECE6FF</color>
     <color name="splash_screen">#E3D9F0</color>

@@ -235,6 +235,29 @@ class LoverService(
         }
     }
 
+    suspend fun registerFirebaseToken(token: String): LoverDto? {
+        Log.d(tag, "Refreshed token: $token")
+        return withContext(Dispatchers.IO) {
+            runCatching {
+                val loggedInUser = metadataStore.getUser()
+                val call = loverApi
+                    .registerFirebaseToken(loggedInUser.id, FirebaseTokenRegistration(token))
+                val response = try {
+                    call.execute()
+                } catch (e: Exception) {
+                    toaster.showNoServerToast()
+                    return@withContext null
+                }
+                if (response.isSuccessful) {
+                    response.body()
+                } else {
+                    toaster.showNoServerToast()
+                    null
+                }
+            }.getOrNull()
+        }
+    }
+
     suspend fun deleteLink(): LoverDto? {
         return withContext(Dispatchers.IO) {
             val loggedInUser = metadataStore.getUser()

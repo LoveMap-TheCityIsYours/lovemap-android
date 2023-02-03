@@ -42,6 +42,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        GoogleApiAvailability.getInstance().makeGooglePlayServicesAvailable(this)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         if (!hasPlayServices()) {
             appContext.toaster.showToast("Not working without Google Play Services.")
@@ -256,6 +257,11 @@ class LoginActivity : AppCompatActivity() {
 
     private fun hasPlayServices() = GoogleApiAvailability.getInstance()
         .isGooglePlayServicesAvailable(applicationContext) == ConnectionResult.SUCCESS
+
+    override fun onResume() {
+        super.onResume()
+        GoogleApiAvailability.getInstance().makeGooglePlayServicesAvailable(this)
+    }
 }
 
 /**

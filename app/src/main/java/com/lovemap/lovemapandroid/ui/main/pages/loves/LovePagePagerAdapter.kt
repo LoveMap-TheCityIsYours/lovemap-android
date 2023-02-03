@@ -1,12 +1,15 @@
 package com.lovemap.lovemapandroid.ui.main.pages.loves
 
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-class LovePagePagerAdapter(fragmentManager: FragmentManager, lifeCycle: Lifecycle) :
-    FragmentStateAdapter(fragmentManager, lifeCycle) {
+class LovePagePagerAdapter(fragmentActivity: FragmentActivity) :
+    FragmentStateAdapter(fragmentActivity) {
+//class LovePagePagerAdapter(fragmentManager: FragmentManager, lifeCycle: Lifecycle) :
+//    FragmentStateAdapter(fragmentManager, lifeCycle) {
 
     override fun getItemCount(): Int {
         return 2

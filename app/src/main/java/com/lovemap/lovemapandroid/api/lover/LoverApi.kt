@@ -12,6 +12,12 @@ interface LoverApi {
     @POST("/lovers/{loverId}/shareableLink")
     fun generateLink(@Path("loverId") loverId: Long): Call<LoverDto>
 
+    @POST("/lovers/{loverId}/registerFirebaseToken")
+    fun registerFirebaseToken(
+        @Path("loverId") loverId: Long,
+        @Body token: FirebaseTokenRegistration
+    ): Call<LoverDto>
+
     @DELETE("/lovers/{loverId}/shareableLink")
     fun deleteLink(@Path("loverId") loverId: Long): Call<LoverDto>
 
