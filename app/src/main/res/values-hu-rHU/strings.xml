@@ -397,5 +397,8 @@
     <string name="your_followers">Követők</string>
     <string name="remove_follower_title">Követő eltávolítása</string>
     <string name="remove_follower_message">Biztos hogy el akarod távolítani ezt a követőt?</string>
+    <string name="notification_default_channel">Alapértelmezett Csatorna</string>
+    <string name="notification_come_back_title">Nézd meg mi újság 😏</string>
+    <string name="notification_come_back_body">Nem láttunk egy ideje, gyere nézd meg mi újság LoveMapen 💕</string>
 
 </resources>

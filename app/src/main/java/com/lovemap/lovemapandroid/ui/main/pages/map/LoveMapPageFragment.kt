@@ -32,7 +32,7 @@ import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.service.love.LoveService
 import com.lovemap.lovemapandroid.service.lovespot.LoveSpotService
 import com.lovemap.lovemapandroid.ui.events.MapMarkerEventListener
-import com.lovemap.lovemapandroid.ui.main.MAP_PAGE
+import com.lovemap.lovemapandroid.ui.main.MainActivity.Companion.MAP_PAGE
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.AddLoveSpotActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity

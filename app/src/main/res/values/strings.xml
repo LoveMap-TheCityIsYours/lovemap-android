@@ -404,5 +404,8 @@
     <string name="your_followers">Followers</string>
     <string name="remove_follower_title">Remove follower</string>
     <string name="remove_follower_message">Are you sure you want to remove this follower?</string>
+    <string name="notification_default_channel">Default Channel</string>
+    <string name="notification_come_back_title">Check what\'s new 😏</string>
+    <string name="notification_come_back_body">Haven\'t seen you in a while, check out what\'s new on LoveMap 💕</string>
 
 </resources>

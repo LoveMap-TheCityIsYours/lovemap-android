@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
@@ -14,6 +15,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
+import androidx.core.os.bundleOf
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.tabs.TabLayout
@@ -34,10 +36,15 @@ import org.greenrobot.eventbus.ThreadMode
 import kotlin.system.exitProcess
 
 
-const val MAP_PAGE = 2
-
 class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
 
+    companion object {
+        const val MAP_PAGE = 2
+        const val NEWS_FEED_PAGE = 3
+        const val OPEN_PAGE = "openPage"
+    }
+
+    private val tag = "MainActivity"
     private val appContext = AppContext.INSTANCE
     private val loveSpotService = appContext.loveSpotService
     private val metadataStore = appContext.metadataStore
@@ -83,6 +90,11 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
 
         // Starter page is map for performance reasons
         goToMapPage()
+
+        val page = intent.getIntExtra(OPEN_PAGE, MAP_PAGE)
+        if (page != MAP_PAGE) {
+            goToPage(page, false)
+        }
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
@@ -273,8 +285,12 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     }
 
     private fun goToMapPage() {
+        goToPage(MAP_PAGE)
+    }
+
+    private fun goToPage(page: Int, smoothScroll: Boolean = true) {
         viewPager2.post {
-            viewPager2.setCurrentItem(MAP_PAGE, true)
+            viewPager2.setCurrentItem(page, smoothScroll)
         }
     }
 }

@@ -51,6 +51,7 @@ data class LoveSpotNewsFeedResponse(
     val name: String,
     val description: String,
     val type: LoveSpotType,
+    @Deprecated("not used and not returned by backend")
     val country: String?
 )
 
