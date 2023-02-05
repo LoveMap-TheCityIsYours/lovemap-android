@@ -398,7 +398,20 @@
     <string name="remove_follower_title">Követő eltávolítása</string>
     <string name="remove_follower_message">Biztos hogy el akarod távolítani ezt a követőt?</string>
     <string name="notification_default_channel">Alapértelmezett Csatorna</string>
+    <string name="notification_channel_come_back_please">Inaktivitási csatorna</string>
+    <string name="notification_channel_new_love_spot">Új közeli Love Spot csatorna</string>
+    <string name="notification_channel_new_love_spot_photo">Új közeli fotó csatorna</string>
+    <string name="notification_channel_new_love_spot_review">Új közeli értékelés csatorna</string>
+    <string name="notification_channel_new_public_lover">Új közeli nyilvános Szerető csatorna</string>
     <string name="notification_come_back_title">Nézd meg mi újság 😏</string>
     <string name="notification_come_back_body">Nem láttunk egy ideje, gyere nézd meg mi újság LoveMapen 💕</string>
+    <string name="notification_new_love_spot_title">Új Közeli LoveSpot 📍</string>
+    <string name="notification_new_love_spot_body">Egy új közeli LoveSpot felkerült, csekkold le! 💕</string>
+    <string name="notification_new_photo_title">Új Közeli Fotó 📸</string>
+    <string name="notification_new_photo_body">Egy új közeli Fotót feltöltöttek, csekkold le! 💕</string>
+    <string name="notification_new_review_title">Új Közeli Értékelés ⭐</string>
+    <string name="notification_new_review_body">Egy új közeli Értékelést beküldtek, csekkold le! 💕</string>
+    <string name="notification_new_public_lover_title">Új Közeli Szerető 🤭</string>
+    <string name="notification_new_public_lover_body">Egy új közeli nyilvános szerető csatlakozott, csekkold le! 💕</string>
 
 </resources>

@@ -21,6 +21,7 @@ import com.lovemap.lovemapandroid.data.lovespot.LoveSpot
 import com.lovemap.lovemapandroid.databinding.ActivityLoveSpotDetailsBinding
 import com.lovemap.lovemapandroid.ui.events.LoveSpotPhotoDeleted
 import com.lovemap.lovemapandroid.ui.events.ShowOnMapClickedEvent
+import com.lovemap.lovemapandroid.ui.main.MainActivity
 import com.lovemap.lovemapandroid.ui.main.love.RecordLoveActivity
 import com.lovemap.lovemapandroid.ui.main.love.lovehistory.LoveListActivity
 import com.lovemap.lovemapandroid.ui.main.love.lovehistory.LoveListFragment
@@ -41,8 +42,11 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class
-LoveSpotDetailsActivity : AppCompatActivity() {
+class LoveSpotDetailsActivity : AppCompatActivity() {
+
+    companion object {
+        const val LOVE_SPOT_ID = "loveSpotId"
+    }
 
     private val tag = "LoveSpotDetailsActivity"
 
@@ -106,6 +110,8 @@ LoveSpotDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         EventBus.getDefault().register(this)
+        appContext.selectedLoveSpotId =
+            intent.extras?.getLong(LOVE_SPOT_ID) ?: appContext.selectedLoveSpotId
         appContext.selectedLoveSpotId?.let {
             loveSpotId = appContext.selectedLoveSpotId!!
             initViews()
@@ -134,10 +140,6 @@ LoveSpotDetailsActivity : AppCompatActivity() {
             }
             detailsSeeAllReviewsButton.setOnClickListener {
                 startActivity(Intent(applicationContext, ReviewListActivity::class.java))
-            }
-            spotDetailsShowOnMapButton.setOnClickListener {
-                EventBus.getDefault().post(ShowOnMapClickedEvent(loveSpotId))
-                finish()
             }
             photoPickerLauncher =
                 registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
@@ -357,6 +359,15 @@ LoveSpotDetailsActivity : AppCompatActivity() {
 
     private fun setDetails(loveSpot: LoveSpot?) {
         loveSpot?.let {
+            Log.i(tag, "Setting details for id: '${loveSpot.id}' name: '${loveSpot.name}'")
+
+            spotDetailsShowOnMapButton.setOnClickListener {
+                MapContext.zoomOnLoveSpot = loveSpot
+                startActivity(Intent(this, MainActivity::class.java))
+                EventBus.getDefault().post(ShowOnMapClickedEvent(loveSpotId))
+                finish()
+            }
+
             binding.loveSpotTitle.text = loveSpot.name
             spotDetailsDescription.text = loveSpot.description
             LoveSpotUtils.setRating(
@@ -486,5 +497,13 @@ LoveSpotDetailsActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         EventBus.getDefault().unregister(this)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (isTaskRoot) {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
     }
 }

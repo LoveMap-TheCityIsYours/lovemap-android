@@ -22,9 +22,10 @@ class ExampleUnitTest {
         val usFlag = EmojiUtils.getFlagEmoji("United States ")
         val huFlag = EmojiUtils.getFlagEmoji("Hungary")
         val mmFlag = EmojiUtils.getFlagEmoji(" Myanmar (Burma) ")
+        val congoFlag = EmojiUtils.getFlagEmoji(" Congo - Kinshasa ")
         println(usFlag)
         println(huFlag)
         println(mmFlag)
-        assertEquals(4, 2 + 2)
+        println(congoFlag)
     }
 }

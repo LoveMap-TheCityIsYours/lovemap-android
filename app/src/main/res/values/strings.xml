@@ -405,7 +405,20 @@
     <string name="remove_follower_title">Remove follower</string>
     <string name="remove_follower_message">Are you sure you want to remove this follower?</string>
     <string name="notification_default_channel">Default Channel</string>
+    <string name="notification_channel_come_back_please">Inactivity channel</string>
+    <string name="notification_channel_new_love_spot">New Nearby Love Spots channel</string>
+    <string name="notification_channel_new_love_spot_photo">New Nearby Photo channel</string>
+    <string name="notification_channel_new_love_spot_review">New Nearby Review channel</string>
+    <string name="notification_channel_new_public_lover">New Nearby public Lover channel</string>
     <string name="notification_come_back_title">Check what\'s new 😏</string>
     <string name="notification_come_back_body">Haven\'t seen you in a while, check out what\'s new on LoveMap 💕</string>
+    <string name="notification_new_love_spot_title">New Nearby LoveSpot 📍</string>
+    <string name="notification_new_love_spot_body">A new nearby LoveSpot was added, check it out! 💕</string>
+    <string name="notification_new_photo_title">New Nearby Photo 📸</string>
+    <string name="notification_new_photo_body">A new nearby Photo was uploaded, check it out! 💕</string>
+    <string name="notification_new_review_title">New Nearby Review ⭐</string>
+    <string name="notification_new_review_body">A new nearby Review was submitted, check it out! 💕</string>
+    <string name="notification_new_public_lover_title">New public Lover 🤭</string>
+    <string name="notification_new_public_lover_body">A new public Lover joined us nearby you, check them out! 💕</string>
 
 </resources>
