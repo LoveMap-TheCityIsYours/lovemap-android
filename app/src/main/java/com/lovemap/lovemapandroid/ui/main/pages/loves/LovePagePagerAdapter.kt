@@ -6,10 +6,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-class LovePagePagerAdapter(fragmentActivity: FragmentActivity) :
-    FragmentStateAdapter(fragmentActivity) {
-//class LovePagePagerAdapter(fragmentManager: FragmentManager, lifeCycle: Lifecycle) :
-//    FragmentStateAdapter(fragmentManager, lifeCycle) {
+class LovePagePagerAdapter(fragmentManager: FragmentManager, lifeCycle: Lifecycle) :
+    FragmentStateAdapter(fragmentManager, lifeCycle) {
 
     override fun getItemCount(): Int {
         return 2

@@ -33,8 +33,7 @@ class LovePageFragment : Fragment() {
         viewPager2 = view.findViewById(R.id.lovePageViewPager)
         tabLayout = view.findViewById(R.id.lovePageTabLayout)
 
-//        viewPager2.adapter = LovePagePagerAdapter(childFragmentManager, viewLifecycleOwner.lifecycle)
-        viewPager2.adapter = LovePagePagerAdapter(requireActivity())
+        viewPager2.adapter = LovePagePagerAdapter(childFragmentManager, viewLifecycleOwner.lifecycle)
 
         TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
             tab.text = when (position) {
@@ -59,7 +58,7 @@ class LovePageFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-//        viewPager2.adapter = null
+        viewPager2.adapter = null
         Log.i(TAG, "onDestroyView called")
     }
 
