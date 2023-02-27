@@ -48,7 +48,6 @@
                         style="@style/TextAppearance.AppCompat.Small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/standard_8"
                         android:layout_marginTop="@dimen/standard_8"
                         android:text="@string/profileRank" />
 
@@ -151,6 +150,7 @@
             <ProgressBar
                 android:id="@+id/otherLoverProgressBar"
                 style="@android:style/Widget.Material.ProgressBar.Horizontal"
+                android:scaleY="3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standard_50"

@@ -61,7 +61,7 @@
     <string name="invalidUsername">Felhasználónév karakterszámnak &gt;=3, &lt;=32 kell lennie</string>
     <string name="invalidPassword">Érvénytelen jelszó</string>
     <string name="noServer">Nem lehet csatlakozni a kiszolgálóhoz</string>
-    <string name="points_to_next_level">Pontok a következő szintig</string>
+    <string name="points_to_next_level">Pontok a \nkövetkező \nszintig</string>
     <string name="points">Pontok</string>
     <string name="reports_submitted">Jelentések beküldve:</string>
     <string name="love_spots_added">Hozzáadott Spotok:</string>

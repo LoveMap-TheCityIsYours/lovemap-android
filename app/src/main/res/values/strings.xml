@@ -69,7 +69,7 @@
     <string name="invalidUsername">Length of name should be &gt;=3, &lt;=32 characters</string>
     <string name="invalidPassword">Invalid password</string>
     <string name="noServer">Cannot connect to server</string>
-    <string name="points_to_next_level">Points to next level</string>
+    <string name="points_to_next_level">Points to \nnext level</string>
     <string name="points">Points</string>
     <string name="reports_submitted">Reports submitted:</string>
     <string name="love_spots_added">Love Spots added:</string>
