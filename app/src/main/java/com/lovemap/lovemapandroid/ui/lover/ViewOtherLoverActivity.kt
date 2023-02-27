@@ -27,7 +27,9 @@ import com.lovemap.lovemapandroid.service.lover.relation.RelationState
 import com.lovemap.lovemapandroid.service.lover.relation.RelationState.*
 import com.lovemap.lovemapandroid.ui.lover.LoverRecyclerViewAdapter.Type.FOLLOWERS
 import com.lovemap.lovemapandroid.ui.lover.LoverRecyclerViewAdapter.Type.FOLLOWINGS
+import com.lovemap.lovemapandroid.ui.main.MainActivity
 import com.lovemap.lovemapandroid.ui.main.love.lovehistory.LoveListFragment
+import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
 import com.lovemap.lovemapandroid.ui.main.newsfeed.NewsFeedFragment
 import com.lovemap.lovemapandroid.ui.utils.AlertDialogUtils
 import com.lovemap.lovemapandroid.ui.utils.I18nUtils
@@ -38,6 +40,10 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 class ViewOtherLoverActivity : AppCompatActivity() {
+
+    companion object {
+        const val LOVER_ID = "loverId"
+    }
 
     private val tag = "ViewOtherLoverActivity"
     private val appContext = AppContext.INSTANCE
@@ -95,7 +101,10 @@ class ViewOtherLoverActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initViews()
-        if (intent.data != null) {
+        val intentLoverId: Long? = intent.extras?.getLong(LOVER_ID)
+        if (intentLoverId != null) {
+            LoverService.otherLoverId = intentLoverId
+        } else if (intent.data != null) {
             val loverLink = intent.data.toString()
             loverUuid = loverLink.substringAfter(LINK_PREFIX_VISIBLE, "")
             if (loverUuid == "") {
@@ -581,6 +590,14 @@ class ViewOtherLoverActivity : AppCompatActivity() {
                 followFab.visibility = View.VISIBLE
                 followFab.isEnabled = true
             }
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (isTaskRoot) {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
     }
 }

@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     companion object {
         const val MAP_PAGE = 2
         const val NEWS_FEED_PAGE = 3
+        const val PROFILE_PAGE = 4
         const val OPEN_PAGE = "openPage"
     }
 

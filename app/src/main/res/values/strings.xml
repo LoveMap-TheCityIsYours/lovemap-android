@@ -405,11 +405,11 @@
     <string name="remove_follower_title">Remove follower</string>
     <string name="remove_follower_message">Are you sure you want to remove this follower?</string>
     <string name="notification_default_channel">Default Channel</string>
-    <string name="notification_channel_come_back_please">Inactivity channel</string>
-    <string name="notification_channel_new_love_spot">New Nearby Love Spots channel</string>
-    <string name="notification_channel_new_love_spot_photo">New Nearby Photo channel</string>
-    <string name="notification_channel_new_love_spot_review">New Nearby Review channel</string>
-    <string name="notification_channel_new_public_lover">New Nearby public Lover channel</string>
+    <string name="notification_channel_come_back_please">Inactivity</string>
+    <string name="notification_channel_new_love_spot">New Nearby Love Spots</string>
+    <string name="notification_channel_new_love_spot_photo">New Nearby Photos</string>
+    <string name="notification_channel_new_love_spot_review">New Nearby Reviews</string>
+    <string name="notification_channel_new_public_lover">New Nearby public Lovers</string>
     <string name="notification_come_back_title">Check what\'s new 😏</string>
     <string name="notification_come_back_body">Haven\'t seen you in a while, check out what\'s new on LoveMap 💕</string>
     <string name="notification_new_love_spot_title">New Nearby LoveSpot 📍</string>
@@ -419,6 +419,30 @@
     <string name="notification_new_review_title">New Nearby Review ⭐</string>
     <string name="notification_new_review_body">A new nearby Review was submitted, check it out! 💕</string>
     <string name="notification_new_public_lover_title">New public Lover 🤭</string>
-    <string name="notification_new_public_lover_body">A new public Lover joined us nearby you, check them out! 💕</string>
+    <string name="notification_new_public_lover_body">A new public Lover joined nearby you, check them out! 💕</string>
+
+    <string name="notification_new_review_on_your_spot_title">New Review on Your Spot ⭐</string>
+    <string name="notification_new_like_on_your_photo_title">New Like on your photo 👍</string>
+    <string name="notification_new_dislike_on_your_photo_title">New Dislike on your photo 👎</string>
+    <string name="notification_new_follower_title">New Follower 😏</string>
+    <string name="notification_partnership_requested_title">Partnership Requested 🍆</string>
+    <string name="notification_partnership_accepted_title">Partnership Accepted ✅</string>
+    <string name="notification_partnership_denied_title">Partnership Denied ❌</string>
+
+    <string name="notification_new_review_on_your_spot_body">Someone reviewed a LoveSpot that you added.</string>
+    <string name="notification_new_like_on_your_photo_body">Someone liked your photo.</string>
+    <string name="notification_new_dislike_on_your_photo_body">Someone disliked your photo.</string>
+    <string name="notification_new_follower_body">A Lover started following you.</string>
+    <string name="notification_partnership_requested_body">A Lover requested Partnership from you.</string>
+    <string name="notification_partnership_accepted_body">A Lover accepted your Partnership request.</string>
+    <string name="notification_partnership_denied_body">A Lover denied your Partnership request.</string>
+
+    <string name="notification_channel_new_review_on_your_spot">New reviews on your LoveSpots</string>
+    <string name="notification_channel_new_like_on_your_photo">Likes on your photos</string>
+    <string name="notification_channel_new_dislike_on_your_photo">Dislikes on your photos</string>
+    <string name="notification_channel_new_follower">New Followers</string>
+    <string name="notification_channel_partnership_requested">Partnership requests</string>
+    <string name="notification_channel_partnership_accepted">Partnership accepts</string>
+    <string name="notification_channel_partnership_denied">Partnership denies</string>
 
 </resources>

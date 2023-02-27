@@ -13,6 +13,7 @@ import com.google.firebase.messaging.RemoteMessage
 import com.lovemap.lovemapandroid.R
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.notification.NotificationType.*
+import com.lovemap.lovemapandroid.ui.lover.ViewOtherLoverActivity
 import com.lovemap.lovemapandroid.ui.main.MainActivity
 import com.lovemap.lovemapandroid.ui.main.lovespot.LoveSpotDetailsActivity
 import kotlinx.coroutines.MainScope
@@ -86,12 +87,9 @@ class PushMessagingService : FirebaseMessagingService() {
 
     private fun getIntent(type: NotificationType, data: Map<String, String>): PendingIntent {
         return when (type) {
+
             COME_BACK_PLEASE -> {
                 val intent = Intent(this, MainActivity::class.java)
-                //        intent.addFlags(
-                //            Intent.FLAG_ACTIVITY_NEW_TASK or
-                //                    Intent.FLAG_ACTIVITY_SINGLE_TOP
-                //        )
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 intent.putExtra(MainActivity.OPEN_PAGE, MainActivity.NEWS_FEED_PAGE)
                 PendingIntent.getActivity(
@@ -99,16 +97,32 @@ class PushMessagingService : FirebaseMessagingService() {
                     PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
                 )
             }
+
             NEW_PUBLIC_LOVER -> {
+                val intent = Intent(this, ViewOtherLoverActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                data[LOVER_ID]?.toLong()?.let { loverId ->
+                    Log.i(tag, "Public Lover Notification with loverId: '$loverId'")
+                    intent.putExtra(ViewOtherLoverActivity.LOVER_ID, loverId)
+                    PendingIntent.getActivity(
+                        this, 0, intent,
+                        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                    )
+                } ?: throw IllegalArgumentException("Cannot parse loverId. Data: $data")
+            }
+
+            NEW_FOLLOWER, PARTNERSHIP_REQUESTED, PARTNERSHIP_ACCEPTED, PARTNERSHIP_DENIED -> {
                 val intent = Intent(this, MainActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                intent.putExtra(MainActivity.OPEN_PAGE, MainActivity.NEWS_FEED_PAGE)
+                intent.putExtra(MainActivity.OPEN_PAGE, MainActivity.PROFILE_PAGE)
                 PendingIntent.getActivity(
                     this, 0, intent,
                     PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
                 )
             }
-            else -> {
+
+            NEW_LOVE_SPOT, NEW_LOVE_SPOT_PHOTO, NEW_LOVE_SPOT_REVIEW, NEW_REVIEW_ON_YOUR_LOVE_SPOT,
+            NEW_LIKE_ON_YOUR_PHOTO, NEW_DISLIKE_ON_YOUR_PHOTO -> {
                 val intent = Intent(this, LoveSpotDetailsActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 data[LOVE_SPOT_ID]?.toLong()?.let { loveSpotId ->
@@ -121,8 +135,8 @@ class PushMessagingService : FirebaseMessagingService() {
                     )
                 } ?: throw IllegalArgumentException("Cannot parse LoveSpotId. Data: $data")
             }
-        }
 
+        }
     }
 
     private fun getMessageTitle(type: NotificationType): String {
@@ -132,6 +146,14 @@ class PushMessagingService : FirebaseMessagingService() {
             NEW_LOVE_SPOT_PHOTO -> resources.getString(R.string.notification_new_photo_title)
             NEW_LOVE_SPOT_REVIEW -> resources.getString(R.string.notification_new_review_title)
             NEW_PUBLIC_LOVER -> resources.getString(R.string.notification_new_public_lover_title)
+
+            NEW_REVIEW_ON_YOUR_LOVE_SPOT -> resources.getString(R.string.notification_new_review_on_your_spot_title)
+            NEW_LIKE_ON_YOUR_PHOTO -> resources.getString(R.string.notification_new_like_on_your_photo_title)
+            NEW_DISLIKE_ON_YOUR_PHOTO -> resources.getString(R.string.notification_new_dislike_on_your_photo_title)
+            NEW_FOLLOWER -> resources.getString(R.string.notification_new_follower_title)
+            PARTNERSHIP_REQUESTED -> resources.getString(R.string.notification_partnership_requested_title)
+            PARTNERSHIP_ACCEPTED -> resources.getString(R.string.notification_partnership_accepted_title)
+            PARTNERSHIP_DENIED -> resources.getString(R.string.notification_partnership_denied_title)
         }
     }
 
@@ -142,6 +164,14 @@ class PushMessagingService : FirebaseMessagingService() {
             NEW_LOVE_SPOT_PHOTO -> resources.getString(R.string.notification_new_photo_body)
             NEW_LOVE_SPOT_REVIEW -> resources.getString(R.string.notification_new_review_body)
             NEW_PUBLIC_LOVER -> resources.getString(R.string.notification_new_public_lover_body)
+
+            NEW_REVIEW_ON_YOUR_LOVE_SPOT -> resources.getString(R.string.notification_new_review_on_your_spot_body)
+            NEW_LIKE_ON_YOUR_PHOTO -> resources.getString(R.string.notification_new_like_on_your_photo_body)
+            NEW_DISLIKE_ON_YOUR_PHOTO -> resources.getString(R.string.notification_new_dislike_on_your_photo_body)
+            NEW_FOLLOWER -> resources.getString(R.string.notification_new_follower_body)
+            PARTNERSHIP_REQUESTED -> resources.getString(R.string.notification_partnership_requested_body)
+            PARTNERSHIP_ACCEPTED -> resources.getString(R.string.notification_partnership_accepted_body)
+            PARTNERSHIP_DENIED -> resources.getString(R.string.notification_partnership_denied_body)
         }
     }
 
@@ -151,7 +181,15 @@ class PushMessagingService : FirebaseMessagingService() {
             NEW_LOVE_SPOT -> data[LOVE_SPOT_ID]?.toLong()?.toInt() ?: 1
             NEW_LOVE_SPOT_PHOTO -> data[LOVE_SPOT_ID]?.toLong()?.toInt() ?: 2
             NEW_LOVE_SPOT_REVIEW -> data[LOVE_SPOT_ID]?.toLong()?.toInt() ?: 3
-            NEW_PUBLIC_LOVER -> 4
+            NEW_PUBLIC_LOVER -> data[LOVER_ID]?.toLong()?.toInt() ?: 4
+
+            NEW_REVIEW_ON_YOUR_LOVE_SPOT -> data[LOVE_SPOT_ID]?.toLong()?.toInt() ?: 5
+            NEW_LIKE_ON_YOUR_PHOTO -> data[LOVE_SPOT_ID]?.toLong()?.toInt() ?: 6
+            NEW_DISLIKE_ON_YOUR_PHOTO -> data[LOVE_SPOT_ID]?.toLong()?.toInt() ?: 7
+            NEW_FOLLOWER -> 8
+            PARTNERSHIP_REQUESTED -> 9
+            PARTNERSHIP_ACCEPTED -> 10
+            PARTNERSHIP_DENIED -> 11
         }
     }
 
@@ -162,6 +200,14 @@ class PushMessagingService : FirebaseMessagingService() {
             NEW_LOVE_SPOT_PHOTO -> "fcm_new_love_spot_photo"
             NEW_LOVE_SPOT_REVIEW -> "fcm_new_love_spot_review"
             NEW_PUBLIC_LOVER -> "fcm_new_public_lover"
+
+            NEW_REVIEW_ON_YOUR_LOVE_SPOT -> "fcm_new_review_on_your_spot"
+            NEW_LIKE_ON_YOUR_PHOTO -> "fcm_new_like_on_your_photo"
+            NEW_DISLIKE_ON_YOUR_PHOTO -> "fcm_new_dislike_on_your_photo"
+            NEW_FOLLOWER -> "fcm_new_follower"
+            PARTNERSHIP_REQUESTED -> "fcm_partnership_requested"
+            PARTNERSHIP_ACCEPTED -> "fcm_partnership_accepted"
+            PARTNERSHIP_DENIED -> "fcm_partnership_denied"
         }
     }
 
@@ -172,11 +218,20 @@ class PushMessagingService : FirebaseMessagingService() {
             NEW_LOVE_SPOT_PHOTO -> resources.getString(R.string.notification_channel_new_love_spot_photo)
             NEW_LOVE_SPOT_REVIEW -> resources.getString(R.string.notification_channel_new_love_spot_review)
             NEW_PUBLIC_LOVER -> resources.getString(R.string.notification_channel_new_public_lover)
+
+            NEW_REVIEW_ON_YOUR_LOVE_SPOT -> resources.getString(R.string.notification_channel_new_review_on_your_spot)
+            NEW_LIKE_ON_YOUR_PHOTO -> resources.getString(R.string.notification_channel_new_like_on_your_photo)
+            NEW_DISLIKE_ON_YOUR_PHOTO -> resources.getString(R.string.notification_channel_new_dislike_on_your_photo)
+            NEW_FOLLOWER -> resources.getString(R.string.notification_channel_new_follower)
+            PARTNERSHIP_REQUESTED -> resources.getString(R.string.notification_channel_partnership_requested)
+            PARTNERSHIP_ACCEPTED -> resources.getString(R.string.notification_channel_partnership_accepted)
+            PARTNERSHIP_DENIED -> resources.getString(R.string.notification_channel_partnership_denied)
         }
     }
 
     companion object {
         private const val NOTIFICATION_TYPE = "notificationType"
         private const val LOVE_SPOT_ID = "loveSpotId"
+        private const val LOVER_ID = "loverId"
     }
 }

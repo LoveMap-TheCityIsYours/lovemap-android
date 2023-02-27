@@ -397,12 +397,12 @@
     <string name="your_followers">Követők</string>
     <string name="remove_follower_title">Követő eltávolítása</string>
     <string name="remove_follower_message">Biztos hogy el akarod távolítani ezt a követőt?</string>
-    <string name="notification_default_channel">Alapértelmezett Csatorna</string>
-    <string name="notification_channel_come_back_please">Inaktivitási csatorna</string>
-    <string name="notification_channel_new_love_spot">Új közeli Love Spot csatorna</string>
-    <string name="notification_channel_new_love_spot_photo">Új közeli fotó csatorna</string>
-    <string name="notification_channel_new_love_spot_review">Új közeli értékelés csatorna</string>
-    <string name="notification_channel_new_public_lover">Új közeli nyilvános Szerető csatorna</string>
+    <string name="notification_default_channel">Alapértelmezett</string>
+    <string name="notification_channel_come_back_please">Inaktivitás</string>
+    <string name="notification_channel_new_love_spot">Új közeli Love Spot</string>
+    <string name="notification_channel_new_love_spot_photo">Új közeli fotó</string>
+    <string name="notification_channel_new_love_spot_review">Új közeli értékelés</string>
+    <string name="notification_channel_new_public_lover">Új közeli nyilvános Szerető</string>
     <string name="notification_come_back_title">Nézd meg mi újság 😏</string>
     <string name="notification_come_back_body">Nem láttunk egy ideje, gyere nézd meg mi újság LoveMapen 💕</string>
     <string name="notification_new_love_spot_title">Új Közeli LoveSpot 📍</string>
@@ -412,6 +412,30 @@
     <string name="notification_new_review_title">Új Közeli Értékelés ⭐</string>
     <string name="notification_new_review_body">Egy új közeli Értékelést beküldtek, csekkold le! 💕</string>
     <string name="notification_new_public_lover_title">Új Közeli Szerető 🤭</string>
-    <string name="notification_new_public_lover_body">Egy új közeli nyilvános szerető csatlakozott, csekkold le! 💕</string>
+    <string name="notification_new_public_lover_body">Egy új közeli nyilvános Szerető csatlakozott, csekkold le! 💕</string>
+
+    <string name="notification_new_review_on_your_spot_title">Új értékelés a Spotodon ⭐</string>
+    <string name="notification_new_like_on_your_photo_title">Új Lájk a fotódon 👍</string>
+    <string name="notification_new_dislike_on_your_photo_title">Új Diszlájk a fotódon 👎</string>
+    <string name="notification_new_follower_title">Új Követő 😏</string>
+    <string name="notification_partnership_requested_title">Partnerség Kérvényezve 🍆</string>
+    <string name="notification_partnership_accepted_title">Partnerség Elfogadva ✅</string>
+    <string name="notification_partnership_denied_title">Partnerség Elutasítva ❌</string>
+
+    <string name="notification_new_review_on_your_spot_body">Valaki értékelést írt egy LoveSpothoz amit te vettél fel.</string>
+    <string name="notification_new_like_on_your_photo_body">Valaki lájkolta a fotódat.</string>
+    <string name="notification_new_dislike_on_your_photo_body">Valaki diszlájkolta a fotódat.</string>
+    <string name="notification_new_follower_body">Egy Szerető a követőd lett.</string>
+    <string name="notification_partnership_requested_body">Egy Szerető Partnerséget kezdeményezett veled.</string>
+    <string name="notification_partnership_accepted_body">Egy Szerető elfogadta a Partnerség kérelmedet.</string>
+    <string name="notification_partnership_denied_body">Egy Szerető megtagadta a Partnerség kérelmedet.</string>
+
+    <string name="notification_channel_new_review_on_your_spot">Új Értékelések a LoveSpotjaidon</string>
+    <string name="notification_channel_new_like_on_your_photo">Lájkok a képeiden</string>
+    <string name="notification_channel_new_dislike_on_your_photo">Diszlájkok a képeiden</string>
+    <string name="notification_channel_new_follower">Új Követők</string>
+    <string name="notification_channel_partnership_requested">Partnerség kérések</string>
+    <string name="notification_channel_partnership_accepted">Partnerség elfogadások</string>
+    <string name="notification_channel_partnership_denied">Partnerség megtagadások</string>
 
 </resources>
