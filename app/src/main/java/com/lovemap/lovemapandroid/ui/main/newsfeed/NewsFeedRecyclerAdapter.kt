@@ -722,6 +722,24 @@ class NewsFeedRecyclerAdapter(
         val newsFeedSpotReviewText: TextView = itemView.findViewById(R.id.newsFeedSpotReviewText)
     }
 
+    inner class LoveSpotMultiViewHolder(itemView: View): BaseLoveSpotViewHolder(itemView) {
+        val newsFeedReviewLayout1: LinearLayout = itemView.findViewById(R.id.newsFeedReviewLayout1)
+        val newsFeedReviewTextLayout1: RelativeLayout = itemView.findViewById(R.id.newsFeedReviewTextLayout1)
+        val newsFeedReviewTitle1: TextView = itemView.findViewById(R.id.newsFeedReviewTitle1)
+        val newsFeedReviewOpenLoverImage1: ImageView = itemView.findViewById(R.id.newsFeedReviewOpenLoverImage1)
+        val newsFeedSpotReviewRating1: RatingBar = itemView.findViewById(R.id.newsFeedSpotReviewRating1)
+        val newsFeedSpotReviewRisk1: TextView = itemView.findViewById(R.id.newsFeedSpotReviewRisk1)
+        val newsFeedSpotReviewText1: TextView = itemView.findViewById(R.id.newsFeedSpotReviewText1)
+
+        val newsFeedReviewLayout2: LinearLayout = itemView.findViewById(R.id.newsFeedReviewLayout2)
+        val newsFeedReviewTextLayout2: RelativeLayout = itemView.findViewById(R.id.newsFeedReviewTextLayout2)
+        val newsFeedReviewTitle2: TextView = itemView.findViewById(R.id.newsFeedReviewTitle2)
+        val newsFeedReviewOpenLoverImage2: ImageView = itemView.findViewById(R.id.newsFeedReviewOpenLoverImage2)
+        val newsFeedSpotReviewRating2: RatingBar = itemView.findViewById(R.id.newsFeedSpotReviewRating2)
+        val newsFeedSpotReviewRisk2: TextView = itemView.findViewById(R.id.newsFeedSpotReviewRisk2)
+        val newsFeedSpotReviewText2: TextView = itemView.findViewById(R.id.newsFeedSpotReviewText2)
+    }
+
     inner class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var progressBar: ProgressBar
 
