@@ -4,6 +4,7 @@ plugins {
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
     id 'kotlin-kapt'
     id 'com.google.gms.google-services'
+    id("de.mannodermaus.android-junit5") version "1.8.2.1"
 }
 
 def localProperties = new Properties()
@@ -113,7 +114,8 @@ dependencies {
     implementation("org.greenrobot:eventbus:3.3.1")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.1")
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }

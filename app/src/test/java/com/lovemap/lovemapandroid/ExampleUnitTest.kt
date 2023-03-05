@@ -2,9 +2,7 @@ package com.lovemap.lovemapandroid
 
 import com.lovemap.lovemapandroid.utils.EmojiUtils
 import com.vdurmont.emoji.EmojiManager
-import org.junit.Test
-
-import org.junit.Assert.*
+import org.junit.jupiter.api.Test
 import java.util.*
 
 /**
@@ -13,6 +11,7 @@ import java.util.*
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class ExampleUnitTest {
+
     @Test
     fun flagEmojiTest() {
         val map = EmojiManager.getForTag("flag")

@@ -328,13 +328,16 @@
     <string name="failed_to_load_news_feed">Hírfolyam betöltése sikertelen</string>
     <string name="somebody_liked_photo_at">👍 Valakinek tetszett ez a kép itt</string>
     <string name="somebody_disliked_photo_at">👎 Valakinek nem tetszett ez a kép itt</string>
-    <string name="somebody_uploaded_a_photo_to">⬆️ Valaki feltöltött egy fotót ide</string>
+    <string name="somebody_uploaded_a_photo_to">⬆️ Valaki feltöltött egy fotót</string>
     <string name="news_feed">Hírfolyam 📰</string>
     <string name="somebody_added_a_new_lovespot">📍 Új LoveSpotot vettek fel!</string>
     <string name="somebody_wishlisted_spot">😏 Valaki Kívánságlistára tette</string>
     <string name="somebody_reviewed_spot">⭐ Új értékelést írtak ehhez</string>
+    <string name="somebody_reviewed_spot_multi">⭐ Új értékelést írtak</string>
     <string name="review_not_found">Értékelés nem található</string>
     <string name="somebody_made_love_at">💞 Valaki baszott itt 😉</string>
+    <string name="somebody_did_new_things_at_a_lovespot">🙈 Valaki új dolgokat csinált itt</string>
+    <string name="public_actor_did_new_things_at_a_lovespot">- %1$s -\n\t\t🙈 új dolgokat csinált itt</string>
     <string name="new_lover_joined">🤭 Új publikus Szerető csatlakozott❣</string>
     <string name="switch_off_is_global">Globális</string>
     <string name="switch_on_is_local">Helyi</string>

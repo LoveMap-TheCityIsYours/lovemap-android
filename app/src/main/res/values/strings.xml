@@ -335,13 +335,16 @@
     <string name="failed_to_load_news_feed">Failed to load News Feed</string>
     <string name="somebody_liked_photo_at">👍 Somebody liked a photo at</string>
     <string name="somebody_disliked_photo_at">👎 Somebody disliked a photo at</string>
-    <string name="somebody_uploaded_a_photo_to">⬆️ Somebody uploaded a photo to</string>
+    <string name="somebody_uploaded_a_photo_to">⬆️ Somebody uploaded a photo</string>
     <string name="news_feed">News Feed 📰</string>
     <string name="somebody_added_a_new_lovespot">📍 New LoveSpot Added!</string>
     <string name="somebody_wishlisted_spot">😏 Somebody Wishlisted</string>
     <string name="somebody_reviewed_spot">⭐ A review was added at</string>
+    <string name="somebody_reviewed_spot_multi">⭐ A review was added</string>
     <string name="review_not_found">Review not found</string>
     <string name="somebody_made_love_at">💞 Somebody got lucky here 😉</string>
+    <string name="somebody_did_new_things_at_a_lovespot">🙈 Somebody did new things here</string>
+    <string name="public_actor_did_new_things_at_a_lovespot">- %1$s -\n\t\t🙈 did new things here</string>
     <string name="new_lover_joined">🤭 New public Lover joined us❣</string>
     <string name="switch_off_is_global">Global</string>
     <string name="switch_on_is_local">Local</string>
@@ -362,7 +365,7 @@
     <string name="public_actor_reviewed_spot">- %1$s -\n\t\t⭐ Reviewed</string>
     <string name="public_actor_liked_photo_at">- %1$s -\n\t\t👍 Liked this photo</string>
     <string name="public_actor_disliked_photo_at">- %1$s -\n\t\t👎 Disliked this photo</string>
-    <string name="public_actor_uploaded_a_photo_to">- %1$s -\n\t\t⬆️ Uploaded a photo to</string>
+    <string name="public_actor_uploaded_a_photo_to">- %1$s -\n\t\t⬆️ Uploaded a photo</string>
     <string name="public_actor_added_a_new_lovespot">- %1$s -\n\t\t📍 Added a new LoveSpot!</string>
     <string name="public_actor_wishlisted_spot">- %1$s -\n\t\t😏 Wishlisted</string>
     <string name="public_actor_made_love_at">- %1$s -\n\t\t💞 Got lucky here 😉</string>
@@ -444,5 +447,7 @@
     <string name="notification_channel_partnership_requested">Partnership requests</string>
     <string name="notification_channel_partnership_accepted">Partnership accepts</string>
     <string name="notification_channel_partnership_denied">Partnership denies</string>
+
+
 
 </resources>

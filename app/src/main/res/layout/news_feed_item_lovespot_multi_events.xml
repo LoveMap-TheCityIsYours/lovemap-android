@@ -241,6 +241,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
                 android:layout_marginTop="@dimen/standard_16"
+                android:layout_marginBottom="@dimen/standard_8"
                 android:background="@color/separatorLine"
                 android:gravity="center_horizontal" />
 
@@ -369,6 +370,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
                 android:layout_marginTop="@dimen/standard_16"
+                android:layout_marginBottom="@dimen/standard_8"
                 android:background="@color/separatorLine"
                 android:gravity="center_horizontal" />
 
@@ -500,6 +502,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
                 android:layout_marginTop="@dimen/standard_16"
+                android:layout_marginBottom="@dimen/standard_8"
                 android:background="@color/separatorLine"
                 android:gravity="center_horizontal" />
 
@@ -558,6 +561,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
                 android:layout_marginTop="@dimen/standard_16"
+                android:layout_marginBottom="@dimen/standard_8"
                 android:background="@color/separatorLine"
                 android:gravity="center_horizontal" />
 
@@ -603,35 +607,209 @@
 
 
 
-        <ImageView
-            android:layout_marginTop="8dp"
-            android:layout_marginHorizontal="16dp"
-            android:id="@+id/newsFeedPhotoItemPhoto1"
+<!--        PHOTO 1 -->
+        <LinearLayout
+            android:id="@+id/newsFeedPhotoLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:layout_weight="10"
-            android:scaleType="centerInside"/>
+            android:orientation="vertical">
 
-        <ImageView
-            android:layout_marginTop="8dp"
-            android:layout_marginHorizontal="16dp"
-            android:id="@+id/newsFeedPhotoItemPhoto2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:layout_weight="10"
-            android:scaleType="centerInside"/>
+            <TextView
+                style="?android:attr/weekSeparatorLineColor"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginTop="@dimen/standard_16"
+                android:layout_marginBottom="@dimen/standard_8"
+                android:background="@color/separatorLine"
+                android:gravity="center_horizontal" />
 
-        <ImageView
-            android:layout_marginTop="8dp"
-            android:layout_marginHorizontal="16dp"
-            android:id="@+id/newsFeedPhotoItemPhoto3"
+            <RelativeLayout
+                android:id="@+id/newsFeedPhotoTextLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="8dp">
+
+                <TextView
+                    android:id="@+id/newsFeedPhotoText1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@+id/newsFeedPhotoOpenLoverImage1"
+                    android:lineSpacingExtra="8sp"
+                    android:text="text"
+                    android:textColor="@color/myColorOnBackground" />
+
+                <ImageView
+                    android:id="@+id/newsFeedPhotoOpenLoverImage1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/baseline_open_in_new_24"
+                    android:visibility="visible" />
+
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="16dp"
+                android:id="@+id/newsFeedPhotoItemPhoto1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_weight="10"
+                android:scaleType="centerInside"/>
+
+        </LinearLayout>
+
+
+
+
+        <!--        PHOTO 2 -->
+        <LinearLayout
+            android:id="@+id/newsFeedPhotoLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:layout_weight="10"
-            android:scaleType="centerInside"/>
+            android:orientation="vertical">
+
+            <TextView
+                style="?android:attr/weekSeparatorLineColor"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginTop="@dimen/standard_16"
+                android:layout_marginBottom="@dimen/standard_8"
+                android:background="@color/separatorLine"
+                android:gravity="center_horizontal" />
+
+            <RelativeLayout
+                android:id="@+id/newsFeedPhotoTextLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="8dp">
+
+                <TextView
+                    android:id="@+id/newsFeedPhotoText2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@+id/newsFeedPhotoOpenLoverImage2"
+                    android:lineSpacingExtra="8sp"
+                    android:text="text"
+                    android:textColor="@color/myColorOnBackground" />
+
+                <ImageView
+                    android:id="@+id/newsFeedPhotoOpenLoverImage2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/baseline_open_in_new_24"
+                    android:visibility="visible" />
+
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="16dp"
+                android:id="@+id/newsFeedPhotoItemPhoto2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_weight="10"
+                android:scaleType="centerInside"/>
+
+        </LinearLayout>
+
+
+
+
+        <!--        PHOTO 3 -->
+        <LinearLayout
+            android:id="@+id/newsFeedPhotoLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="?android:attr/weekSeparatorLineColor"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginTop="@dimen/standard_16"
+                android:layout_marginBottom="@dimen/standard_8"
+                android:background="@color/separatorLine"
+                android:gravity="center_horizontal" />
+
+            <RelativeLayout
+                android:id="@+id/newsFeedPhotoTextLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="8dp">
+
+                <TextView
+                    android:id="@+id/newsFeedPhotoText3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@+id/newsFeedPhotoOpenLoverImage3"
+                    android:lineSpacingExtra="8sp"
+                    android:text="text"
+                    android:textColor="@color/myColorOnBackground" />
+
+                <ImageView
+                    android:id="@+id/newsFeedPhotoOpenLoverImage3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/baseline_open_in_new_24"
+                    android:visibility="visible" />
+
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="16dp"
+                android:id="@+id/newsFeedPhotoItemPhoto3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_weight="10"
+                android:scaleType="centerInside"/>
+
+        </LinearLayout>
 
 
 

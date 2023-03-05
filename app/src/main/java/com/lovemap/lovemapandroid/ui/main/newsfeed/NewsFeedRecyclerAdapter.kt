@@ -52,6 +52,7 @@ class NewsFeedRecyclerAdapter(
         private const val VIEW_TYPE_LOVER = 7
         private const val VIEW_TYPE_MULTI_LOVER = 8
         private const val VIEW_TYPE_PRIVATE_LOVERS = 9
+        private const val VIEW_TYPE_LOVE_SPOT_MULTI_EVENTS = 10
         private const val VIEW_TYPE_UNSUPPORTED = 19
         private const val VIEW_TYPE_LOADING = 20
     }
@@ -112,6 +113,13 @@ class NewsFeedRecyclerAdapter(
                         .inflate(R.layout.news_feed_item_lovespot_review, parent, false)
                 LoveSpotReviewViewHolder(view)
             }
+            VIEW_TYPE_LOVE_SPOT_MULTI_EVENTS -> {
+                val view: View =
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.news_feed_item_lovespot_multi_events, parent, false)
+                Log.i(tag, "creating  viewholder for VIEW_TYPE_LOVE_SPOT_MULTI_EVENTS")
+                LoveSpotMultiViewHolder(view)
+            }
             VIEW_TYPE_LOADING -> {
                 val view: View =
                     LayoutInflater.from(parent.context)
@@ -170,10 +178,21 @@ class NewsFeedRecyclerAdapter(
                 val photoLike = item.photoLike!!
                 setPhotoLikeView(viewHolder, item, photoLike)
             }
-        }   else if (viewHolder is LoveSpotViewHolder) {
+        } else if (viewHolder is LoveSpotViewHolder) {
             newsFeedItems[position].let { item ->
                 val loveSpot = item.loveSpot!!
                 setLoveSpotView(viewHolder, item, loveSpot)
+            }
+        } else if (viewHolder is LoveSpotReviewViewHolder) {
+            newsFeedItems[position].let { item ->
+                val loveSpotReview = item.loveSpotReview!!
+                setLoveSpotReviewView(viewHolder, item, loveSpotReview)
+            }
+        } else if (viewHolder is LoveSpotMultiViewHolder) {
+            newsFeedItems[position].let { item ->
+                val loveSpotMultiEvents = item.loveSpotMultiEvents!!
+                Log.i(tag, "binding  viewholder for loveSpotMultiEvents")
+                setLoveSpotMultiView(viewHolder, item, loveSpotMultiEvents)
             }
         } else if (viewHolder is BaseLoveSpotViewHolder) {
             newsFeedItems[position].let { item ->
@@ -192,12 +211,6 @@ class NewsFeedRecyclerAdapter(
                 }
 
             }
-        } else if (viewHolder is LoveSpotReviewViewHolder) {
-            newsFeedItems[position].let { item ->
-                val loveSpotReview = item.loveSpotReview!!
-                setLoveSpotReviewView(viewHolder, item, loveSpotReview)
-            }
-
         } else if (viewHolder is LoadingViewHolder) {
 
         }
@@ -499,45 +512,133 @@ class NewsFeedRecyclerAdapter(
             happenedAt = item.happenedAt,
             country = item.country
         )
-        setLoveSpotReviewViews(loveSpotReview, viewHolder)
+        setLoveSpotReviewViews(loveSpotReview, viewHolder.views)
     }
 
     private fun setLoveSpotReviewViews(
         loveSpotReview: LoveSpotReviewNewsFeedResponse,
-        viewHolder: LoveSpotReviewViewHolder
+        views: LoveSpotReviewViews
     ) {
         LoveSpotUtils.setRating(
             loveSpotReview.reviewStars.toDouble(),
-            viewHolder.newsFeedSpotRating
+            views.newsFeedSpotRating
         )
-        LoveSpotUtils.setRisk(loveSpotReview.riskLevel.toDouble(), viewHolder.newsFeedSpotRisk)
+        LoveSpotUtils.setRisk(loveSpotReview.riskLevel.toDouble(), views.newsFeedSpotRisk)
         if (loveSpotReview.reviewText.isEmpty()) {
-            viewHolder.newsFeedSpotReviewText.visibility = View.GONE
+            views.newsFeedSpotReviewText.visibility = View.GONE
         } else {
-            viewHolder.newsFeedSpotReviewText.text = loveSpotReview.reviewText
-            viewHolder.newsFeedSpotReviewText.visibility = View.VISIBLE
+            views.newsFeedSpotReviewText.text = loveSpotReview.reviewText
+            views.newsFeedSpotReviewText.visibility = View.VISIBLE
         }
         MainScope().launch {
             loveSpotReviewService.findLocallyOrFetch(loveSpotReview.id)?.let { review ->
                 LoveSpotUtils.setRating(
                     review.reviewStars.toDouble(),
-                    viewHolder.newsFeedSpotRating
+                    views.newsFeedSpotRating
                 )
-                LoveSpotUtils.setRisk(review.riskLevel.toDouble(), viewHolder.newsFeedSpotRisk)
+                LoveSpotUtils.setRisk(review.riskLevel.toDouble(), views.newsFeedSpotRisk)
                 if (review.reviewText.isEmpty()) {
-                    viewHolder.newsFeedSpotReviewText.visibility = View.GONE
+                    views.newsFeedSpotReviewText.visibility = View.GONE
                 } else {
-                    viewHolder.newsFeedSpotReviewText.text = review.reviewText
-                    viewHolder.newsFeedSpotReviewText.visibility = View.VISIBLE
+                    views.newsFeedSpotReviewText.text = review.reviewText
+                    views.newsFeedSpotReviewText.visibility = View.VISIBLE
                 }
             }
             loveSpotService.findLocallyOrFetch(loveSpotReview.loveSpotId)?.let { loveSpot ->
-                viewHolder.newsFeedLoveSpotName.text = loveSpot.name
-                LoveSpotUtils.setTypeImage(loveSpot.type, viewHolder.newsFeedSpotTypeImage)
-                LoveSpotUtils.setDistance(loveSpot, viewHolder.newsFeedSpotDistance)
+                views.newsFeedLoveSpotName.text = loveSpot.name
+                LoveSpotUtils.setTypeImage(loveSpot.type, views.newsFeedSpotTypeImage)
+                LoveSpotUtils.setDistance(loveSpot, views.newsFeedSpotDistance)
             }
         }
     }
+
+    private fun setLoveSpotMultiView(
+        viewHolder: LoveSpotMultiViewHolder,
+        item: NewsFeedItemResponse,
+        multiLoveSpot: LoveSpotMultiEventsResponse
+    ) {
+        val loveSpot: LoveSpotNewsFeedResponse = multiLoveSpot.loveSpot
+        val lovers: List<LoverViewWithoutRelationDto> = multiLoveSpot.lovers
+        val reviews: List<LoveSpotReviewNewsFeedResponse> = multiLoveSpot.reviews.take(2)
+        Log.i(tag, "ReviewResponses: $reviews")
+        val loves: List<LoveNewsFeedResponse> = multiLoveSpot.loves.take(2)
+        val photos: List<LoveSpotPhotoNewsFeedResponse> = multiLoveSpot.photos.take(3)
+
+        viewHolder.setTitle(multiLoveSpot, lovers, loveSpot, item)
+        setLoveSpotViews(loveSpot.id, viewHolder)
+
+        // setting reviews
+        reviews.forEachIndexed { index, response ->
+            Log.i(tag, "Filling review #$index")
+            val review = viewHolder.reviews[index]
+            review.setTitle(
+                lovers.firstOrNull { it.id == response.reviewerId && it.publicProfile },
+                R.string.somebody_reviewed_spot_multi,
+                R.string.public_actor_reviewed_spot
+            )
+
+            review.openLoverImage
+            if (response.reviewText.isEmpty()) {
+                review.reviewText.visibility = View.GONE
+            } else {
+                review.reviewText.visibility = View.VISIBLE
+                review.reviewText.text = response.reviewText
+            }
+            LoveSpotUtils.setRating(response.reviewStars.toDouble(), review.ratingBar)
+            LoveSpotUtils.setRisk(response.riskLevel.toDouble(), review.risk)
+        }
+        viewHolder.hideLastRows(reviews.size, viewHolder.reviews)
+
+        loves.forEachIndexed { index, response ->
+            Log.i(tag, "Filling love #$index")
+            val love = viewHolder.loves[index]
+            love.setTitle(
+                lovers.firstOrNull { it.id == response.loverId && it.publicProfile },
+                R.string.somebody_made_love_at,
+                R.string.public_actor_made_love_at
+            )
+        }
+        viewHolder.hideLastRows(loves.size, viewHolder.loves)
+
+        photos.forEachIndexed { index, response ->
+            Log.i(tag, "Filling photo #$index")
+            val photo = viewHolder.photos[index]
+            photo.setTitle(
+                lovers.firstOrNull { it.id == response.uploadedBy && it.publicProfile },
+                R.string.somebody_uploaded_a_photo_to,
+                R.string.public_actor_uploaded_a_photo_to
+            )
+            PhotoUtils.loadSimpleImage(
+                photo.photo,
+                loveSpot.type,
+                response.url,
+                viewHolder.itemView.width
+            )
+        }
+        viewHolder.hideLastRows(photos.size, viewHolder.photos)
+
+
+//        MainScope().launch {
+//            multiLoveSpot.lovers.forEachIndexed { index, lover ->
+//                if (lover.id == appContext.userId) {
+//                    viewHolder.loverNames[index].text = metadataStore.getLover().displayName
+//                }
+//                loverService.getOtherByIdWithoutRelation(lover.id)?.let {
+//                    LoverService.otherLoverId = it.id
+//                    if (lover.id != appContext.userId) {
+//                        viewHolder.loverNames[index].text = it.displayName
+//                    }
+//                }
+//            }
+//        }
+    }
+
+
+
+
+
+
+
 
     private fun setItemAnimation(
         viewHolder: RecyclerView.ViewHolder,
@@ -581,6 +682,7 @@ class NewsFeedRecyclerAdapter(
                 MULTI_LOVER -> VIEW_TYPE_MULTI_LOVER
                 LOADING -> VIEW_TYPE_LOADING
                 PRIVATE_LOVERS -> VIEW_TYPE_PRIVATE_LOVERS
+                LOVE_SPOT_MULTI_EVENTS -> VIEW_TYPE_LOVE_SPOT_MULTI_EVENTS
                 else -> VIEW_TYPE_UNSUPPORTED
             }
         }.onFailure { e ->
@@ -650,8 +752,9 @@ class NewsFeedRecyclerAdapter(
         val newsFeedLoverRank: TextView = itemView.findViewById(R.id.newsFeedLoverRank)
     }
 
-    inner class PrivateLoversViewHolder(itemView: View): BaseViewHolder(itemView) {
-        val newsFeedPrivateLoverNames: TextView = itemView.findViewById(R.id.newsFeedPrivateLoverNames)
+    inner class PrivateLoversViewHolder(itemView: View) : BaseViewHolder(itemView) {
+        val newsFeedPrivateLoverNames: TextView =
+            itemView.findViewById(R.id.newsFeedPrivateLoverNames)
     }
 
     inner class MultiLoverViewHolder(itemView: View) : BaseViewHolder(itemView) {
@@ -709,35 +812,192 @@ class NewsFeedRecyclerAdapter(
         val newsFeedSpotDistance: TextView = itemView.findViewById(R.id.newsFeedSpotDistance)
     }
 
-    inner class LoveSpotViewHolder(itemView: View): BaseLoveSpotViewHolder(itemView) {
+    inner class LoveSpotViewHolder(itemView: View) : BaseLoveSpotViewHolder(itemView) {
         val newsFeedSpotDescription: TextView = itemView.findViewById(R.id.newsFeedSpotDescription)
     }
 
+    data class LoveSpotReviewViews(
+        val newsFeedLoveSpotName: TextView,
+        val newsFeedSpotTypeImage: ImageView,
+        val newsFeedSpotRating: RatingBar,
+        val newsFeedSpotRisk: TextView,
+        val newsFeedSpotDistance: TextView,
+        val newsFeedSpotReviewText: TextView
+    )
+
     inner class LoveSpotReviewViewHolder(itemView: View) : BaseViewHolder(itemView) {
-        val newsFeedLoveSpotName: TextView = itemView.findViewById(R.id.newsFeedLoveSpotName)
-        val newsFeedSpotTypeImage: ImageView = itemView.findViewById(R.id.newsFeedSpotTypeImage)
-        val newsFeedSpotRating: RatingBar = itemView.findViewById(R.id.newsFeedSpotRating)
-        val newsFeedSpotRisk: TextView = itemView.findViewById(R.id.newsFeedSpotRisk)
-        val newsFeedSpotDistance: TextView = itemView.findViewById(R.id.newsFeedSpotDistance)
-        val newsFeedSpotReviewText: TextView = itemView.findViewById(R.id.newsFeedSpotReviewText)
+        val views = LoveSpotReviewViews(
+            newsFeedLoveSpotName = itemView.findViewById(R.id.newsFeedLoveSpotName),
+            newsFeedSpotTypeImage = itemView.findViewById(R.id.newsFeedSpotTypeImage),
+            newsFeedSpotRating = itemView.findViewById(R.id.newsFeedSpotRating),
+            newsFeedSpotRisk = itemView.findViewById(R.id.newsFeedSpotRisk),
+            newsFeedSpotDistance = itemView.findViewById(R.id.newsFeedSpotDistance),
+            newsFeedSpotReviewText = itemView.findViewById(R.id.newsFeedSpotReviewText),
+        )
     }
 
-    inner class LoveSpotMultiViewHolder(itemView: View): BaseLoveSpotViewHolder(itemView) {
-        val newsFeedReviewLayout1: LinearLayout = itemView.findViewById(R.id.newsFeedReviewLayout1)
-        val newsFeedReviewTextLayout1: RelativeLayout = itemView.findViewById(R.id.newsFeedReviewTextLayout1)
-        val newsFeedReviewTitle1: TextView = itemView.findViewById(R.id.newsFeedReviewTitle1)
-        val newsFeedReviewOpenLoverImage1: ImageView = itemView.findViewById(R.id.newsFeedReviewOpenLoverImage1)
-        val newsFeedSpotReviewRating1: RatingBar = itemView.findViewById(R.id.newsFeedSpotReviewRating1)
-        val newsFeedSpotReviewRisk1: TextView = itemView.findViewById(R.id.newsFeedSpotReviewRisk1)
-        val newsFeedSpotReviewText1: TextView = itemView.findViewById(R.id.newsFeedSpotReviewText1)
+    open inner class LoveSpotMultiBaseViews(
+        val partLayout: LinearLayout,
+        val titleLayout: RelativeLayout,
+        val titleText: TextView,
+        val openLoverImage: ImageView
+    ) {
 
-        val newsFeedReviewLayout2: LinearLayout = itemView.findViewById(R.id.newsFeedReviewLayout2)
-        val newsFeedReviewTextLayout2: RelativeLayout = itemView.findViewById(R.id.newsFeedReviewTextLayout2)
-        val newsFeedReviewTitle2: TextView = itemView.findViewById(R.id.newsFeedReviewTitle2)
-        val newsFeedReviewOpenLoverImage2: ImageView = itemView.findViewById(R.id.newsFeedReviewOpenLoverImage2)
-        val newsFeedSpotReviewRating2: RatingBar = itemView.findViewById(R.id.newsFeedSpotReviewRating2)
-        val newsFeedSpotReviewRisk2: TextView = itemView.findViewById(R.id.newsFeedSpotReviewRisk2)
-        val newsFeedSpotReviewText2: TextView = itemView.findViewById(R.id.newsFeedSpotReviewText2)
+        fun setTitle(
+            publicLover: LoverViewWithoutRelationDto?,
+            unknownActorText: Int,
+            publicActorText: Int,
+        ) {
+            publicLover?.let {
+                titleText.text = String.format(
+                    context.getString(publicActorText),
+                    it.displayName
+                )
+                titleText.textSize = 16f
+                titleLayout.isClickable = true
+                titleLayout.focusable = View.FOCUSABLE
+                openLoverImage.visibility = View.VISIBLE
+                titleLayout.setOnClickListener {
+                    openOtherLoverView(publicLover.id)
+                }
+            } ?: run {
+                titleText.text = context.getString(unknownActorText)
+                titleText.textSize = 14f
+                openLoverImage.visibility = View.GONE
+                titleLayout.isClickable = false
+                titleLayout.focusable = View.NOT_FOCUSABLE
+            }
+        }
+    }
+
+    inner class LoveSpotMultiReviewViews(
+        partLayout: LinearLayout,
+        titleLayout: RelativeLayout,
+        titleText: TextView,
+        openLoverImage: ImageView,
+        val ratingBar: RatingBar,
+        val risk: TextView,
+        val reviewText: TextView
+    ) : LoveSpotMultiBaseViews(partLayout, titleLayout, titleText, openLoverImage)
+
+    inner class LoveSpotMultiLoveViews(
+        partLayout: LinearLayout,
+        titleLayout: RelativeLayout,
+        titleText: TextView,
+        openLoverImage: ImageView,
+    ) : LoveSpotMultiBaseViews(partLayout, titleLayout, titleText, openLoverImage)
+
+    inner class LoveSpotMultiPhotoViews(
+        partLayout: LinearLayout,
+        titleLayout: RelativeLayout,
+        titleText: TextView,
+        openLoverImage: ImageView,
+        val photo: ImageView,
+    ) : LoveSpotMultiBaseViews(partLayout, titleLayout, titleText, openLoverImage)
+
+    inner class LoveSpotMultiViewHolder(itemView: View) : BaseLoveSpotViewHolder(itemView) {
+        val review1 = LoveSpotMultiReviewViews(
+            partLayout = itemView.findViewById(R.id.newsFeedReviewLayout1),
+            titleLayout = itemView.findViewById(R.id.newsFeedReviewTextLayout1),
+            titleText = itemView.findViewById(R.id.newsFeedReviewTitle1),
+            openLoverImage = itemView.findViewById(R.id.newsFeedReviewOpenLoverImage1),
+            ratingBar = itemView.findViewById(R.id.newsFeedSpotReviewRating1),
+            risk = itemView.findViewById(R.id.newsFeedSpotReviewRisk1),
+            reviewText = itemView.findViewById(R.id.newsFeedSpotReviewText1)
+        )
+        val review2 = LoveSpotMultiReviewViews(
+            partLayout = itemView.findViewById(R.id.newsFeedReviewLayout2),
+            titleLayout = itemView.findViewById(R.id.newsFeedReviewTextLayout2),
+            titleText = itemView.findViewById(R.id.newsFeedReviewTitle2),
+            openLoverImage = itemView.findViewById(R.id.newsFeedReviewOpenLoverImage2),
+            ratingBar = itemView.findViewById(R.id.newsFeedSpotReviewRating2),
+            risk = itemView.findViewById(R.id.newsFeedSpotReviewRisk2),
+            reviewText = itemView.findViewById(R.id.newsFeedSpotReviewText2)
+        )
+        val reviews = listOf(review1, review2)
+
+
+        val love1 = LoveSpotMultiLoveViews(
+            partLayout = itemView.findViewById(R.id.newsFeedLoveLayout1),
+            titleLayout = itemView.findViewById(R.id.newsFeedLoveTextLayout1),
+            titleText = itemView.findViewById(R.id.newsFeedLoveText1),
+            openLoverImage = itemView.findViewById(R.id.newsFeedLoveOpenLoverImage1),
+        )
+        val love2 = LoveSpotMultiLoveViews(
+            partLayout = itemView.findViewById(R.id.newsFeedLoveLayout2),
+            titleLayout = itemView.findViewById(R.id.newsFeedLoveTextLayout2),
+            titleText = itemView.findViewById(R.id.newsFeedLoveText2),
+            openLoverImage = itemView.findViewById(R.id.newsFeedLoveOpenLoverImage2),
+        )
+        val loves = listOf(love1, love2)
+
+
+        val photo1 = LoveSpotMultiPhotoViews(
+            partLayout = itemView.findViewById(R.id.newsFeedPhotoLayout1),
+            titleLayout = itemView.findViewById(R.id.newsFeedPhotoTextLayout1),
+            titleText = itemView.findViewById(R.id.newsFeedPhotoText1),
+            openLoverImage = itemView.findViewById(R.id.newsFeedPhotoOpenLoverImage1),
+            photo = itemView.findViewById(R.id.newsFeedPhotoItemPhoto1)
+        )
+        val photo2 = LoveSpotMultiPhotoViews(
+            partLayout = itemView.findViewById(R.id.newsFeedPhotoLayout2),
+            titleLayout = itemView.findViewById(R.id.newsFeedPhotoTextLayout2),
+            titleText = itemView.findViewById(R.id.newsFeedPhotoText2),
+            openLoverImage = itemView.findViewById(R.id.newsFeedPhotoOpenLoverImage2),
+            photo = itemView.findViewById(R.id.newsFeedPhotoItemPhoto2)
+        )
+        val photo3 = LoveSpotMultiPhotoViews(
+            partLayout = itemView.findViewById(R.id.newsFeedPhotoLayout3),
+            titleLayout = itemView.findViewById(R.id.newsFeedPhotoTextLayout3),
+            titleText = itemView.findViewById(R.id.newsFeedPhotoText3),
+            openLoverImage = itemView.findViewById(R.id.newsFeedPhotoOpenLoverImage3),
+            photo = itemView.findViewById(R.id.newsFeedPhotoItemPhoto3)
+        )
+        val photos = listOf(photo1, photo2, photo3)
+
+        fun setTitle(
+            multiLoveSpot: LoveSpotMultiEventsResponse,
+            lovers: List<LoverViewWithoutRelationDto>,
+            loveSpot: LoveSpotNewsFeedResponse,
+            item: NewsFeedItemResponse
+        ) {
+            if (multiLoveSpot.loveSpotAddedHere) {
+                val loveSpotAdder = lovers.first { it.id == loveSpot.addedBy }
+                setTexts(
+                    publicLover = loveSpotAdder.takeIf { it.publicProfile },
+                    unknownActorText = R.string.somebody_added_a_new_lovespot,
+                    publicActorText = R.string.public_actor_added_a_new_lovespot,
+                    happenedAt = item.happenedAt,
+                    country = item.country
+                )
+            } else {
+                val latestEventLover = multiLoveSpot.getLatestEventLover()
+                setTexts(
+                    publicLover = latestEventLover.takeIf { it.publicProfile },
+                    unknownActorText = R.string.somebody_did_new_things_at_a_lovespot,
+                    publicActorText = R.string.public_actor_did_new_things_at_a_lovespot,
+                    happenedAt = item.happenedAt,
+                    country = item.country
+                )
+            }
+        }
+
+        fun hideLastRows(
+            filledRows: Int,
+            views: List<LoveSpotMultiBaseViews>
+        ) {
+            Log.i(tag, "filledRows: $filledRows")
+            val hideFrom = views.size - (views.size - filledRows)
+            Log.i(tag, "hideFrom: $hideFrom")
+
+            views.forEachIndexed { index, view ->
+                if (index >= hideFrom) {
+                    Log.i(tag, "Hiding ${view::class.simpleName} #$index")
+                    view.partLayout.visibility = View.GONE
+                }
+            }
+        }
+
     }
 
     inner class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

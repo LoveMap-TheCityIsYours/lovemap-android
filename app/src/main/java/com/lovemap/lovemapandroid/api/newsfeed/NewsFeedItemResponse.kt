@@ -2,6 +2,8 @@ package com.lovemap.lovemapandroid.api.newsfeed
 
 import com.lovemap.lovemapandroid.api.lover.LoverViewWithoutRelationDto
 import com.lovemap.lovemapandroid.api.lovespot.LoveSpotType
+import com.lovemap.lovemapandroid.utils.instantOfApiString
+import java.time.Instant
 
 data class NewsFeedItemResponse(
     val type: NewsFeedItemType,
@@ -22,6 +24,7 @@ data class NewsFeedItemResponse(
     val lover: LoverNewsFeedResponse? = null,
     val multiLover: MultiLoverNewsFeedResponse? = null,
     val privateLovers: PrivateLoversNewsFeedResponse? = null,
+    val loveSpotMultiEvents: LoveSpotMultiEventsResponse? = null,
 ) {
     companion object {
         val LOADING = NewsFeedItemResponse(
@@ -41,7 +44,8 @@ enum class NewsFeedItemType {
     LOVER,
     MULTI_LOVER,
     PRIVATE_LOVERS,
-    LOADING
+    LOADING,
+    LOVE_SPOT_MULTI_EVENTS,
 }
 
 data class LoveSpotNewsFeedResponse(
@@ -121,3 +125,60 @@ data class MultiLoverNewsFeedResponse(
 data class PrivateLoversNewsFeedResponse(
     val lovers: List<LoverNewsFeedResponse>
 )
+
+data class LoveSpotMultiEventsResponse(
+    val loveSpot: LoveSpotNewsFeedResponse,
+    val lovers: List<LoverViewWithoutRelationDto> = emptyList(),
+    val loves: List<LoveNewsFeedResponse> = emptyList(),
+    val reviews: List<LoveSpotReviewNewsFeedResponse> = emptyList(),
+    val photos: List<LoveSpotPhotoNewsFeedResponse> = emptyList(),
+    val loveSpotAddedHere: Boolean
+) {
+    fun getLatestEventLover(): LoverViewWithoutRelationDto {
+        val loveSpotTime: Instant = instantOfApiString(loveSpot.createdAt)
+
+        val latestLoveSpotLover: Pair<Instant, LoverViewWithoutRelationDto>? =
+            lovers.firstOrNull { it.id == loveSpot.addedBy }?.let {
+                Pair(loveSpotTime, it)
+            }
+
+        val orderedLoves = loves.associateBy { instantOfApiString(it.happenedAt) }.toSortedMap()
+
+        val latestLoveLover: Pair<Instant, LoverViewWithoutRelationDto>? = runCatching {
+            orderedLoves[orderedLoves.lastKey()]?.let { lastLove ->
+                lovers.firstOrNull { it.id == lastLove.loverId }?.let {
+                    Pair(orderedLoves.lastKey(), it)
+                }
+            }
+        }.getOrNull()
+
+        val orderedReviews =
+            reviews.associateBy { instantOfApiString(it.submittedAt) }.toSortedMap()
+        val latestReviewLover: Pair<Instant, LoverViewWithoutRelationDto>? = runCatching {
+            orderedReviews[orderedReviews.lastKey()]?.let { lastReview ->
+                lovers.firstOrNull { it.id == lastReview.reviewerId }?.let {
+                    Pair(orderedReviews.lastKey(), it)
+                }
+            }
+        }.getOrNull()
+
+
+        val orderedPhotos = photos.associateBy { instantOfApiString(it.uploadedAt) }.toSortedMap()
+        val latestPhotoLover: Pair<Instant, LoverViewWithoutRelationDto>? = runCatching {
+            orderedPhotos[orderedPhotos.lastKey()]?.let { lastPhoto ->
+                lovers.firstOrNull { it.id == lastPhoto.uploadedBy }?.let {
+                    Pair(orderedPhotos.lastKey(), it)
+                }
+            }
+        }.getOrNull()
+
+
+        return listOf(latestLoveSpotLover, latestLoveLover, latestReviewLover, latestPhotoLover)
+            .mapNotNull { it }
+            .associateBy({ it.first }, { it.second })
+            .toSortedMap()
+            .toList()
+            .last()
+            .second
+    }
+}
