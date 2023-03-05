@@ -70,7 +70,7 @@ class NewsFeedFragment : Fragment() {
     private fun initViews(view: View) {
         newsFeedSwipeRefresh = view.findViewById(R.id.newsFeedSwipeRefresh)
         recyclerView = view.findViewById(R.id.newsFeedRecyclerView)
-        newsFeedRecyclerAdapter = NewsFeedRecyclerAdapter(requireActivity(), newsFeedItems)
+        newsFeedRecyclerAdapter = NewsFeedRecyclerAdapter(newsFeedItems)
         recyclerView.adapter = newsFeedRecyclerAdapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
     }

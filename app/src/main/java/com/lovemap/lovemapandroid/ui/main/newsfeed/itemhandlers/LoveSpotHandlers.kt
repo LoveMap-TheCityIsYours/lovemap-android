@@ -9,6 +9,7 @@ import com.lovemap.lovemapandroid.api.newsfeed.LoveSpotNewsFeedResponse
 import com.lovemap.lovemapandroid.api.newsfeed.NewsFeedItemResponse
 import com.lovemap.lovemapandroid.config.AppContext
 import com.lovemap.lovemapandroid.ui.main.newsfeed.BaseLoveSpotViewHolder
+import com.lovemap.lovemapandroid.ui.main.newsfeed.LoveSpotMultiViewHolder
 import com.lovemap.lovemapandroid.ui.main.newsfeed.LoveSpotViewHolder
 import com.lovemap.lovemapandroid.ui.main.newsfeed.VIEW_TYPE_LOVE_SPOT
 import com.lovemap.lovemapandroid.ui.utils.LoveSpotUtils
@@ -84,6 +85,9 @@ fun setLoveSpotViews(
                 LoveSpotUtils.setDistance(loveSpot, viewHolder.newsFeedSpotDistance)
                 if (viewHolder is LoveSpotViewHolder) {
                     viewHolder.newsFeedSpotDescription.text = loveSpot.description
+                }
+                if (viewHolder is LoveSpotMultiViewHolder) {
+                    viewHolder.loveSpotDescription.text = loveSpot.description
                 }
             }
     }

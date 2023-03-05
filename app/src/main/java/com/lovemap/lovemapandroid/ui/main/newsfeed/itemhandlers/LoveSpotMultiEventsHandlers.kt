@@ -56,6 +56,12 @@ class LoveSpotMultiEventsViewHolderBinder : NewsFeedItemBinder {
         val photos: List<LoveSpotPhotoNewsFeedResponse> = multiLoveSpot.photos.take(3)
 
         viewHolder.setTitle(multiLoveSpot, lovers, loveSpot, item)
+
+        viewHolder.newsFeedLoveSpotName.text = loveSpot.name
+        viewHolder.loveSpotDescription.text = loveSpot.description
+        LoveSpotUtils.setTypeImage(loveSpot.type, viewHolder.newsFeedSpotTypeImage)
+        LoveSpotUtils.setType(loveSpot.type, viewHolder.newsFeedSpotType)
+
         setLoveSpotViews(loveSpot.id, viewHolder)
         setReviews(reviews, viewHolder, lovers)
         setLoves(loves, viewHolder, lovers)

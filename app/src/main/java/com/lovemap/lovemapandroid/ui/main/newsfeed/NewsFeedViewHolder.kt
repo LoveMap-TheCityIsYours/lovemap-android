@@ -225,6 +225,8 @@ class LoveSpotMultiPhotoViews(
 class LoveSpotMultiViewHolder(itemView: View) : BaseLoveSpotViewHolder(itemView) {
     private val tag = "LoveSpotMultiViewHolder"
 
+    val loveSpotDescription: TextView = itemView.findViewById(R.id.newsFeedSpotDescription)
+
     val review1 = LoveSpotMultiReviewViews(
         partLayout = itemView.findViewById(R.id.newsFeedReviewLayout1),
         titleLayout = itemView.findViewById(R.id.newsFeedReviewTextLayout1),
