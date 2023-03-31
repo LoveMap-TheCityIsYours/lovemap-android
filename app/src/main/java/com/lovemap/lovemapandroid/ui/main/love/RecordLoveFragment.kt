@@ -106,10 +106,10 @@ class RecordLoveFragment : Fragment(),
         }
     }
 
-    fun selectedPartner(): Long? {
+    fun selectedPartner(): Long? = runCatching {
         val selectedPartnerName = partners[recordLoveSelectPartnerDropdown.selectedItemPosition]
-        return partnerIds[selectedPartnerName]
-    }
+        partnerIds[selectedPartnerName]
+    }.getOrNull()
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         selectedDateTime = LocalDateTime.of(

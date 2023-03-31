@@ -73,18 +73,18 @@ class LoveSpotListFragment : Fragment() {
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        val position = try {
-            adapter.position
+        try {
+            val position = adapter.position
+            val loveSpotHolder = adapter.values[position]
+            LoveSpotUtils.onContextItemSelected(
+                item,
+                adapter.contextMenuIds,
+                loveSpotHolder.id,
+                requireContext()
+            )
         } catch (e: Exception) {
             return super.onContextItemSelected(item)
         }
-        val loveSpotHolder = adapter.values[position]
-        LoveSpotUtils.onContextItemSelected(
-            item,
-            adapter.contextMenuIds,
-            loveSpotHolder.id,
-            requireContext()
-        )
         return super.onContextItemSelected(item)
     }
 

@@ -47,6 +47,7 @@ class LoveSpotMultiEventsViewHolderBinder : NewsFeedItemBinder {
         item: NewsFeedItemResponse,
         multiLoveSpot: LoveSpotMultiEventsResponse
     ) {
+        viewHolder.showAllViews()
         setLoveSpotOnClickListener(viewHolder, multiLoveSpot.loveSpot.id)
 
         val loveSpot: LoveSpotNewsFeedResponse = multiLoveSpot.loveSpot

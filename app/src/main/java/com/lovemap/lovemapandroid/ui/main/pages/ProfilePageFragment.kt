@@ -312,23 +312,25 @@ class ProfilePageFragment : Fragment() {
 
     private fun setPartnerships(context: Context) {
         MainScope().launch {
-            val partnership = partnershipService.getPartnership()
-            if (partnership != null) {
-                partner = loverService.getOtherById(partnership.getPartnerId())
-                partner?.let {
-                    profilePartnerName.text = it.displayName
-                    profilePartnerRelation.text =
-                        I18nUtils.partnershipStatus(
-                            partnership.partnershipStatus,
-                            context
-                        )
-                    profilePartnerRelation.visibility = View.VISIBLE
+            runCatching {
+                val partnership = partnershipService.getPartnership()
+                if (partnership != null) {
+                    partner = loverService.getOtherById(partnership.getPartnerId())
+                    partner?.let {
+                        profilePartnerName.text = it.displayName
+                        profilePartnerRelation.text =
+                            I18nUtils.partnershipStatus(
+                                partnership.partnershipStatus,
+                                context
+                            )
+                        profilePartnerRelation.visibility = View.VISIBLE
+                    }
+                } else {
+                    partner = null
+                    profilePartnerName.text = getString(R.string.profilePartnersEmpty)
+                    profilePartnerRelation.visibility = View.INVISIBLE
                 }
-            } else {
-                partner = null
-                profilePartnerName.text = getString(R.string.profilePartnersEmpty)
-                profilePartnerRelation.visibility = View.INVISIBLE
-            }
+            }.onFailure { e -> Log.e(tag, "setPartnerships shitted itself", e) }
         }
     }
 

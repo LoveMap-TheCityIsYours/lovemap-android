@@ -313,6 +313,12 @@ class LoveSpotMultiViewHolder(itemView: View) : BaseLoveSpotViewHolder(itemView)
         }
     }
 
+    fun showAllViews() {
+        reviews.forEach { it.partLayout.visibility = View.VISIBLE }
+        photos.forEach { it.partLayout.visibility = View.VISIBLE }
+        loves.forEach { it.partLayout.visibility = View.VISIBLE }
+    }
+
     fun hideLastRows(
         filledRows: Int,
         views: List<LoveSpotMultiBaseViews>
