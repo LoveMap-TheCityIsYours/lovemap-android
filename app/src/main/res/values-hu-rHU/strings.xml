@@ -305,7 +305,7 @@
     <string name="failed_to_dislike_photo">Fotó Diszlájkolása sikertelen</string>
     <string name="processing_photos">Fotók feldolgozása</string>
     <string name="terms_of_use_title">Felhasználási Feltételek</string>
-    <string name="terms_of_use_message"><![CDATA[<<a href="https://api.lovemap.app/terms-of-use.html">Elfogadom a Felhasználási Feltételeket.</a>]]></string>
+    <string name="terms_of_use_message"><![CDATA[<<a href="https://lovemap.app/terms-of-use.html">Elfogadom a Felhasználási Feltételeket.</a>]]></string>
     <string name="wishlist_item_not_found">A kívánságlistád meghibásodott, írj a supportnak</string>
     <string name="already_on_wishlist">A LoveSpot már a kívánságlistádon van</string>
     <string name="failed_to_add_to_wishlist">Nem sikerült Kívánságlistához adni</string>

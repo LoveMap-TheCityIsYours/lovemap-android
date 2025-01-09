@@ -41,8 +41,10 @@ class LoadingBarShower(private val activity: Activity) {
     fun onResponse() {
         MainScope().launch {
             withContext(Dispatchers.Main) {
-                progressBar.dismiss()
-                activity.window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                if (!activity.isFinishing) {
+                    progressBar.dismiss()
+                    activity.window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                }
             }
         }
     }

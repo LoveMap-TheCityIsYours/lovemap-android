@@ -59,11 +59,11 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="api.lovemap.app"
+                    android:host="lovemap.app"
                     android:pathPrefix="/lover"
                     android:scheme="https" />
                 <data
-                    android:host="api.lovemap.app"
+                    android:host="lovemap.app"
                     android:pathPrefix="/join-us"
                     android:scheme="https" />
             </intent-filter>

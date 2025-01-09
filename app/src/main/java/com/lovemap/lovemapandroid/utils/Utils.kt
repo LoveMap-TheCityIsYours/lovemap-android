@@ -17,8 +17,8 @@ const val AUTHORIZATION_HEADER = "Authorization"
 const val X_CLIENT_ID_HEADER = "x-client-id"
 const val X_CLIENT_SECRET_HEADER = "x-client-secret"
 
-const val LINK_PREFIX_API_CALL = "https://api.lovemap.app/lover?uuid="
-const val LINK_PREFIX_VISIBLE = "https://api.lovemap.app/join-us/lover?uuid="
+const val LINK_PREFIX_API_CALL = "https://lovemap.app/lover?uuid="
+const val LINK_PREFIX_VISIBLE = "https://lovemap.app/join-us/lover?uuid="
 
 const val IS_CLICKABLE = "isClickable"
 

@@ -312,7 +312,7 @@
     <string name="failed_to_dislike_photo">Failed to dislike photo</string>
     <string name="processing_photos">Processing photos</string>
     <string name="terms_of_use_title">Terms of Use</string>
-    <string name="terms_of_use_message"><![CDATA[<a href="https://api.lovemap.app/terms-of-use.html">I accept the Terms of Use.</a>]]></string>
+    <string name="terms_of_use_message"><![CDATA[<a href="https://lovemap.app/terms-of-use.html">I accept the Terms of Use.</a>]]></string>
     <string name="wishlist_item_not_found">Your wishlist is corrupted, contact support</string>
     <string name="already_on_wishlist">This LoveSpot is already on your Wishlist</string>
     <string name="failed_to_add_to_wishlist">Failed to add to Wishlist</string>
