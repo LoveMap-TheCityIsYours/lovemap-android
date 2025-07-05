@@ -343,7 +343,7 @@ class LoveSpotService(
             if (response.isSuccessful) {
                 val result: RecommendationsResponse = response.body()!!
                 Log.i(tag, "Recommendations response: $result")
-                Log.i(tag, "Recommendations Raw response: ${response.raw().body()?.contentLength()}")
+                Log.i(tag, "Recommendations Raw response: ${response.raw().body?.contentLength()}")
                 runCatching { loveSpotDao.insert(*result.topRatedSpots.toTypedArray()) }
                     .onFailure { Log.e(tag, "Error: topRatedSpots: ${result.topRatedSpots}", it) }
 

@@ -1,6 +1,7 @@
 package com.lovemap.lovemapandroid.ui.main.lovespot
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -72,7 +74,7 @@ class AddLoveSpotActivity : AppCompatActivity() {
     private lateinit var loveSpotTypeInfoButton: ImageButton
     private lateinit var addSpotUploadButton: ExtendedFloatingActionButton
     private lateinit var attachedPhotosCount: TextView
-    private lateinit var photoPickerLauncher: ActivityResultLauncher<Intent>
+    private lateinit var photoPickerLauncher: ActivityResultLauncher<PickVisualMediaRequest>
     private val filesToUpload = ArrayList<File>()
 
     private var availability = ALL_DAY
@@ -124,10 +126,9 @@ class AddLoveSpotActivity : AppCompatActivity() {
         recordLoveFragment =
             supportFragmentManager.findFragmentById(R.id.addSpotRecordLoveFragment) as RecordLoveFragment
 
-        photoPickerLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
-                handlePhotoPickerResult(activityResult)
-            }
+        photoPickerLauncher = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+                handlePhotoPickerResult(uri)
+        }
 
 
         loveSpotTypeInfoButton.setOnClickListener {
@@ -151,13 +152,13 @@ class AddLoveSpotActivity : AppCompatActivity() {
         }
     }
 
-    private fun handlePhotoPickerResult(activityResult: ActivityResult) {
+    private fun handlePhotoPickerResult(uri: Uri?) {
         MainScope().launch {
-            if (activityResult.resultCode == RESULT_OK) {
+            uri?.let {
                 val loadingBarShower = LoadingBarShower(this@AddLoveSpotActivity)
                     .show(R.string.processing_photos)
 
-                PhotoUtils.readResultToFiles(activityResult, contentResolver).onSuccess { files ->
+                PhotoUtils.readResultToFiles(it, contentResolver).onSuccess { files ->
                     filesToUpload.clear()
                     filesToUpload.addAll(files)
                     attachedPhotosCount.text = "${filesToUpload.size}"
@@ -167,6 +168,8 @@ class AddLoveSpotActivity : AppCompatActivity() {
                     Log.e("handlePhotoPickerResult", "Failed to read files")
                     PhotoUtils.permissionDialog(this@AddLoveSpotActivity)
                 }
+            } ?: run {
+                Log.e("handlePhotoPickerResult", "No URI provided")
             }
         }
     }
@@ -562,7 +565,6 @@ class AddLoveSpotActivity : AppCompatActivity() {
     private fun setUploadButton() {
         addSpotUploadButton.setOnClickListener {
             MainScope().launch {
-                PhotoUtils.verifyStoragePermissions(this@AddLoveSpotActivity)
                 PhotoUtils.startPickerIntent(photoPickerLauncher)
             }
         }

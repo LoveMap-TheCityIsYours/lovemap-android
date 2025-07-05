@@ -4,7 +4,7 @@ plugins {
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
     id 'kotlin-kapt'
     id 'com.google.gms.google-services'
-    id("de.mannodermaus.android-junit5") version "1.8.2.1"
+    id("de.mannodermaus.android-junit5") version "1.13.1.0"
     id("com.google.devtools.ksp")
 }
 
@@ -12,14 +12,14 @@ def localProperties = new Properties()
 localProperties.load(new FileInputStream(rootProject.file("local.properties")))
 
 android {
-    compileSdk 34
+    compileSdk 36
 
     defaultConfig {
         applicationId "com.lovemap.lovemapandroid"
         minSdk 26
-        targetSdk 34
-        versionCode 92
-        versionName "1.13.1"
+        targetSdk 36
+        versionCode 94
+        versionName "1.14.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -58,65 +58,66 @@ android {
     buildFeatures {
         viewBinding true
     }
-    buildToolsVersion '34.0.0'
+    buildToolsVersion '36.0.0'
     namespace 'com.lovemap.lovemapandroid'
 }
 
 dependencies {
-    implementation platform('com.google.firebase:firebase-bom:31.2.0')
+    implementation platform('com.google.firebase:firebase-bom:33.16.0')
 
     implementation 'androidx.multidex:multidex:2.0.1'
 
-    implementation 'androidx.core:core-ktx:1.12.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0'
-    implementation 'androidx.annotation:annotation:1.7.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.7.0-alpha02"
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.2'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2'
+    implementation 'androidx.core:core-ktx:1.16.0'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'androidx.annotation:annotation:1.9.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.9.1"
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.9.1'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.1"
     implementation("androidx.cardview:cardview:1.0.0")
+    implementation "androidx.activity:activity-ktx:1.9.0"
 
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1"
-    implementation "com.squareup.retrofit2:retrofit:2.9.0"
-    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
-    implementation "com.fasterxml.jackson.core:jackson-databind:2.14.1"
-    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.14.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2"
+    implementation "com.squareup.retrofit2:retrofit:3.0.0"
+    implementation "com.squareup.retrofit2:converter-gson:3.0.0"
+    implementation "com.fasterxml.jackson.core:jackson-databind:2.19.1"
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.19.1"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.3.1'
+    implementation 'androidx.recyclerview:recyclerview:1.4.0'
     implementation 'androidx.preference:preference-ktx:1.2.1'
 
-    implementation 'com.google.android.gms:play-services-maps:18.1.0'
-    implementation 'com.google.android.gms:play-services-location:21.0.1'
-    implementation 'com.google.maps.android:android-maps-utils:2.3.0'
-    implementation 'com.google.maps.android:maps-utils-ktx:3.4.0'
-    implementation 'com.google.android.libraries.places:places:3.2.0'
+    implementation 'com.google.android.gms:play-services-maps:19.2.0'
+    implementation 'com.google.android.gms:play-services-location:21.3.0'
+    implementation 'com.google.maps.android:android-maps-utils:3.14.0'
+    implementation 'com.google.maps.android:maps-utils-ktx:5.2.0'
+    implementation 'com.google.android.libraries.places:places:4.3.1'
     implementation "com.javadocmd:simplelatlng:1.4.0"
-    implementation 'com.github.MikeOrtiz:TouchImageView:3.2.1'
-    implementation 'com.github.lincollincol:HEIF-converter:1.5'
-    implementation 'com.github.bumptech.glide:glide:4.14.2'
+    implementation 'com.github.MikeOrtiz:TouchImageView:3.7.1'
+    implementation 'com.github.lincollincol:HEIF-converter:1.6'
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
     implementation 'com.vdurmont:emoji-java:5.1.1'
-    implementation("com.google.guava:guava:31.1-android")
+    implementation("com.google.guava:guava:33.4.8-android")
 
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-messaging-ktx'
 
-    implementation 'com.facebook.android:facebook-login:latest.release'
+    implementation 'com.facebook.android:facebook-login:18.0.3'
 
-    def roomVersion = "2.5.2"
+    def roomVersion = "2.7.2"
     implementation("androidx.room:room-runtime:$roomVersion")
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-guava:$roomVersion")
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("androidx.datastore:datastore-preferences:1.1.7")
 
     implementation("org.greenrobot:eventbus:3.3.1")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.1")
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.13.3")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.13.3")
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
 }

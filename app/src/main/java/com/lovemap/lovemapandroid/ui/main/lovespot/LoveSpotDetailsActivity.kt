@@ -1,12 +1,14 @@
 package com.lovemap.lovemapandroid.ui.main.lovespot
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -96,7 +98,7 @@ class LoveSpotDetailsActivity : AppCompatActivity() {
     private lateinit var detailsNoPhotoViewGroup: LinearLayout
     private lateinit var spotDetailsUploadButton: ExtendedFloatingActionButton
     private lateinit var photosProgressBar: ProgressBar
-    private lateinit var photoPickerLauncher: ActivityResultLauncher<Intent>
+    private lateinit var photoPickerLauncher: ActivityResultLauncher<PickVisualMediaRequest>
 
     private var loveSpotId: Long = 0
     private var rating: Int = 0
@@ -142,8 +144,8 @@ class LoveSpotDetailsActivity : AppCompatActivity() {
                 startActivity(Intent(applicationContext, ReviewListActivity::class.java))
             }
             photoPickerLauncher =
-                registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
-                    handlePhotoPickerResult(activityResult)
+                registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+                    handlePhotoPickerResult(uri)
                 }
 
             setReviewRatingBar()
@@ -154,13 +156,13 @@ class LoveSpotDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun handlePhotoPickerResult(activityResult: ActivityResult) {
+    private fun handlePhotoPickerResult(uri: Uri?) {
         MainScope().launch {
-            if (activityResult.resultCode == RESULT_OK) {
+            uri?.let {
                 val loadingBarShower = LoadingBarShower(this@LoveSpotDetailsActivity)
                     .show(R.string.uploading_photo)
 
-                PhotoUtils.readResultToFiles(activityResult, contentResolver).onSuccess { files ->
+                PhotoUtils.readResultToFiles(uri, contentResolver).onSuccess { files ->
                     Log.i(this@LoveSpotDetailsActivity::class.simpleName, "Starting upload")
                     val result: Boolean = if (photoUploadReviewId != null) {
                         loveSpotPhotoService.uploadToReview(
@@ -193,7 +195,7 @@ class LoveSpotDetailsActivity : AppCompatActivity() {
                     PhotoUtils.permissionDialog(this@LoveSpotDetailsActivity)
                 }
 
-            } else {
+            } ?: run {
                 toaster.showToast(R.string.failed_to_access_photos)
             }
         }
@@ -458,8 +460,6 @@ class LoveSpotDetailsActivity : AppCompatActivity() {
     private fun setUploadButton() {
         spotDetailsUploadButton.setOnClickListener {
             MainScope().launch {
-                // TODO: subscribe to permission result
-                PhotoUtils.verifyStoragePermissions(this@LoveSpotDetailsActivity)
                 if (PhotoUtils.canUploadForSpot(loveSpotId)) {
                     PhotoUtils.startPickerIntent(photoPickerLauncher)
                 } else if (PhotoUtils.canUploadForReview(loveSpotId)) {

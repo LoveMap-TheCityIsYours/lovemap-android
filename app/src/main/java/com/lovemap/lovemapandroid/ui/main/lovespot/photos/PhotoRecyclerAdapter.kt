@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -29,7 +30,7 @@ class PhotoRecyclerAdapter(
     private val activity: Activity,
     private val loveSpot: LoveSpot,
     private val photoList: List<LoveSpotPhoto>,
-    private val launcher: ActivityResultLauncher<Intent>
+    private val launcher: ActivityResultLauncher<PickVisualMediaRequest>
 ) : RecyclerView.Adapter<PhotoRecyclerAdapter.ViewHolder>() {
 
     private val userId: Long = AppContext.INSTANCE.userId
@@ -55,7 +56,6 @@ class PhotoRecyclerAdapter(
 
             viewHolder.spotPhotosUploadButton.setOnClickListener {
                 MainScope().launch {
-                    PhotoUtils.verifyStoragePermissions(activity)
                     if (PhotoUtils.canUploadForSpot(loveSpot.id)) {
                         PhotoUtils.startPickerIntent(launcher)
                     } else if (PhotoUtils.canUploadForReview(loveSpot.id)) {

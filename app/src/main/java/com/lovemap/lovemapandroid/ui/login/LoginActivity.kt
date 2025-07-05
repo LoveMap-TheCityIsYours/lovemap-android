@@ -209,7 +209,6 @@ class LoginActivity : AppCompatActivity() {
         )
         if (loggedInUser != null) {
             loadingBarShower.onResponse()
-            appContext.toaster.showToast(getString(R.string.welcome) + "${loggedInUser.displayName}!")
             startActivity(
                 Intent(
                     this@LoginActivity,
@@ -237,7 +236,6 @@ class LoginActivity : AppCompatActivity() {
             val loadingBarShower = LoadingBarShower(this@LoginActivity).show()
             val loggedInUser = authenticationService.login(email.trim(), password)
             if (loggedInUser != null) {
-                appContext.toaster.showToast(getString(R.string.welcome_back) + "${loggedInUser.displayName}!")
                 startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             }
             loadingBarShower.onResponse()
