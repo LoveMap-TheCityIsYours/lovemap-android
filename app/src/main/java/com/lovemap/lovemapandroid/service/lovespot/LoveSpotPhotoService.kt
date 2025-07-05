@@ -11,7 +11,7 @@ import com.lovemap.lovemapandroid.service.Toaster
 import com.lovemap.lovemapandroid.ui.utils.PhotoUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -189,7 +189,7 @@ class LoveSpotPhotoService(
     private fun prepareFilePart(file: File): MultipartBody.Part {
         // create RequestBody instance from file
         val requestFile = RequestBody.create(
-            MediaType.get("image/*"),
+            "image/*".toMediaTypeOrNull(), // Use the extension function
             file
         )
 

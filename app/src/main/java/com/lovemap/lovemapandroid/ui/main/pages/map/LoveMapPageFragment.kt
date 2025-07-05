@@ -62,7 +62,7 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
     private var mapMode = LOVE_SPOTS
     private val drawnSpots = HashSet<Long>()
     private var zoomLevel: Float = 1f
-    private var mapType = GoogleMap.MAP_TYPE_NORMAL
+    private var mapType = GoogleMap.MAP_TYPE_TERRAIN
     private var googleMap: GoogleMap? = null
 
     private var viewPager2: ViewPager2? = null
@@ -148,10 +148,10 @@ class LoveMapPageFragment : Fragment(), OnMapReadyCallback, MapMarkerEventListen
             mapFragment.getMapAsync(this)
         }
         changeMapLayer.setOnClickListener {
-            mapType = if (mapType == GoogleMap.MAP_TYPE_NORMAL) {
+            mapType = if (mapType == GoogleMap.MAP_TYPE_TERRAIN) {
                 GoogleMap.MAP_TYPE_HYBRID
             } else {
-                GoogleMap.MAP_TYPE_NORMAL
+                GoogleMap.MAP_TYPE_TERRAIN
             }
             if (googleMap != null) {
                 googleMap?.mapType = mapType

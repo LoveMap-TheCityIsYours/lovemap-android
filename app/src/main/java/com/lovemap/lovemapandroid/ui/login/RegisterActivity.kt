@@ -166,7 +166,6 @@ class RegisterActivity : AppCompatActivity() {
                     publicProfile = registerPublicToggle.isChecked
                 )
                 if (loggedInUser != null) {
-                    appContext.toaster.showToast(getString(R.string.welcome) + "${loggedInUser.displayName}!")
                     startActivity(Intent(this@RegisterActivity, MainActivity::class.java))
                 }
                 loadingBarShower.onResponse()

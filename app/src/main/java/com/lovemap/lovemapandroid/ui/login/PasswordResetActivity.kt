@@ -128,7 +128,6 @@ class PasswordResetActivity : AppCompatActivity() {
                     newPassword = newPassword.text.toString()
                 )
                 if (loggedInUser != null) {
-                    appContext.toaster.showToast(getString(R.string.welcome_back) + "${loggedInUser.displayName}!")
                     val intent = Intent(this@PasswordResetActivity, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                     startActivity(intent)

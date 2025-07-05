@@ -1,20 +1,17 @@
 package com.lovemap.lovemapandroid.ui.utils
 
-import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
 import android.widget.ImageView
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
-import androidx.core.app.ActivityCompat
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.lovemap.lovemapandroid.R
@@ -24,33 +21,12 @@ import com.lovemap.lovemapandroid.config.AppContext
 import linc.com.heifconverter.HeifConverter
 import java.io.File
 import java.io.FileNotFoundException
+import java.io.FileOutputStream
 
 
 object PhotoUtils {
 
     private const val TAG = "PhotoUtils"
-    private const val REQUEST_EXTERNAL_STORAGE = 1
-
-    private val PERMISSIONS_STORAGE = arrayOf(
-        Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE
-    )
-
-    fun verifyStoragePermissions(activity: Activity) {
-        // Check if we have write permission
-        val permission = ActivityCompat.checkSelfPermission(
-            activity,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        )
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(
-                activity,
-                PERMISSIONS_STORAGE,
-                REQUEST_EXTERNAL_STORAGE
-            )
-        }
-    }
 
     suspend fun canUploadForReview(loveSpotId: Long): Boolean {
         return if (AppContext.INSTANCE.loveSpotReviewService.hasReviewedAlready(loveSpotId)) {
@@ -78,29 +54,22 @@ object PhotoUtils {
                 || loveSpotPhoto.uploadedBy == AppContext.INSTANCE.userId
     }
 
-    fun startPickerIntent(launcher: ActivityResultLauncher<Intent>) {
-        val intent = Intent()
-        intent.type = "image/*"
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-        intent.action = Intent.ACTION_PICK
-        launcher.launch(intent)
+    fun startPickerIntent(launcher: ActivityResultLauncher<PickVisualMediaRequest>) {
+        launcher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
     suspend fun readResultToFiles(
-        activityResult: ActivityResult,
+        uri: Uri,
         contentResolver: ContentResolver
     ): Result<List<File>> {
-        val itemCount: Int = activityResult.data?.clipData?.itemCount ?: 0
         val files = ArrayList<File>()
         var failed = false
-        for (i in 0 until itemCount) {
-            val clipData = activityResult.data!!.clipData!!
-            val uri = clipData.getItemAt(i).uri
-            Log.i("uri", "$uri")
-            if (!addToFilesFromUri(uri, files, contentResolver)) {
-                failed = true
-            }
+
+        Log.i("uri", "$uri")
+        if (!addToFilesFromUri(uri, files, contentResolver)) {
+            failed = true
         }
+
         Log.i("readResultToFiles", "returning failed: $failed")
         if (failed) {
             return Result.failure(FileNotFoundException("Failed to read files"))
@@ -114,40 +83,43 @@ object PhotoUtils {
         contentResolver: ContentResolver
     ): Boolean {
         var success = true
-        val projection = arrayOf(MediaStore.MediaColumns.DATA)
-        contentResolver.query(uri, projection, null, null, null)
-            ?.use { cursor ->
-                if (cursor.moveToFirst()) {
-                    val columnIndex = cursor.getColumnIndex(MediaStore.MediaColumns.DATA)
-                    Log.i("columnIndex", "$columnIndex")
-                    val filePath = cursor.getString(columnIndex)
-                    Log.i("filePath", " $filePath")
-                    if (filePath != null) {
-                        val file = File(filePath)
-                        Log.i("file", "$file")
-                        if (isHeif(file.name)) {
-                            val conversionResult = HeifConverter.useContext(AppContext.INSTANCE)
-                                .fromFile(file.path)
-                                .withOutputFormat(HeifConverter.Format.JPEG)
-                                .withOutputQuality(80)
-                                .convertBlocking()
-                            val path = conversionResult[HeifConverter.Key.IMAGE_PATH] as String
-                            val convertedFile = File(path)
-                            Log.i(
-                                "convertedFile",
-                                "convertedFile length: ${convertedFile.length()}"
-                            )
-                            if (convertedFile.length() == 0L) {
-                                Log.i("ConversionFailed", "Conversion Failed")
-                                success = false
-                            }
-                            files.add(convertedFile)
-                        } else {
-                            files.add(file)
-                        }
-                    }
+        try {
+            val inputStream = contentResolver.openInputStream(uri)
+            if (inputStream != null) {
+                val mimeType = contentResolver.getType(uri)
+                val tempFile = File.createTempFile("IMG_", ".jpg", AppContext.INSTANCE.cacheDir)
+                FileOutputStream(tempFile).use { outputStream ->
+                    inputStream.copyTo(outputStream)
                 }
+                inputStream.close()
+
+                if (isHeifMimeType(mimeType)) {
+                    val conversionResult = HeifConverter.useContext(AppContext.INSTANCE)
+                        .fromFile(tempFile.path)
+                        .withOutputFormat(HeifConverter.Format.JPEG)
+                        .withOutputQuality(80)
+                        .convertBlocking()
+                    val path = conversionResult[HeifConverter.Key.IMAGE_PATH] as String
+                    val convertedFile = File(path)
+                    Log.i(
+                        "convertedFile",
+                        "convertedFile length: ${convertedFile.length()}"
+                    )
+                    if (convertedFile.length() == 0L) {
+                        Log.i("ConversionFailed", "Conversion Failed")
+                        success = false
+                    }
+                    files.add(convertedFile)
+                } else {
+                    files.add(tempFile)
+                }
+            } else {
+                success = false
             }
+        } catch (e: Exception) {
+            Log.e("addToFilesFromUri", "Failed to read URI: $uri", e)
+            success = false
+        }
         Log.i("addToFilesFromUri", "returning success: $success")
         return success
     }
@@ -191,6 +163,9 @@ object PhotoUtils {
 
     fun isHeif(fileName: String) =
         fileName.lowercase().endsWith("heic") || fileName.lowercase().endsWith("heif")
+
+    fun isHeifMimeType(mimeType: String?) =
+        mimeType?.lowercase() == "image/heic" || mimeType?.lowercase() == "image/heif"
 
     fun loadHeif(
         activity: Activity,

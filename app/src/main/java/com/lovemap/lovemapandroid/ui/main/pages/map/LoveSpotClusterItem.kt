@@ -28,6 +28,10 @@ class LoveSpotClusterItem(
         return snippet
     }
 
+    override fun getZIndex(): Float? {
+        return 0.0f
+    }
+
     init {
         position = LatLng(lat, lng)
         this.title = title
